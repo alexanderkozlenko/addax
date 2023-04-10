@@ -1,6 +1,7 @@
 # Addax
 
-[![NuGet](https://img.shields.io/nuget/v/Addax.Formats.Tabular.svg?style=flat)](https://www.nuget.org/packages/Addax.Formats.Tabular)
+[![NuGet: Addax.Formats.Tabular](https://img.shields.io/nuget/vpre/Addax.Formats.Tabular.svg?style=flat&label=nuget%3A%20Addax.Formats.Tabular)](https://www.nuget.org/packages/Addax.Formats.Tabular)
+[![NuGet: Addax.Formats.Tabular.Analyzers](https://img.shields.io/nuget/vpre/Addax.Formats.Tabular.svg?style=flat&label=nuget%3A%20Addax.Formats.Tabular.Analyzers)](https://www.nuget.org/packages/Addax.Formats.Tabular.Analyzers)
 
 Addax is a high-performance and low-allocating framework for producing and consuming tabular data, represented as delimiter-separated values. The implementation is based on W3C draft [Model for Tabular Data and Metadata on the Web](https://w3c.github.io/csvw/syntax).
 
