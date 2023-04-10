@@ -1,0 +1,4 @@
+scan_num,scan_time,type,bpi,bpi_mz,tic,num_peaks,num_deisotoped,info
+1,0,1,4.45E+07,576.27308,1.06E+09,132,0,FTMS + p NSI Full ms [100.00-2000.00]
+2,0.075,1,1.26E+08,576.27306,2.32E+09,86,0,FTMS + p NSI Full ms [100.00-2000.00]
+3,0.1475,1,9.53E+07,576.27328,1.66E+09,102,0,FTMS + p NSI Full ms [100.00-2000.00]

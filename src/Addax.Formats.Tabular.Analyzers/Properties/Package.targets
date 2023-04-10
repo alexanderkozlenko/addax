@@ -1,0 +1,7 @@
+﻿<Project>
+  <ItemGroup>
+    <Compile Update="@(Compile)">
+      <Visible Condition="'%(Link)' == 'Addax.Formats.Tabular.g.cs'">false</Visible>
+    </Compile>
+  </ItemGroup>
+</Project>

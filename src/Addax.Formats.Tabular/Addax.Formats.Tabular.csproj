@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AnalysisMode>All</AnalysisMode>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.IO.Pipelines" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Package.props">
+      <Pack>true</Pack>
+      <PackagePath>buildTransitive\$(MSBuildProjectName).props</PackagePath>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,46 @@
+﻿<Project>
+  <PropertyGroup>
+    <LangVersion>11.0</LangVersion>
+    <Features>$(Features);strict;nullablePublicOnly;</Features>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AnalysisMode>Minimum</AnalysisMode>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <RestoreUseStaticGraphEvaluation>true</RestoreUseStaticGraphEvaluation>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(ContinuousIntegrationBuild)' == 'true'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Using Include="System.Diagnostics" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix>preview.1</VersionSuffix>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Authors><![CDATA[Oleksandr Kozlenko]]></Authors>
+    <Copyright><![CDATA[© Oleksandr Kozlenko. All rights reserved.]]></Copyright>
+    <PackageDescription><![CDATA[Provides high-performance and low-allocating types that produce and consume tabular data, represented as delimiter-separated values.]]></PackageDescription>
+    <PackageTags><![CDATA[delimiter-separated tabular]]></PackageTags>
+    <PackageIcon>Icon.png</PackageIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(ContinuousIntegrationBuild)' == 'true'">
+    <VersionSuffix Condition="'$(VersionSuffix)' != ''">$(VersionSuffix).$([System.DateTimeOffset]::UtcNow.ToUnixTimeSeconds())</VersionSuffix>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)\Addax.Formats.Tabular.png">
+      <Pack>true</Pack>
+      <PackagePath>$(PackageIcon)</PackagePath>
+      <Visible>false</Visible>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', 'out', 'obj', '$(MSBuildProjectName)'))</BaseIntermediateOutputPath>
+    <BaseOutputPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', 'out', 'bin', '$(MSBuildProjectName)'))</BaseOutputPath>
+  </PropertyGroup>
+</Project>
