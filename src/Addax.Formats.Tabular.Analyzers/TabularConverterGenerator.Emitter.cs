@@ -36,11 +36,6 @@ public partial class TabularConverterGenerator
 
         private static bool TypeSupportsReadingFields(in TabularRecordSpec recordSpec)
         {
-            if (recordSpec.FieldSpecs is null)
-            {
-                return false;
-            }
-
             foreach (var fieldSpec in recordSpec.FieldSpecs.Values)
             {
                 if (fieldSpec.TypeMemberAccessTypes.HasFlag(TypeMemberAccessTypes.Write))
@@ -54,11 +49,6 @@ public partial class TabularConverterGenerator
 
         private static bool TypeSupportsWritingFields(in TabularRecordSpec recordSpec)
         {
-            if (recordSpec.FieldSpecs is null)
-            {
-                return false;
-            }
-
             for (var i = 0; i < recordSpec.FieldSpecs.Count; i++)
             {
                 if (!recordSpec.FieldSpecs.ContainsKey(i))

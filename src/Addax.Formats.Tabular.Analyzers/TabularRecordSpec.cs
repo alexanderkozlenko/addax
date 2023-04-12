@@ -6,11 +6,11 @@ namespace Addax.Formats.Tabular.Analyzers;
 
 internal readonly struct TabularRecordSpec
 {
-    private readonly ImmutableDictionary<int, TabularFieldSpec>? _fieldSpecs;
+    private readonly ImmutableDictionary<int, TabularFieldSpec> _fieldSpecs;
     private readonly string _typeName;
     private readonly bool _isStrict;
 
-    public TabularRecordSpec(string typeName, bool isStrict, ImmutableDictionary<int, TabularFieldSpec>? fieldSpecs)
+    public TabularRecordSpec(string typeName, bool isStrict, ImmutableDictionary<int, TabularFieldSpec> fieldSpecs)
     {
         _typeName = typeName;
         _isStrict = isStrict;
@@ -33,7 +33,7 @@ internal readonly struct TabularRecordSpec
         }
     }
 
-    public ImmutableDictionary<int, TabularFieldSpec>? FieldSpecs
+    public ImmutableDictionary<int, TabularFieldSpec> FieldSpecs
     {
         get
         {

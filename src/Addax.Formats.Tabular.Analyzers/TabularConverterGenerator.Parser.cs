@@ -42,18 +42,12 @@ public partial class TabularConverterGenerator
                 var typeHasSuitableConstructor = TypeHasSuitableConstructor(typeSymbol);
                 var typeHasSuitableMemberSet = true;
 
-                var typeMemberSymbols = typeSymbol.GetMembers();
+                var typeMemberSymbols = GetTypeMembers(typeSymbol, cancellationToken);
                 var tabularFieldSpecsBuilder = default(ImmutableDictionary<int, TabularFieldSpec>.Builder);
 
                 foreach (var typeMemberSymbol in typeMemberSymbols)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
-
-                    if ((typeMemberSymbol.DeclaredAccessibility is not (Accessibility.Internal or Accessibility.Public)) ||
-                        (typeMemberSymbol is not (IFieldSymbol or IPropertySymbol)))
-                    {
-                        continue;
-                    }
 
                     var typeMemberAttributeData = typeMemberSymbol
                         .GetAttributes()
@@ -104,10 +98,14 @@ public partial class TabularConverterGenerator
 
                 if (typeHasSuitableMemberSet)
                 {
+                    var tabularFieldSpecs = tabularFieldSpecsBuilder is not null ?
+                        tabularFieldSpecsBuilder.ToImmutable() :
+                        ImmutableDictionary<int, TabularFieldSpec>.Empty;
+
                     var tabularRecordSpec = new TabularRecordSpec(
                         typeSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
                         tabularRecordSpecIsStrict,
-                        tabularFieldSpecsBuilder?.ToImmutable());
+                        tabularFieldSpecs);
 
                     tabularRecordSpecsBuilder ??= ImmutableArray.CreateBuilder<TabularRecordSpec>();
                     tabularRecordSpecsBuilder.Add(tabularRecordSpec);
@@ -122,7 +120,7 @@ public partial class TabularConverterGenerator
             }
             else
             {
-                result = default;
+                result = new(ImmutableArray<TabularRecordSpec>.Empty);
 
                 return false;
             }
@@ -206,38 +204,6 @@ public partial class TabularConverterGenerator
             return tabularFieldType != TabularFieldType.None;
         }
 
-        private static bool TryGetTabularFieldInfo(AttributeData attributeData, out int tabularFieldIndex)
-        {
-            var constructorArguments = attributeData.ConstructorArguments;
-
-            if ((constructorArguments.Length == 1) && (constructorArguments[0] is { Type.SpecialType: SpecialType.System_Int32 }))
-            {
-                tabularFieldIndex = (int)constructorArguments[0].Value!;
-
-                return true;
-            }
-
-            tabularFieldIndex = default;
-
-            return false;
-        }
-
-        private static bool TryGetTabularRecordInfo(AttributeData attributeData, out bool tabularRecordSpecIsStrict)
-        {
-            var constructorArguments = attributeData.ConstructorArguments;
-
-            if ((constructorArguments.Length == 1) && (constructorArguments[0] is { Type.SpecialType: SpecialType.System_Boolean }))
-            {
-                tabularRecordSpecIsStrict = (bool)constructorArguments[0].Value!;
-
-                return true;
-            }
-
-            tabularRecordSpecIsStrict = default;
-
-            return false;
-        }
-
         private static TypeMemberAccessTypes GetTypeMemberAccessTypes(ISymbol typeMemberSymbol)
         {
             if (typeMemberSymbol is IFieldSymbol fieldSymbol)
@@ -270,6 +236,79 @@ public partial class TabularConverterGenerator
             {
                 return TypeMemberAccessTypes.None;
             }
+        }
+
+        private static ImmutableArray<ISymbol> GetTypeMembers(INamedTypeSymbol typeSymbol, CancellationToken cancellationToken)
+        {
+            var typeSymbolAssembly = typeSymbol.ContainingAssembly;
+            var builder = default(ImmutableArray<ISymbol>.Builder);
+
+            while (typeSymbol is { SpecialType: SpecialType.None })
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var typeMemberSymbols = typeSymbol.GetMembers();
+
+                foreach (var typeMemberSymbol in typeMemberSymbols)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    if (typeMemberSymbol is not (IFieldSymbol or IPropertySymbol))
+                    {
+                        continue;
+                    }
+
+                    if (typeMemberSymbol.DeclaredAccessibility is Accessibility.Public)
+                    {
+                        builder ??= ImmutableArray.CreateBuilder<ISymbol>();
+                        builder.Add(typeMemberSymbol);
+                    }
+                    else if (typeMemberSymbol.DeclaredAccessibility is Accessibility.Internal)
+                    {
+                        if (SymbolEqualityComparer.Default.Equals(typeSymbolAssembly, typeSymbol.ContainingAssembly))
+                        {
+                            builder ??= ImmutableArray.CreateBuilder<ISymbol>();
+                            builder.Add(typeMemberSymbol);
+                        }
+                    }
+                }
+
+                typeSymbol = typeSymbol.BaseType!;
+            }
+
+            return builder is not null ? builder.ToImmutable() : ImmutableArray<ISymbol>.Empty;
+        }
+
+        private static bool TryGetTabularFieldInfo(AttributeData attributeData, out int tabularFieldIndex)
+        {
+            var constructorArguments = attributeData.ConstructorArguments;
+
+            if ((constructorArguments.Length == 1) && (constructorArguments[0] is { Type.SpecialType: SpecialType.System_Int32 }))
+            {
+                tabularFieldIndex = (int)constructorArguments[0].Value!;
+
+                return true;
+            }
+
+            tabularFieldIndex = default;
+
+            return false;
+        }
+
+        private static bool TryGetTabularRecordInfo(AttributeData attributeData, out bool tabularRecordSpecIsStrict)
+        {
+            var constructorArguments = attributeData.ConstructorArguments;
+
+            if ((constructorArguments.Length == 1) && (constructorArguments[0] is { Type.SpecialType: SpecialType.System_Boolean }))
+            {
+                tabularRecordSpecIsStrict = (bool)constructorArguments[0].Value!;
+
+                return true;
+            }
+
+            tabularRecordSpecIsStrict = default;
+
+            return false;
         }
 
         private static bool TypeHasSuitableConstructor(INamedTypeSymbol typeSymbol)
