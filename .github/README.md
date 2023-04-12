@@ -7,7 +7,7 @@ Addax is a high-performance and low-allocating framework for producing and consu
 
 ## Quick Start
 
-The following code works on a record level with a CSV file, formatted according to [RFC 4180](https://ietf.org/rfc/rfc4180.html):
+The following code works on the record level with a CSV file, formatted according to [RFC 4180](https://ietf.org/rfc/rfc4180.html):
 
 ```cs
 var dialect = new TabularDataDialect("\r\n", ',', '\"');

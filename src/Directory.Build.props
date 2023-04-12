@@ -26,7 +26,7 @@
     <Authors><![CDATA[Oleksandr Kozlenko]]></Authors>
     <Copyright><![CDATA[© Oleksandr Kozlenko. All rights reserved.]]></Copyright>
     <PackageDescription><![CDATA[Provides high-performance and low-allocating types that produce and consume tabular data, represented as delimiter-separated values.]]></PackageDescription>
-    <PackageTags><![CDATA[delimiter-separated tabular]]></PackageTags>
+    <PackageTags><![CDATA[delimited tabular]]></PackageTags>
     <PackageIcon>Icon.png</PackageIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(ContinuousIntegrationBuild)' == 'true'">
