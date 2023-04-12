@@ -40,7 +40,8 @@
     </None>
   </ItemGroup>
   <PropertyGroup>
-    <BaseIntermediateOutputPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', 'out', 'obj', '$(MSBuildProjectName)'))</BaseIntermediateOutputPath>
-    <BaseOutputPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', 'out', 'bin', '$(MSBuildProjectName)'))</BaseOutputPath>
+    <ArtifactsPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', '.artifacts'))</ArtifactsPath>
+    <BaseIntermediateOutputPath>$([MSBuild]::NormalizeDirectory('$(ArtifactsPath)', 'obj', '$(MSBuildProjectName)'))</BaseIntermediateOutputPath>
+    <BaseOutputPath>$([MSBuild]::NormalizeDirectory('$(ArtifactsPath)', 'bin', '$(MSBuildProjectName)'))</BaseOutputPath>
   </PropertyGroup>
 </Project>
