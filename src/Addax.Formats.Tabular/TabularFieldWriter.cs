@@ -92,7 +92,7 @@ public sealed partial class TabularFieldWriter : IAsyncDisposable
         }
 
         _streamFormatter.WriteValue(value, _streamWriter, out committed);
-        _positionType = TabularPositionType.FieldSeparation;
+        _positionType = TabularPositionType.FieldSeparator;
         _fieldType = TabularFieldType.Content;
         _position += committed;
     }
@@ -115,7 +115,7 @@ public sealed partial class TabularFieldWriter : IAsyncDisposable
         }
 
         _streamFormatter.WriteValue(value, _streamWriter, out committed);
-        _positionType = TabularPositionType.FieldSeparation;
+        _positionType = TabularPositionType.FieldSeparator;
         _fieldType = TabularFieldType.Content;
         _position += committed;
     }
@@ -130,7 +130,7 @@ public sealed partial class TabularFieldWriter : IAsyncDisposable
         EnsureCanWriteComment(value);
 
         _streamFormatter.WriteComment(value, _streamWriter, out var committed);
-        _positionType = TabularPositionType.FieldSeparation;
+        _positionType = TabularPositionType.FieldSeparator;
         _fieldType = TabularFieldType.Comment;
         _position += committed;
     }
@@ -145,7 +145,7 @@ public sealed partial class TabularFieldWriter : IAsyncDisposable
         EnsureCanWriteComment(value);
 
         _streamFormatter.WriteComment(value, _streamWriter, out var committed);
-        _positionType = TabularPositionType.FieldSeparation;
+        _positionType = TabularPositionType.FieldSeparator;
         _fieldType = TabularFieldType.Comment;
         _position += committed;
     }
@@ -182,7 +182,7 @@ public sealed partial class TabularFieldWriter : IAsyncDisposable
         }
 
         _streamFormatter.WriteValue(formattingBuffer.AsSpan()[..charsWritten], _streamWriter, out committed);
-        _positionType = TabularPositionType.FieldSeparation;
+        _positionType = TabularPositionType.FieldSeparator;
         _fieldType = TabularFieldType.Content;
         _position += committed;
     }
@@ -250,7 +250,7 @@ public sealed partial class TabularFieldWriter : IAsyncDisposable
         }
 
         _streamFormatter.WriteValue(formattingBuffer.AsSpan()[..charsWritten], _streamWriter, out committed);
-        _positionType = TabularPositionType.FieldSeparation;
+        _positionType = TabularPositionType.FieldSeparator;
         _fieldType = TabularFieldType.Content;
         _position += committed;
 
@@ -298,6 +298,26 @@ public sealed partial class TabularFieldWriter : IAsyncDisposable
         if (_positionType is not TabularPositionType.BeginningOfRecord)
         {
             throw new InvalidOperationException("A comment can be written only to an empty record.");
+        }
+    }
+
+    /// <summary>Gets a type of the last written field.</summary>
+    /// <value>A <see cref="TabularFieldType" /> value.</value>
+    public TabularFieldType FieldType
+    {
+        get
+        {
+            return _fieldType;
+        }
+    }
+
+    /// <summary>Gets the current type of position in tabular data.</summary>
+    /// <value>A <see cref="TabularPositionType" /> value.</value>
+    public TabularPositionType PositionType
+    {
+        get
+        {
+            return _positionType;
         }
     }
 

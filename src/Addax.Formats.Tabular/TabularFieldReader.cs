@@ -69,7 +69,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         {
             TabularPositionType.BeginningOfStream => AssumeNextRecordAsync(),
             TabularPositionType.BeginningOfRecord => MoveNextRecordAsyncCore(cancellationToken),
-            TabularPositionType.FieldSeparation => MoveNextRecordAsyncCore(cancellationToken),
+            TabularPositionType.FieldSeparator => MoveNextRecordAsyncCore(cancellationToken),
             TabularPositionType.EndOfRecord => AssumeNextRecordAsync(),
             _ => new(false),
         };
@@ -115,7 +115,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         return _positionType switch
         {
             TabularPositionType.BeginningOfRecord => MoveNextFieldAsyncCore(cancellationToken),
-            TabularPositionType.FieldSeparation => MoveNextFieldAsyncCore(cancellationToken),
+            TabularPositionType.FieldSeparator => MoveNextFieldAsyncCore(cancellationToken),
             _ => new(false),
         };
 
@@ -127,7 +127,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
 
             await AdvanceNextTokenAsync(consume: false, cancellationToken).ConfigureAwait(false);
 
-            return _positionType is TabularPositionType.FieldSeparation;
+            return _positionType is TabularPositionType.FieldSeparator;
         }
     }
 
@@ -142,7 +142,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         return _positionType switch
         {
             TabularPositionType.BeginningOfRecord => ReadFieldAsyncCore(cancellationToken),
-            TabularPositionType.FieldSeparation => ReadFieldAsyncCore(cancellationToken),
+            TabularPositionType.FieldSeparator => ReadFieldAsyncCore(cancellationToken),
             _ => new(false),
         };
 
@@ -220,7 +220,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
 
             _positionType = parsingStatus switch
             {
-                TabularStreamParsingStatus.FoundFieldSeparation => TabularPositionType.FieldSeparation,
+                TabularStreamParsingStatus.FoundFieldSeparation => TabularPositionType.FieldSeparator,
                 TabularStreamParsingStatus.FoundRecordSeparation => TabularPositionType.EndOfRecord,
                 _ => TabularPositionType.EndOfStream,
             };
@@ -435,6 +435,16 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         }
     }
 
+    /// <summary>Gets the current type of position in tabular data.</summary>
+    /// <value>A <see cref="TabularPositionType" /> value.</value>
+    public TabularPositionType PositionType
+    {
+        get
+        {
+            return _positionType;
+        }
+    }
+
     /// <summary>Gets the total number of characters consumed so far by the reader.</summary>
     /// <value>A non-negative zero-based number.</value>
     public long Position
@@ -442,14 +452,6 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         get
         {
             return _position;
-        }
-    }
-
-    internal TabularPositionType PositionType
-    {
-        get
-        {
-            return _positionType;
         }
     }
 }
