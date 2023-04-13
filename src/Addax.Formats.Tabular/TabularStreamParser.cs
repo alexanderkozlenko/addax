@@ -271,12 +271,12 @@ internal sealed class TabularStreamParser
         return TabularStreamParsingStatus.NeedMoreData;
     }
 
-    public ReadOnlySequence<char> Extract(in ReadOnlySequence<char> buffer, TabularStreamParsingStatus status, in TabularStreamParserState state, SequenceSource<char> bufferSource, out BufferKind bufferKind)
+    public ReadOnlySequence<char> Extract(in ReadOnlySequence<char> buffer, long bufferLength, TabularStreamParsingStatus status, in TabularStreamParserState state, SequenceSource<char> bufferSource, out BufferKind bufferKind)
     {
         if (!state.IsCommentPrefixFound)
         {
             var valueMargin = state.IsFieldQuoted ? 1 : 0;
-            var valueLength = buffer.Length - (2 * valueMargin);
+            var valueLength = bufferLength - (2 * valueMargin);
 
             switch (status)
             {
@@ -322,7 +322,7 @@ internal sealed class TabularStreamParser
 
             bufferKind = BufferKind.Shared;
 
-            var valueLength = buffer.Length - 1;
+            var valueLength = bufferLength - 1;
 
             if (status is TabularStreamParsingStatus.FoundRecordSeparation)
             {

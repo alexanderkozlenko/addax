@@ -147,19 +147,16 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         };
 
         [StackTraceHidden]
-        [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
-        async ValueTask<bool> ReadFieldAsyncCore(CancellationToken cancellationToken)
+        ValueTask<bool> ReadFieldAsyncCore(CancellationToken cancellationToken)
         {
             ReleaseValue();
 
-            await AdvanceNextTokenAsync(consume: true, cancellationToken).ConfigureAwait(false);
-
-            return true;
+            return AdvanceNextTokenAsync(consume: true, cancellationToken);
         }
     }
 
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
-    private async ValueTask AdvanceNextTokenAsync(bool consume, CancellationToken cancellationToken)
+    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
+    private async ValueTask<bool> AdvanceNextTokenAsync(bool consume, CancellationToken cancellationToken)
     {
         var examinedLength = 0L;
 
@@ -170,7 +167,10 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
 
         while (_positionType is not TabularPositionType.EndOfStream)
         {
-            await _streamReader.ReadAsync(cancellationToken).ConfigureAwait(false);
+            if (!_streamReader.TryRead())
+            {
+                await _streamReader.ReadAsync(cancellationToken).ConfigureAwait(false);
+            }
 
             var readingBuffer = _streamReader.Buffer;
             var parsingBuffer = readingBuffer.Slice(_streamReader.Examined);
@@ -204,9 +204,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
 
             if (consume)
             {
-                var valueBuffer = readingBuffer.Slice(0, examinedLength);
-
-                _value = _streamParser.Extract(valueBuffer, parsingStatus, parserState, _bufferSource, out _bufferKind);
+                _value = _streamParser.Extract(readingBuffer, examinedLength, parsingStatus, parserState, _bufferSource, out _bufferKind);
             }
 
             if (_bufferKind == BufferKind.Shared)
@@ -227,8 +225,10 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
 
             _position += examinedLength;
 
-            return;
+            return consume;
         }
+
+        return consume;
     }
 
     private bool TryGet<T>(TabularFieldConverter<T> converter, out T result)

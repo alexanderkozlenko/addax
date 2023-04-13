@@ -35,42 +35,34 @@ internal sealed class TabularStreamReader : IAsyncDisposable
         return _pipeReader.CompleteAsync();
     }
 
-    public ValueTask ReadAsync(CancellationToken cancellationToken)
+    public bool TryRead()
     {
-        if ((_bufferSource.Length > _examined) || _isCompleted)
-        {
-            return ValueTask.CompletedTask;
-        }
-        else
-        {
-            return ReadAsyncCore(cancellationToken);
-        }
+        return (_bufferSource.Length > _examined) || _isCompleted;
+    }
 
-        [StackTraceHidden]
-        [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
-        async ValueTask ReadAsyncCore(CancellationToken cancellationToken)
+    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
+    public async ValueTask ReadAsync(CancellationToken cancellationToken)
+    {
+        if (!_isPreambleConsumed)
         {
-            if (!_isPreambleConsumed)
+            var preambleReadResult = await _pipeReader.ReadAtLeastAsync(_encoding.Preamble.Length, cancellationToken).ConfigureAwait(false);
+            var preambleReadBuffer = preambleReadResult.Buffer;
+
+            if (BufferStartsWith(preambleReadBuffer, _encoding.Preamble))
             {
-                var preambleReadResult = await _pipeReader.ReadAtLeastAsync(_encoding.Preamble.Length, cancellationToken).ConfigureAwait(false);
-                var preambleReadBuffer = preambleReadResult.Buffer;
-
-                if (BufferStartsWith(preambleReadBuffer, _encoding.Preamble))
-                {
-                    _pipeReader.AdvanceTo(preambleReadBuffer.GetPosition(_encoding.Preamble.Length));
-                }
-
-                _isPreambleConsumed = true;
+                _pipeReader.AdvanceTo(preambleReadBuffer.GetPosition(_encoding.Preamble.Length));
             }
 
-            var textReadResult = await _pipeReader.ReadAsync(cancellationToken).ConfigureAwait(false);
-            var textReadBuffer = textReadResult.Buffer;
-
-            Convert(textReadBuffer, _bufferSource, textReadResult.IsCompleted);
-
-            _pipeReader.AdvanceTo(textReadBuffer.End);
-            _isCompleted = textReadResult.IsCompleted;
+            _isPreambleConsumed = true;
         }
+
+        var textReadResult = await _pipeReader.ReadAsync(cancellationToken).ConfigureAwait(false);
+        var textReadBuffer = textReadResult.Buffer;
+
+        Convert(textReadBuffer, _bufferSource, textReadResult.IsCompleted);
+
+        _pipeReader.AdvanceTo(textReadBuffer.End);
+        _isCompleted = textReadResult.IsCompleted;
 
         static bool BufferStartsWith(in ReadOnlySequence<byte> buffer, ReadOnlySpan<byte> value)
         {
