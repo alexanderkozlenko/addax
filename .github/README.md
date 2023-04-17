@@ -3,7 +3,7 @@
 [![NuGet: Addax.Formats.Tabular](https://img.shields.io/nuget/vpre/Addax.Formats.Tabular.svg?style=flat&label=Addax.Formats.Tabular)](https://www.nuget.org/packages/Addax.Formats.Tabular)
 [![NuGet: Addax.Formats.Tabular.Analyzers](https://img.shields.io/nuget/vpre/Addax.Formats.Tabular.svg?style=flat&label=Addax.Formats.Tabular.Analyzers)](https://www.nuget.org/packages/Addax.Formats.Tabular.Analyzers)
 
-Addax is a high-performance and low-allocating framework for producing and consuming tabular data, represented as delimiter-separated values. The implementation is based on W3C draft [Model for Tabular Data and Metadata on the Web](https://w3c.github.io/csvw/syntax).
+Addax is a high-performance and low-allocating framework for producing and consuming tabular data, represented as delimiter-separated values. The implementation is based on W3C draft [Model for Tabular Data and Metadata on the Web](https://w3c.github.io/csvw/syntax). The framework uses [System.IO.Pipelines](https://learn.microsoft.com/en-us/dotnet/standard/io/pipelines) for efficient I/O and is fully compatible with [native AOT](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot).
 
 ## Quick Start
 
