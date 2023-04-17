@@ -11,30 +11,38 @@ public partial class TabularConverterGenerator
     {
         private static readonly DiagnosticDescriptor _diagnosticDescriptor0001 = new(
             id: "TAB0001",
+            title: "A record cannot be represented as a ref-like value type",
+            messageFormat: "A record cannot be represented as a ref-like value type",
+            category: "Addax.Formats.Tabular",
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true);
+
+        private static readonly DiagnosticDescriptor _diagnosticDescriptor0011 = new(
+            id: "TAB0011",
             title: "A field converter must derive from 'TabularFieldConverter<T>'",
             messageFormat: "A field converter must derive from 'TabularFieldConverter<T>'",
             category: "Addax.Formats.Tabular",
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true);
 
-        private static readonly DiagnosticDescriptor _diagnosticDescriptor0002 = new(
-            id: "TAB0002",
-            title: "An explicitly-applied field converter must handle the proper type",
+        private static readonly DiagnosticDescriptor _diagnosticDescriptor0012 = new(
+            id: "TAB0013",
+            title: "An explicitly applied field converter must handle the proper type",
             messageFormat: "An explicitly-applied field converter must handle the proper type",
             category: "Addax.Formats.Tabular",
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true);
 
-        private static readonly DiagnosticDescriptor _diagnosticDescriptor0003 = new(
-            id: "TAB0003",
-            title: "An explicitly-applied field converter must have a parameterless constructor",
+        private static readonly DiagnosticDescriptor _diagnosticDescriptor0013 = new(
+            id: "TAB0013",
+            title: "An explicitly applied field converter must have a parameterless constructor",
             messageFormat: "An explicitly-applied field converter must have a parameterless constructor",
             category: "Addax.Formats.Tabular",
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true);
 
-        private static readonly DiagnosticDescriptor _diagnosticDescriptor0004 = new(
-            id: "TAB0004",
+        private static readonly DiagnosticDescriptor _diagnosticDescriptor0021 = new(
+            id: "TAB0021",
             title: "A field index must have a unique zero-based value",
             messageFormat: "A field index must have a unique zero-based value",
             category: "Addax.Formats.Tabular",
@@ -49,6 +57,13 @@ public partial class TabularConverterGenerator
             foreach (var (recordType, recordAttribute) in types)
             {
                 cancellationToken.ThrowIfCancellationRequested();
+
+                if (recordType.IsValueType && recordType.IsRefLikeType)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(_diagnosticDescriptor0001, recordType.Locations.FirstOrDefault()));
+
+                    continue;
+                }
 
                 if (!TryGetTabularRecordInfo(recordAttribute, out var recordSchemaIsStrict))
                 {
@@ -81,19 +96,19 @@ public partial class TabularConverterGenerator
                     {
                         if (!TryGetConverterFieldType(recordMemberConverterType, out var memberConverterMemberType))
                         {
-                            context.ReportDiagnostic(Diagnostic.Create(_diagnosticDescriptor0001, recordMember.Locations.FirstOrDefault()));
+                            context.ReportDiagnostic(Diagnostic.Create(_diagnosticDescriptor0011, recordMember.Locations.FirstOrDefault()));
 
                             continue;
                         }
                         if (!SymbolEqualityComparer.Default.Equals(recordMemberType, memberConverterMemberType))
                         {
-                            context.ReportDiagnostic(Diagnostic.Create(_diagnosticDescriptor0002, recordMember.Locations.FirstOrDefault()));
+                            context.ReportDiagnostic(Diagnostic.Create(_diagnosticDescriptor0012, recordMember.Locations.FirstOrDefault()));
 
                             continue;
                         }
                         if (!TypeHasParameterlessConstructor(recordMemberConverterType, cancellationToken))
                         {
-                            context.ReportDiagnostic(Diagnostic.Create(_diagnosticDescriptor0003, recordMember.Locations.FirstOrDefault()));
+                            context.ReportDiagnostic(Diagnostic.Create(_diagnosticDescriptor0013, recordMember.Locations.FirstOrDefault()));
 
                             continue;
                         }
@@ -101,7 +116,7 @@ public partial class TabularConverterGenerator
 
                     if ((fieldIndex < 0) || (fieldSpecsBuilder?.ContainsKey(fieldIndex) is true))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(_diagnosticDescriptor0004, recordMember.Locations.FirstOrDefault()));
+                        context.ReportDiagnostic(Diagnostic.Create(_diagnosticDescriptor0021, recordMember.Locations.FirstOrDefault()));
 
                         continue;
                     }
