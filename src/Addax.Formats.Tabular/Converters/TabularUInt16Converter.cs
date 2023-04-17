@@ -6,14 +6,11 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularUInt16Converter : TabularNumberConverter<ushort>
 {
-    public override int GetFormatBufferLength(ushort value)
+    public override bool TryGetFormatBufferLength(ushort value, out int result)
     {
-        return 8;
-    }
+        result = 8;
 
-    public override int GetParseBufferLength()
-    {
-        return Array.MaxLength;
+        return true;
     }
 
     protected override NumberStyles Styles

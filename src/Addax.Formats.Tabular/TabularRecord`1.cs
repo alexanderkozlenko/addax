@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Addax.Formats.Tabular;
 
-/// <summary>Represents a record that contains data or a comment.</summary>
+/// <summary>Represents a tabular record.</summary>
 /// <typeparam name="T">The type of record data.</typeparam>
 public readonly struct TabularRecord<T> : IEquatable<TabularRecord<T>>
 {
@@ -70,7 +70,7 @@ public readonly struct TabularRecord<T> : IEquatable<TabularRecord<T>>
         return !left.Equals(right);
     }
 
-    /// <summary> Gets a value indicating whether the current record contains data.</summary>
+    /// <summary>Gets a value indicating whether the current record contains data.</summary>
     /// <value><see langword="true" /> if the current record contains data; <see langword="false" /> otherwise.</value>
     [MemberNotNullWhen(true, nameof(Content))]
     public bool HasContent

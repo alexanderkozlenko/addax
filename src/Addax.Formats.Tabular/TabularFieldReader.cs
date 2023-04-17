@@ -2,7 +2,9 @@
 
 using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Text;
 using Addax.Formats.Tabular.Primitives;
 
 namespace Addax.Formats.Tabular;
@@ -13,6 +15,33 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
     private readonly TabularStreamReader _streamReader;
     private readonly TabularStreamParser _streamParser;
     private readonly SequenceSource<char> _bufferSource = new(minimumSegmentSize: 64);
+    private readonly IReadOnlyDictionary<Type, TabularFieldConverter> _converters;
+
+    private readonly TabularFieldConverter<BigInteger> _converterBigInteger;
+    private readonly TabularFieldConverter<bool> _converterBoolean;
+    private readonly TabularFieldConverter<byte> _converterByte;
+    private readonly TabularFieldConverter<char> _converterChar;
+    private readonly TabularFieldConverter<Complex> _converterComplex;
+    private readonly TabularFieldConverter<DateOnly> _converterDateOnly;
+    private readonly TabularFieldConverter<DateTime> _converterDateTime;
+    private readonly TabularFieldConverter<DateTimeOffset> _converterDateTimeOffset;
+    private readonly TabularFieldConverter<decimal> _converterDecimal;
+    private readonly TabularFieldConverter<double> _converterDouble;
+    private readonly TabularFieldConverter<Guid> _converterGuid;
+    private readonly TabularFieldConverter<Half> _converterHalf;
+    private readonly TabularFieldConverter<short> _converterInt16;
+    private readonly TabularFieldConverter<int> _converterInt32;
+    private readonly TabularFieldConverter<long> _converterInt64;
+    private readonly TabularFieldConverter<Int128> _converterInt128;
+    private readonly TabularFieldConverter<Rune> _converterRune;
+    private readonly TabularFieldConverter<sbyte> _converterSByte;
+    private readonly TabularFieldConverter<float> _converterSingle;
+    private readonly TabularFieldConverter<TimeOnly> _converterTimeOnly;
+    private readonly TabularFieldConverter<TimeSpan> _converterTimeSpan;
+    private readonly TabularFieldConverter<uint> _converterUInt32;
+    private readonly TabularFieldConverter<ulong> _converterUInt64;
+    private readonly TabularFieldConverter<ushort> _converterUInt16;
+    private readonly TabularFieldConverter<UInt128> _converterUInt128;
 
     private ReadOnlySequence<char> _value;
     private long _position;
@@ -33,6 +62,33 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
 
         _streamReader = new(stream, options.Encoding, options.BufferSize, options.LeaveOpen);
         _streamParser = new(dialect);
+        _converters = options.FieldConverters;
+
+        _converterBigInteger = SelectConverter<BigInteger>();
+        _converterBoolean = SelectConverter<bool>();
+        _converterByte = SelectConverter<byte>();
+        _converterChar = SelectConverter<char>();
+        _converterComplex = SelectConverter<Complex>();
+        _converterDateOnly = SelectConverter<DateOnly>();
+        _converterDateTime = SelectConverter<DateTime>();
+        _converterDateTimeOffset = SelectConverter<DateTimeOffset>();
+        _converterDecimal = SelectConverter<decimal>();
+        _converterDouble = SelectConverter<double>();
+        _converterGuid = SelectConverter<Guid>();
+        _converterHalf = SelectConverter<Half>();
+        _converterInt16 = SelectConverter<short>();
+        _converterInt32 = SelectConverter<int>();
+        _converterInt64 = SelectConverter<long>();
+        _converterInt128 = SelectConverter<Int128>();
+        _converterRune = SelectConverter<Rune>();
+        _converterSByte = SelectConverter<sbyte>();
+        _converterSingle = SelectConverter<float>();
+        _converterTimeOnly = SelectConverter<TimeOnly>();
+        _converterTimeSpan = SelectConverter<TimeSpan>();
+        _converterUInt16 = SelectConverter<ushort>();
+        _converterUInt32 = SelectConverter<uint>();
+        _converterUInt64 = SelectConverter<ulong>();
+        _converterUInt128 = SelectConverter<UInt128>();
     }
 
     /// <summary>Initializes a new instance of the <see cref="TabularFieldReader" /> class using the specified stream, dialect, and default options.</summary>
@@ -51,7 +107,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         _bufferSource.Dispose();
         _bufferKind = BufferKind.None;
         _positionType = TabularPositionType.EndOfStream;
-        _fieldType = TabularFieldType.None;
+        _fieldType = TabularFieldType.Undefined;
         _position = 0;
 
         return _streamReader.DisposeAsync();
@@ -231,9 +287,14 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         return consume;
     }
 
-    private bool TryGet<T>(TabularFieldConverter<T> converter, out T result)
-        where T : struct
+    /// <summary>Tries to retrieve the current reader value as <typeparamref name="T" /> and returns a value that indicates whether the operation succeeded.</summary>
+    /// <typeparam name="T">The type of an object or value that represents a tabular field.</typeparam>
+    /// <param name="converter">The converter to use for converting a tabular field to <typeparamref name="T" />.</param>
+    /// <param name="result">When this method returns, contains the <typeparamref name="T" /> equivalent of the current reader value if the operation succeeded.</param>
+    /// <returns><see langword="true" /> if the entire value can be successfully retrieved; <see langword="false" /> otherwise.</returns>
+    public bool TryGet<T>(TabularFieldConverter<T> converter, out T? result)
     {
+        ArgumentNullException.ThrowIfNull(converter);
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
         if (_bufferKind == BufferKind.None)
@@ -242,30 +303,43 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         }
 
         var value = _value;
-        var valueLength = value.Length;
-        var valueLengthLimit = converter.GetParseBufferLength();
+        var bufferLength = value.Length;
 
-        if (valueLengthLimit < 0)
-        {
-            throw new FormatException($"The current reader value cannot be represented as '{typeof(T)}'.");
-        }
-
-        if (valueLength > valueLengthLimit)
+        if (bufferLength > Array.MaxLength)
         {
             result = default;
 
             return false;
         }
 
-        if (value.IsSingleSegment || (value.FirstSpan.Length == valueLength))
+        if (!converter.TryGetParseBufferLength(out var bufferLengthLimit))
+        {
+            result = default;
+
+            return false;
+        }
+
+        if (bufferLengthLimit < 0)
+        {
+            throw new InvalidOperationException("The maximum buffer length for parsing a value must be equal to or greater than zero.");
+        }
+
+        if (bufferLength > bufferLengthLimit)
+        {
+            result = default;
+
+            return false;
+        }
+
+        if (value.IsSingleSegment || (value.FirstSpan.Length == bufferLength))
         {
             return converter.TryParse(value.FirstSpan, TabularDataInfo.DefaultFormatProvider, out result);
         }
         else
         {
-            using var parsingBuffer = valueLength <= TabularDataInfo.StackBufferLength ?
-                HybridBuffer<char>.Create(stackalloc char[(int)valueLength]) :
-                HybridBuffer<char>.Create((int)valueLength);
+            using var parsingBuffer = bufferLength <= TabularDataInfo.StackBufferLength ?
+                HybridBuffer<char>.Create(stackalloc char[(int)bufferLength]) :
+                HybridBuffer<char>.Create((int)bufferLength);
 
             value.CopyTo(parsingBuffer.AsSpan());
 
@@ -274,60 +348,23 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
     }
 
     /// <summary>Tries to retrieve the current reader value as <typeparamref name="T" /> and returns a value that indicates whether the operation succeeded.</summary>
-    /// <param name="func">A function that tries to parse a sequence of characters into a value.</param>
-    /// <param name="provider">An optional object that provides culture-specific formatting information.</param>
+    /// <typeparam name="T">The type of an object or value that represents a tabular field.</typeparam>
     /// <param name="result">When this method returns, contains the <typeparamref name="T" /> equivalent of the current reader value if the operation succeeded.</param>
     /// <returns><see langword="true" /> if the entire value can be successfully retrieved; <see langword="false" /> otherwise.</returns>
-    public bool TryGet<T>(TabularTryParseFunc<T> func, IFormatProvider? provider, out T? result)
+    public bool TryGet<T>(out T? result)
     {
-        ArgumentNullException.ThrowIfNull(func);
-        ObjectDisposedException.ThrowIf(_isDisposed, this);
-
-        if (_bufferKind == BufferKind.None)
-        {
-            throw new InvalidOperationException("The current reader value can only be accessed following a read operation.");
-        }
-
-        provider ??= TabularDataInfo.DefaultFormatProvider;
-
-        var value = _value;
-        var valueLength = value.Length;
-
-        if (valueLength > Array.MaxLength)
-        {
-            result = default;
-
-            return false;
-        }
-
-        if (value.IsSingleSegment || (value.FirstSpan.Length == valueLength))
-        {
-            return func.Invoke(value.FirstSpan, provider, out result);
-        }
-        else
-        {
-            using var parsingBuffer = valueLength <= TabularDataInfo.StackBufferLength ?
-                HybridBuffer<char>.Create(stackalloc char[(int)valueLength]) :
-                HybridBuffer<char>.Create((int)valueLength);
-
-            value.CopyTo(parsingBuffer.AsSpan());
-
-            return func.Invoke(parsingBuffer.AsSpan(), provider, out result);
-        }
+        return TryGet(SelectConverter<T>(), out result);
     }
 
-    /// <summary>Tries to retrieve the current reader value as <typeparamref name="T" /> and returns a value that indicates whether the operation succeeded.</summary>
-    /// <param name="func">A function that tries to parse a sequence of characters into a value.</param>
-    /// <param name="result">When this method returns, contains the <typeparamref name="T" /> equivalent of the current reader value if the operation succeeded.</param>
-    /// <returns><see langword="true" /> if the entire value can be successfully retrieved; <see langword="false" /> otherwise.</returns>
-    public bool TryGet<T>(TabularTryParseFunc<T> func, out T? result)
+    /// <summary>Retrieves the current reader value as <typeparamref name="T" />.</summary>
+    /// <typeparam name="T">The type of an object that represents a field.</typeparam>
+    /// <param name="converter">The converter to use for converting a tabular field to <typeparamref name="T" />.</param>
+    /// <returns>The <typeparamref name="T" /> equivalent of the current reader value.</returns>
+    /// <exception cref="FormatException">The current reader value cannot be represented as <typeparamref name="T" />.</exception>
+    public T? Get<T>(TabularFieldConverter<T> converter)
     {
-        return TryGet(func, TabularDataInfo.DefaultFormatProvider, out result);
-    }
+        ArgumentNullException.ThrowIfNull(converter);
 
-    private T Get<T>(TabularFieldConverter<T> converter)
-        where T : struct
-    {
         if (!TryGet(converter, out var result))
         {
             ThrowFormatException();
@@ -344,58 +381,17 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
     }
 
     /// <summary>Retrieves the current reader value as <typeparamref name="T" />.</summary>
-    /// <param name="func">A function that parses a sequence of characters into a value.</param>
-    /// <param name="provider">An optional object that provides culture-specific formatting information.</param>
+    /// <typeparam name="T">The type of an object that represents a field.</typeparam>
     /// <returns>The <typeparamref name="T" /> equivalent of the current reader value.</returns>
     /// <exception cref="FormatException">The current reader value cannot be represented as <typeparamref name="T" />.</exception>
-    public T? Get<T>(TabularParseFunc<T> func, IFormatProvider? provider)
+    public T? Get<T>()
     {
-        ArgumentNullException.ThrowIfNull(func);
-        ObjectDisposedException.ThrowIf(_isDisposed, this);
-
-        if (_bufferKind == BufferKind.None)
-        {
-            throw new InvalidOperationException("The current reader value can only be accessed following a read operation.");
-        }
-
-        provider ??= TabularDataInfo.DefaultFormatProvider;
-
-        var value = _value;
-        var valueLength = value.Length;
-
-        if (valueLength > Array.MaxLength)
-        {
-            throw new FormatException($"The current reader value cannot be represented as '{typeof(T)}'.");
-        }
-
-        if (value.IsSingleSegment || (value.FirstSpan.Length == valueLength))
-        {
-            return func.Invoke(value.FirstSpan, provider);
-        }
-        else
-        {
-            using var parsingBuffer = valueLength <= TabularDataInfo.StackBufferLength ?
-                HybridBuffer<char>.Create(stackalloc char[(int)valueLength]) :
-                HybridBuffer<char>.Create((int)valueLength);
-
-            value.CopyTo(parsingBuffer.AsSpan());
-
-            return func.Invoke(parsingBuffer.AsSpan(), provider);
-        }
-    }
-
-    /// <summary>Retrieves the current reader value as <typeparamref name="T" />.</summary>
-    /// <param name="func">A function that parses a sequence of characters into a value.</param>
-    /// <returns>The <typeparamref name="T" /> equivalent of the current reader value.</returns>
-    /// <exception cref="FormatException">The current reader value cannot be represented as <typeparamref name="T" />.</exception>
-    public T? Get<T>(TabularParseFunc<T> func)
-    {
-        return Get(func, TabularDataInfo.DefaultFormatProvider);
+        return Get(SelectConverter<T>());
     }
 
     private void ReleaseValue()
     {
-        _fieldType = TabularFieldType.None;
+        _fieldType = TabularFieldType.Undefined;
         _value = ReadOnlySequence<char>.Empty;
 
         switch (_bufferKind)
@@ -413,6 +409,16 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         }
 
         _bufferKind = BufferKind.None;
+    }
+
+    private TabularFieldConverter<T> SelectConverter<T>()
+    {
+        if (!_converters.TryGetValue(typeof(T), out var converter) || (converter is not TabularFieldConverter<T> converterT))
+        {
+            throw new InvalidOperationException($"A field converter for type '{typeof(T)}' is not registered.");
+        }
+
+        return converterT;
     }
 
     /// <summary>Gets a type of the last processed field.</summary>

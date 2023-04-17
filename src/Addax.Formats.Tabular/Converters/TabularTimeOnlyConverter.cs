@@ -8,14 +8,11 @@ internal sealed class TabularTimeOnlyConverter : TabularFieldConverter<TimeOnly>
 {
     private static readonly string[] _formats = CreateFormats();
 
-    public override int GetFormatBufferLength(TimeOnly value)
+    public override bool TryGetFormatBufferLength(TimeOnly value, out int result)
     {
-        return 16;
-    }
+        result = 16;
 
-    public override int GetParseBufferLength()
-    {
-        return Array.MaxLength;
+        return true;
     }
 
     public override bool TryFormat(TimeOnly value, Span<char> buffer, IFormatProvider provider, out int charsWritten)

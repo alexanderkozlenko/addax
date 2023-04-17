@@ -6,7 +6,7 @@ namespace Addax.Formats.Tabular;
 public enum TabularFieldType
 {
     /// <summary>Indicates that the field type is not defined.</summary>
-    None,
+    Undefined,
 
     /// <summary>Indicates that the field contains data.</summary>
     Content,

@@ -4,14 +4,18 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularCharConverter : TabularFieldConverter<char>
 {
-    public override int GetFormatBufferLength(char value)
+    public override bool TryGetFormatBufferLength(char value, out int result)
     {
-        return 1;
+        result = 1;
+
+        return true;
     }
 
-    public override int GetParseBufferLength()
+    public override bool TryGetParseBufferLength(out int result)
     {
-        return 1;
+        result = 1;
+
+        return true;
     }
 
     public override bool TryFormat(char value, Span<char> buffer, IFormatProvider provider, out int charsWritten)

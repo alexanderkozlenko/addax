@@ -4,14 +4,11 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularGuidConverter : TabularFieldConverter<Guid>
 {
-    public override int GetFormatBufferLength(Guid value)
+    public override bool TryGetFormatBufferLength(Guid value, out int result)
     {
-        return 64;
-    }
+        result = 64;
 
-    public override int GetParseBufferLength()
-    {
-        return Array.MaxLength;
+        return true;
     }
 
     public override bool TryFormat(Guid value, Span<char> buffer, IFormatProvider provider, out int charsWritten)

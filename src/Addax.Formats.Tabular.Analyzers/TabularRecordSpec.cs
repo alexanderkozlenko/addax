@@ -8,12 +8,12 @@ internal readonly struct TabularRecordSpec
 {
     private readonly ImmutableDictionary<int, TabularFieldSpec> _fieldSpecs;
     private readonly string _typeName;
-    private readonly bool _isStrict;
+    private readonly bool _schemaIsStrict;
 
-    public TabularRecordSpec(string typeName, bool isStrict, ImmutableDictionary<int, TabularFieldSpec> fieldSpecs)
+    public TabularRecordSpec(string typeName, bool schemaIsStrict, ImmutableDictionary<int, TabularFieldSpec> fieldSpecs)
     {
         _typeName = typeName;
-        _isStrict = isStrict;
+        _schemaIsStrict = schemaIsStrict;
         _fieldSpecs = fieldSpecs;
     }
 
@@ -29,7 +29,7 @@ internal readonly struct TabularRecordSpec
     {
         get
         {
-            return _isStrict;
+            return _schemaIsStrict;
         }
     }
 

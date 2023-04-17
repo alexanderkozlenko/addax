@@ -6,14 +6,11 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularSByteConverter : TabularNumberConverter<sbyte>
 {
-    public override int GetFormatBufferLength(sbyte value)
+    public override bool TryGetFormatBufferLength(sbyte value, out int result)
     {
-        return 4;
-    }
+        result = 4;
 
-    public override int GetParseBufferLength()
-    {
-        return Array.MaxLength;
+        return true;
     }
 
     protected override NumberStyles Styles

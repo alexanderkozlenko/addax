@@ -8,14 +8,11 @@ internal sealed class TabularDateTimeConverter : TabularFieldConverter<DateTime>
 {
     private static readonly string[] _formats = CreateFormats();
 
-    public override int GetFormatBufferLength(DateTime value)
+    public override bool TryGetFormatBufferLength(DateTime value, out int result)
     {
-        return 32;
-    }
+        result = 32;
 
-    public override int GetParseBufferLength()
-    {
-        return Array.MaxLength;
+        return true;
     }
 
     public override bool TryFormat(DateTime value, Span<char> buffer, IFormatProvider provider, out int charsWritten)

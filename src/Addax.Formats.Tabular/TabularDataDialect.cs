@@ -69,7 +69,7 @@ public sealed class TabularDataDialect
     {
     }
 
-    /// <summary>Initializes a new instance of the <see cref="TabularDataDialect" /> class using the specified values.</summary>
+    /// <summary>Initializes a new instance of the <see cref="TabularDataDialect" /> class using the specified tokens.</summary>
     /// <param name="lineTerminator">The character sequence that is used to separate records, must be a hard line break (LF, VT, FF, CR, NL, LS, PS, or CR+LF).</param>
     /// <param name="delimiter">The character that is used to separate fields.</param>
     /// <param name="quoteChar">The character that is used to surround an escaped field and to escape itself in an escaped field.</param>

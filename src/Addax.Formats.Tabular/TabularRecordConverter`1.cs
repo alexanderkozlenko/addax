@@ -2,11 +2,11 @@
 
 namespace Addax.Formats.Tabular;
 
-/// <summary>Converts an object to or from a tabular data record.</summary>
+/// <summary>Converts a sequence of characters to or from a tabular data record.</summary>
 /// <typeparam name="T">The type of an object handled by the converter.</typeparam>
 public abstract class TabularRecordConverter<T> : TabularRecordConverter
 {
-    /// <summary>Initializes a new instance of the <see cref="TabularRecordConverter" /> class.</summary>
+    /// <summary>Initializes a new instance of the <see cref="TabularRecordConverter{T}" /> class.</summary>
     protected TabularRecordConverter()
     {
     }
@@ -24,9 +24,10 @@ public abstract class TabularRecordConverter<T> : TabularRecordConverter
     /// <summary>Asynchronously writes the specified record using the specified writer instance.</summary>
     /// <param name="writer">The instance of tabular field writer to write the specified record with.</param>
     /// <param name="record">The tabular data record to write.</param>
+    /// <param name="context">The current context for tabular records writing.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    public virtual ValueTask WriteRecordAsync(TabularFieldWriter writer, T record, CancellationToken cancellationToken)
+    public virtual ValueTask WriteRecordAsync(TabularFieldWriter writer, T record, TabularRecordWriterContext context, CancellationToken cancellationToken)
     {
         throw new NotSupportedException();
     }

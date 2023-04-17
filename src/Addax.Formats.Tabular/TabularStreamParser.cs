@@ -62,7 +62,7 @@ internal sealed class TabularStreamParser
                         }
                         else
                         {
-                            if (state.IsBeginningOfLine && (symbol == _commentPrefix))
+                            if (state.IsBeginningOfLine && _commentPrefix.HasValue && (symbol == _commentPrefix.Value))
                             {
                                 state.LastTokenType = TabularStreamParsingTokenType.CommentPrefix;
                                 state.IsCommentPrefixFound = true;

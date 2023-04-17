@@ -26,9 +26,9 @@ public sealed partial class TabularConverterGenerator : IIncrementalGenerator
         context.RegisterImplementationSourceOutput(source, GenerateImplementationSourceOutput);
     }
 
-    private static bool FilterSyntaxNode(SyntaxNode syntaxNode, CancellationToken cancellationToken)
+    private static bool FilterSyntaxNode(SyntaxNode syntax, CancellationToken cancellationToken)
     {
-        return syntaxNode.Kind() is
+        return syntax.Kind() is
             SyntaxKind.ClassDeclaration or
             SyntaxKind.StructDeclaration or
             SyntaxKind.RecordDeclaration or
@@ -42,9 +42,9 @@ public sealed partial class TabularConverterGenerator : IIncrementalGenerator
 
     private static void GenerateImplementationSourceOutput(SourceProductionContext context, (Compilation, ImmutableArray<(INamedTypeSymbol, AttributeData)>) value)
     {
-        var (compilation, typeSymbols) = value;
+        var (compilation, types) = value;
 
-        if (typeSymbols.IsDefaultOrEmpty)
+        if (types.IsDefaultOrEmpty)
         {
             return;
         }
@@ -52,7 +52,7 @@ public sealed partial class TabularConverterGenerator : IIncrementalGenerator
         {
             return;
         }
-        if (!_parser.TryGetImplementationSourceSpec(context, typeSymbols, out var generatorSpec))
+        if (!_parser.TryGetImplementationSourceSpec(context, types, out var generatorSpec))
         {
             return;
         }

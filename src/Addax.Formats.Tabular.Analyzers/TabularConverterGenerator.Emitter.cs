@@ -34,11 +34,24 @@ public partial class TabularConverterGenerator
             builder.Clear();
         }
 
+        private static bool TypeHasFieldConverters(in TabularRecordSpec recordSpec)
+        {
+            foreach (var kvp in recordSpec.FieldSpecs)
+            {
+                if (kvp.Value.MemberHasConverter)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private static bool TypeSupportsReadingFields(in TabularRecordSpec recordSpec)
         {
-            foreach (var fieldSpec in recordSpec.FieldSpecs.Values)
+            foreach (var kvp in recordSpec.FieldSpecs)
             {
-                if (fieldSpec.TypeMemberAccessTypes.HasFlag(TypeMemberAccessTypes.Write))
+                if (kvp.Value.MemberAccessTypes.HasFlag(TypeMemberAccessTypes.Write))
                 {
                     return true;
                 }
@@ -57,9 +70,9 @@ public partial class TabularConverterGenerator
                 }
             }
 
-            foreach (var fieldSpec in recordSpec.FieldSpecs.Values)
+            foreach (var kvp in recordSpec.FieldSpecs)
             {
-                if (fieldSpec.TypeMemberAccessTypes.HasFlag(TypeMemberAccessTypes.Read))
+                if (kvp.Value.MemberAccessTypes.HasFlag(TypeMemberAccessTypes.Read))
                 {
                     return true;
                 }
@@ -68,69 +81,37 @@ public partial class TabularConverterGenerator
             return false;
         }
 
-        private static string GetTypeMemberTypeCode(TabularFieldType fieldType)
+        private static string? GetTypeCode(string typeName)
         {
-            return fieldType switch
+            return typeName switch
             {
-                TabularFieldType.Char => "Char",
-                TabularFieldType.Rune => "Rune",
-                TabularFieldType.Boolean => "Boolean",
-                TabularFieldType.SByte => "SByte",
-                TabularFieldType.Byte => "Byte",
-                TabularFieldType.Int16 => "Int16",
-                TabularFieldType.UInt16 => "UInt16",
-                TabularFieldType.Int32 => "Int32",
-                TabularFieldType.UInt32 => "UInt32",
-                TabularFieldType.Int64 => "Int64",
-                TabularFieldType.UInt64 => "UInt64",
-                TabularFieldType.Int128 => "Int128",
-                TabularFieldType.UInt128 => "UInt128",
-                TabularFieldType.BigInteger => "BigInteger",
-                TabularFieldType.Half => "Half",
-                TabularFieldType.Single => "Single",
-                TabularFieldType.Double => "Double",
-                TabularFieldType.Decimal => "Decimal",
-                TabularFieldType.Complex => "Complex",
-                TabularFieldType.TimeSpan => "TimeSpan",
-                TabularFieldType.TimeOnly => "TimeOnly",
-                TabularFieldType.DateOnly => "DateOnly",
-                TabularFieldType.DateTime => "DateTime",
-                TabularFieldType.DateTimeOffset => "DateTimeOffset",
-                TabularFieldType.Guid => "Guid",
-                _ => "String",
-            };
-        }
-
-        private static string GetTypeMemberTypeString(TabularFieldType fieldType)
-        {
-            return fieldType switch
-            {
-                TabularFieldType.Char => "global::System.Char",
-                TabularFieldType.Rune => "global::System.Text.Rune",
-                TabularFieldType.Boolean => "global::System.Boolean",
-                TabularFieldType.SByte => "global::System.SByte",
-                TabularFieldType.Byte => "global::System.Byte",
-                TabularFieldType.Int16 => "global::System.Int16",
-                TabularFieldType.UInt16 => "global::System.UInt16",
-                TabularFieldType.Int32 => "global::System.Int32",
-                TabularFieldType.UInt32 => "global::System.UInt32",
-                TabularFieldType.Int64 => "global::System.Int64",
-                TabularFieldType.UInt64 => "global::System.UInt64",
-                TabularFieldType.Int128 => "global::System.Int128",
-                TabularFieldType.UInt128 => "global::System.UInt128",
-                TabularFieldType.BigInteger => "global::System.Numerics.BigInteger",
-                TabularFieldType.Half => "global::System.Half",
-                TabularFieldType.Single => "global::System.Single",
-                TabularFieldType.Double => "global::System.Double",
-                TabularFieldType.Decimal => "global::System.Decimal",
-                TabularFieldType.Complex => "global::System.Numerics.Complex",
-                TabularFieldType.TimeSpan => "global::System.TimeSpan",
-                TabularFieldType.TimeOnly => "global::System.TimeOnly",
-                TabularFieldType.DateOnly => "global::System.DateOnly",
-                TabularFieldType.DateTime => "global::System.DateTime",
-                TabularFieldType.DateTimeOffset => "global::System.DateTimeOffset",
-                TabularFieldType.Guid => "global::System.Guid",
-                _ => "global::System.String",
+                "global::System.Boolean" => "Boolean",
+                "global::System.Byte" => "Byte",
+                "global::System.Char" => "Char",
+                "global::System.DateOnly" => "DateOnly",
+                "global::System.DateTime" => "DateTime",
+                "global::System.DateTimeOffset" => "DateTimeOffset",
+                "global::System.Decimal" => "Decimal",
+                "global::System.Double" => "Double",
+                "global::System.Guid" => "Guid",
+                "global::System.Half" => "Half",
+                "global::System.Int16" => "Int16",
+                "global::System.Int32" => "Int32",
+                "global::System.Int64" => "Int64",
+                "global::System.Int128" => "Int128",
+                "global::System.SByte" => "SByte",
+                "global::System.Single" => "Single",
+                "global::System.String" => "String",
+                "global::System.TimeOnly" => "TimeOnly",
+                "global::System.TimeSpan" => "TimeSpan",
+                "global::System.UInt16" => "UInt16",
+                "global::System.UInt32" => "UInt32",
+                "global::System.UInt64" => "UInt64",
+                "global::System.UInt128" => "UInt128",
+                "global::System.Text.Rune" => "Rune",
+                "global::System.Numerics.Complex" => "Complex",
+                "global::System.Numerics.BigInteger" => "BigInteger",
+                _ => null,
             };
         }
     }

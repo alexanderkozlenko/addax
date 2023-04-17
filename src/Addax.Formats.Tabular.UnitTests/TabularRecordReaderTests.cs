@@ -45,7 +45,7 @@ public sealed class TabularRecordReaderTests
     public async Task ReadRecordWhenConverterNotImplemented()
     {
         await using var stream = new MemoryStream("v1"u8.ToArray());
-        await using var reader = new TabularRecordReader(stream, new("\n", ',', '"'), new(converters: new[] { new MyRecordConverter() }));
+        await using var reader = new TabularRecordReader(stream, new("\n", ',', '"'), new(recordConverters: new[] { new MyRecordConverter() }));
 
         await Assert.ThrowsExceptionAsync<NotSupportedException>(
             () => reader.ReadRecordAsync<MyRecord>(CancellationToken).AsTask());

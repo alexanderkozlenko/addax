@@ -4,14 +4,11 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularBooleanConverter : TabularFieldConverter<bool>
 {
-    public override int GetFormatBufferLength(bool value)
+    public override bool TryGetFormatBufferLength(bool value, out int result)
     {
-        return 8;
-    }
+        result = 8;
 
-    public override int GetParseBufferLength()
-    {
-        return Array.MaxLength;
+        return true;
     }
 
     public override bool TryFormat(bool value, Span<char> buffer, IFormatProvider provider, out int charsWritten)

@@ -8,14 +8,11 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularComplexConverter : TabularFieldConverter<Complex>
 {
-    public override int GetFormatBufferLength(Complex value)
+    public override bool TryGetFormatBufferLength(Complex value, out int result)
     {
-        return 64;
-    }
+        result = 64;
 
-    public override int GetParseBufferLength()
-    {
-        return Array.MaxLength;
+        return true;
     }
 
     public override bool TryFormat(Complex value, Span<char> buffer, IFormatProvider provider, out int charsWritten)

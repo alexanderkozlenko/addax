@@ -1,6 +1,4 @@
-﻿#pragma warning disable IDE1006
-
-using System.Globalization;
+﻿using System.Globalization;
 using System.Numerics;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,50 +23,6 @@ public partial class TabularFieldReaderTests
 
         Assert.IsTrue(method.Invoke(out var result));
         Assert.AreEqual(expected, result);
-    }
-
-    [TestMethod]
-    public async Task TryGetT()
-    {
-        var dialect = new TabularDataDialect("\u000a", '\u001a', '\u001b', '\u001c');
-
-        await using var stream = new MemoryStream("a"u8.ToArray());
-        await using var reader = new TabularFieldReader(stream, dialect);
-
-        await reader.MoveNextRecordAsync(CancellationToken);
-        await reader.ReadFieldAsync(CancellationToken);
-
-        reader.TryGet<char>(TryGetChar, out var result);
-
-        Assert.AreEqual('a', result);
-
-        static bool TryGetChar(ReadOnlySpan<char> buffer, IFormatProvider provider, out char result)
-        {
-            result = buffer[0];
-
-            return true;
-        }
-    }
-
-    [TestMethod]
-    public async Task TryGetTBeforeReadField()
-    {
-        var dialect = new TabularDataDialect("\u000a", '\u001a', '\u001b', '\u001c');
-
-        await using var stream = new MemoryStream("a"u8.ToArray());
-        await using var reader = new TabularFieldReader(stream, dialect);
-
-        await reader.MoveNextRecordAsync(CancellationToken);
-
-        Assert.ThrowsException<InvalidOperationException>(
-            () => reader.TryGet<char>(TryGetChar, out var result));
-
-        static bool TryGetChar(ReadOnlySpan<char> buffer, IFormatProvider provider, out char result)
-        {
-            result = buffer[0];
-
-            return true;
-        }
     }
 
     [DataTestMethod]

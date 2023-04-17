@@ -6,14 +6,18 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularRuneConverter : TabularFieldConverter<Rune>
 {
-    public override int GetFormatBufferLength(Rune value)
+    public override bool TryGetFormatBufferLength(Rune value, out int result)
     {
-        return 2;
+        result = 2;
+
+        return true;
     }
 
-    public override int GetParseBufferLength()
+    public override bool TryGetParseBufferLength(out int result)
     {
-        return 2;
+        result = 2;
+
+        return true;
     }
 
     public override bool TryFormat(Rune value, Span<char> buffer, IFormatProvider provider, out int charsWritten)

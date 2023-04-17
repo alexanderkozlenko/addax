@@ -6,14 +6,11 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularHalfConverter : TabularNumberConverter<Half>
 {
-    public override int GetFormatBufferLength(Half value)
+    public override bool TryGetFormatBufferLength(Half value, out int result)
     {
-        return 16;
-    }
+        result = 16;
 
-    public override int GetParseBufferLength()
-    {
-        return Array.MaxLength;
+        return true;
     }
 
     protected override NumberStyles Styles

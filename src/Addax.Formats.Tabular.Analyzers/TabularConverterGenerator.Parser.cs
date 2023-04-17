@@ -9,112 +9,146 @@ public partial class TabularConverterGenerator
 {
     private sealed class Parser
     {
-        private static readonly DiagnosticDescriptor _diagnosticDescriptor0011 = new(
-            id: "TAB0011",
-            title: "Use a supported property type",
-            messageFormat: "Use a supported property type",
+        private static readonly DiagnosticDescriptor _diagnosticDescriptor0001 = new(
+            id: "TAB0001",
+            title: "A field converter must derive from 'TabularFieldConverter<T>'",
+            messageFormat: "A field converter must derive from 'TabularFieldConverter<T>'",
             category: "Addax.Formats.Tabular",
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true);
 
-        private static readonly DiagnosticDescriptor _diagnosticDescriptor0012 = new(
-            id: "TAB0012",
-            title: "Use a unique zero-based field index",
-            messageFormat: "Use a unique zero-based field index",
+        private static readonly DiagnosticDescriptor _diagnosticDescriptor0002 = new(
+            id: "TAB0002",
+            title: "An explicitly-applied field converter must handle the proper type",
+            messageFormat: "An explicitly-applied field converter must handle the proper type",
             category: "Addax.Formats.Tabular",
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true);
 
-        public bool TryGetImplementationSourceSpec(SourceProductionContext context, ImmutableArray<(INamedTypeSymbol TypeSymbol, AttributeData AttributeData)> typeSymbols, out TabularConverterGeneratorSpec result)
+        private static readonly DiagnosticDescriptor _diagnosticDescriptor0003 = new(
+            id: "TAB0003",
+            title: "An explicitly-applied field converter must have a parameterless constructor",
+            messageFormat: "An explicitly-applied field converter must have a parameterless constructor",
+            category: "Addax.Formats.Tabular",
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true);
+
+        private static readonly DiagnosticDescriptor _diagnosticDescriptor0004 = new(
+            id: "TAB0004",
+            title: "A field index must have a unique zero-based value",
+            messageFormat: "A field index must have a unique zero-based value",
+            category: "Addax.Formats.Tabular",
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true);
+
+        public bool TryGetImplementationSourceSpec(SourceProductionContext context, ImmutableArray<(INamedTypeSymbol, AttributeData)> types, out TabularConverterGeneratorSpec result)
         {
             var cancellationToken = context.CancellationToken;
-            var tabularRecordSpecsBuilder = default(ImmutableArray<TabularRecordSpec>.Builder);
+            var recordSpecsBuilder = default(ImmutableArray<TabularRecordSpec>.Builder);
 
-            foreach (var (typeSymbol, attributeData) in typeSymbols)
+            foreach (var (recordType, recordAttribute) in types)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (!TryGetTabularRecordInfo(attributeData, out var tabularRecordSpecIsStrict))
+                if (!TryGetTabularRecordInfo(recordAttribute, out var recordSchemaIsStrict))
                 {
                     continue;
                 }
 
-                var typeHasSuitableConstructor = TypeHasSuitableConstructor(typeSymbol);
-                var typeHasSuitableMemberSet = true;
+                var recordHasSupportedConstructor = TypeHasParameterlessConstructor(recordType, cancellationToken);
+                var recordMembers = GetTypeMembers(recordType, cancellationToken);
 
-                var typeMemberSymbols = GetTypeMembers(typeSymbol, cancellationToken);
-                var tabularFieldSpecsBuilder = default(ImmutableDictionary<int, TabularFieldSpec>.Builder);
+                var fieldSpecsBuilder = default(ImmutableDictionary<int, TabularFieldSpec>.Builder);
 
-                foreach (var typeMemberSymbol in typeMemberSymbols)
+                foreach (var recordMember in recordMembers)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    var typeMemberAttributeData = typeMemberSymbol
-                        .GetAttributes()
-                        .FirstOrDefault(static x => x.AttributeClass?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) == "global::Addax.Formats.Tabular.TabularFieldAttribute");
-
-                    if ((typeMemberAttributeData is null) || !TryGetTabularFieldInfo(typeMemberAttributeData, out var tabularFieldIndex))
+                    if (!TryGetTabularFieldAttribute(recordMember, out var fieldAttribute, cancellationToken))
+                    {
+                        continue;
+                    }
+                    if (!TryGetTabularFieldInfo(fieldAttribute!, out var fieldIndex, out var recordMemberConverterType))
+                    {
+                        continue;
+                    }
+                    if (!TryGetTypeMemberTypeInfo(recordMember, out var recordMemberType, out var recordMemberTypeKinds, out var recordMemberTypeName))
                     {
                         continue;
                     }
 
-                    if ((tabularFieldIndex < 0) || ((tabularFieldSpecsBuilder is not null) && tabularFieldSpecsBuilder.ContainsKey(tabularFieldIndex)))
+                    if (recordMemberConverterType is not null)
                     {
-                        typeHasSuitableMemberSet = false;
-                        context.ReportDiagnostic(Diagnostic.Create(_diagnosticDescriptor0012, typeMemberSymbol.Locations.FirstOrDefault()));
+                        if (!TryGetConverterFieldType(recordMemberConverterType, out var memberConverterMemberType))
+                        {
+                            context.ReportDiagnostic(Diagnostic.Create(_diagnosticDescriptor0001, recordMember.Locations.FirstOrDefault()));
 
-                        break;
+                            continue;
+                        }
+                        if (!SymbolEqualityComparer.Default.Equals(recordMemberType, memberConverterMemberType))
+                        {
+                            context.ReportDiagnostic(Diagnostic.Create(_diagnosticDescriptor0002, recordMember.Locations.FirstOrDefault()));
+
+                            continue;
+                        }
+                        if (!TypeHasParameterlessConstructor(recordMemberConverterType, cancellationToken))
+                        {
+                            context.ReportDiagnostic(Diagnostic.Create(_diagnosticDescriptor0003, recordMember.Locations.FirstOrDefault()));
+
+                            continue;
+                        }
                     }
 
-                    if (!TryGetTypeMemberType(typeMemberSymbol, out var tabularFieldType, out var typeMemberIsNullable))
+                    if ((fieldIndex < 0) || (fieldSpecsBuilder?.ContainsKey(fieldIndex) is true))
                     {
-                        typeHasSuitableMemberSet = false;
-                        context.ReportDiagnostic(Diagnostic.Create(_diagnosticDescriptor0011, typeMemberSymbol.Locations.FirstOrDefault()));
+                        context.ReportDiagnostic(Diagnostic.Create(_diagnosticDescriptor0004, recordMember.Locations.FirstOrDefault()));
 
-                        break;
+                        continue;
                     }
 
-                    var typeMemberAccessTypes = GetTypeMemberAccessTypes(typeMemberSymbol);
+                    var recordMemberAccessTypes = GetTypeMemberAccessTypes(recordMember);
 
-                    if (!typeHasSuitableConstructor)
+                    if (!recordHasSupportedConstructor)
                     {
-                        typeMemberAccessTypes &= ~TypeMemberAccessTypes.Write;
+                        recordMemberAccessTypes &= ~TypeMemberAccessTypes.Write;
 
-                        if (typeMemberAccessTypes == TypeMemberAccessTypes.None)
+                        if (recordMemberAccessTypes is TypeMemberAccessTypes.None)
                         {
                             continue;
                         }
                     }
 
+                    var recordMemberConverterTypeName = recordMemberConverterType?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+
                     var tabularFieldSpec = new TabularFieldSpec(
-                        typeMemberSymbol.Name,
-                        typeMemberIsNullable,
-                        typeMemberAccessTypes,
-                        tabularFieldType);
+                        recordMember.Name,
+                        recordMemberTypeName!,
+                        recordMemberTypeKinds,
+                        recordMemberAccessTypes,
+                        recordMemberConverterTypeName);
 
-                    tabularFieldSpecsBuilder ??= ImmutableDictionary.CreateBuilder<int, TabularFieldSpec>();
-                    tabularFieldSpecsBuilder[tabularFieldIndex] = tabularFieldSpec;
+                    fieldSpecsBuilder ??= ImmutableDictionary.CreateBuilder<int, TabularFieldSpec>();
+                    fieldSpecsBuilder[fieldIndex] = tabularFieldSpec;
                 }
 
-                if (typeHasSuitableMemberSet)
-                {
-                    var tabularFieldSpecs = tabularFieldSpecsBuilder is not null ?
-                        tabularFieldSpecsBuilder.ToImmutable() :
-                        ImmutableDictionary<int, TabularFieldSpec>.Empty;
+                var fieldSpecs = fieldSpecsBuilder is not null ?
+                    fieldSpecsBuilder.ToImmutable() :
+                    ImmutableDictionary<int, TabularFieldSpec>.Empty;
 
-                    var tabularRecordSpec = new TabularRecordSpec(
-                        typeSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
-                        tabularRecordSpecIsStrict,
-                        tabularFieldSpecs);
+                var recordTypeName = recordType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
 
-                    tabularRecordSpecsBuilder ??= ImmutableArray.CreateBuilder<TabularRecordSpec>();
-                    tabularRecordSpecsBuilder.Add(tabularRecordSpec);
-                }
+                var recordSpec = new TabularRecordSpec(
+                    recordTypeName,
+                    recordSchemaIsStrict,
+                    fieldSpecs);
+
+                recordSpecsBuilder ??= ImmutableArray.CreateBuilder<TabularRecordSpec>();
+                recordSpecsBuilder.Add(recordSpec);
             }
 
-            if (tabularRecordSpecsBuilder is not null)
+            if (recordSpecsBuilder is not null)
             {
-                result = new(tabularRecordSpecsBuilder.ToImmutable());
+                result = new(recordSpecsBuilder.ToImmutable());
 
                 return true;
             }
@@ -126,111 +160,172 @@ public partial class TabularConverterGenerator
             }
         }
 
-        private static bool TryGetTypeMemberType(ISymbol typeMemberSymbol, out TabularFieldType tabularFieldType, out bool typeMemberIsNullable)
+        private static bool TryGetConverterFieldType(INamedTypeSymbol converterType, out INamedTypeSymbol? type)
         {
-            tabularFieldType = TabularFieldType.None;
-            typeMemberIsNullable = false;
-
-            var typeMemberTypeSymbol = typeMemberSymbol switch
+            if ((converterType.BaseType is { IsGenericType: true, TypeArguments.Length: 1 }) &&
+                (converterType.BaseType.TypeArguments[0] is INamedTypeSymbol argumentType))
             {
-                IFieldSymbol { Type: INamedTypeSymbol } fieldSymbol => (INamedTypeSymbol)fieldSymbol.Type,
-                IPropertySymbol { Type: INamedTypeSymbol } propertySymbol => (INamedTypeSymbol)propertySymbol.Type,
+                var unboundGenericType = converterType.BaseType.ConstructUnboundGenericType();
+                var unboundGenericTypeName = unboundGenericType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+
+                if (unboundGenericTypeName == "global::Addax.Formats.Tabular.TabularFieldConverter<>")
+                {
+                    type = argumentType;
+
+                    return true;
+                }
+            }
+
+            type = default;
+
+            return false;
+        }
+
+        private static bool TryGetTabularFieldInfo(AttributeData attribute, out int index, out INamedTypeSymbol? converterType)
+        {
+            var arguments = attribute.ConstructorArguments;
+
+            if ((arguments.Length == 2) &&
+                (arguments[0] is { Type.SpecialType: SpecialType.System_Int32 }) &&
+                (arguments[1] is { Kind: TypedConstantKind.Type }))
+            {
+                index = (int)arguments[0].Value!;
+                converterType = (INamedTypeSymbol?)arguments[1].Value;
+
+                return true;
+            }
+
+            index = default;
+            converterType = default;
+
+            return false;
+        }
+
+        private static bool TryGetTabularFieldAttribute(ISymbol member, out AttributeData? attribute, CancellationToken cancellationToken)
+        {
+            var memberAttributes = member.GetAttributes();
+
+            foreach (var memberAttribute in memberAttributes)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if (memberAttribute.AttributeClass is not null)
+                {
+                    var attributeTypeName = memberAttribute.AttributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+
+                    if (attributeTypeName == "global::Addax.Formats.Tabular.TabularFieldAttribute")
+                    {
+                        attribute = memberAttribute;
+
+                        return true;
+                    }
+                }
+            }
+
+            attribute = default;
+
+            return false;
+        }
+
+        private static bool TryGetTabularRecordInfo(AttributeData attribute, out bool schemaIsStrict)
+        {
+            var arguments = attribute.ConstructorArguments;
+
+            if ((arguments.Length == 1) &&
+                (arguments[0] is { Type.SpecialType: SpecialType.System_Boolean }))
+            {
+                schemaIsStrict = (bool)arguments[0].Value!;
+
+                return true;
+            }
+
+            schemaIsStrict = default;
+
+            return false;
+        }
+
+        private static bool TryGetTypeMemberTypeInfo(ISymbol member, out INamedTypeSymbol? type, out TypeKinds typeKinds, out string? name)
+        {
+            type = member switch
+            {
+                IFieldSymbol { Type: INamedTypeSymbol } field => (INamedTypeSymbol)field.Type,
+                IPropertySymbol { Type: INamedTypeSymbol } property => (INamedTypeSymbol)property.Type,
                 _ => null,
             };
 
-            if (typeMemberTypeSymbol is null)
+            name = default;
+            typeKinds = default;
+
+            if ((type is null) || type.IsStatic)
             {
                 return false;
             }
 
-            if (typeMemberTypeSymbol.IsGenericType)
+            if (type.IsReferenceType)
             {
-                if ((typeMemberTypeSymbol.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T) &&
-                    (typeMemberTypeSymbol.TypeArguments[0] is INamedTypeSymbol nullableTypeSymbol))
+                typeKinds |= TypeKinds.IsReferenceType;
+            }
+
+            if (type.IsGenericType)
+            {
+                if ((type.ConstructedFrom.SpecialType is SpecialType.System_Nullable_T) &&
+                    (type.TypeArguments[0] is INamedTypeSymbol nullableTypeSymbol))
                 {
-                    typeMemberIsNullable = true;
-                    typeMemberTypeSymbol = nullableTypeSymbol;
-                }
-                else
-                {
-                    return false;
+                    type = nullableTypeSymbol;
+                    typeKinds |= TypeKinds.IsNullableValueType;
                 }
             }
 
-            tabularFieldType = typeMemberTypeSymbol.SpecialType switch
+            name = type.SpecialType switch
             {
-                SpecialType.System_Char => TabularFieldType.Char,
-                SpecialType.System_String => TabularFieldType.String,
-                SpecialType.System_Boolean => TabularFieldType.Boolean,
-                SpecialType.System_SByte => TabularFieldType.SByte,
-                SpecialType.System_Byte => TabularFieldType.Byte,
-                SpecialType.System_Int16 => TabularFieldType.Int16,
-                SpecialType.System_UInt16 => TabularFieldType.UInt16,
-                SpecialType.System_Int32 => TabularFieldType.Int32,
-                SpecialType.System_UInt32 => TabularFieldType.UInt32,
-                SpecialType.System_Int64 => TabularFieldType.Int64,
-                SpecialType.System_UInt64 => TabularFieldType.UInt64,
-                SpecialType.System_Single => TabularFieldType.Single,
-                SpecialType.System_Double => TabularFieldType.Double,
-                SpecialType.System_Decimal => TabularFieldType.Decimal,
-                SpecialType.System_DateTime => TabularFieldType.DateTime,
-                _ => TabularFieldType.None,
+                SpecialType.System_Char => "global::System.Char",
+                SpecialType.System_String => "global::System.String",
+                SpecialType.System_Boolean => "global::System.Boolean",
+                SpecialType.System_SByte => "global::System.SByte",
+                SpecialType.System_Byte => "global::System.Byte",
+                SpecialType.System_Int16 => "global::System.Int16",
+                SpecialType.System_UInt16 => "global::System.UInt16",
+                SpecialType.System_Int32 => "global::System.Int32",
+                SpecialType.System_UInt32 => "global::System.UInt32",
+                SpecialType.System_Int64 => "global::System.Int64",
+                SpecialType.System_UInt64 => "global::System.UInt64",
+                SpecialType.System_Single => "global::System.Single",
+                SpecialType.System_Double => "global::System.Double",
+                SpecialType.System_Decimal => "global::System.Decimal",
+                SpecialType.System_DateTime => "global::System.DateTime",
+                _ => type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
             };
 
-            if (tabularFieldType == TabularFieldType.None)
-            {
-                if (typeMemberTypeSymbol.IsReferenceType)
-                {
-                    return false;
-                }
-
-                tabularFieldType = typeMemberTypeSymbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) switch
-                {
-                    "global::System.Text.Rune" => TabularFieldType.Rune,
-                    "global::System.Int128" => TabularFieldType.Int128,
-                    "global::System.UInt128" => TabularFieldType.UInt128,
-                    "global::System.Numerics.BigInteger" => TabularFieldType.BigInteger,
-                    "global::System.Half" => TabularFieldType.Half,
-                    "global::System.Numerics.Complex" => TabularFieldType.Complex,
-                    "global::System.TimeSpan" => TabularFieldType.TimeSpan,
-                    "global::System.TimeOnly" => TabularFieldType.TimeOnly,
-                    "global::System.DateOnly" => TabularFieldType.DateOnly,
-                    "global::System.DateTimeOffset" => TabularFieldType.DateTimeOffset,
-                    "global::System.Guid" => TabularFieldType.Guid,
-                    _ => TabularFieldType.None,
-                };
-            }
-
-            return tabularFieldType != TabularFieldType.None;
+            return true;
         }
 
-        private static TypeMemberAccessTypes GetTypeMemberAccessTypes(ISymbol typeMemberSymbol)
+        private static TypeMemberAccessTypes GetTypeMemberAccessTypes(ISymbol member)
         {
-            if (typeMemberSymbol is IFieldSymbol fieldSymbol)
+            if (member is IFieldSymbol field)
             {
-                var propertyAccessTypes = TypeMemberAccessTypes.Read;
+                var accessTypes = TypeMemberAccessTypes.Read;
 
-                if (!fieldSymbol.IsReadOnly)
+                if (!field.IsReadOnly)
                 {
-                    propertyAccessTypes |= TypeMemberAccessTypes.Write;
+                    accessTypes |= TypeMemberAccessTypes.Write;
                 }
 
-                return propertyAccessTypes;
+                return accessTypes;
             }
-            else if (typeMemberSymbol is IPropertySymbol propertySymbol)
+            else if (member is IPropertySymbol property)
             {
-                var propertyAccessTypes = TypeMemberAccessTypes.None;
+                var accessTypes = TypeMemberAccessTypes.None;
 
-                if (propertySymbol.GetMethod is not null)
+                if (property.GetMethod is not null)
                 {
-                    propertyAccessTypes |= TypeMemberAccessTypes.Read;
+                    accessTypes |= TypeMemberAccessTypes.Read;
                 }
-                if (propertySymbol.SetMethod is not null)
+                if (property.SetMethod is not null)
                 {
-                    propertyAccessTypes |= TypeMemberAccessTypes.Write;
+                    accessTypes |= TypeMemberAccessTypes.Write;
                 }
 
-                return propertyAccessTypes;
+                return accessTypes;
             }
             else
             {
@@ -238,84 +333,61 @@ public partial class TabularConverterGenerator
             }
         }
 
-        private static ImmutableArray<ISymbol> GetTypeMembers(INamedTypeSymbol typeSymbol, CancellationToken cancellationToken)
+        private static ImmutableArray<ISymbol> GetTypeMembers(INamedTypeSymbol type, CancellationToken cancellationToken)
         {
-            var typeSymbolAssembly = typeSymbol.ContainingAssembly;
+            var assembly = type.ContainingAssembly;
             var builder = default(ImmutableArray<ISymbol>.Builder);
 
-            while (typeSymbol is { SpecialType: SpecialType.None })
+            while (type is { SpecialType: SpecialType.None })
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var typeMemberSymbols = typeSymbol.GetMembers();
+                var members = type.GetMembers();
 
-                foreach (var typeMemberSymbol in typeMemberSymbols)
+                foreach (var member in members)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    if (typeMemberSymbol is not (IFieldSymbol or IPropertySymbol))
+                    if (member is not (IFieldSymbol or IPropertySymbol))
                     {
                         continue;
                     }
 
-                    if (typeMemberSymbol.DeclaredAccessibility is Accessibility.Public)
+                    if (member.DeclaredAccessibility is Accessibility.Public)
                     {
                         builder ??= ImmutableArray.CreateBuilder<ISymbol>();
-                        builder.Add(typeMemberSymbol);
+                        builder.Add(member);
                     }
-                    else if (typeMemberSymbol.DeclaredAccessibility is Accessibility.Internal)
+                    else if (member.DeclaredAccessibility is Accessibility.Internal)
                     {
-                        if (SymbolEqualityComparer.Default.Equals(typeSymbolAssembly, typeSymbol.ContainingAssembly))
+                        if (SymbolEqualityComparer.Default.Equals(assembly, type.ContainingAssembly))
                         {
                             builder ??= ImmutableArray.CreateBuilder<ISymbol>();
-                            builder.Add(typeMemberSymbol);
+                            builder.Add(member);
                         }
                     }
                 }
 
-                typeSymbol = typeSymbol.BaseType!;
+                type = type.BaseType!;
             }
 
-            return builder is not null ? builder.ToImmutable() : ImmutableArray<ISymbol>.Empty;
+            return builder?.ToImmutable() ?? ImmutableArray<ISymbol>.Empty;
         }
 
-        private static bool TryGetTabularFieldInfo(AttributeData attributeData, out int tabularFieldIndex)
+        private static bool TypeHasParameterlessConstructor(INamedTypeSymbol type, CancellationToken cancellationToken)
         {
-            var constructorArguments = attributeData.ConstructorArguments;
-
-            if ((constructorArguments.Length == 1) && (constructorArguments[0] is { Type.SpecialType: SpecialType.System_Int32 }))
+            foreach (var method in type.InstanceConstructors)
             {
-                tabularFieldIndex = (int)constructorArguments[0].Value!;
+                cancellationToken.ThrowIfCancellationRequested();
 
-                return true;
+                if ((method.DeclaredAccessibility is (Accessibility.Public or Accessibility.Internal)) &&
+                    (method.Parameters.Length == 0))
+                {
+                    return true;
+                }
             }
-
-            tabularFieldIndex = default;
 
             return false;
-        }
-
-        private static bool TryGetTabularRecordInfo(AttributeData attributeData, out bool tabularRecordSpecIsStrict)
-        {
-            var constructorArguments = attributeData.ConstructorArguments;
-
-            if ((constructorArguments.Length == 1) && (constructorArguments[0] is { Type.SpecialType: SpecialType.System_Boolean }))
-            {
-                tabularRecordSpecIsStrict = (bool)constructorArguments[0].Value!;
-
-                return true;
-            }
-
-            tabularRecordSpecIsStrict = default;
-
-            return false;
-        }
-
-        private static bool TypeHasSuitableConstructor(INamedTypeSymbol typeSymbol)
-        {
-            return typeSymbol.InstanceConstructors
-                .Where(static x => (x.DeclaredAccessibility is Accessibility.Public or Accessibility.Internal) && (x.Parameters.Length == 0))
-                .Any();
         }
     }
 }

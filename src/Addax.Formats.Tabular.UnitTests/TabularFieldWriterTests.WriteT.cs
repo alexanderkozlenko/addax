@@ -1,6 +1,4 @@
-﻿#pragma warning disable IDE1006
-
-using System.Globalization;
+﻿using System.Globalization;
 using System.Numerics;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -31,41 +29,6 @@ public partial class TabularFieldWriterTests
         var result = await reader.ReadToEndAsync(cancellationToken);
 
         Assert.AreEqual(expected, result);
-    }
-
-    [TestMethod]
-    public async Task WriteT()
-    {
-        var dialect = new TabularDataDialect("\u000a", '\u001a', '\u001b', '\u001c');
-
-        await using var stream = new MemoryStream();
-        await using var writer = new TabularFieldWriter(stream, dialect);
-
-        writer.BeginRecord();
-        writer.Write('a', TabularTryFormatFunc);
-
-        await writer.FlushAsync(CancellationToken);
-
-        stream.Seek(0, SeekOrigin.Begin);
-
-        CollectionAssert.AreEqual("a"u8.ToArray(), stream.ToArray());
-
-        static bool TabularTryFormatFunc(char value, Span<char> buffer, IFormatProvider provider, out int charsWritten)
-        {
-            if (buffer.Length > 512)
-            {
-                buffer[0] = value;
-                charsWritten = 1;
-
-                return true;
-            }
-            else
-            {
-                charsWritten = 0;
-
-                return false;
-            }
-        }
     }
 
     [DataTestMethod]

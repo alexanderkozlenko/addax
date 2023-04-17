@@ -27,7 +27,7 @@ internal sealed class TabularStringArrayConverter<T> : TabularRecordConverter<T>
     }
 
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
-    public override async ValueTask WriteRecordAsync(TabularFieldWriter writer, T record, CancellationToken cancellationToken)
+    public override async ValueTask WriteRecordAsync(TabularFieldWriter writer, T record, TabularRecordWriterContext context, CancellationToken cancellationToken)
     {
         foreach (var value in record)
         {

@@ -9,14 +9,11 @@ internal sealed class TabularTimeSpanConverter : TabularFieldConverter<TimeSpan>
 {
     private static readonly string[] _formats = CreateFormats();
 
-    public override int GetFormatBufferLength(TimeSpan value)
+    public override bool TryGetFormatBufferLength(TimeSpan value, out int result)
     {
-        return 64;
-    }
+        result = 64;
 
-    public override int GetParseBufferLength()
-    {
-        return Array.MaxLength;
+        return true;
     }
 
     public override bool TryFormat(TimeSpan value, Span<char> buffer, IFormatProvider provider, out int charsWritten)

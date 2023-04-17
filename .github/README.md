@@ -7,7 +7,7 @@ Addax is a high-performance and low-allocating framework for producing and consu
 
 ## Quick Start
 
-The following code works on the record level with a CSV file, formatted according to [RFC 4180](https://ietf.org/rfc/rfc4180.html):
+Reading from and writing to a CSV file, formatted according to [RFC 4180](https://ietf.org/rfc/rfc4180.html):
 
 ```cs
 var dialect = new TabularDataDialect("\r\n", ',', '\"');
@@ -31,16 +31,13 @@ await writer.WriteRecordAsync(new[] { "Hello World!" });
 
 ## Overview
 
-The framework consists of two NuGet packages:
-- `Addax.Formats.Tabular` - contains core types that provide low-level access to data.
-- `Addax.Formats.Tabular.Analyzers` - contains source generator for converters that provide high-level access to data.
-
-The main types in the framework are:
-- `TabularDataDialect` - defines separators for tabular data.
-- `TabularFieldReader` - provides read-only access to tabular data on field level.
-- `TabularFieldWriter` - provides write-only access to tabular data on field level.
-- `TabularRecordReader` - provides read-only access to tabular data on record level.
-- `TabularRecordWriter` - provides write-only access to tabular data on record level.
+The framework has built-in support for several primitive and core .NET types:
+|Category|Types|
+|-|-|
+|String|`System.String`, `System.Char`, `System.Text.Rune`, `System.ReadOnlySpan<char>`, `System.ReadOnlySequence<char>`|
+|Number|`System.SByte`, `System.Byte`, `System.Int16`, `System.UInt16`, `System.Int32`, `System.UInt32`, `System.Int64`, `System.UInt64`, `System.Int128`, `System.UInt128`, `System.Numerics.BigInteger`, `System.Half`, `System.Single`, `System.Double`, `System.Decimal`, `System.Numerics.Complex`|
+|Time|`System.TimeSpan`, `System.TimeOnly`, `System.DateOnly`, `System.DateTime`, `System.DateTimeOffset`|
+|Other|`System.Boolean`, `System.Guid`|
 
 The framework supports the following standard line terminators:
 - `<U+000A>` - Line Feed (LF).
@@ -51,20 +48,33 @@ The framework supports the following standard line terminators:
 - `<U+2029>` - Paragraph Separator (PS).
 - `<U+000D, U+000A>` - Carriage Return followed by Line Feed (CR+LF).
 
-The framework has built-in support for several primitive and core .NET types:
-|Category|Types|
-|-|-|
-|String|`System.String`, `System.Char`, `System.Text.Rune`, `System.ReadOnlySpan<char>`, `System.ReadOnlySequence<char>`|
-|Number|`System.SByte`, `System.Byte`, `System.Int16`, `System.UInt16`, `System.Int32`, `System.UInt32`, `System.Int64`, `System.UInt64`, `System.Int128`, `System.UInt128`, `System.Numerics.BigInteger`, `System.Half`, `System.Single`, `System.Double`, `System.Decimal`, `System.Numerics.Complex`|
-|Time|`System.TimeSpan`, `System.TimeOnly`, `System.DateOnly`, `System.DateTime`, `System.DateTimeOffset`|
-|Other|`System.Boolean`, `System.Guid`|
+## Working with records
 
-## High-Level API
+Reading and writing records can be done using `TabularRecordReader` and `TabularRecordWriter` types in the following ways:
+- __Using the record converter source generator__:
+  - Add reference to `Addax.Formats.Tabular.Analyzers` package.
+  - Annotate the required type with `TabularRecordAttribute` attribute.
+  - Annotate the required type members with `TabularFieldAttribute` attribute.
+- __Using a custom implementation__:
+  - Implement a converter by deriving from `TabularRecordConverter<T>`.
+  - Provide an instance to reader or writer directly or via `TabularRecordConverterRegistry.Shared`.
+- __Using the built-in implementations__:
+  - Use auxiliary converters for `string[]` and `IEnumerable<string>` types.
 
-Tabular records can be represented as classes, structures, record classes, and record structures; tabular fields can be represented as either fields or properties. Automatic generation of record converters is adaptive to type definitions and has two modes: non-strict (default) and strict. The non-strict mode is designed to tolerate various issues, such as tabular structure errors, missing values, or an extra new line at the end of a file. The framework also has a built-in record converter, where a record is represented as `string[]` (however, it is not recommended for memory-critical code, as it allocates an array per record during reading).
+Additional features of record generator:
+- Automatically handles fields of `System.Nullable<T>` type.
+- Supports records with non-consecutive field indices.
 
-Reading data from a tabular file as records using a generated converter:
+An example of working with records using a generated converter:
 
+```cs
+[TabularRecord(strict: false)]
+internal struct Experiment
+{
+    [TabularField(index: 0)]
+    public double? Result;
+}
+```
 ```cs
 await using var reader = new TabularRecordReader(stream, dialect);
 
@@ -72,75 +82,16 @@ await foreach (var record in reader.ReadRecordsAsync<Experiment>())
 {
     Console.WriteLine(record.Result);
 }
-
-...
-
-[TabularRecord(strict: false)]
-internal struct Experiment
-{
-    [TabularField(index: 0)]
-    public double? Result;
-}
 ```
-
-Writing data to a tabular file as records using a generated converter:
-
 ```cs
 await using var writer = new TabularRecordWriter(stream, dialect);
 
 var record = new Experiment { Result = .9 };
 
 await writer.WriteRecordAsync(record);
-
-...
-
-[TabularRecord(strict: false)]
-internal struct Experiment
-{
-    [TabularField(index: 0)]
-    public double? Result;
-}
 ```
 
-## Low-Level API
-
-Reading data from a tabular file as fields:
-
-```cs
-await using var reader = new TabularFieldReader(stream, dialect);
-
-while (await reader.MoveNextRecordAsync(cancellationToken))
-{
-    while (await reader.ReadFieldAsync(cancellationToken))
-    {
-        reader.TryGetDouble(out var result);
-    }
-}
-```
-
-Writing data to a tabular file as fields:
-
-```cs
-await using var writer = new TabularFieldWriter(stream, dialect);
-
-writer.BeginRecord();
-writer.WriteDouble(.9);
-
-await writer.FlushAsync();
-```
-
-Using a custom format for fields (supported for reading or writing):
-
-```cs
-await using var reader = new TabularFieldReader(stream, dialect);
-
-await reader.MoveNextRecordAsync();
-await reader.ReadFieldAsync();
-
-var value = reader.Get(static (s, p) => DateTime.ParseExact(s, "MM/dd/yyyy", p));
-```
-
-Removing framework attributes during app trimming:
+The annotation attributes can be removed during app trimming using the standard approach:
 
 ```xml
 <Project>
@@ -162,6 +113,70 @@ Removing framework attributes during app trimming:
     </type>
   </assembly>
 </linker>
+```
+
+## Working with fields
+
+Reading and writing fields can be done using `TabularFieldReader` and `TabularFieldWriter` types in the following ways:
+- __Using specialized methos for standard types__:
+  - Read and write fields using `TryGet***(...)`, `Get***(...)`, and `Write***(...)` method groups.
+- __Using generic methods for non-standard types__:
+  - Implement a converter by deriving from `TabularFieldConverter<T>`.
+  - Provide an instance to reader or writer directly or via `TabularFieldConverterRegistry.Shared`.
+  - Read and write fields using`TryGet<T>(...)`, `Get<T>(...)`, and `Write<T>(...)` method groups.
+
+The important aspects:
+- _Specialized methods is the primary way to work with standard types due to optimized implementation._
+- _Behavior of all specialized methos except for `string` type can be overriden with custom converters_.
+
+An example of working with fields:
+
+```cs
+await using var reader = new TabularFieldReader(stream, dialect);
+
+while (await reader.MoveNextRecordAsync())
+{
+    while (await reader.ReadFieldAsync())
+    {
+        reader.TryGetDouble(out var result);
+    }
+}
+```
+```cs
+await using var writer = new TabularFieldWriter(stream, dialect);
+
+writer.BeginRecord();
+writer.WriteDouble(.9);
+
+await writer.FlushAsync();
+```
+
+An example of a custom field converter:
+
+```cs
+class MyConverter : TabularFieldConverter<DateTime>
+{
+    public override bool TryFormat(DateTime value, Span<char> buffer, IFormatProvider provider, out int charsWritten)
+    {
+        return value.TryFormat(buffer, out charsWritten, "MM/dd/yyyy", provider);
+    }
+
+    public override bool TryParse(ReadOnlySpan<char> buffer, IFormatProvider provider, out DateTime value)
+    {
+        return DateTime.TryParseExact(buffer, "MM/dd/yyyy", provider, default, out value);
+    }
+}
+```
+
+An example of a custom field converter used for generating a record converter:
+
+```cs
+[TabularRecord]
+internal struct Experiment
+{
+    [TabularField(index: 0, converter: typeof(MyConverter))]
+    public DateTime Timestamp;
+}
 ```
 
 ## References

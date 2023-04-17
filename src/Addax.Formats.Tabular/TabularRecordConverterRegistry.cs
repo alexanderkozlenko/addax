@@ -35,8 +35,8 @@ public sealed class TabularRecordConverterRegistry : ConcurrentDictionary<Type, 
         return registry;
     }
 
-    /// <summary>Gets a shared registry instance.</summary>
-    /// <value>A <see cref="TabularRecordConverterRegistry" /> instance.</value>
+    /// <summary>Gets a shared registry.</summary>
+    /// <value>A shared <see cref="TabularRecordConverterRegistry" /> instance.</value>
     public static TabularRecordConverterRegistry Shared
     {
         get

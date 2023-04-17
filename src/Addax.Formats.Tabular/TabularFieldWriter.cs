@@ -1,6 +1,8 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
 using System.Buffers;
+using System.Numerics;
+using System.Text;
 using Addax.Formats.Tabular.Primitives;
 
 namespace Addax.Formats.Tabular;
@@ -10,6 +12,33 @@ public sealed partial class TabularFieldWriter : IAsyncDisposable
 {
     private readonly TabularStreamWriter _streamWriter;
     private readonly TabularStreamFormatter _streamFormatter;
+    private readonly IReadOnlyDictionary<Type, TabularFieldConverter> _converters;
+
+    private readonly TabularFieldConverter<BigInteger> _converterBigInteger;
+    private readonly TabularFieldConverter<bool> _converterBoolean;
+    private readonly TabularFieldConverter<byte> _converterByte;
+    private readonly TabularFieldConverter<char> _converterChar;
+    private readonly TabularFieldConverter<Complex> _converterComplex;
+    private readonly TabularFieldConverter<DateOnly> _converterDateOnly;
+    private readonly TabularFieldConverter<DateTime> _converterDateTime;
+    private readonly TabularFieldConverter<DateTimeOffset> _converterDateTimeOffset;
+    private readonly TabularFieldConverter<decimal> _converterDecimal;
+    private readonly TabularFieldConverter<double> _converterDouble;
+    private readonly TabularFieldConverter<Guid> _converterGuid;
+    private readonly TabularFieldConverter<Half> _converterHalf;
+    private readonly TabularFieldConverter<short> _converterInt16;
+    private readonly TabularFieldConverter<int> _converterInt32;
+    private readonly TabularFieldConverter<long> _converterInt64;
+    private readonly TabularFieldConverter<Int128> _converterInt128;
+    private readonly TabularFieldConverter<Rune> _converterRune;
+    private readonly TabularFieldConverter<sbyte> _converterSByte;
+    private readonly TabularFieldConverter<float> _converterSingle;
+    private readonly TabularFieldConverter<TimeOnly> _converterTimeOnly;
+    private readonly TabularFieldConverter<TimeSpan> _converterTimeSpan;
+    private readonly TabularFieldConverter<uint> _converterUInt32;
+    private readonly TabularFieldConverter<ulong> _converterUInt64;
+    private readonly TabularFieldConverter<ushort> _converterUInt16;
+    private readonly TabularFieldConverter<UInt128> _converterUInt128;
 
     private long _position;
     private TabularPositionType _positionType;
@@ -28,6 +57,33 @@ public sealed partial class TabularFieldWriter : IAsyncDisposable
 
         _streamWriter = new(stream, options.Encoding, options.BufferSize, options.LeaveOpen);
         _streamFormatter = new(dialect);
+        _converters = options.FieldConverters;
+
+        _converterBigInteger = SelectConverter<BigInteger>();
+        _converterBoolean = SelectConverter<bool>();
+        _converterByte = SelectConverter<byte>();
+        _converterChar = SelectConverter<char>();
+        _converterComplex = SelectConverter<Complex>();
+        _converterDateOnly = SelectConverter<DateOnly>();
+        _converterDateTime = SelectConverter<DateTime>();
+        _converterDateTimeOffset = SelectConverter<DateTimeOffset>();
+        _converterDecimal = SelectConverter<decimal>();
+        _converterDouble = SelectConverter<double>();
+        _converterGuid = SelectConverter<Guid>();
+        _converterHalf = SelectConverter<Half>();
+        _converterInt16 = SelectConverter<short>();
+        _converterInt32 = SelectConverter<int>();
+        _converterInt64 = SelectConverter<long>();
+        _converterInt128 = SelectConverter<Int128>();
+        _converterRune = SelectConverter<Rune>();
+        _converterSByte = SelectConverter<sbyte>();
+        _converterSingle = SelectConverter<float>();
+        _converterTimeOnly = SelectConverter<TimeOnly>();
+        _converterTimeSpan = SelectConverter<TimeSpan>();
+        _converterUInt16 = SelectConverter<ushort>();
+        _converterUInt32 = SelectConverter<uint>();
+        _converterUInt64 = SelectConverter<ulong>();
+        _converterUInt128 = SelectConverter<UInt128>();
     }
 
     /// <summary>Initializes a new instance of the <see cref="TabularFieldWriter" /> class using the specified stream, dialect, and default options.</summary>
@@ -43,7 +99,7 @@ public sealed partial class TabularFieldWriter : IAsyncDisposable
     {
         _isDisposed = true;
         _positionType = TabularPositionType.EndOfStream;
-        _fieldType = TabularFieldType.None;
+        _fieldType = TabularFieldType.Undefined;
         _position = 0;
 
         return _streamWriter.DisposeAsync();
@@ -71,7 +127,7 @@ public sealed partial class TabularFieldWriter : IAsyncDisposable
         }
 
         _positionType = TabularPositionType.BeginningOfRecord;
-        _fieldType = TabularFieldType.None;
+        _fieldType = TabularFieldType.Undefined;
     }
 
     /// <summary>Writes the specified <see cref="ReadOnlySpan{T}" /> value as data to the internal buffer.</summary>
@@ -150,93 +206,60 @@ public sealed partial class TabularFieldWriter : IAsyncDisposable
         _position += committed;
     }
 
-    private void Write<T>(T value, TabularFieldConverter<T> converter)
-        where T : struct
+    /// <summary>Writes the specified <typeparamref name="T" /> value to the internal buffer.</summary>
+    /// <typeparam name="T">The type of an object or value that represents a tabular field.</typeparam>
+    /// <param name="converter">The converter to use for converting <typeparamref name="T" /> to a tabular field.</param>
+    /// <param name="value">The object or value to be written.</param>
+    /// <exception cref="InvalidOperationException">A record is not explicitly started or contains a comment.</exception>
+    public void Write<T>(T? value, TabularFieldConverter<T> converter)
     {
+        ArgumentNullException.ThrowIfNull(converter);
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
         EnsureCanWriteValue();
 
-        var bufferLength = converter.GetFormatBufferLength(value);
-
-        if (bufferLength < 0)
+        if (converter.TryGetFormatBufferLength(value, out var bufferLength))
         {
-            throw new FormatException("The specified value cannot be formatted into a sequence of characters.");
+            if (bufferLength < 0)
+            {
+                throw new InvalidOperationException("The maximum buffer length for formatting a value must be equal to or greater than zero.");
+            }
+
+            while (bufferLength <= Array.MaxLength)
+            {
+                if (TryWrite(value, converter, bufferLength))
+                {
+                    return;
+                }
+
+                bufferLength *= 2;
+
+                if ((uint)bufferLength > (uint)Array.MaxLength)
+                {
+                    bufferLength = Math.Max(bufferLength + 1, Array.MaxLength);
+                }
+            }
         }
 
+        throw new FormatException("The specified value cannot be formatted to a sequence of characters.");
+    }
+
+    /// <summary>Writes the specified <typeparamref name="T" /> value to the internal buffer.</summary>
+    /// <typeparam name="T">The type of an object or value that represents a tabular field.</typeparam>
+    /// <param name="value">The object or value to be written.</param>
+    /// <exception cref="InvalidOperationException">A record is not explicitly started or contains a comment.</exception>
+    public void Write<T>(T? value)
+    {
+        Write(value, SelectConverter<T>());
+    }
+
+    private bool TryWrite<T>(T? value, TabularFieldConverter<T> converter, int bufferLength)
+    {
         using var formattingBuffer = bufferLength <= TabularDataInfo.StackBufferLength ?
             HybridBuffer<char>.Create(stackalloc char[bufferLength]) :
             HybridBuffer<char>.Create(bufferLength);
 
         if (!converter.TryFormat(value, formattingBuffer.AsSpan(), TabularDataInfo.DefaultFormatProvider, out var charsWritten))
-        {
-            throw new FormatException("The specified value cannot be formatted into a sequence of characters.");
-        }
-
-        var committed = 0L;
-
-        if (_positionType is not TabularPositionType.BeginningOfRecord)
-        {
-            _streamFormatter.WriteFieldSeparator(_streamWriter, out committed);
-            _position += committed;
-        }
-
-        _streamFormatter.WriteValue(formattingBuffer.AsSpan()[..charsWritten], _streamWriter, out committed);
-        _positionType = TabularPositionType.FieldSeparator;
-        _fieldType = TabularFieldType.Content;
-        _position += committed;
-    }
-
-    /// <summary>Writes the specified <typeparamref name="T" /> value to the internal buffer.</summary>
-    /// <param name="value">The value to be written.</param>
-    /// <param name="func">A function that parses a sequence of characters to a value.</param>
-    /// <param name="provider">An optional object that provides culture-specific formatting information.</param>
-    /// <exception cref="InvalidOperationException">A record is not explicitly started or contains a comment.</exception>
-    public void Write<T>(T? value, TabularTryFormatFunc<T> func, IFormatProvider? provider)
-    {
-        ArgumentNullException.ThrowIfNull(func);
-        ObjectDisposedException.ThrowIf(_isDisposed, this);
-
-        EnsureCanWriteValue();
-
-        provider ??= TabularDataInfo.DefaultFormatProvider;
-
-        var bufferLength = TabularDataInfo.StackBufferLength;
-
-        while (bufferLength <= Array.MaxLength)
-        {
-            if (TryWrite(value, func, provider, bufferLength))
-            {
-                return;
-            }
-
-            bufferLength *= 2;
-
-            if ((uint)bufferLength > (uint)Array.MaxLength)
-            {
-                bufferLength = Math.Max(bufferLength + 1, Array.MaxLength);
-            }
-        }
-
-        throw new FormatException("The specified value cannot be formatted into a sequence of characters.");
-    }
-
-    /// <summary>Writes the specified <typeparamref name="T" /> value to the internal buffer.</summary>
-    /// <param name="value">The value to be written.</param>
-    /// <param name="func">A function that parses a sequence of characters to a value.</param>
-    /// <exception cref="InvalidOperationException">A record is not explicitly started or contains a comment.</exception>
-    public void Write<T>(T? value, TabularTryFormatFunc<T> func)
-    {
-        Write(value, func, TabularDataInfo.DefaultFormatProvider);
-    }
-
-    private bool TryWrite<T>(T? value, TabularTryFormatFunc<T> func, IFormatProvider provider, int bufferLength)
-    {
-        using var formattingBuffer = bufferLength <= TabularDataInfo.StackBufferLength ?
-            HybridBuffer<char>.Create(stackalloc char[bufferLength]) :
-            HybridBuffer<char>.Create(bufferLength);
-
-        if (!func.Invoke(value, formattingBuffer.AsSpan(), provider, out var charsWritten))
         {
             return false;
         }
@@ -299,6 +322,16 @@ public sealed partial class TabularFieldWriter : IAsyncDisposable
         {
             throw new InvalidOperationException("A comment can be written only to an empty record.");
         }
+    }
+
+    private TabularFieldConverter<T> SelectConverter<T>()
+    {
+        if (!_converters.TryGetValue(typeof(T), out var converter) || (converter is not TabularFieldConverter<T> converterT))
+        {
+            throw new InvalidOperationException($"A field converter for type '{typeof(T)}' is not registered.");
+        }
+
+        return converterT;
     }
 
     /// <summary>Gets a type of the last written field.</summary>

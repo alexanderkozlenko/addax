@@ -2,6 +2,8 @@
 
 #pragma warning disable CA1019
 
+#nullable enable
+
 namespace Addax.Formats.Tabular;
 
 /// <summary>Defines a mapping of the record property to a tabular data field.</summary>
@@ -11,7 +13,8 @@ internal sealed class TabularFieldAttribute : global::System.Attribute
 {
     /// <summary>Initializes a new instance of the <see cref="global::Addax.Formats.Tabular.TabularFieldAttribute" /> class.</summary>
     /// <param name="index">The index of the tabular data field used for reading and writing values.</param>
-    public TabularFieldAttribute(int index)
+    /// <param name="converter">The type of a converter used for converting an object or value to or from tabular field.</param>
+    public TabularFieldAttribute(int index, global::System.Type? converter = null)
     {
     }
 }

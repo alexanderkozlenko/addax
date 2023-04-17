@@ -17,7 +17,7 @@ public partial class TabularFieldReader
     /// <returns><see langword="true" /> if the entire value can be successfully retrieved; <see langword="false" /> otherwise.</returns>
     public bool TryGetChar(out char result)
     {
-        return TryGet(TabularFieldConverters.Char, out result);
+        return TryGet(_converterChar, out result);
     }
 
     /// <summary>Tries to retrieve the current reader value as <see cref="Rune" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -25,7 +25,7 @@ public partial class TabularFieldReader
     /// <returns><see langword="true" /> if the entire value can be successfully retrieved; <see langword="false" /> otherwise.</returns>
     public bool TryGetRune(out Rune result)
     {
-        return TryGet(TabularFieldConverters.Rune, out result);
+        return TryGet(_converterRune, out result);
     }
 
     /// <summary>Tries to retrieve the current reader value as <see cref="string" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -57,7 +57,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be represented as one of the supported literals: <c>"true"</c>, <c>"false"</c>, <c>"1"</c>, <c>"0"</c>.</remarks>
     public bool TryGetBoolean(out bool result)
     {
-        return TryGet(TabularFieldConverters.Boolean, out result);
+        return TryGet(_converterBoolean, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="sbyte" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -67,7 +67,7 @@ public partial class TabularFieldReader
     [CLSCompliant(false)]
     public bool TryGetSByte(out sbyte result)
     {
-        return TryGet(TabularFieldConverters.SByte, out result);
+        return TryGet(_converterSByte, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="byte" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -76,7 +76,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted using invariant culture.</remarks>
     public bool TryGetByte(out byte result)
     {
-        return TryGet(TabularFieldConverters.Byte, out result);
+        return TryGet(_converterByte, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="short" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -85,7 +85,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted using invariant culture.</remarks>
     public bool TryGetInt16(out short result)
     {
-        return TryGet(TabularFieldConverters.Int16, out result);
+        return TryGet(_converterInt16, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="ushort" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -95,7 +95,7 @@ public partial class TabularFieldReader
     [CLSCompliant(false)]
     public bool TryGetUInt16(out ushort result)
     {
-        return TryGet(TabularFieldConverters.UInt16, out result);
+        return TryGet(_converterUInt16, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="int" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -104,7 +104,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted using invariant culture.</remarks>
     public bool TryGetInt32(out int result)
     {
-        return TryGet(TabularFieldConverters.Int32, out result);
+        return TryGet(_converterInt32, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="uint" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -114,7 +114,7 @@ public partial class TabularFieldReader
     [CLSCompliant(false)]
     public bool TryGetUInt32(out uint result)
     {
-        return TryGet(TabularFieldConverters.UInt32, out result);
+        return TryGet(_converterUInt32, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="long" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -123,7 +123,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted using invariant culture.</remarks>
     public bool TryGetInt64(out long result)
     {
-        return TryGet(TabularFieldConverters.Int64, out result);
+        return TryGet(_converterInt64, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="ulong" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -133,7 +133,7 @@ public partial class TabularFieldReader
     [CLSCompliant(false)]
     public bool TryGetUInt64(out ulong result)
     {
-        return TryGet(TabularFieldConverters.UInt64, out result);
+        return TryGet(_converterUInt64, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="Int128" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -142,7 +142,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted using invariant culture.</remarks>
     public bool TryGetInt128(out Int128 result)
     {
-        return TryGet(TabularFieldConverters.Int128, out result);
+        return TryGet(_converterInt128, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="UInt128" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -152,7 +152,7 @@ public partial class TabularFieldReader
     [CLSCompliant(false)]
     public bool TryGetUInt128(out UInt128 result)
     {
-        return TryGet(TabularFieldConverters.UInt128, out result);
+        return TryGet(_converterUInt128, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="BigInteger" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -161,7 +161,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted using invariant culture.</remarks>
     public bool TryGetBigInteger(out BigInteger result)
     {
-        return TryGet(TabularFieldConverters.BigInteger, out result);
+        return TryGet(_converterBigInteger, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="Half" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -170,7 +170,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted in the fixed-point or scientific notation using invariant culture.</remarks>
     public bool TryGetHalf(out Half result)
     {
-        return TryGet(TabularFieldConverters.Half, out result);
+        return TryGet(_converterHalf, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="float" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -179,7 +179,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted in the fixed-point or scientific notation using invariant culture.</remarks>
     public bool TryGetSingle(out float result)
     {
-        return TryGet(TabularFieldConverters.Single, out result);
+        return TryGet(_converterSingle, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="double" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -188,7 +188,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted in the fixed-point or scientific notation using invariant culture.</remarks>
     public bool TryGetDouble(out double result)
     {
-        return TryGet(TabularFieldConverters.Double, out result);
+        return TryGet(_converterDouble, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="decimal" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -197,7 +197,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted in the fixed-point or scientific notation using invariant culture.</remarks>
     public bool TryGetDecimal(out decimal result)
     {
-        return TryGet(TabularFieldConverters.Decimal, out result);
+        return TryGet(_converterDecimal, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="Complex" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -206,7 +206,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted in a ISO 80000-2:2019 compliant format with real numbers in the fixed-point or scientific notation using invariant culture (e.g., <c>"0.54+0.84i"</c>).</remarks>
     public bool TryGetComplex(out Complex result)
     {
-        return TryGet(TabularFieldConverters.Complex, out result);
+        return TryGet(_converterComplex, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="TimeSpan" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -215,7 +215,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted in an ISO 8601-1:2019 compliant format (e.g., <c>"PT13H13M12S"</c> for <c>13:12:12.0000000</c>). The value should include only D, H, M, and S designators; the precision should be lower than or equal to 100 ns.</remarks>
     public bool TryGetTimeSpan(out TimeSpan result)
     {
-        return TryGet(TabularFieldConverters.TimeSpan, out result);
+        return TryGet(_converterTimeSpan, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="TimeOnly" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -224,7 +224,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted in an ISO 8601-1:2019 compliant format (e.g., <c>"13:12:12"</c>). The precision should be lower than or equal to 100 ns.</remarks>
     public bool TryGetTimeOnly(out TimeOnly result)
     {
-        return TryGet(TabularFieldConverters.TimeOnly, out result);
+        return TryGet(_converterTimeOnly, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="DateOnly" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -233,7 +233,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted in an ISO 8601-1:2019 compliant format (e.g., <c>"2002-01-27"</c>).</remarks>
     public bool TryGetDateOnly(out DateOnly result)
     {
-        return TryGet(TabularFieldConverters.DateOnly, out result);
+        return TryGet(_converterDateOnly, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="DateTime" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -242,7 +242,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted in an ISO 8601-1:2019 compliant format (e.g., <c>"2002-01-27T13:12:12"</c>). The precision should be lower than or equal to 100 ns.</remarks>
     public bool TryGetDateTime(out DateTime result)
     {
-        return TryGet(TabularFieldConverters.DateTime, out result);
+        return TryGet(_converterDateTime, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="DateTimeOffset" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -251,7 +251,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted in an ISO 8601-1:2019 compliant format (e.g., <c>"2002-01-27T13:12:12-07:00"</c>). The precision should be lower than or equal to 100 ns.</remarks>
     public bool TryGetDateTimeOffset(out DateTimeOffset result)
     {
-        return TryGet(TabularFieldConverters.DateTimeOffset, out result);
+        return TryGet(_converterDateTimeOffset, out result);
     }
 
     /// <summary>Tries to parse the current reader value as <see cref="Guid" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -260,7 +260,7 @@ public partial class TabularFieldReader
     /// <remarks>The value should be formatted in the RFC 4122 format (e.g., <c>"fae04ec0-301f-11d3-bf4b-00c04f79efbc"</c>).</remarks>
     public bool TryGetGuid(out Guid result)
     {
-        return TryGet(TabularFieldConverters.Guid, out result);
+        return TryGet(_converterGuid, out result);
     }
 
     private static bool TryCreateString(in ReadOnlySequence<char> value, [NotNullWhen(true)] out string? result)

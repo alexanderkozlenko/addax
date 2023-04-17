@@ -1,6 +1,4 @@
-﻿#pragma warning disable IDE1006
-
-using System.Globalization;
+﻿using System.Globalization;
 using System.Numerics;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,46 +20,6 @@ public partial class TabularFieldReaderTests
         await reader.ReadFieldAsync(cancellationToken);
 
         Assert.AreEqual(expected, method.Invoke());
-    }
-
-    [TestMethod]
-    public async Task GetT()
-    {
-        var dialect = new TabularDataDialect("\u000a", '\u001a', '\u001b', '\u001c');
-
-        await using var stream = new MemoryStream("a"u8.ToArray());
-        await using var reader = new TabularFieldReader(stream, dialect);
-
-        await reader.MoveNextRecordAsync(CancellationToken);
-        await reader.ReadFieldAsync(CancellationToken);
-
-        var result = reader.Get(GetChar);
-
-        Assert.AreEqual('a', result);
-
-        static char GetChar(ReadOnlySpan<char> buffer, IFormatProvider provider)
-        {
-            return buffer[0];
-        }
-    }
-
-    [TestMethod]
-    public async Task GetTBeforeReadField()
-    {
-        var dialect = new TabularDataDialect("\u000a", '\u001a', '\u001b', '\u001c');
-
-        await using var stream = new MemoryStream("a"u8.ToArray());
-        await using var reader = new TabularFieldReader(stream, dialect);
-
-        await reader.MoveNextRecordAsync(CancellationToken);
-
-        Assert.ThrowsException<InvalidOperationException>(
-            () => reader.Get(GetChar));
-
-        static char GetChar(ReadOnlySpan<char> buffer, IFormatProvider provider)
-        {
-            return buffer[0];
-        }
     }
 
     [DataTestMethod]

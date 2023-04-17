@@ -6,14 +6,11 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularDecimalConverter : TabularNumberConverter<decimal>
 {
-    public override int GetFormatBufferLength(decimal value)
+    public override bool TryGetFormatBufferLength(decimal value, out int result)
     {
-        return 32;
-    }
+        result = 32;
 
-    public override int GetParseBufferLength()
-    {
-        return Array.MaxLength;
+        return true;
     }
 
     protected override NumberStyles Styles

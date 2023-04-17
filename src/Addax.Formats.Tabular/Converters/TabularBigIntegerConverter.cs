@@ -7,11 +7,13 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularBigIntegerConverter : TabularNumberConverter<BigInteger>
 {
-    public override int GetFormatBufferLength(BigInteger value)
+    public override bool TryGetFormatBufferLength(BigInteger value, out int result)
     {
         if ((long.MinValue <= value) && (value <= long.MaxValue))
         {
-            return 32;
+            result = 32;
+
+            return true;
         }
 
         try
@@ -20,24 +22,27 @@ internal sealed class TabularBigIntegerConverter : TabularNumberConverter<BigInt
 
             if (bufferLength > Array.MaxLength)
             {
-                return -1;
+                result = 0;
+
+                return false;
             }
 
-            return bufferLength;
+            result = bufferLength;
+
+            return true;
         }
         catch (ArgumentOutOfRangeException)
         {
-            return -1;
+            result = 0;
+
+            return false;
         }
         catch (OverflowException)
         {
-            return -1;
-        }
-    }
+            result = 0;
 
-    public override int GetParseBufferLength()
-    {
-        return Array.MaxLength;
+            return false;
+        }
     }
 
     protected override NumberStyles Styles

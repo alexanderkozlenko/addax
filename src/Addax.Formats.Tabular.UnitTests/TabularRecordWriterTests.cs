@@ -23,7 +23,7 @@ public sealed class TabularRecordWriterTests
     public async Task WriteRecordWhenConverterNotImplemented()
     {
         await using var stream = new MemoryStream();
-        await using var writer = new TabularRecordWriter(stream, new("\n", ',', '"'), new(converters: new[] { new MyRecordConverter() }));
+        await using var writer = new TabularRecordWriter(stream, new("\n", ',', '"'), new(recordConverters: new[] { new MyRecordConverter() }));
 
         var record = new MyRecord();
 

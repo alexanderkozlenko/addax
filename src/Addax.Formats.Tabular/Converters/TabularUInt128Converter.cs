@@ -6,14 +6,11 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularUInt128Converter : TabularNumberConverter<UInt128>
 {
-    public override int GetFormatBufferLength(UInt128 value)
+    public override bool TryGetFormatBufferLength(UInt128 value, out int result)
     {
-        return 64;
-    }
+        result = 64;
 
-    public override int GetParseBufferLength()
-    {
-        return Array.MaxLength;
+        return true;
     }
 
     protected override NumberStyles Styles
