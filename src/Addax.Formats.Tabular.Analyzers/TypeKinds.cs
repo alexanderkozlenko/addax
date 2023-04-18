@@ -5,7 +5,7 @@ namespace Addax.Formats.Tabular.Analyzers;
 [Flags]
 internal enum TypeKinds : byte
 {
-    None,
-    IsReferenceType,
-    IsNullableValueType,
+    None = 0,
+    IsReferenceType = 1,
+    IsNullableValueType = 2,
 }

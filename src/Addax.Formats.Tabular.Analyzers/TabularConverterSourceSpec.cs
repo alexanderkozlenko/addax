@@ -4,11 +4,11 @@ using System.Collections.Immutable;
 
 namespace Addax.Formats.Tabular.Analyzers;
 
-internal readonly struct TabularConverterGeneratorSpec
+internal readonly struct TabularConverterSourceSpec
 {
     private readonly ImmutableArray<TabularRecordSpec> _recordSpecs;
 
-    public TabularConverterGeneratorSpec(ImmutableArray<TabularRecordSpec> recordSpecs)
+    public TabularConverterSourceSpec(ImmutableArray<TabularRecordSpec> recordSpecs)
     {
         _recordSpecs = recordSpecs;
     }

@@ -11,26 +11,22 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Content\Addax.Formats.Tabular.g.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Content\Addax.Formats.Tabular.g.cs">
+    <None Include="$(TargetPath)">
+      <Pack>true</Pack>
+      <PackagePath>analyzers\dotnet\cs</PackagePath>
+      <Visible>false</Visible>
+    </None>
+    <None Include="Properties\Package.targets">
+      <Pack>true</Pack>
+      <PackagePath>build\$(MSBuildProjectName).targets</PackagePath>
+    </None>
+    <None Include="Content\*.cs">
       <Pack>true</Pack>
       <PackagePath>contentFiles\cs\any</PackagePath>
       <BuildAction>Compile</BuildAction>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\Package.targets">
-      <Pack>true</Pack>
-      <PackagePath>build\$(MSBuildProjectName).targets</PackagePath>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="$(TargetPath)">
-      <Pack>true</Pack>
-      <PackagePath>analyzers\dotnet\cs</PackagePath>
-      <Visible>false</Visible>
-    </None>
+    <Compile Remove="Content\*.cs" />
   </ItemGroup>
 </Project>

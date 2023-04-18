@@ -6,20 +6,20 @@
 
 namespace Addax.Formats.Tabular;
 
-/// <summary>Defines a mapping of the record property to a tabular data field.</summary>
+/// <summary>Defines a mapping between a type member and a tabular data field.</summary>
 [global::System.Diagnostics.DebuggerStepThrough]
 [global::System.AttributeUsage(global::System.AttributeTargets.Property | global::System.AttributeTargets.Field)]
 internal sealed class TabularFieldAttribute : global::System.Attribute
 {
     /// <summary>Initializes a new instance of the <see cref="global::Addax.Formats.Tabular.TabularFieldAttribute" /> class.</summary>
     /// <param name="index">The index of the tabular data field used for reading and writing values.</param>
-    /// <param name="converter">The type of a converter used for converting an object or value to or from tabular field.</param>
+    /// <param name="converter">The type of the converter used for converting an object or value to or from a tabular field.</param>
     public TabularFieldAttribute(int index, global::System.Type? converter = null)
     {
     }
 }
 
-/// <summary>Defines the record type as a contract for reading or writing tabular data records.</summary>
+/// <summary>Defines a mapping between a type and a tabular data record.</summary>
 [global::System.Diagnostics.DebuggerStepThrough]
 [global::System.AttributeUsage(global::System.AttributeTargets.Class | global::System.AttributeTargets.Struct)]
 internal sealed class TabularRecordAttribute : global::System.Attribute

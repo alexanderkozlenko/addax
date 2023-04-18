@@ -11,8 +11,8 @@ public sealed partial class TabularConverterGenerator : IIncrementalGenerator
 {
     private static readonly Version _assemblyVersion = typeof(TabularConverterGenerator).Assembly.GetName().Version;
 
-    private static readonly Parser _parser = new();
-    private static readonly Emitter _emitter = new();
+    private static readonly TabularConverterParser _parser = new();
+    private static readonly TabularConverterEmitter _emitter = new();
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
@@ -44,19 +44,28 @@ public sealed partial class TabularConverterGenerator : IIncrementalGenerator
     {
         var (compilation, types) = value;
 
-        if (types.IsDefaultOrEmpty)
-        {
-            return;
-        }
-        if (!compilation.ReferencedAssemblyNames.Any(static x => (x.Name == "Addax.Formats.Tabular") && _assemblyVersion.Equals(x.Version)))
-        {
-            return;
-        }
-        if (!_parser.TryGetImplementationSourceSpec(context, types, out var generatorSpec))
+        if (types.IsDefaultOrEmpty || !CompilationHasRequiredTypes(compilation, context.CancellationToken))
         {
             return;
         }
 
-        _emitter.EmitImplementationSourceOutput(context, generatorSpec);
+        var sourceSpec = _parser.GetImplementationSourceSpec(context, types);
+
+        _emitter.EmitImplementationSourceOutput(context, sourceSpec);
+    }
+
+    private static bool CompilationHasRequiredTypes(Compilation compilation, CancellationToken cancellationToken)
+    {
+        foreach (var assembly in compilation.ReferencedAssemblyNames)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if ((assembly.Name == "Addax.Formats.Tabular") && _assemblyVersion.Equals(assembly.Version))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
