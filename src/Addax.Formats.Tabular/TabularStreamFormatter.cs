@@ -387,9 +387,9 @@ internal sealed class TabularStreamFormatter
                 {
                     var symbol = value[0];
 
-                    if (symbol == _recordSeparationSymbol2 ||
-                        symbol == _fieldSeparationSymbol ||
-                        symbol == _fieldQuoteSymbol)
+                    if ((symbol == _recordSeparationSymbol2) ||
+                        (symbol == _fieldSeparationSymbol) ||
+                        (symbol == _fieldQuoteSymbol))
                     {
                         return true;
                     }
@@ -456,9 +456,9 @@ internal sealed class TabularStreamFormatter
 
                     Debug.Assert(result);
 
-                    if (symbol == _recordSeparationSymbol2 ||
-                        symbol == _fieldSeparationSymbol ||
-                        symbol == _fieldQuoteSymbol)
+                    if ((symbol == _recordSeparationSymbol2) ||
+                        (symbol == _fieldSeparationSymbol) ||
+                        (symbol == _fieldQuoteSymbol))
                     {
                         return true;
                     }

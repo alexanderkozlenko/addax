@@ -17,7 +17,7 @@ internal sealed class TabularBooleanConverter : TabularFieldConverter<bool>
 
         Debug.Assert(result);
 
-        buffer[0] += (char)0x20;
+        buffer[0] |= (char)0x20;
 
         return true;
     }

@@ -234,7 +234,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
 
             examinedLength += parsedLength;
 
-            if (parsingStatus == TabularStreamParsingStatus.NeedMoreData)
+            if (parsingStatus is TabularStreamParsingStatus.NeedMoreData)
             {
                 if (!_streamReader.IsCompleted)
                 {
@@ -244,16 +244,12 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
                 }
                 if (parserState.IsIncomplete)
                 {
-                    var position = _position + examinedLength - 1;
-
-                    throw new TabularDataException($"The reader encountered an unexpected end of stream at position {position}.", position);
+                    ThrowUnexpectedEndOfStreamException(_position + examinedLength - 1);
                 }
             }
-            else if (parsingStatus == TabularStreamParsingStatus.FoundInvalidData)
+            else if (parsingStatus is TabularStreamParsingStatus.FoundInvalidData)
             {
-                var position = _position + examinedLength - 1;
-
-                throw new TabularDataException($"The reader encountered an unexpected character at position {position}.", position);
+                ThrowUnexpectedCharacterException(_position + examinedLength - 1);
             }
 
             _fieldType = !parserState.IsCommentPrefixFound ? TabularFieldType.Content : TabularFieldType.Comment;
@@ -263,7 +259,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
                 _value = _streamParser.Extract(readingBuffer, examinedLength, parsingStatus, parserState, _bufferSource, out _bufferKind);
             }
 
-            if (_bufferKind == BufferKind.Shared)
+            if (_bufferKind is BufferKind.Shared)
             {
                 _streamReader.Advance(0, examinedLength);
             }
@@ -285,6 +281,20 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         }
 
         return consume;
+
+        [DoesNotReturn]
+        [StackTraceHidden]
+        static void ThrowUnexpectedCharacterException(long position)
+        {
+            throw new TabularDataException($"The reader encountered an unexpected character at position {position}.", position);
+        }
+
+        [DoesNotReturn]
+        [StackTraceHidden]
+        static void ThrowUnexpectedEndOfStreamException(long position)
+        {
+            throw new TabularDataException($"The reader encountered an unexpected end of stream at position {position}.", position);
+        }
     }
 
     /// <summary>Tries to retrieve the current reader value as <typeparamref name="T" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -297,7 +307,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         ArgumentNullException.ThrowIfNull(converter);
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
-        if (_bufferKind == BufferKind.None)
+        if (_bufferKind is BufferKind.None)
         {
             throw new InvalidOperationException("The current reader value can only be accessed following a read operation.");
         }
@@ -331,7 +341,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
             return false;
         }
 
-        if (value.IsSingleSegment || (value.FirstSpan.Length == bufferLength))
+        if (value.IsSingleSegment)
         {
             return converter.TryParse(value.FirstSpan, TabularDataInfo.DefaultFormatProvider, out result);
         }

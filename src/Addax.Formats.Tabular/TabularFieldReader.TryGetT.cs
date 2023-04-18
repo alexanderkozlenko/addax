@@ -36,7 +36,7 @@ public partial class TabularFieldReader
     {
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
-        if (_bufferKind == BufferKind.None)
+        if (_bufferKind is BufferKind.None)
         {
             ThrowInvalidOperationException();
         }
@@ -275,7 +275,7 @@ public partial class TabularFieldReader
         }
         else if (valueLength <= Array.MaxLength)
         {
-            if (value.IsSingleSegment || (value.FirstSpan.Length == valueLength))
+            if (value.IsSingleSegment)
             {
                 result = new(value.FirstSpan);
             }
