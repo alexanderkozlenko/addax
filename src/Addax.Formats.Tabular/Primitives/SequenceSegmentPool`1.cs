@@ -31,7 +31,7 @@ internal sealed class SequenceSegmentPool<T>
             segment = new();
         }
 
-        segment.Allocate(size);
+        segment.EnsureCapacity(size);
 
         return segment;
     }

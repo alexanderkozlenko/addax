@@ -21,7 +21,7 @@ internal sealed class SequenceSegment<T> : ReadOnlySequenceSegment<T>, IDisposab
         RunningIndex = 0;
     }
 
-    public void Allocate(int size)
+    public void EnsureCapacity(int size)
     {
         Debug.Assert(_buffer is null);
 
@@ -61,7 +61,7 @@ internal sealed class SequenceSegment<T> : ReadOnlySequenceSegment<T>, IDisposab
         }
     }
 
-    public Memory<T> WriteBuffer
+    public Memory<T> FreeBuffer
     {
         get
         {

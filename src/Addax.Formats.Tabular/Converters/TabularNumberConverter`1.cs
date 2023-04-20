@@ -32,7 +32,7 @@ internal abstract class TabularNumberConverter<T> : TabularFieldConverter<T>
                 }
                 else
                 {
-                    // The division operation for an 8-bit number should not throw an exception.
+                    // The division operation for an 8-bit number types should not throw an exception.
 
                     if (T.CreateSaturating(1000) / T.CreateChecked(100) == T.CreateChecked(10))
                     {

@@ -61,9 +61,9 @@ internal sealed class SequenceSource<T> : IBufferWriter<T>, IDisposable
         {
             sizeHint = _minimumSegmentSize;
         }
-        if (_sequenceTail?.WriteBuffer.Length >= sizeHint)
+        if (_sequenceTail?.FreeBuffer.Length >= sizeHint)
         {
-            return _sequenceTail.WriteBuffer;
+            return _sequenceTail.FreeBuffer;
         }
 
         var sequenceTail = SequenceSegmentPool<T>.Shared.Rent(Math.Max(_minimumSegmentSize, sizeHint));
@@ -79,7 +79,7 @@ internal sealed class SequenceSource<T> : IBufferWriter<T>, IDisposable
 
         _sequenceTail = sequenceTail;
 
-        return sequenceTail.WriteBuffer;
+        return sequenceTail.FreeBuffer;
     }
 
     public Span<T> GetSpan(int sizeHint = 0)

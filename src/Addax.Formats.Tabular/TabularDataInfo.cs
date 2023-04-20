@@ -12,7 +12,7 @@ internal static class TabularDataInfo
     public static readonly Encoding DefaultEncoding = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: false);
     public static readonly IFormatProvider DefaultFormatProvider = CreateFormatProvider();
 
-    public static bool IsUnicodeHardLineBreak(char value)
+    public static bool IsUnicodeMandatoryBreak(char value)
     {
         return value is
             '\u000a' or
@@ -24,7 +24,7 @@ internal static class TabularDataInfo
             '\u2029';
     }
 
-    public static bool IsUnicodeHardLineBreak(ReadOnlySpan<char> value)
+    public static bool IsUnicodeMandatoryBreak(ReadOnlySpan<char> value)
     {
         return value is
             ['\u000a'] or
