@@ -21,9 +21,15 @@ internal sealed partial class TabularConverterParser
                 continue;
             }
 
-            if (recordType.IsValueType && recordType.IsRefLikeType)
+            if (recordType.IsStatic)
             {
                 ReportDiagnostic(context, _diagnostic0001, recordType);
+
+                continue;
+            }
+            if (recordType.IsValueType && recordType.IsRefLikeType)
+            {
+                ReportDiagnostic(context, _diagnostic0002, recordType);
 
                 continue;
             }
@@ -37,16 +43,28 @@ internal sealed partial class TabularConverterParser
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (!TryGetTabularFieldAttribute(recordMember, out var fieldAttribute, cancellationToken))
+                if (!TryGetTabularFieldAttribute(recordMember, out var fieldAttribute, cancellationToken) ||
+                    !TryGetTabularFieldInfo(fieldAttribute!, out var fieldIndex, out var recordMemberConverterType) ||
+                    !TryGetTypeMemberTypeInfo(recordMember, out var recordMemberType, out var recordMemberTypeKinds, out var recordMemberTypeName))
                 {
                     continue;
                 }
-                if (!TryGetTabularFieldInfo(fieldAttribute!, out var fieldIndex, out var recordMemberConverterType))
+
+                if (recordMemberType!.IsStatic)
                 {
                     continue;
                 }
-                if (!TryGetTypeMemberTypeInfo(recordMember, out var recordMemberType, out var recordMemberTypeKinds, out var recordMemberTypeName))
+
+                if (recordMember!.IsStatic)
                 {
+                    ReportDiagnostic(context, _diagnostic0011, recordMember);
+
+                    continue;
+                }
+                if (!TypeMemberHasSuitableAccessibility(recordMemberType, recordType.ContainingAssembly))
+                {
+                    ReportDiagnostic(context, _diagnostic0012, recordMember);
+
                     continue;
                 }
 
@@ -54,19 +72,19 @@ internal sealed partial class TabularConverterParser
                 {
                     if (!TryGetConverterFieldType(recordMemberConverterType, out var memberConverterMemberType))
                     {
-                        ReportDiagnostic(context, _diagnostic0011, recordMember);
+                        ReportDiagnostic(context, _diagnostic0013, recordMember);
 
                         continue;
                     }
                     if (!SymbolEqualityComparer.Default.Equals(recordMemberType, memberConverterMemberType))
                     {
-                        ReportDiagnostic(context, _diagnostic0012, recordMember);
+                        ReportDiagnostic(context, _diagnostic0014, recordMember);
 
                         continue;
                     }
                     if (!TypeHasSupportedConstructor(recordMemberConverterType, cancellationToken))
                     {
-                        ReportDiagnostic(context, _diagnostic0013, recordMember);
+                        ReportDiagnostic(context, _diagnostic0015, recordMember);
 
                         continue;
                     }
@@ -223,7 +241,7 @@ internal sealed partial class TabularConverterParser
         name = default;
         typeKinds = default;
 
-        if ((type is null) || type.IsStatic)
+        if (type is null)
         {
             return false;
         }
@@ -314,23 +332,10 @@ internal sealed partial class TabularConverterParser
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (member is not (IFieldSymbol or IPropertySymbol))
-                {
-                    continue;
-                }
-
-                if (member.DeclaredAccessibility is Accessibility.Public)
+                if (member is (IFieldSymbol or IPropertySymbol))
                 {
                     builder ??= ImmutableArray.CreateBuilder<ISymbol>();
                     builder.Add(member);
-                }
-                else if (member.DeclaredAccessibility is Accessibility.Internal)
-                {
-                    if (SymbolEqualityComparer.Default.Equals(assembly, type.ContainingAssembly))
-                    {
-                        builder ??= ImmutableArray.CreateBuilder<ISymbol>();
-                        builder.Add(member);
-                    }
                 }
             }
 
@@ -338,6 +343,26 @@ internal sealed partial class TabularConverterParser
         }
 
         return builder?.ToImmutable() ?? ImmutableArray<ISymbol>.Empty;
+    }
+
+    private static bool TypeMemberHasSuitableAccessibility(ISymbol member, IAssemblySymbol? assembly)
+    {
+        if (member.DeclaredAccessibility is Accessibility.Public)
+        {
+            return true;
+        }
+        else if (member.DeclaredAccessibility is Accessibility.Internal)
+        {
+            if (assembly is not null)
+            {
+                if (SymbolEqualityComparer.Default.Equals(assembly, member.ContainingType?.ContainingAssembly))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private static bool TypeHasSupportedConstructor(INamedTypeSymbol type, CancellationToken cancellationToken)
