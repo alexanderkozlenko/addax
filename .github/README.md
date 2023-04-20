@@ -43,11 +43,9 @@ await writer.WriteRecordAsync(new[] { "Hello World!" });
 
 ## Working with records
 
-There are two types that provide the ability to work with tabular data on record level: `TabularRecordReader` and `TabularRecordWriter`. A mapping between a runtime type and a tabular record is performed with tabular record converters, which must be derived from `TabularRecordConverter<T>` class.
+The framework contains two types that provide forward-only access to tabular data on record level: `TabularRecordReader` and `TabularRecordWriter`. A mapping between a runtime type and a tabular record is performed with record converters.
 
-## Working with records - Generated converters
-
-The easiest way to create a record converter is to use the record converter source generator from `Addax.Formats.Tabular.Analyzers` package. This approach covers the majority of usage scenarios. To define a converter, the target type must be annotated with attributes from the same package: `TabularRecordAttribute` for the type definition (can be applied to structures, classes, record structures, or records classes), and `TabularFieldAttribute` for type member definitions (can be applied to fields or properties). A converter can be generated using one of two strategies: with non-strict schema (this is the default option) and with strict schema. The strategy with non-strict schema ignores tabular structure errors and data type mismatches instead of throwing an exception. The source generator supports specifying a field converter for a particular type member and automatically handles type members of `Nullable<T>` type. The generated converters are implemented as internal classes and are registered during module initialization in the shared converter registry `TabularRecordConverterRegistry.Shared`.
+The easiest way to create a record converter is by using the record converter source generator from `Addax.Formats.Tabular.Analyzers` package. To define a converter, the target type must be annotated with `TabularRecordAttribute` (can be applied to structures, classes, record structures, or records classes), and target type members must be annotated with `TabularFieldAttribute` (can be applied to fields or properties). A converter can be generated using one of two strategies: with or without a strict schema. The strategy without a strict schema is the default option, it ignores tabular structure errors and data type mismatches. The source generator supports specifying a field converter for a particular type member and automatically handles type members with `Nullable<T>` type. The generated converters are automatically registered in the shared converter registry.
 
 An example of working with records using a generated converter:
 
@@ -87,21 +85,13 @@ The annotation attributes can be trimmed using the standard approach with `ILLin
 </linker>
 ```
 
-## Working with records - Built-in converters
-
-There are two auxiliary built-in record converters, which can be useful when the tabular structure is not known, as a more convenient alternative to reading tabular data as fields. These converters represent a tabular record as `string[]` and `IEnumerable<string>` types respectively. To be noted, reading tabular data using these converters is not the most memory-efficient way due to implicitly created arrays of strings.
-
-## Working with records - Custom converters
-
-In addition to the shared converter registry, a custom converter can also be provided to reader and writer in options or during a particular operation.
+The framework contains two built-in record converters, which can be used when the tabular structure is unknown, as a more convenient alternative to reading tabular data as fields. These converters represent a tabular record as `string[]` and `IEnumerable<string>` types respectively. To be noted, reading tabular data using these converters is not memory-efficient due to implicitly created string arrays.
 
 ## Working with fields
 
-There are also two types that provide the ability to work with tabular data on field level: `TabularFieldReader` and `TabularFieldWriter`. A mapping between a type member and a tabular field is performed with tabular field converters, which must be derived from `TabularFieldConverter<T>` class. Both types support working with text represented as `ReadOnlySpan<char>` and `ReadOnlySequence<char>` values.
+The framework contains two types that provide forward-only access to tabular data on field level: `TabularFieldReader` and `TabularFieldWriter`. Both types support working with text data using `ReadOnlySpan<char>` and `ReadOnlySequence<char>`. A mapping between a type member and a tabular field is performed with field converters.
 
-## Working with fields - Built-in converters
-
-The reader and writer provide generic and non-generic method groups to work with fields. Both method groups work with built-in field converters; however, usage of non-generic methods is the primary way, as these methods may have more advanced optimization (e.g., for reading fields as `string` values). 
+The reader and writer provide generic and non-generic method groups to work with tabular fields. While both method groups work with built-in field converters, usage of non-generic methods is the primary approach due to advanced optimization (e.g., for reading fields as `string` values). 
 
 An example of working with fields using built-in converters:
 
@@ -125,9 +115,7 @@ writer.WriteDouble(.9);
 await writer.FlushAsync();
 ```
 
-## Working with fields - Custom converters
-
-A custom converter can be used in a record converter definition, provided to reader and writer in options, provided to reader and writer during a particular operation, or registered in the shared converter registry `TabularFieldConverterRegistry.Shared`. Any built-in converter can be overridden by a custom implementation, that will affect all methods in generic and non-generic method groups, except non-generic methods that work with `string` type.
+A custom converter can be registered in the shared converter registry and options or specified for a particular operation. A custom converter can be also used in a record converter definition. Any built-in converter can be overridden by a custom implementation, that will affect all methods in generic and non-generic method groups (except non-generic methods that work with `string` values).
 
 An example of defining a record converter with a custom field converter:
 
@@ -135,7 +123,7 @@ An example of defining a record converter with a custom field converter:
 [TabularRecord]
 internal struct Experiment
 {
-    [TabularField(index: 0, typeof(MyConverter))]
+    [TabularField(0, typeof(MyConverter))]
     public DateTime Timestamp;
 }
 ```
