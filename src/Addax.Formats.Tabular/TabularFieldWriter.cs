@@ -3,7 +3,7 @@
 using System.Buffers;
 using System.Numerics;
 using System.Text;
-using Addax.Formats.Tabular.Primitives;
+using Addax.Formats.Tabular.Internal;
 
 namespace Addax.Formats.Tabular;
 

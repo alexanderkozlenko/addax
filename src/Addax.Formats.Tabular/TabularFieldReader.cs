@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Addax.Formats.Tabular.Primitives;
+using Addax.Formats.Tabular.Internal;
 
 namespace Addax.Formats.Tabular;
 
@@ -15,6 +15,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
     private readonly TabularStreamReader _streamReader;
     private readonly TabularStreamParser _streamParser;
     private readonly SequenceSource<char> _bufferSource = new(minimumSegmentSize: 64);
+    private readonly TabularStringFactory _stringFactory;
     private readonly IReadOnlyDictionary<Type, TabularFieldConverter> _converters;
 
     private readonly TabularFieldConverter<BigInteger> _converterBigInteger;
@@ -62,6 +63,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
 
         _streamReader = new(stream, options.Encoding, options.BufferSize, options.LeaveOpen);
         _streamParser = new(dialect);
+        _stringFactory = options.StringFactory;
         _converters = options.FieldConverters;
 
         _converterBigInteger = SelectConverter<BigInteger>();
@@ -100,7 +102,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
     }
 
     /// <inheritdoc />
-    public ValueTask DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         _isDisposed = true;
         _value = ReadOnlySequence<char>.Empty;
@@ -110,7 +112,9 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         _fieldType = TabularFieldType.Undefined;
         _position = 0;
 
-        return _streamReader.DisposeAsync();
+        await _streamReader.DisposeAsync().ConfigureAwait(false);
+
+        _stringFactory.Dispose();
     }
 
     /// <summary>Asynchronously advances the reader to the next record.</summary>

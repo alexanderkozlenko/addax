@@ -27,7 +27,7 @@ internal sealed partial class TabularConverterParser
 
                 continue;
             }
-            if (recordType.IsValueType && recordType.IsRefLikeType)
+            if (recordType is { IsValueType: true, IsRefLikeType: true })
             {
                 ReportDiagnostic(context, _diagnostic0002, recordType);
 
@@ -152,7 +152,7 @@ internal sealed partial class TabularConverterParser
         if ((converterType.BaseType is { IsGenericType: true, TypeArguments.Length: 1 }) &&
             (converterType.BaseType.TypeArguments[0] is INamedTypeSymbol argumentType) &&
             (converterType.BaseType.ConstructedFrom is { IsGenericType: true, TypeArguments.Length: 1 }) &&
-            (converterType.BaseType.ConstructedFrom.TypeArguments[0] is ITypeSymbol))
+            (converterType.BaseType.ConstructedFrom.TypeArguments[0] is not null))
         {
             var constructedFromTypeName = converterType.BaseType.ConstructedFrom.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
 
@@ -250,7 +250,7 @@ internal sealed partial class TabularConverterParser
         {
             typeKinds |= TypeKinds.IsReferenceType;
         }
-        else if (type.IsValueType && type.IsGenericType)
+        else if (type is { IsValueType: true, IsGenericType: true })
         {
             if ((type.ConstructedFrom.SpecialType is SpecialType.System_Nullable_T) &&
                 (type.TypeArguments[0] is INamedTypeSymbol nullableType))

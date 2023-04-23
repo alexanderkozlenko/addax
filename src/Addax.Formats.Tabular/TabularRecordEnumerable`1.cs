@@ -1,6 +1,6 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
-using Addax.Formats.Tabular.Primitives;
+using Addax.Formats.Tabular.Internal;
 
 namespace Addax.Formats.Tabular;
 
@@ -28,7 +28,7 @@ internal sealed class TabularRecordEnumerable<T> : IAsyncEnumerable<TabularRecor
     {
         if ((Take == 0) || (_reader.PositionType is TabularPositionType.EndOfStream))
         {
-            return EmptyAsyncEnumerator<TabularRecord<T>>.Instance;
+            return Singleton<EmptyAsyncEnumerator<TabularRecord<T>>>.Instance;
         }
 
         if (cancellationToken == default)

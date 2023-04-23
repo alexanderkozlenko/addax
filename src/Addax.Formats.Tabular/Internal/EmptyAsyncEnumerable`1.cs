@@ -1,13 +1,13 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
-namespace Addax.Formats.Tabular.Primitives;
+#pragma warning disable CA1812
+
+namespace Addax.Formats.Tabular.Internal;
 
 internal sealed class EmptyAsyncEnumerable<T> : IAsyncEnumerable<T>
 {
-    public static readonly EmptyAsyncEnumerable<T> Instance = new();
-
     public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
     {
-        return EmptyAsyncEnumerator<T>.Instance;
+        return Singleton<EmptyAsyncEnumerator<T>>.Instance;
     }
 }

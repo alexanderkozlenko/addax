@@ -1,6 +1,6 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
-namespace Addax.Formats.Tabular.Primitives;
+namespace Addax.Formats.Tabular.Internal;
 
 internal enum BufferKind
 {

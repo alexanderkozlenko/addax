@@ -1,7 +1,7 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
 using System.Buffers;
-using Addax.Formats.Tabular.Primitives;
+using Addax.Formats.Tabular.Internal;
 
 namespace Addax.Formats.Tabular;
 

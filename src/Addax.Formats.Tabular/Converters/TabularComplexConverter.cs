@@ -2,7 +2,7 @@
 
 using System.Globalization;
 using System.Numerics;
-using Addax.Formats.Tabular.Primitives;
+using Addax.Formats.Tabular.Internal;
 
 namespace Addax.Formats.Tabular.Converters;
 
@@ -19,7 +19,7 @@ internal sealed class TabularComplexConverter : TabularFieldConverter<Complex>
     {
         var writer = new BufferWriter<char>(buffer);
 
-        if ((value.Real != 0) || (value.Imaginary == 0))
+        if ((value.Real is not 0) || (value.Imaginary is 0))
         {
             var result = value.Real.TryFormat(writer.WriteBuffer, out var charsWrittenR, "g", provider);
 
@@ -27,13 +27,13 @@ internal sealed class TabularComplexConverter : TabularFieldConverter<Complex>
 
             writer.Advance(charsWrittenR);
         }
-        if (value.Imaginary != 0)
+        if (value.Imaginary is not 0)
         {
-            if ((value.Real != 0) || (value.Imaginary < 0))
+            if ((value.Real is not 0) || (value.Imaginary is < 0))
             {
-                writer.Write(value.Imaginary < 0 ? '-' : '+');
+                writer.Write(value.Imaginary is < 0 ? '-' : '+');
             }
-            if (double.Abs(value.Imaginary) != 1)
+            if (double.Abs(value.Imaginary) is not 1)
             {
                 var result = double.Abs(value.Imaginary).TryFormat(writer.WriteBuffer, out var charsWrittenI, "g", provider);
 

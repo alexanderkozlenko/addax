@@ -4,7 +4,7 @@
 
 using System.Buffers;
 
-namespace Addax.Formats.Tabular.Primitives;
+namespace Addax.Formats.Tabular.Internal;
 
 internal sealed class SequenceSource<T> : IBufferWriter<T>, IDisposable
 {

@@ -4,7 +4,7 @@ using System.Buffers;
 using System.IO.Pipelines;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Addax.Formats.Tabular.Primitives;
+using Addax.Formats.Tabular.Internal;
 
 namespace Addax.Formats.Tabular;
 
@@ -59,7 +59,7 @@ internal sealed class TabularStreamReader : IAsyncDisposable
         var textReadResult = await _pipeReader.ReadAsync(cancellationToken).ConfigureAwait(false);
         var textReadBuffer = textReadResult.Buffer;
 
-        Convert(textReadBuffer, _bufferSource, textReadResult.IsCompleted);
+        Transcoder.Convert(_encoding, _decoder, textReadBuffer, _bufferSource, textReadResult.IsCompleted);
 
         _pipeReader.AdvanceTo(textReadBuffer.End);
         _isCompleted = textReadResult.IsCompleted;
@@ -85,33 +85,6 @@ internal sealed class TabularStreamReader : IAsyncDisposable
         }
 
         _examined = examined - consumed;
-    }
-
-    private void Convert(in ReadOnlySequence<byte> bytes, IBufferWriter<char> writer, bool flush)
-    {
-        var reader = new SequenceReader<byte>(bytes);
-        var completed = false;
-
-        while (!reader.End)
-        {
-            var bytesFragment = reader.UnreadSpan[..Math.Min(reader.UnreadSpan.Length, 0x00100000)];
-            var charsBuffer = writer.GetSpan(_encoding.GetMaxCharCount(bytesFragment.Length));
-
-            _decoder.Convert(bytesFragment, charsBuffer, flush: false, out var bytesUsed, out var charsUsed, out completed);
-            reader.Advance(bytesUsed);
-            writer.Advance(charsUsed);
-        }
-
-        if (!completed && flush)
-        {
-            var charsBuffer = writer.GetSpan(_encoding.GetMaxCharCount(byteCount: 0));
-
-            _decoder.Convert(bytes: ReadOnlySpan<byte>.Empty, charsBuffer, flush: true, out _, out var charsUsed, out completed);
-
-            Debug.Assert(completed);
-
-            writer.Advance(charsUsed);
-        }
     }
 
     public ReadOnlySequence<char> Buffer

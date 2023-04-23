@@ -1,7 +1,7 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
 using System.Runtime.CompilerServices;
-using Addax.Formats.Tabular.Primitives;
+using Addax.Formats.Tabular.Internal;
 
 namespace Addax.Formats.Tabular;
 
@@ -121,7 +121,7 @@ public sealed class TabularRecordReader : IAsyncDisposable
 
         if ((take == 0) || !HasMoreRecords)
         {
-            return EmptyAsyncEnumerable<TabularRecord<T>>.Instance;
+            return Singleton<EmptyAsyncEnumerable<TabularRecord<T>>>.Instance;
         }
 
         cancellationToken.ThrowIfCancellationRequested();
@@ -151,7 +151,7 @@ public sealed class TabularRecordReader : IAsyncDisposable
 
         if (!HasMoreRecords)
         {
-            return EmptyAsyncEnumerable<TabularRecord<T>>.Instance;
+            return Singleton<EmptyAsyncEnumerable<TabularRecord<T>>>.Instance;
         }
 
         cancellationToken.ThrowIfCancellationRequested();

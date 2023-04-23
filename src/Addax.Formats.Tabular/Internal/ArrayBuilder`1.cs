@@ -2,7 +2,7 @@
 
 using System.Buffers;
 
-namespace Addax.Formats.Tabular.Primitives;
+namespace Addax.Formats.Tabular.Internal;
 
 internal struct ArrayBuilder<T> : IDisposable
 {

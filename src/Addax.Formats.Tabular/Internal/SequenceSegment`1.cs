@@ -2,13 +2,20 @@
 
 using System.Buffers;
 
-namespace Addax.Formats.Tabular.Primitives;
+namespace Addax.Formats.Tabular.Internal;
 
-internal sealed class SequenceSegment<T> : ReadOnlySequenceSegment<T>, IDisposable
+internal sealed class SequenceSegment<T> : ReadOnlySequenceSegment<T>
 {
     private T[]? _buffer;
 
-    public void Dispose()
+    public void EnsureCapacity(int size)
+    {
+        Debug.Assert(_buffer is null);
+
+        _buffer = ArrayPool<T>.Shared.Rent(size);
+    }
+
+    public void Clear()
     {
         Debug.Assert(_buffer is not null);
 
@@ -19,13 +26,6 @@ internal sealed class SequenceSegment<T> : ReadOnlySequenceSegment<T>, IDisposab
         Memory = ReadOnlyMemory<T>.Empty;
         Next = null;
         RunningIndex = 0;
-    }
-
-    public void EnsureCapacity(int size)
-    {
-        Debug.Assert(_buffer is null);
-
-        _buffer = ArrayPool<T>.Shared.Rent(size);
     }
 
     public void Advance(int count)

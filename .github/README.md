@@ -6,18 +6,18 @@ Addax is a high-performance and low-allocating framework for producing and consu
 
 |Name|Version|
 |:-|:-|
-|`Addax.Formats.Tabular`|[![NuGet](https://img.shields.io/nuget/vpre/Addax.Formats.Tabular.svg?style=flat)](https://www.nuget.org/packages/Addax.Formats.Tabular)|
-|`Addax.Formats.Tabular.Analyzers`|[![NuGet](https://img.shields.io/nuget/vpre/Addax.Formats.Tabular.Analyzers.svg?style=flat)](https://www.nuget.org/packages/Addax.Formats.Tabular.Analyzers)|
+|Addax.Formats.Tabular|[![NuGet](https://img.shields.io/nuget/vpre/Addax.Formats.Tabular.svg?style=flat)](https://www.nuget.org/packages/Addax.Formats.Tabular)|
+|Addax.Formats.Tabular.Analyzers|[![NuGet](https://img.shields.io/nuget/vpre/Addax.Formats.Tabular.Analyzers.svg?style=flat)](https://www.nuget.org/packages/Addax.Formats.Tabular.Analyzers)|
 
 ## Overview
 
-The main features are the following:
+The main features are:
 
-- The framework supports data in any encoding and of any tabular data dialect.
-- The framework supports working with tabular fields of size larger than 2 GB of characters.
+- The framework supports data in any tabular dialect and stream encoding.
+- The framework supports working with tabular fields longer than 2,147,483,591 characters.
 - The framework and any generated code are fully compatible with native AOT compilation.
-- The framework uses System.IO.Pipelines library for high-performance I/O.
-- The framework uses a finite-state machine with SIMD-optimized lookup for parsing.
+- The framework provides high-performance I/O by using System.IO.Pipelines.
+- The framework provides high-speed reading by using SIMD-optimized lookups.
 
 An example of reading from and writing to a CSV file formatted according to RFC 4180:
 
@@ -45,7 +45,7 @@ await writer.WriteRecordAsync(new[] { "Hello World!" });
 
 The framework contains two types that provide forward-only access to tabular data on record level: `TabularRecordReader` and `TabularRecordWriter`. A mapping between a runtime type and a tabular record is performed with record converters.
 
-The easiest way to create a record converter is by using the record converter source generator from `Addax.Formats.Tabular.Analyzers` package. To define a converter, the target type must be annotated with `TabularRecordAttribute` (can be applied to structures, classes, record structures, or records classes), and target type members must be annotated with `TabularFieldAttribute` (can be applied to fields or properties). A converter can be generated using one of two strategies: with or without a strict schema. The strategy without a strict schema is the default option, it ignores tabular structure errors and data type mismatches. The source generator supports specifying a field converter for a particular type member and automatically handles type members with `Nullable<T>` type. The generated converters are automatically registered in the shared converter registry.
+The easiest way to create a record converter is by using the record converter source generator from Addax.Formats.Tabular.Analyzers package. To define a converter, the target type must be annotated with `TabularRecordAttribute` (can be applied to structures, classes, record structures, or records classes), and target type members must be annotated with `TabularFieldAttribute` (can be applied to fields or properties). A converter can be generated using one of two strategies: with or without a strict schema. The strategy without a strict schema is the default option, it ignores tabular structure errors and data type mismatches. The source generator supports specifying a field converter for a particular type member and automatically handles type members with `Nullable<T>` type. The generated converters are automatically registered in the shared converter registry.
 
 An example of working with records using a generated converter:
 
@@ -91,7 +91,7 @@ The framework contains two built-in record converters, which can be used when th
 
 The framework contains two types that provide forward-only access to tabular data on field level: `TabularFieldReader` and `TabularFieldWriter`. Both types support working with text data using `ReadOnlySpan<char>` and `ReadOnlySequence<char>`. A mapping between a type member and a tabular field is performed with field converters.
 
-The reader and writer provide generic and non-generic method groups to work with tabular fields. While both method groups work with built-in field converters, usage of non-generic methods is the primary approach due to advanced optimization (e.g., for reading fields as `string` values). 
+The reader and writer provide generic and non-generic method groups to work with tabular fields. While both method groups work with built-in field converters, usage of non-generic methods is the primary approach due to advanced optimization (e.g., for reading fields as strings). 
 
 An example of working with fields using built-in converters:
 
@@ -115,7 +115,7 @@ writer.WriteDouble(.9);
 await writer.FlushAsync();
 ```
 
-A custom converter can be registered in the shared converter registry and options or specified for a particular operation. A custom converter can be also used in a record converter definition. Any built-in converter can be overridden by a custom implementation, that will affect all methods in generic and non-generic method groups (except non-generic methods that work with `string` values).
+A custom converter can be registered in the shared converter registry and options or specified for a particular operation. A custom converter can be also used in a record converter definition. Any built-in converter can be overridden by a custom implementation, that will affect all methods in generic and non-generic method groups (except non-generic methods that work with strings).
 
 An example of defining a record converter with a custom field converter:
 
@@ -141,6 +141,12 @@ internal class MyConverter : TabularFieldConverter<DateTime>
     }
 }
 ```
+
+## Advanced configuration
+
+The framework supports usage of custom factories for `string` instances. A custom implementation must be derived from `TabularStringFactory` type and specified in field reader options or record reader options. This allows applying advanced techniques during conversion of a `ReadOnlySequence<char>` buffer into a `string` instance, such as string deduplication.
+
+To produce `ReadOnlySequence<char>` values, the framework uses a pool of `ReadOnlySequenceSegment<T>` instances with the default capacity of `256 * Environment.ProcessorCount`. This can be customized by providing a different `int` value using `AppContext.SetData` method with `Addax.Formats.Tabular.SequenceSegmentPoolCapacity` as the data element name.
 
 ## Supported runtime types
 

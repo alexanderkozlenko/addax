@@ -1,11 +1,11 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
-namespace Addax.Formats.Tabular.Primitives;
+#pragma warning disable CA1812
+
+namespace Addax.Formats.Tabular.Internal;
 
 internal sealed class EmptyAsyncEnumerator<T> : IAsyncEnumerator<T>
 {
-    public static readonly EmptyAsyncEnumerator<T> Instance = new();
-
     public ValueTask DisposeAsync()
     {
         return ValueTask.CompletedTask;

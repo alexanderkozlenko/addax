@@ -2,7 +2,7 @@
 
 #pragma warning disable CA1822
 
-using Addax.Formats.Tabular.Primitives;
+using Addax.Formats.Tabular.Internal;
 
 namespace Addax.Formats.Tabular;
 

@@ -1,17 +1,14 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
-using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using System.Text;
-using Addax.Formats.Tabular.Primitives;
+using Addax.Formats.Tabular.Internal;
 
 namespace Addax.Formats.Tabular;
 
 public partial class TabularFieldReader
 {
-    private static readonly SpanAction<char, ReadOnlySequence<char>> _stringFactory = CreateString;
-
     /// <summary>Tries to retrieve the current reader value as <see cref="char" /> and returns a value that indicates whether the operation succeeded.</summary>
     /// <param name="result">When this method returns, contains the <see cref="char" /> equivalent of the current reader value if the operation succeeded.</param>
     /// <returns><see langword="true" /> if the entire value can be successfully retrieved; <see langword="false" /> otherwise.</returns>
@@ -41,7 +38,7 @@ public partial class TabularFieldReader
             ThrowInvalidOperationException();
         }
 
-        return TryCreateString(_value, out result);
+        return _stringFactory.TryCreateString(_value, out result);
 
         [DoesNotReturn]
         [StackTraceHidden]
@@ -261,41 +258,5 @@ public partial class TabularFieldReader
     public bool TryGetGuid(out Guid result)
     {
         return TryGet(_converterGuid, out result);
-    }
-
-    private static bool TryCreateString(in ReadOnlySequence<char> value, [NotNullWhen(true)] out string? result)
-    {
-        var valueLength = value.Length;
-
-        if (valueLength == 0)
-        {
-            result = string.Empty;
-
-            return true;
-        }
-        else if (valueLength <= Array.MaxLength)
-        {
-            if (value.IsSingleSegment)
-            {
-                result = new(value.FirstSpan);
-            }
-            else
-            {
-                result = string.Create((int)valueLength, value, _stringFactory);
-            }
-
-            return true;
-        }
-        else
-        {
-            result = null;
-
-            return false;
-        }
-    }
-
-    private static void CreateString(Span<char> buffer, ReadOnlySequence<char> sequence)
-    {
-        sequence.CopyTo(buffer);
     }
 }
