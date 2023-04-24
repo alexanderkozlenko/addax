@@ -29,8 +29,8 @@ public sealed class TabularRecordConverterRegistry : ConcurrentDictionary<Type, 
     {
         var registry = new TabularRecordConverterRegistry();
 
-        registry.TryAdd(typeof(string[]), new TabularStringArrayConverter<string[]>());
-        registry.TryAdd(typeof(IEnumerable<string>), new TabularStringArrayConverter<IEnumerable<string>>());
+        registry.TryAdd(typeof(string[]), new TabularStringArrayConverter());
+        registry.TryAdd(typeof(IEnumerable<string>), new TabularStringEnumerableConverter());
 
         return registry;
     }

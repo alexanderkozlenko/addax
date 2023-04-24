@@ -14,7 +14,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
 {
     private readonly TabularStreamReader _streamReader;
     private readonly TabularStreamParser _streamParser;
-    private readonly SequenceSource<char> _bufferSource = new(minimumSegmentSize: 64);
+    private readonly SequenceSource<char> _bufferSource = new(minimumSegmentSize: TabularDataInfo.StackBufferLength);
     private readonly TabularStringFactory _stringFactory;
     private readonly IReadOnlyDictionary<Type, TabularFieldConverter> _converters;
 

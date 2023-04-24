@@ -85,38 +85,42 @@ internal sealed partial class TabularConverterEmitter
         return false;
     }
 
-    private static bool TypeSupportsReadingFields(in TabularRecordSpec recordSpec)
+    private static int GetReadingFieldsCount(in TabularRecordSpec recordSpec)
     {
+        var count = 0;
+
         foreach (var kvp in recordSpec.FieldSpecs)
         {
             if (kvp.Value.MemberAccessTypes.HasFlag(TypeMemberAccessTypes.Write))
             {
-                return true;
+                count += 1;
             }
         }
 
-        return false;
+        return count;
     }
 
-    private static bool TypeSupportsWritingFields(in TabularRecordSpec recordSpec)
+    private static int GetWritingFieldsCount(in TabularRecordSpec recordSpec)
     {
         for (var i = 0; i < recordSpec.FieldSpecs.Count; i++)
         {
             if (!recordSpec.FieldSpecs.ContainsKey(i))
             {
-                return false;
+                return 0;
             }
         }
+
+        var count = 0;
 
         foreach (var kvp in recordSpec.FieldSpecs)
         {
             if (kvp.Value.MemberAccessTypes.HasFlag(TypeMemberAccessTypes.Read))
             {
-                return true;
+                count += 1;
             }
         }
 
-        return false;
+        return count;
     }
 
     private static TKey[] GetSortedKeys<TKey, TValue>(ImmutableDictionary<TKey, TValue> dictionary)

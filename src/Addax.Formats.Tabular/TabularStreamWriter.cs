@@ -18,8 +18,8 @@ internal sealed class TabularStreamWriter : IBufferWriter<char>, IAsyncDisposabl
 
     public TabularStreamWriter(Stream stream, Encoding encoding, int bufferSize, bool leaveOpen)
     {
-        _bufferSource = new(Math.Max(1, encoding.GetMaxCharCount(bufferSize)));
-        _pipeWriter = PipeWriter.Create(stream, new(pool: null, bufferSize, leaveOpen));
+        _bufferSource = new(GetMinimumBufferSegmentSize(encoding, bufferSize));
+        _pipeWriter = PipeWriter.Create(stream, CreatePipeWriterOptions(bufferSize, leaveOpen));
         _encoding = encoding;
         _encoder = encoding.GetEncoder();
         _isPreambleCommitted = encoding.Preamble.IsEmpty;
@@ -48,7 +48,7 @@ internal sealed class TabularStreamWriter : IBufferWriter<char>, IAsyncDisposabl
 
     public ValueTask FlushAsync(CancellationToken cancellationToken)
     {
-        if (_bufferSource.Length == 0)
+        if (_bufferSource.IsEmpty)
         {
             return ValueTask.CompletedTask;
         }
@@ -67,6 +67,16 @@ internal sealed class TabularStreamWriter : IBufferWriter<char>, IAsyncDisposabl
         var flushTask = _pipeWriter.FlushAsync(cancellationToken);
 
         return flushTask.IsCompletedSuccessfully ? ValueTask.CompletedTask : new(flushTask.AsTask());
+    }
+
+    private static int GetMinimumBufferSegmentSize(Encoding encoding, int bufferSize)
+    {
+        return Math.Max(1, encoding.GetMaxCharCount(bufferSize));
+    }
+
+    private static StreamPipeWriterOptions CreatePipeWriterOptions(int bufferSize, bool leaveOpen)
+    {
+        return new(pool: null, bufferSize, leaveOpen);
     }
 
     public long UnflushedChars

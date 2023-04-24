@@ -5,10 +5,10 @@ using Addax.Formats.Tabular.Internal;
 
 namespace Addax.Formats.Tabular.Converters;
 
-internal sealed class TabularStringArrayConverter : TabularRecordConverter<string[]>
+internal sealed class TabularStringEnumerableConverter : TabularRecordConverter<IEnumerable<string>>
 {
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
-    public override async ValueTask<TabularRecord<string[]>> ReadRecordAsync(TabularFieldReader reader, TabularRecordReaderContext context, CancellationToken cancellationToken)
+    public override async ValueTask<TabularRecord<IEnumerable<string>>> ReadRecordAsync(TabularFieldReader reader, TabularRecordReaderContext context, CancellationToken cancellationToken)
     {
         using var builder = ArrayBuilder<string>.Create(capacity: 32);
 
@@ -16,21 +16,21 @@ internal sealed class TabularStringArrayConverter : TabularRecordConverter<strin
         {
             if (reader.FieldType is TabularFieldType.Comment)
             {
-                return TabularRecord<string[]>.AsComment(context.ConsumeComments ? reader.GetString() : null);
+                return TabularRecord<IEnumerable<string>>.AsComment(context.ConsumeComments ? reader.GetString() : null);
             }
 
             builder.Add(reader.GetString());
         }
 
-        return TabularRecord<string[]>.AsContent(builder.ToArray());
+        return TabularRecord<IEnumerable<string>>.AsContent(builder.ToArray());
     }
 
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
-    public override async ValueTask WriteRecordAsync(TabularFieldWriter writer, string[] record, TabularRecordWriterContext context, CancellationToken cancellationToken)
+    public override async ValueTask WriteRecordAsync(TabularFieldWriter writer, IEnumerable<string> record, TabularRecordWriterContext context, CancellationToken cancellationToken)
     {
-        for (var i = 0; i < record.Length; i++)
+        foreach (var value in record)
         {
-            writer.WriteString(record[i]);
+            writer.WriteString(value);
 
             if (writer.UnflushedChars > context.FlushThreshold)
             {

@@ -24,7 +24,7 @@ public sealed class TabularRecordWriter : IAsyncDisposable
         ArgumentNullException.ThrowIfNull(options);
 
         _fieldWriter = new(stream, dialect, options);
-        _context = new(TabularConverterFactory.Instance);
+        _context = new(TabularConverterFactory.Instance, GetFlushThreshold(options));
         _converters = options.RecordConverters;
     }
 
@@ -184,5 +184,10 @@ public sealed class TabularRecordWriter : IAsyncDisposable
         }
 
         return converterT;
+    }
+
+    private static long GetFlushThreshold(TabularRecordWriterOptions options)
+    {
+        return Math.Min(options.Encoding.GetMaxCharCount(options.BufferSize), Array.MaxLength);
     }
 }

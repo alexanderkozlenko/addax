@@ -42,8 +42,8 @@ internal partial class TabularConverterEmitter
 
     private static void BuildRecordConverterSource(StringBuilder builder, in TabularRecordSpec recordSpec, int converterIndex, CancellationToken cancellationToken)
     {
-        var typeSupportsReading = TypeSupportsReadingFields(recordSpec);
-        var typeSupportsWriting = TypeSupportsWritingFields(recordSpec);
+        var typeReadingFieldsCount = GetReadingFieldsCount(recordSpec);
+        var typeWritingFieldsCount = GetWritingFieldsCount(recordSpec);
         var typeHasFieldConverters = TypeHasFieldConverters(recordSpec);
 
         var fieldIndices = GetSortedKeys(recordSpec.FieldSpecs);
@@ -60,7 +60,7 @@ internal partial class TabularConverterEmitter
         builder.AppendLine($"internal sealed class GeneratedRecordConverter{converterIndex} : Tabular::TabularRecordConverter<{recordSpec.TypeName}>");
         builder.AppendLine("{");
 
-        if (typeSupportsReading)
+        if (typeReadingFieldsCount > 0)
         {
             builder.AppendLine("    [global::System.Runtime.CompilerServices.AsyncMethodBuilder(typeof(global::System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<>))]");
             builder.AppendLine($"    public override async global::System.Threading.Tasks.ValueTask<Tabular::TabularRecord<{recordSpec.TypeName}>> ReadRecordAsync(Tabular::TabularFieldReader reader, Tabular::TabularRecordReaderContext context, global::System.Threading.CancellationToken cancellationToken)");
@@ -368,15 +368,23 @@ internal partial class TabularConverterEmitter
             builder.AppendLine("    }");
         }
 
-        if (typeSupportsWriting)
+        if (typeWritingFieldsCount > 0)
         {
-            if (typeSupportsReading)
+            if (typeReadingFieldsCount > 0)
             {
                 builder.AppendLine();
             }
 
-            builder.AppendLine("    [global::System.Runtime.CompilerServices.AsyncMethodBuilder(typeof(global::System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder))]");
-            builder.AppendLine($"    public override async global::System.Threading.Tasks.ValueTask WriteRecordAsync(Tabular::TabularFieldWriter writer, {recordSpec.TypeName} record, Tabular::TabularRecordWriterContext context, global::System.Threading.CancellationToken cancellationToken)");
+            if (typeWritingFieldsCount > 1)
+            {
+                builder.AppendLine("    [global::System.Runtime.CompilerServices.AsyncMethodBuilder(typeof(global::System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder))]");
+                builder.AppendLine($"    public override async global::System.Threading.Tasks.ValueTask WriteRecordAsync(Tabular::TabularFieldWriter writer, {recordSpec.TypeName} record, Tabular::TabularRecordWriterContext context, global::System.Threading.CancellationToken cancellationToken)");
+            }
+            else
+            {
+                builder.AppendLine($"    public override global::System.Threading.Tasks.ValueTask WriteRecordAsync(Tabular::TabularFieldWriter writer, {recordSpec.TypeName} record, Tabular::TabularRecordWriterContext context, global::System.Threading.CancellationToken cancellationToken)");
+            }
+
             builder.AppendLine("    {");
 
             if (typeHasFieldConverters)
@@ -474,13 +482,21 @@ internal partial class TabularConverterEmitter
                     }
                 }
 
-                builder.AppendLine();
-                builder.AppendLine("        await writer.FlushAsync(cancellationToken).ConfigureAwait(false);");
-
-                if (i != recordSpec.FieldSpecs.Count - 1)
+                if (i < recordSpec.FieldSpecs.Count - 1)
                 {
                     builder.AppendLine();
+                    builder.AppendLine("        if (writer.UnflushedChars > context.FlushThreshold)");
+                    builder.AppendLine("        {");
+                    builder.AppendLine("            await writer.FlushAsync(cancellationToken).ConfigureAwait(false);");
+                    builder.AppendLine("        }");
+                    builder.AppendLine();
                 }
+            }
+
+            if (typeWritingFieldsCount == 1)
+            {
+                builder.AppendLine();
+                builder.AppendLine("        return global::System.Threading.Tasks.ValueTask.CompletedTask;");
             }
 
             builder.AppendLine("    }");

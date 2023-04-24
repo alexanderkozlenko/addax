@@ -1,7 +1,5 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
-#pragma warning disable CA2213
-
 using System.Buffers;
 
 namespace Addax.Formats.Tabular.Internal;
@@ -116,19 +114,22 @@ internal sealed class SequenceSource<T> : IBufferWriter<T>
 
     public void Clear()
     {
-        var currentSegment = _sequenceHead;
-
-        _sequenceTail = null;
-        _sequenceHead = null;
-        _sequenceHeadStart = 0;
-
-        while (currentSegment is not null)
+        if (_sequenceHead is not null)
         {
-            var nextSegment = (SequenceSegment<T>?)currentSegment.Next;
+            var currentSegment = _sequenceHead;
 
-            SequenceSegmentPool<T>.Shared.Return(currentSegment);
+            _sequenceTail = null;
+            _sequenceHead = null;
+            _sequenceHeadStart = 0;
 
-            currentSegment = nextSegment;
+            while (currentSegment is not null)
+            {
+                var nextSegment = (SequenceSegment<T>?)currentSegment.Next;
+
+                SequenceSegmentPool<T>.Shared.Return(currentSegment);
+
+                currentSegment = nextSegment;
+            }
         }
     }
 
@@ -144,6 +145,14 @@ internal sealed class SequenceSource<T> : IBufferWriter<T>
             }
 
             return sequenceTail.Memory.Length + sequenceTail.RunningIndex - _sequenceHeadStart;
+        }
+    }
+
+    public bool IsEmpty
+    {
+        get
+        {
+            return _sequenceHead is null;
         }
     }
 }

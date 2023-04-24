@@ -21,8 +21,8 @@ internal sealed class TabularStreamReader : IAsyncDisposable
 
     public TabularStreamReader(Stream stream, Encoding encoding, int bufferSize, bool leaveOpen)
     {
-        _bufferSource = new(Math.Max(1, encoding.GetMaxCharCount(bufferSize)));
-        _pipeReader = PipeReader.Create(stream, new(pool: null, bufferSize, Math.Max(1, bufferSize / 4), leaveOpen));
+        _bufferSource = new(GetMinimumBufferSegmentSize(encoding, bufferSize));
+        _pipeReader = PipeReader.Create(stream, CreatePipeReaderOptions(bufferSize, leaveOpen));
         _encoding = encoding;
         _decoder = encoding.GetDecoder();
         _isPreambleConsumed = encoding.Preamble.IsEmpty;
@@ -90,6 +90,16 @@ internal sealed class TabularStreamReader : IAsyncDisposable
         }
 
         _examined = examined - consumed;
+    }
+
+    private static int GetMinimumBufferSegmentSize(Encoding encoding, int bufferSize)
+    {
+        return Math.Max(1, encoding.GetMaxCharCount(bufferSize));
+    }
+
+    private static StreamPipeReaderOptions CreatePipeReaderOptions(int bufferSize, bool leaveOpen)
+    {
+        return new(pool: null, bufferSize, Math.Max(1, bufferSize / 4), leaveOpen);
     }
 
     public ReadOnlySequence<char> Buffer
