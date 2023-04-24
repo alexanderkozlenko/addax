@@ -6,7 +6,7 @@ using System.Buffers;
 
 namespace Addax.Formats.Tabular.Internal;
 
-internal sealed class SequenceSource<T> : IBufferWriter<T>, IDisposable
+internal sealed class SequenceSource<T> : IBufferWriter<T>
 {
     private readonly int _minimumSegmentSize;
 
@@ -19,24 +19,6 @@ internal sealed class SequenceSource<T> : IBufferWriter<T>, IDisposable
         Debug.Assert(minimumSegmentSize > 0);
 
         _minimumSegmentSize = minimumSegmentSize;
-    }
-
-    public void Dispose()
-    {
-        var currentSegment = _sequenceHead;
-
-        _sequenceTail = null;
-        _sequenceHead = null;
-        _sequenceHeadStart = 0;
-
-        while (currentSegment is not null)
-        {
-            var nextSegment = (SequenceSegment<T>?)currentSegment.Next;
-
-            SequenceSegmentPool<T>.Shared.Return(currentSegment);
-
-            currentSegment = nextSegment;
-        }
     }
 
     public ReadOnlySequence<T> CreateSequence()
@@ -129,6 +111,24 @@ internal sealed class SequenceSource<T> : IBufferWriter<T>, IDisposable
         if (currentSegment is null)
         {
             _sequenceTail = null;
+        }
+    }
+
+    public void Clear()
+    {
+        var currentSegment = _sequenceHead;
+
+        _sequenceTail = null;
+        _sequenceHead = null;
+        _sequenceHeadStart = 0;
+
+        while (currentSegment is not null)
+        {
+            var nextSegment = (SequenceSegment<T>?)currentSegment.Next;
+
+            SequenceSegmentPool<T>.Shared.Return(currentSegment);
+
+            currentSegment = nextSegment;
         }
     }
 

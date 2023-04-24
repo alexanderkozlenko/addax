@@ -30,7 +30,7 @@ internal sealed class TabularStreamReader : IAsyncDisposable
 
     public ValueTask DisposeAsync()
     {
-        _bufferSource.Dispose();
+        _bufferSource.Clear();
 
         return _pipeReader.CompleteAsync();
     }
@@ -72,12 +72,17 @@ internal sealed class TabularStreamReader : IAsyncDisposable
         }
     }
 
+    public void Advance(long consumed)
+    {
+        Advance(consumed, consumed);
+    }
+
     public void Advance(long consumed, long examined)
     {
         Debug.Assert(consumed >= 0);
+        Debug.Assert(consumed <= _bufferSource.Length);
         Debug.Assert(examined >= consumed);
         Debug.Assert(examined >= _examined);
-        Debug.Assert(examined <= _bufferSource.Length);
 
         if (consumed != 0)
         {

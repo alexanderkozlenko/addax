@@ -334,6 +334,16 @@ public sealed partial class TabularFieldWriter : IAsyncDisposable
         return converterT;
     }
 
+    /// <summary>Gets the count of unflushed characters within the current writer.</summary>
+    /// <value>A non-negative zero-based number.</value>
+    public long UnflushedChars
+    {
+        get
+        {
+            return _streamWriter.UnflushedChars;
+        }
+    }
+
     /// <summary>Gets a type of the last written field.</summary>
     /// <value>A <see cref="TabularFieldType" /> value.</value>
     public TabularFieldType FieldType

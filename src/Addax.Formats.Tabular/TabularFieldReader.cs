@@ -106,7 +106,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
     {
         _isDisposed = true;
         _value = ReadOnlySequence<char>.Empty;
-        _bufferSource.Dispose();
+        _bufferSource.Clear();
         _bufferKind = BufferKind.None;
         _positionType = TabularPositionType.EndOfStream;
         _fieldType = TabularFieldType.Undefined;
@@ -269,7 +269,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
             }
             else
             {
-                _streamReader.Advance(examinedLength, examinedLength);
+                _streamReader.Advance(examinedLength);
             }
 
             _positionType = parsingStatus switch
@@ -412,12 +412,12 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         {
             case BufferKind.Shared:
                 {
-                    _streamReader.Advance(_streamReader.Examined, _streamReader.Examined);
+                    _streamReader.Advance(_streamReader.Examined);
                 }
                 break;
             case BufferKind.Private:
                 {
-                    _bufferSource.Dispose();
+                    _bufferSource.Clear();
                 }
                 break;
         }
@@ -435,16 +435,6 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         return converterT;
     }
 
-    /// <summary>Gets a type of the last processed field.</summary>
-    /// <value>A <see cref="TabularFieldType" /> value.</value>
-    public TabularFieldType FieldType
-    {
-        get
-        {
-            return _fieldType;
-        }
-    }
-
     /// <summary>Gets a value of the last read field as a sequence of contiguous character series.</summary>
     /// <value>A <see cref="ReadOnlySequence{T}" /> value.</value>
     public ReadOnlySequence<char> Value
@@ -452,6 +442,16 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         get
         {
             return _value;
+        }
+    }
+
+    /// <summary>Gets a type of the last processed field.</summary>
+    /// <value>A <see cref="TabularFieldType" /> value.</value>
+    public TabularFieldType FieldType
+    {
+        get
+        {
+            return _fieldType;
         }
     }
 

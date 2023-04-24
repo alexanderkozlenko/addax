@@ -62,10 +62,18 @@ internal sealed class TabularStreamWriter : IBufferWriter<char>, IAsyncDisposabl
 
         Transcoder.Convert(_encoding, _encoder, _bufferSource.CreateSequence(), _pipeWriter, flush: true);
 
-        _bufferSource.Dispose();
+        _bufferSource.Clear();
 
         var flushTask = _pipeWriter.FlushAsync(cancellationToken);
 
         return flushTask.IsCompletedSuccessfully ? ValueTask.CompletedTask : new(flushTask.AsTask());
+    }
+
+    public long UnflushedChars
+    {
+        get
+        {
+            return _bufferSource.Length;
+        }
     }
 }
