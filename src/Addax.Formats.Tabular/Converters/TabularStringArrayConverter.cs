@@ -16,13 +16,13 @@ internal sealed class TabularStringArrayConverter : TabularRecordConverter<strin
         {
             if (reader.FieldType is TabularFieldType.Comment)
             {
-                return TabularRecord<string[]>.AsComment(context.ConsumeComments ? reader.GetString() : null);
+                return TabularRecord<string[]>.FromComment(context.ConsumeComments ? reader.GetString() : null);
             }
 
             builder.Add(reader.GetString());
         }
 
-        return TabularRecord<string[]>.AsContent(builder.ToArray());
+        return TabularRecord<string[]>.FromContent(builder.ToArray());
     }
 
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]

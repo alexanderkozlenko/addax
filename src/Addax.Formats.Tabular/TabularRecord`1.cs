@@ -23,7 +23,7 @@ public readonly struct TabularRecord<T> : IEquatable<TabularRecord<T>>
 
     /// <summary>Creates a new record with the specified value as data.</summary>
     /// <param name="value">The record data.</param>
-    public static TabularRecord<T> AsContent(T value)
+    public static TabularRecord<T> FromContent(T value)
     {
         ArgumentNullException.ThrowIfNull(value);
 
@@ -32,7 +32,7 @@ public readonly struct TabularRecord<T> : IEquatable<TabularRecord<T>>
 
     /// <summary>Creates a new record with the specified value as a comment.</summary>
     /// <param name="value">The record comment.</param>
-    public static TabularRecord<T> AsComment(string? value)
+    public static TabularRecord<T> FromComment(string? value)
     {
         return new(hasContent: false, content: default, comment: value);
     }
@@ -72,7 +72,6 @@ public readonly struct TabularRecord<T> : IEquatable<TabularRecord<T>>
 
     /// <summary>Gets a value indicating whether the current record contains data.</summary>
     /// <value><see langword="true" /> if the current record contains data; <see langword="false" /> otherwise.</value>
-    [MemberNotNullWhen(true, nameof(Content))]
     public bool HasContent
     {
         get
@@ -81,13 +80,25 @@ public readonly struct TabularRecord<T> : IEquatable<TabularRecord<T>>
         }
     }
 
-    /// <summary>Gets the record data if the current record contains data.</summary>
+    /// <summary>Gets the record content if the current record contains data.</summary>
     /// <value>An instance or the default value of <typeparamref name="T" />.</value>
-    public T? Content
+    public T Content
     {
         get
         {
-            return _content;
+            if (!_hasContent)
+            {
+                ThrowInvalidOperationException();
+            }
+
+            return _content!;
+
+            [DoesNotReturn]
+            [StackTraceHidden]
+            static void ThrowInvalidOperationException()
+            {
+                throw new InvalidOperationException("The current record contain a comment.");
+            }
         }
     }
 
@@ -97,7 +108,19 @@ public readonly struct TabularRecord<T> : IEquatable<TabularRecord<T>>
     {
         get
         {
+            if (_hasContent)
+            {
+                ThrowInvalidOperationException();
+            }
+
             return _comment;
+
+            [DoesNotReturn]
+            [StackTraceHidden]
+            static void ThrowInvalidOperationException()
+            {
+                throw new InvalidOperationException("The current record contains data.");
+            }
         }
     }
 }

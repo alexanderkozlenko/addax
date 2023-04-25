@@ -29,7 +29,7 @@ await using var reader = new TabularRecordReader(stream, dialect);
 
 await foreach (var record in reader.ReadRecordsAsync<string[]>())
 {
-    Console.WriteLine(string.Join(',', record.Content!));
+    Console.WriteLine(string.Join(',', record.Content));
 }
 ```
 ```cs
@@ -144,7 +144,7 @@ internal class MyConverter : TabularFieldConverter<DateTime>
 
 ## Advanced configuration
 
-The framework supports usage of custom factories for `string` instances. A custom implementation must be derived from `TabularStringFactory` type and specified in field reader options or record reader options. This allows applying advanced techniques during conversion of a `ReadOnlySequence<char>` buffer into a `string` instance, such as string deduplication.
+The framework supports usage of custom factories for `string` instances. A custom implementation must be derived from `TabularStringFactory` type and specified in field reader options or record reader options. This allows applying advanced techniques during creation of `string` instances from a `ReadOnlySequence<char>` buffer, such as string deduplication.
 
 To produce `ReadOnlySequence<char>` values, the framework uses a pool of `ReadOnlySequenceSegment<T>` instances with the default capacity of `256 * Environment.ProcessorCount`. This can be customized by providing a different `int` value using `AppContext.SetData` method with `Addax.Formats.Tabular.SequenceSegmentPoolCapacity` as the data element name.
 

@@ -6,23 +6,23 @@ namespace Addax.Formats.Tabular.UnitTests;
 public sealed class TabularRecordTests
 {
     [TestMethod]
-    public void AsContent()
+    public void FromContent()
     {
-        var record = TabularRecord<string>.AsContent("v");
+        var record = TabularRecord<string>.FromContent("v");
 
         Assert.IsTrue(record.HasContent);
         Assert.AreEqual("v", record.Content);
-        Assert.IsNull(record.Comment);
+        Assert.ThrowsException<InvalidOperationException>(() => record.Comment);
     }
 
     [TestMethod]
-    public void AsComment()
+    public void FromComment()
     {
-        var record = TabularRecord<string>.AsComment("v");
+        var record = TabularRecord<string>.FromComment("v");
 
         Assert.IsFalse(record.HasContent);
-        Assert.IsNull(record.Content);
         Assert.AreEqual("v", record.Comment);
+        Assert.ThrowsException<InvalidOperationException>(() => record.Content);
     }
 
     [DataTestMethod]
@@ -31,8 +31,8 @@ public sealed class TabularRecordTests
     [DataRow("v2", "v1", false)]
     public void OperatorEqualityAsComment(string value1, string value2, bool result)
     {
-        var record1 = TabularRecord<string>.AsComment(value1);
-        var record2 = TabularRecord<string>.AsComment(value2);
+        var record1 = TabularRecord<string>.FromComment(value1);
+        var record2 = TabularRecord<string>.FromComment(value2);
 
         Assert.AreEqual(result, record1 == record2);
     }
@@ -43,8 +43,8 @@ public sealed class TabularRecordTests
     [DataRow("v2", "v1", false)]
     public void OperatorEqualityAsContent(string value1, string value2, bool result)
     {
-        var record1 = TabularRecord<string>.AsContent(value1);
-        var record2 = TabularRecord<string>.AsContent(value2);
+        var record1 = TabularRecord<string>.FromContent(value1);
+        var record2 = TabularRecord<string>.FromContent(value2);
 
         Assert.AreEqual(result, record1 == record2);
     }
@@ -55,8 +55,8 @@ public sealed class TabularRecordTests
     [DataRow("v2", "v1", false)]
     public void OperatorInequalityAsComment(string value1, string value2, bool result)
     {
-        var record1 = TabularRecord<string>.AsComment(value1);
-        var record2 = TabularRecord<string>.AsComment(value2);
+        var record1 = TabularRecord<string>.FromComment(value1);
+        var record2 = TabularRecord<string>.FromComment(value2);
 
         Assert.AreEqual(result, !(record1 != record2));
     }
@@ -67,8 +67,8 @@ public sealed class TabularRecordTests
     [DataRow("v2", "v1", false)]
     public void OperatorInequalityAsContent(string value1, string value2, bool result)
     {
-        var record1 = TabularRecord<string>.AsContent(value1);
-        var record2 = TabularRecord<string>.AsContent(value2);
+        var record1 = TabularRecord<string>.FromContent(value1);
+        var record2 = TabularRecord<string>.FromContent(value2);
 
         Assert.AreEqual(result, !(record1 != record2));
     }
@@ -79,8 +79,8 @@ public sealed class TabularRecordTests
     [DataRow("v2", "v1", false)]
     public void EqualityEqualsAsComment(string value1, string value2, bool result)
     {
-        var record1 = TabularRecord<string>.AsComment(value1);
-        var record2 = TabularRecord<string>.AsComment(value2);
+        var record1 = TabularRecord<string>.FromComment(value1);
+        var record2 = TabularRecord<string>.FromComment(value2);
 
         Assert.AreEqual(result, record1.Equals(record2));
     }
@@ -91,8 +91,8 @@ public sealed class TabularRecordTests
     [DataRow("v2", "v1", false)]
     public void EqualityEqualsAsContent(string value1, string value2, bool result)
     {
-        var record1 = TabularRecord<string>.AsContent(value1);
-        var record2 = TabularRecord<string>.AsContent(value2);
+        var record1 = TabularRecord<string>.FromContent(value1);
+        var record2 = TabularRecord<string>.FromContent(value2);
 
         Assert.AreEqual(result, record1.Equals(record2));
     }
@@ -103,8 +103,8 @@ public sealed class TabularRecordTests
     [DataRow("v2", "v1", false)]
     public void ObjectEqualsAsComment(string value1, string value2, bool result)
     {
-        var record1 = TabularRecord<string>.AsComment(value1);
-        var record2 = TabularRecord<string>.AsComment(value2);
+        var record1 = TabularRecord<string>.FromComment(value1);
+        var record2 = TabularRecord<string>.FromComment(value2);
 
         Assert.AreEqual(result, record1.Equals((object)record2));
     }
@@ -115,8 +115,8 @@ public sealed class TabularRecordTests
     [DataRow("v2", "v1", false)]
     public void ObjectEqualsAsContent(string value1, string value2, bool result)
     {
-        var record1 = TabularRecord<string>.AsContent(value1);
-        var record2 = TabularRecord<string>.AsContent(value2);
+        var record1 = TabularRecord<string>.FromContent(value1);
+        var record2 = TabularRecord<string>.FromContent(value2);
 
         Assert.AreEqual(result, record1.Equals((object)record2));
     }
@@ -126,8 +126,8 @@ public sealed class TabularRecordTests
     [DataRow("v1", "v2", false)]
     public void GetHashCodeAsComment(string value1, string value2, bool result)
     {
-        var record1 = TabularRecord<string>.AsComment(value1);
-        var record2 = TabularRecord<string>.AsComment(value2);
+        var record1 = TabularRecord<string>.FromComment(value1);
+        var record2 = TabularRecord<string>.FromComment(value2);
 
         Assert.AreEqual(result, record1.GetHashCode() == record2.GetHashCode());
     }
@@ -137,8 +137,8 @@ public sealed class TabularRecordTests
     [DataRow("v1", "v2", false)]
     public void GetHashCodeAsContent(string value1, string value2, bool result)
     {
-        var record1 = TabularRecord<string>.AsContent(value1);
-        var record2 = TabularRecord<string>.AsContent(value2);
+        var record1 = TabularRecord<string>.FromContent(value1);
+        var record2 = TabularRecord<string>.FromContent(value2);
 
         Assert.AreEqual(result, record1.GetHashCode() == record2.GetHashCode());
     }

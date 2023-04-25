@@ -139,7 +139,7 @@ internal partial class TabularConverterEmitter
                     {
                         builder.AppendLine("            if (!await reader.MoveNextFieldAsync(cancellationToken).ConfigureAwait(false))");
                         builder.AppendLine("            {");
-                        builder.AppendLine($"                return Tabular::TabularRecord<{recordSpec.TypeName}>.AsContent(new()");
+                        builder.AppendLine($"                return Tabular::TabularRecord<{recordSpec.TypeName}>.FromContent(new()");
                         builder.AppendLine("                {");
 
                         for (var j = 0; j < i; j++)
@@ -174,7 +174,7 @@ internal partial class TabularConverterEmitter
                     {
                         builder.AppendLine("            if (reader.FieldType is Tabular::TabularFieldType.Comment)");
                         builder.AppendLine("            {");
-                        builder.AppendLine($"                return Tabular::TabularRecord<{recordSpec.TypeName}>.AsComment(context.ConsumeComments ? reader.GetString() : null);");
+                        builder.AppendLine($"                return Tabular::TabularRecord<{recordSpec.TypeName}>.FromComment(context.ConsumeComments ? reader.GetString() : null);");
                         builder.AppendLine("            }");
 
                         commentCheckEmitted = true;
@@ -188,7 +188,7 @@ internal partial class TabularConverterEmitter
                 {
                     builder.AppendLine("        if (!await reader.ReadFieldAsync(cancellationToken).ConfigureAwait(false))");
                     builder.AppendLine("        {");
-                    builder.AppendLine($"            return Tabular::TabularRecord<{recordSpec.TypeName}>.AsContent(new()");
+                    builder.AppendLine($"            return Tabular::TabularRecord<{recordSpec.TypeName}>.FromContent(new()");
                     builder.AppendLine("            {");
 
                     for (var j = 0; j < i; j++)
@@ -223,7 +223,7 @@ internal partial class TabularConverterEmitter
                 {
                     builder.AppendLine("        if (reader.FieldType is Tabular::TabularFieldType.Comment)");
                     builder.AppendLine("        {");
-                    builder.AppendLine($"            return Tabular::TabularRecord<{recordSpec.TypeName}>.AsComment(context.ConsumeComments ? reader.GetString() : null);");
+                    builder.AppendLine($"            return Tabular::TabularRecord<{recordSpec.TypeName}>.FromComment(context.ConsumeComments ? reader.GetString() : null);");
                     builder.AppendLine("        }");
                     builder.AppendLine();
 
@@ -346,7 +346,7 @@ internal partial class TabularConverterEmitter
                 builder.AppendLine();
             }
 
-            builder.AppendLine($"        return Tabular::TabularRecord<{recordSpec.TypeName}>.AsContent(new()");
+            builder.AppendLine($"        return Tabular::TabularRecord<{recordSpec.TypeName}>.FromContent(new()");
             builder.AppendLine("        {");
 
             for (var i = 0; i < fieldIndices.Length; i++)

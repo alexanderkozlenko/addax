@@ -16,13 +16,13 @@ internal sealed class TabularStringEnumerableConverter : TabularRecordConverter<
         {
             if (reader.FieldType is TabularFieldType.Comment)
             {
-                return TabularRecord<IEnumerable<string>>.AsComment(context.ConsumeComments ? reader.GetString() : null);
+                return TabularRecord<IEnumerable<string>>.FromComment(context.ConsumeComments ? reader.GetString() : null);
             }
 
             builder.Add(reader.GetString());
         }
 
-        return TabularRecord<IEnumerable<string>>.AsContent(builder.ToArray());
+        return TabularRecord<IEnumerable<string>>.FromContent(builder.ToArray());
     }
 
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
