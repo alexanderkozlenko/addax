@@ -34,9 +34,9 @@ internal sealed class TabularStreamParser
             {
                 case TabularStreamParsingTokenType.None:
                     {
-                        var result = reader.TryRead(out var symbol);
+                        var symbol = reader.UnreadSpan[0];
 
-                        Debug.Assert(result);
+                        reader.Advance(1);
 
                         if (symbol == _fieldSeparationSymbol)
                         {
@@ -162,9 +162,9 @@ internal sealed class TabularStreamParser
                     break;
                 case TabularStreamParsingTokenType.FieldQuoteEnd:
                     {
-                        var result = reader.TryRead(out var symbol);
+                        var symbol = reader.UnreadSpan[0];
 
-                        Debug.Assert(result);
+                        reader.Advance(1);
 
                         if ((_fieldEscapeSymbol == _fieldQuoteSymbol) && (symbol == _fieldQuoteSymbol))
                         {
@@ -201,9 +201,9 @@ internal sealed class TabularStreamParser
                     break;
                 case TabularStreamParsingTokenType.FieldEscape:
                     {
-                        var result = reader.TryRead(out var symbol);
+                        var symbol = reader.UnreadSpan[0];
 
-                        Debug.Assert(result);
+                        reader.Advance(1);
 
                         if ((symbol != _fieldQuoteSymbol) && (symbol != _fieldEscapeSymbol))
                         {
@@ -217,9 +217,9 @@ internal sealed class TabularStreamParser
                     break;
                 case TabularStreamParsingTokenType.RecordSeparation:
                     {
-                        var result = reader.TryRead(out var symbol);
+                        var symbol = reader.UnreadSpan[0];
 
-                        Debug.Assert(result);
+                        reader.Advance(1);
 
                         if (symbol == _recordSeparationSymbol2)
                         {
@@ -294,7 +294,7 @@ internal sealed class TabularStreamParser
 
             if (valueLength == 0)
             {
-                bufferKind = BufferKind.Shared;
+                bufferKind = BufferKind.None;
 
                 return ReadOnlySequence<char>.Empty;
             }
@@ -313,7 +313,7 @@ internal sealed class TabularStreamParser
 
                 Unescape(value, bufferSource, _fieldEscapeSymbol);
 
-                return bufferSource.CreateSequence();
+                return bufferSource.ToSequence();
             }
         }
         else

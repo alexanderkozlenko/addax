@@ -6,7 +6,7 @@ using Addax.Formats.Tabular.Internal;
 namespace Addax.Formats.Tabular;
 
 /// <summary>Provides forward-only, read-only access to a tabular data on the record level.</summary>
-public sealed class TabularRecordReader : IAsyncDisposable
+public sealed class TabularRecordReader : IDisposable, IAsyncDisposable
 {
     private readonly TabularFieldReader _fieldReader;
     private readonly TabularRecordReaderContext _context;
@@ -38,11 +38,29 @@ public sealed class TabularRecordReader : IAsyncDisposable
     }
 
     /// <inheritdoc />
+    public void Dispose()
+    {
+        _isDisposed = true;
+        _fieldReader.Dispose();
+    }
+
+    /// <inheritdoc />
     public ValueTask DisposeAsync()
     {
         _isDisposed = true;
 
         return _fieldReader.DisposeAsync();
+    }
+
+    /// <summary>Advances the reader to the next record.</summary>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns><see langword="true" /> if the reader was successfully advanced, or <see langword="false" /> otherwise.</returns>
+    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
+    public bool SkipRecord(CancellationToken cancellationToken = default)
+    {
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        return _fieldReader.MoveNextRecord(cancellationToken);
     }
 
     /// <summary>Asynchronously advances the reader to the next record.</summary>
@@ -56,7 +74,27 @@ public sealed class TabularRecordReader : IAsyncDisposable
         return _fieldReader.MoveNextRecordAsync(cancellationToken);
     }
 
-    /// <summary>Asynchronously tries to read a record from the stream.</summary>
+    /// <summary>Reads a record from the stream.</summary>
+    /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
+    /// <param name="converter">The converter to use for converting a tabular record to <typeparamref name="T" />.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns>A record as a <see cref="TabularRecord{T}" /> instance.</returns>
+    /// <exception cref="InvalidOperationException">There is no more records available in the stream.</exception>
+    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
+    public TabularRecord<T> ReadRecord<T>(TabularRecordConverter<T> converter, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(converter);
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        if (!_fieldReader.MoveNextRecord(cancellationToken))
+        {
+            throw new InvalidOperationException("There is no more records available in the stream.");
+        }
+
+        return converter.ReadRecord(_fieldReader, _context, cancellationToken);
+    }
+
+    /// <summary>Asynchronously reads a record from the stream.</summary>
     /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
     /// <param name="converter">The converter to use for converting a tabular record to <typeparamref name="T" />.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
@@ -70,7 +108,6 @@ public sealed class TabularRecordReader : IAsyncDisposable
 
         return ReadRecordAsyncCore(converter, cancellationToken);
 
-        [StackTraceHidden]
         [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
         async ValueTask<TabularRecord<T>> ReadRecordAsyncCore(TabularRecordConverter<T> converter, CancellationToken cancellationToken)
         {
@@ -83,7 +120,18 @@ public sealed class TabularRecordReader : IAsyncDisposable
         }
     }
 
-    /// <summary>Asynchronously tries to read a record from the stream.</summary>
+    /// <summary>Reads a record from the stream.</summary>
+    /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns>A record as a <see cref="TabularRecord{T}" /> instance.</returns>
+    /// <exception cref="InvalidOperationException">There is no more records available in the stream.</exception>
+    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
+    public TabularRecord<T> ReadRecord<T>(CancellationToken cancellationToken = default)
+    {
+        return ReadRecord(SelectConverter<T>(), cancellationToken);
+    }
+
+    /// <summary>Asynchronously reads a record from the stream.</summary>
     /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task that will complete with a record as a <see cref="TabularRecord{T}" /> instance.</returns>
@@ -94,108 +142,23 @@ public sealed class TabularRecordReader : IAsyncDisposable
         return ReadRecordAsync(SelectConverter<T>(), cancellationToken);
     }
 
-    /// <summary>Asynchronously reads records from the stream.</summary>
+    /// <summary>Reads records from the stream.</summary>
     /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
     /// <param name="converter">The converter to use for converting a tabular record to <typeparamref name="T" />.</param>
-    /// <param name="predicate">An optional predicate to filter the sequence of records.</param>
-    /// <param name="skip">The number of records to skip in the filtered sequence of records.</param>
-    /// <param name="take">The number of records to take from the filtered sequence of records.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>An object that provides asynchronous iteration over a sequence of records constructed from tabular data.</returns>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="skip" /> or <paramref name="take" /> is less than zero or is greater than <see cref="Array.MaxLength" />.</exception>
+    /// <returns>An object that provides iteration over a sequence of records constructed from tabular data.</returns>
     /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
-    public IAsyncEnumerable<TabularRecord<T>> ReadRecordsAsync<T>(TabularRecordConverter<T> converter, Predicate<TabularRecord<T>>? predicate, long skip, long take, CancellationToken cancellationToken = default)
+    public IEnumerable<TabularRecord<T>> ReadRecords<T>(TabularRecordConverter<T> converter, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(converter);
-
-        if (skip < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(skip), skip, "The number of records to skip must be greater than or equal to zero.");
-        }
-        if (take < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(take), take, "The number of records to take must be greater than or equal to zero.");
-        }
-
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
-        if ((take == 0) || !HasMoreRecords)
+        if (_fieldReader.PositionType is TabularPositionType.EndOfStream)
         {
-            return Singleton<EmptyAsyncEnumerable<TabularRecord<T>>>.Instance;
+            return Singleton<EmptyEnumerable<TabularRecord<T>>>.Instance;
         }
 
-        cancellationToken.ThrowIfCancellationRequested();
-
-        return new TabularRecordEnumerable<T>(_fieldReader, _context, converter, predicate, skip, take, cancellationToken);
-    }
-
-    /// <summary>Asynchronously reads records from the stream.</summary>
-    /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
-    /// <param name="converter">The converter to use for converting a tabular record to <typeparamref name="T" />.</param>
-    /// <param name="predicate">An optional predicate to filter the sequence of records.</param>
-    /// <param name="skip">The number of records to skip in the filtered sequence of records.</param>
-    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>An object that provides asynchronous iteration over a sequence of records constructed from tabular data.</returns>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="skip" /> is less than zero or is greater than <see cref="Array.MaxLength" />.</exception>
-    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
-    public IAsyncEnumerable<TabularRecord<T>> ReadRecordsAsync<T>(TabularRecordConverter<T> converter, Predicate<TabularRecord<T>>? predicate, long skip, CancellationToken cancellationToken = default)
-    {
-        ArgumentNullException.ThrowIfNull(converter);
-
-        if (skip < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(skip), skip, "The number of records to skip must be greater than or equal to zero.");
-        }
-
-        ObjectDisposedException.ThrowIf(_isDisposed, this);
-
-        if (!HasMoreRecords)
-        {
-            return Singleton<EmptyAsyncEnumerable<TabularRecord<T>>>.Instance;
-        }
-
-        cancellationToken.ThrowIfCancellationRequested();
-
-        return new TabularRecordEnumerable<T>(_fieldReader, _context, converter, predicate, skip, take: -1, cancellationToken);
-    }
-
-    /// <summary>Asynchronously reads records from the stream.</summary>
-    /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
-    /// <param name="converter">The converter to use for converting a tabular record to <typeparamref name="T" />.</param>
-    /// <param name="predicate">An optional predicate to filter the sequence of records.</param>
-    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>An object that provides asynchronous iteration over a sequence of records constructed from tabular data.</returns>
-    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
-    public IAsyncEnumerable<TabularRecord<T>> ReadRecordsAsync<T>(TabularRecordConverter<T> converter, Predicate<TabularRecord<T>>? predicate, CancellationToken cancellationToken = default)
-    {
-        return ReadRecordsAsync(converter, predicate, skip: 0, cancellationToken);
-    }
-
-    /// <summary>Asynchronously reads records from the stream.</summary>
-    /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
-    /// <param name="converter">The converter to use for converting a tabular record to <typeparamref name="T" />.</param>
-    /// <param name="skip">The number of records to skip in the sequence of records.</param>
-    /// <param name="take">The number of records to take from the sequence of records.</param>
-    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>An object that provides asynchronous iteration over a sequence of records constructed from tabular data.</returns>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="skip" /> or <paramref name="take" /> is less than zero or is greater than <see cref="Array.MaxLength" />.</exception>
-    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
-    public IAsyncEnumerable<TabularRecord<T>> ReadRecordsAsync<T>(TabularRecordConverter<T> converter, long skip, long take, CancellationToken cancellationToken = default)
-    {
-        return ReadRecordsAsync(converter, predicate: null, skip, take, cancellationToken);
-    }
-
-    /// <summary>Asynchronously reads records from the stream.</summary>
-    /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
-    /// <param name="converter">The converter to use for converting a tabular record to <typeparamref name="T" />.</param>
-    /// <param name="skip">The number of records to skip in the sequence of records.</param>
-    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>An object that provides asynchronous iteration over a sequence of records constructed from tabular data.</returns>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="skip" /> is less than zero or is greater than <see cref="Array.MaxLength" />.</exception>
-    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
-    public IAsyncEnumerable<TabularRecord<T>> ReadRecordsAsync<T>(TabularRecordConverter<T> converter, long skip, CancellationToken cancellationToken = default)
-    {
-        return ReadRecordsAsync(converter, predicate: null, skip, cancellationToken);
+        return new TabularRecordEnumerable<T>(_fieldReader, _context, converter, cancellationToken);
     }
 
     /// <summary>Asynchronously reads records from the stream.</summary>
@@ -206,70 +169,25 @@ public sealed class TabularRecordReader : IAsyncDisposable
     /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
     public IAsyncEnumerable<TabularRecord<T>> ReadRecordsAsync<T>(TabularRecordConverter<T> converter, CancellationToken cancellationToken = default)
     {
-        return ReadRecordsAsync(converter, predicate: null, skip: 0, cancellationToken);
+        ArgumentNullException.ThrowIfNull(converter);
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        if (_fieldReader.PositionType is TabularPositionType.EndOfStream)
+        {
+            return Singleton<EmptyAsyncEnumerable<TabularRecord<T>>>.Instance;
+        }
+
+        return new TabularRecordAsyncEnumerable<T>(_fieldReader, _context, converter, cancellationToken);
     }
 
-    /// <summary>Asynchronously reads records from the stream.</summary>
+    /// <summary>Reads records from the stream.</summary>
     /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
-    /// <param name="predicate">A predicate to filter the sequence of records.</param>
-    /// <param name="skip">The number of records to skip in the filtered sequence of records.</param>
-    /// <param name="take">The number of records to take from the filtered sequence of records.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>An object that provides asynchronous iteration over a sequence of records constructed from tabular data.</returns>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="skip" /> or <paramref name="take" /> is less than zero or is greater than <see cref="Array.MaxLength" />.</exception>
+    /// <returns>An object that provides iteration over a sequence of records constructed from tabular data.</returns>
     /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
-    public IAsyncEnumerable<TabularRecord<T>> ReadRecordsAsync<T>(Predicate<TabularRecord<T>>? predicate, long skip, long take, CancellationToken cancellationToken = default)
+    public IEnumerable<TabularRecord<T>> ReadRecords<T>(CancellationToken cancellationToken = default)
     {
-        return ReadRecordsAsync(SelectConverter<T>(), predicate, skip, take, cancellationToken);
-    }
-
-    /// <summary>Asynchronously reads records from the stream.</summary>
-    /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
-    /// <param name="predicate">A predicate to filter the sequence of records.</param>
-    /// <param name="skip">The number of records to skip in the filtered sequence of records.</param>
-    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>An object that provides asynchronous iteration over a sequence of records constructed from tabular data.</returns>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="skip" /> is less than zero or is greater than <see cref="Array.MaxLength" />.</exception>
-    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
-    public IAsyncEnumerable<TabularRecord<T>> ReadRecordsAsync<T>(Predicate<TabularRecord<T>>? predicate, long skip, CancellationToken cancellationToken = default)
-    {
-        return ReadRecordsAsync(SelectConverter<T>(), predicate, skip, cancellationToken);
-    }
-
-    /// <summary>Asynchronously reads records from the stream.</summary>
-    /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
-    /// <param name="predicate">A predicate to filter the sequence of records.</param>
-    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>An object that provides asynchronous iteration over a sequence of records constructed from tabular data.</returns>
-    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
-    public IAsyncEnumerable<TabularRecord<T>> ReadRecordsAsync<T>(Predicate<TabularRecord<T>>? predicate, CancellationToken cancellationToken = default)
-    {
-        return ReadRecordsAsync(SelectConverter<T>(), predicate, skip: 0, cancellationToken);
-    }
-
-    /// <summary>Asynchronously reads records from the stream.</summary>
-    /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
-    /// <param name="skip">The number of records to skip in the sequence of records.</param>
-    /// <param name="take">The number of records to take from the sequence of records.</param>
-    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>An object that provides asynchronous iteration over a sequence of records constructed from tabular data.</returns>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="skip" /> or <paramref name="take" /> is less than zero or is greater than <see cref="Array.MaxLength" />.</exception>
-    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
-    public IAsyncEnumerable<TabularRecord<T>> ReadRecordsAsync<T>(long skip, long take, CancellationToken cancellationToken = default)
-    {
-        return ReadRecordsAsync(SelectConverter<T>(), predicate: null, skip, take, cancellationToken);
-    }
-
-    /// <summary>Asynchronously reads records from the stream.</summary>
-    /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
-    /// <param name="skip">The number of records to skip in the sequence of records.</param>
-    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>An object that provides asynchronous iteration over a sequence of records constructed from tabular data.</returns>
-    /// <exception cref="ArgumentOutOfRangeException"><paramref name="skip" /> is less than zero or is greater than <see cref="Array.MaxLength" />.</exception>
-    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
-    public IAsyncEnumerable<TabularRecord<T>> ReadRecordsAsync<T>(long skip, CancellationToken cancellationToken = default)
-    {
-        return ReadRecordsAsync(SelectConverter<T>(), predicate: null, skip, cancellationToken);
+        return ReadRecords(SelectConverter<T>(), cancellationToken);
     }
 
     /// <summary>Asynchronously reads records from the stream.</summary>
@@ -279,7 +197,7 @@ public sealed class TabularRecordReader : IAsyncDisposable
     /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
     public IAsyncEnumerable<TabularRecord<T>> ReadRecordsAsync<T>(CancellationToken cancellationToken = default)
     {
-        return ReadRecordsAsync(SelectConverter<T>(), predicate: null, skip: 0, cancellationToken);
+        return ReadRecordsAsync(SelectConverter<T>(), cancellationToken);
     }
 
     private TabularRecordConverter<T> SelectConverter<T>()
@@ -292,13 +210,23 @@ public sealed class TabularRecordReader : IAsyncDisposable
         return converterT;
     }
 
-    /// <summary>Gets the flag that indicates whether there is more records available in the stream.</summary>
-    /// <value><see langword="true" /> if there is more records available in the stream; <see langword="false" /> otherwise.</value>
-    public bool HasMoreRecords
+    /// <summary>Gets the current type of position in tabular data.</summary>
+    /// <value>A <see cref="TabularPositionType" /> value.</value>
+    public TabularPositionType PositionType
     {
         get
         {
-            return _fieldReader.PositionType is not TabularPositionType.EndOfStream;
+            return _fieldReader.PositionType;
+        }
+    }
+
+    /// <summary>Gets the total number of characters consumed so far by the reader.</summary>
+    /// <value>A non-negative zero-based number.</value>
+    public long Position
+    {
+        get
+        {
+            return _fieldReader.Position;
         }
     }
 }

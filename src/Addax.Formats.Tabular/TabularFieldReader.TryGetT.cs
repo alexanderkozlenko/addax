@@ -33,7 +33,7 @@ public partial class TabularFieldReader
     {
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
-        if (_bufferKind is BufferKind.None)
+        if (_bufferKind is BufferKind.Undefined)
         {
             ThrowInvalidOperationException();
         }

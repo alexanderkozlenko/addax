@@ -23,9 +23,9 @@ internal readonly ref struct HybridBuffer<T>
         }
     }
 
-    public static HybridBuffer<T> Create(Span<T> span)
+    public static HybridBuffer<T> Create(Span<T> source)
     {
-        return new(null, span);
+        return new(null, source);
     }
 
     public static HybridBuffer<T> Create(int length)

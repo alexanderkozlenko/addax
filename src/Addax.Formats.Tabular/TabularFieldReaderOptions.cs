@@ -13,7 +13,7 @@ public class TabularFieldReaderOptions
     /// <param name="bufferSize">The buffer size in bytes for reading from a stream.</param>
     /// <param name="leaveOpen">The flag that indicates whether the stream should be left open after a reader is disposed.</param>
     /// <param name="fieldConverters">The custom tabular field converters to use.</param>
-    /// <param name="stringFactory">The <see cref="string" /> factory to use.</param>
+    /// <param name="stringFactory">The custom <see cref="string" /> factory to use.</param>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="bufferSize" /> is less than or equals to zero or is greater than <see cref="Array.MaxLength" />.</exception>
     public TabularFieldReaderOptions(Encoding? encoding = null, int bufferSize = 4096, bool leaveOpen = false, IEnumerable<TabularFieldConverter>? fieldConverters = null, TabularStringFactory? stringFactory = null)
     {

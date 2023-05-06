@@ -10,6 +10,7 @@ internal sealed class SequenceSource<T> : IBufferWriter<T>
 
     private SequenceSegment<T>? _sequenceHead;
     private SequenceSegment<T>? _sequenceTail;
+    private long _sequenceLength;
     private int _sequenceHeadStart;
 
     public SequenceSource(int minimumSegmentSize)
@@ -19,7 +20,7 @@ internal sealed class SequenceSource<T> : IBufferWriter<T>
         _minimumSegmentSize = minimumSegmentSize;
     }
 
-    public ReadOnlySequence<T> CreateSequence()
+    public ReadOnlySequence<T> ToSequence()
     {
         var sequenceTail = _sequenceTail;
 
@@ -70,11 +71,10 @@ internal sealed class SequenceSource<T> : IBufferWriter<T>
     public void Advance(int count)
     {
         Debug.Assert(count >= 0);
+        Debug.Assert(_sequenceTail is not null);
 
-        if (count != 0)
-        {
-            _sequenceTail!.Advance(count);
-        }
+        _sequenceTail.Advance(count);
+        _sequenceLength += count;
     }
 
     public void Release(long count)
@@ -103,13 +103,14 @@ internal sealed class SequenceSource<T> : IBufferWriter<T>
             currentSegmentStart -= currentSegmentLength;
         }
 
-        _sequenceHead = currentSegment;
-        _sequenceHeadStart = (int)currentSegmentStart;
-
         if (currentSegment is null)
         {
             _sequenceTail = null;
         }
+
+        _sequenceHead = currentSegment;
+        _sequenceHeadStart = (int)currentSegmentStart;
+        _sequenceLength -= count;
     }
 
     public void Clear()
@@ -121,6 +122,7 @@ internal sealed class SequenceSource<T> : IBufferWriter<T>
             _sequenceTail = null;
             _sequenceHead = null;
             _sequenceHeadStart = 0;
+            _sequenceLength = 0;
 
             while (currentSegment is not null)
             {
@@ -137,14 +139,7 @@ internal sealed class SequenceSource<T> : IBufferWriter<T>
     {
         get
         {
-            var sequenceTail = _sequenceTail;
-
-            if (sequenceTail is null)
-            {
-                return 0;
-            }
-
-            return sequenceTail.Memory.Length + sequenceTail.RunningIndex - _sequenceHeadStart;
+            return _sequenceLength;
         }
     }
 
@@ -152,7 +147,7 @@ internal sealed class SequenceSource<T> : IBufferWriter<T>
     {
         get
         {
-            return _sequenceHead is null;
+            return _sequenceLength == 0;
         }
     }
 }

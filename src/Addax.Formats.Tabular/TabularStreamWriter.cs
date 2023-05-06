@@ -1,89 +1,203 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
 using System.Buffers;
-using System.IO.Pipelines;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Addax.Formats.Tabular.Internal;
 
 namespace Addax.Formats.Tabular;
 
-internal sealed class TabularStreamWriter : IBufferWriter<char>, IAsyncDisposable
+internal sealed class TabularStreamWriter : IBufferWriter<char>, IDisposable, IAsyncDisposable
 {
-    private readonly SequenceSource<char> _bufferSource;
-    private readonly PipeWriter _pipeWriter;
+    private readonly SequenceSource<byte> _byteBuffer;
+    private readonly SequenceSource<char> _charBuffer;
+    private readonly Stream _stream;
     private readonly Encoding _encoding;
     private readonly Encoder _encoder;
+    private readonly bool _leaveOpen;
 
     private bool _isPreambleCommitted;
 
     public TabularStreamWriter(Stream stream, Encoding encoding, int bufferSize, bool leaveOpen)
     {
-        _bufferSource = new(GetMinimumBufferSegmentSize(encoding, bufferSize));
-        _pipeWriter = PipeWriter.Create(stream, CreatePipeWriterOptions(bufferSize, leaveOpen));
+        var charBufferSize = GetCharBufferSize(encoding, bufferSize);
+
+        _byteBuffer = new(bufferSize);
+        _charBuffer = new(charBufferSize);
+        _stream = stream;
         _encoding = encoding;
         _encoder = encoding.GetEncoder();
+        _leaveOpen = leaveOpen;
         _isPreambleCommitted = encoding.Preamble.IsEmpty;
+    }
+
+    public void Dispose()
+    {
+        Flush(CancellationToken.None);
+
+        if (!_leaveOpen)
+        {
+            _stream.Dispose();
+        }
     }
 
     public async ValueTask DisposeAsync()
     {
-        await FlushAsync(default).ConfigureAwait(false);
-        await _pipeWriter.CompleteAsync().ConfigureAwait(false);
+        var flushTask = FlushAsync(CancellationToken.None);
+
+        if (!flushTask.IsCompletedSuccessfully)
+        {
+            await flushTask.ConfigureAwait(false);
+        }
+
+        if (!_leaveOpen)
+        {
+            var disposeTask = _stream.DisposeAsync();
+
+            if (!disposeTask.IsCompletedSuccessfully)
+            {
+                await disposeTask.ConfigureAwait(false);
+            }
+        }
     }
 
     public Memory<char> GetMemory(int sizeHint = 0)
     {
-        return _bufferSource.GetMemory(sizeHint);
+        return _charBuffer.GetMemory(sizeHint);
     }
 
     public Span<char> GetSpan(int sizeHint = 0)
     {
-        return _bufferSource.GetSpan(sizeHint);
+        return _charBuffer.GetSpan(sizeHint);
     }
 
     public void Advance(int count)
     {
-        _bufferSource.Advance(count);
+        _charBuffer.Advance(count);
+    }
+
+    public void Flush(CancellationToken cancellationToken)
+    {
+        if (_charBuffer.IsEmpty)
+        {
+            return;
+        }
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (!_isPreambleCommitted)
+        {
+            _stream.Write(_encoding.Preamble);
+            _isPreambleCommitted = true;
+        }
+
+        try
+        {
+            var chars = _charBuffer.ToSequence();
+
+            foreach (var segment in chars)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                Transcoder.Convert(_encoding, _encoder, segment.Span, _byteBuffer);
+            }
+
+            Transcoder.Flush(_encoding, _encoder, _byteBuffer);
+
+            var bytes = _byteBuffer.ToSequence();
+
+            foreach (var segment in bytes)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                _stream.Write(segment.Span);
+            }
+
+            _stream.Flush();
+            _charBuffer.Clear();
+        }
+        finally
+        {
+            _byteBuffer.Clear();
+        }
     }
 
     public ValueTask FlushAsync(CancellationToken cancellationToken)
     {
-        if (_bufferSource.IsEmpty)
+        if (_charBuffer.IsEmpty)
         {
             return ValueTask.CompletedTask;
         }
-
-        if (!_isPreambleCommitted)
+        else
         {
-            _encoding.Preamble.CopyTo(_pipeWriter.GetSpan(_encoding.Preamble.Length));
-            _pipeWriter.Advance(_encoding.Preamble.Length);
-            _isPreambleCommitted = true;
+            return FlushAsyncCore(cancellationToken);
         }
 
-        Transcoder.Convert(_encoding, _encoder, _bufferSource.CreateSequence(), _pipeWriter, flush: true);
+        [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
+        async ValueTask FlushAsyncCore(CancellationToken cancellationToken)
+        {
+            if (!_isPreambleCommitted)
+            {
+                var preambleBufferLength = _encoding.Preamble.Length;
+                var preambleBuffer = ArrayPool<byte>.Shared.Rent(preambleBufferLength);
 
-        _bufferSource.Clear();
+                try
+                {
+                    var preambleBufferMemory = preambleBuffer.AsMemory(0, preambleBufferLength);
 
-        var flushTask = _pipeWriter.FlushAsync(cancellationToken);
+                    _encoding.Preamble.CopyTo(preambleBufferMemory.Span);
 
-        return flushTask.IsCompletedSuccessfully ? ValueTask.CompletedTask : new(flushTask.AsTask());
+                    await _stream.WriteAsync(preambleBufferMemory, cancellationToken).ConfigureAwait(false);
+                }
+                finally
+                {
+                    ArrayPool<byte>.Shared.Return(preambleBuffer);
+                }
+
+                _isPreambleCommitted = true;
+            }
+
+            try
+            {
+                var chars = _charBuffer.ToSequence();
+
+                foreach (var segment in chars)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    Transcoder.Convert(_encoding, _encoder, segment.Span, _byteBuffer);
+                }
+
+                Transcoder.Flush(_encoding, _encoder, _byteBuffer);
+
+                var bytes = _byteBuffer.ToSequence();
+
+                foreach (var segment in bytes)
+                {
+                    await _stream.WriteAsync(segment, cancellationToken).ConfigureAwait(false);
+                }
+
+                await _stream.FlushAsync(cancellationToken).ConfigureAwait(false);
+
+                _charBuffer.Clear();
+            }
+            finally
+            {
+                _byteBuffer.Clear();
+            }
+        }
     }
 
-    private static int GetMinimumBufferSegmentSize(Encoding encoding, int bufferSize)
+    private static int GetCharBufferSize(Encoding encoding, int bufferSize)
     {
         return Math.Max(1, encoding.GetMaxCharCount(bufferSize));
-    }
-
-    private static StreamPipeWriterOptions CreatePipeWriterOptions(int bufferSize, bool leaveOpen)
-    {
-        return new(pool: null, bufferSize, leaveOpen);
     }
 
     public long UnflushedChars
     {
         get
         {
-            return _bufferSource.Length;
+            return _charBuffer.Length;
         }
     }
 }

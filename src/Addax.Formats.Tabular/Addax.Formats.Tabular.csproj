@@ -7,9 +7,6 @@
     <IncludeSymbols>true</IncludeSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.IO.Pipelines" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Properties\Package.props">
       <Pack>true</Pack>
       <PackagePath>buildTransitive\$(MSBuildProjectName).props</PackagePath>

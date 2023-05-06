@@ -14,7 +14,7 @@ public class TabularRecordReaderOptions : TabularFieldReaderOptions
     /// <param name="consumeComments">The flag that indicates whether consuming comments as <see cref="string" /> values is enabled for a reader.</param>
     /// <param name="fieldConverters">The custom tabular field converters to use.</param>
     /// <param name="recordConverters">The custom tabular record converters to use.</param>
-    /// <param name="stringFactory">The <see cref="string" /> factory to use.</param>
+    /// <param name="stringFactory">The custom <see cref="string" /> factory to use.</param>
     /// <exception cref="ArgumentOutOfRangeException"><paramref name="bufferSize" /> is less than or equals to zero or is greater than <see cref="Array.MaxLength" />.</exception>
     public TabularRecordReaderOptions(Encoding? encoding = null, int bufferSize = 4096, bool leaveOpen = false, bool consumeComments = false, IEnumerable<TabularFieldConverter>? fieldConverters = null, IEnumerable<TabularRecordConverter>? recordConverters = null, TabularStringFactory? stringFactory = null)
         : base(encoding, bufferSize, leaveOpen, fieldConverters, stringFactory)

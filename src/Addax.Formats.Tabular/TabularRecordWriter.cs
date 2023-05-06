@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 namespace Addax.Formats.Tabular;
 
 /// <summary>Provides forward-only, write-only access to a tabular data on the record level.</summary>
-public sealed class TabularRecordWriter : IAsyncDisposable
+public sealed class TabularRecordWriter : IDisposable, IAsyncDisposable
 {
     private readonly TabularFieldWriter _fieldWriter;
     private readonly TabularRecordWriterContext _context;
@@ -37,11 +37,35 @@ public sealed class TabularRecordWriter : IAsyncDisposable
     }
 
     /// <inheritdoc />
+    public void Dispose()
+    {
+        _isDisposed = true;
+        _fieldWriter.Dispose();
+    }
+
+    /// <inheritdoc />
     public ValueTask DisposeAsync()
     {
         _isDisposed = true;
 
         return _fieldWriter.DisposeAsync();
+    }
+
+    /// <summary>Writes the record to the stream.</summary>
+    /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
+    /// <param name="record">The record to be written.</param>
+    /// <param name="converter">The converter to use for converting <typeparamref name="T" /> to a tabular record.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
+    public void WriteRecord<T>(T record, TabularRecordConverter<T> converter, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(record);
+        ArgumentNullException.ThrowIfNull(converter);
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        _fieldWriter.BeginRecord();
+        converter.WriteRecord(_fieldWriter, record, _context, cancellationToken);
+        _fieldWriter.Flush(cancellationToken);
     }
 
     /// <summary>Asynchronously writes the record to the stream.</summary>
@@ -59,7 +83,6 @@ public sealed class TabularRecordWriter : IAsyncDisposable
 
         return WriteRecordAsyncCore(record, converter, cancellationToken);
 
-        [StackTraceHidden]
         [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
         async ValueTask WriteRecordAsyncCore(T record, TabularRecordConverter<T> converter, CancellationToken cancellationToken)
         {
@@ -68,6 +91,16 @@ public sealed class TabularRecordWriter : IAsyncDisposable
             await converter.WriteRecordAsync(_fieldWriter, record, _context, cancellationToken).ConfigureAwait(false);
             await _fieldWriter.FlushAsync(cancellationToken).ConfigureAwait(false);
         }
+    }
+
+    /// <summary>Writes the record to the stream.</summary>
+    /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
+    /// <param name="record">The record to be written.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
+    public void WriteRecord<T>(T record, CancellationToken cancellationToken = default)
+    {
+        WriteRecord(record, SelectConverter<T>(), cancellationToken);
     }
 
     /// <summary>Asynchronously writes the record to the stream.</summary>
@@ -79,6 +112,36 @@ public sealed class TabularRecordWriter : IAsyncDisposable
     public ValueTask WriteRecordAsync<T>(T record, CancellationToken cancellationToken = default)
     {
         return WriteRecordAsync(record, SelectConverter<T>(), cancellationToken);
+    }
+
+    /// <summary>Writes the record enumeration to the stream.</summary>
+    /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
+    /// <param name="records">The record enumeration to be written.</param>
+    /// <param name="converter">The converter to use for converting <typeparamref name="T" /> to a tabular record.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
+    public void WriteRecords<T>(IEnumerable<T> records, TabularRecordConverter<T> converter, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(records);
+        ArgumentNullException.ThrowIfNull(converter);
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        if (records.TryGetNonEnumeratedCount(out var count) && (count == 0))
+        {
+            return;
+        }
+
+        foreach (var record in records)
+        {
+            if (record is null)
+            {
+                throw new ArgumentException("The enumeration contains a null reference.", nameof(records));
+            }
+
+            _fieldWriter.BeginRecord();
+            converter.WriteRecord(_fieldWriter, record, _context, cancellationToken);
+            _fieldWriter.Flush(cancellationToken);
+        }
     }
 
     /// <summary>Asynchronously writes the record enumeration to the stream.</summary>
@@ -101,7 +164,6 @@ public sealed class TabularRecordWriter : IAsyncDisposable
 
         return WriteRecordsAsyncCore(records, converter, cancellationToken);
 
-        [StackTraceHidden]
         [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
         async ValueTask WriteRecordsAsyncCore(IEnumerable<T> records, TabularRecordConverter<T> converter, CancellationToken cancellationToken)
         {
@@ -118,6 +180,16 @@ public sealed class TabularRecordWriter : IAsyncDisposable
                 await _fieldWriter.FlushAsync(cancellationToken).ConfigureAwait(false);
             }
         }
+    }
+
+    /// <summary>Writes the record enumeration to the stream.</summary>
+    /// <typeparam name="T">The type of an object or value that represents a tabular record.</typeparam>
+    /// <param name="records">The record enumeration to be written.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
+    public void WriteRecords<T>(IEnumerable<T> records, CancellationToken cancellationToken = default)
+    {
+        WriteRecords(records, SelectConverter<T>(), cancellationToken);
     }
 
     /// <summary>Asynchronously writes the record enumeration to the stream.</summary>
@@ -146,7 +218,6 @@ public sealed class TabularRecordWriter : IAsyncDisposable
 
         return WriteRecordsAsyncCore(records, converter, cancellationToken);
 
-        [StackTraceHidden]
         [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
         async ValueTask WriteRecordsAsyncCore(IAsyncEnumerable<T> records, TabularRecordConverter<T> converter, CancellationToken cancellationToken)
         {
@@ -189,5 +260,25 @@ public sealed class TabularRecordWriter : IAsyncDisposable
     private static long GetFlushThreshold(TabularRecordWriterOptions options)
     {
         return Math.Min(options.Encoding.GetMaxCharCount(options.BufferSize), Array.MaxLength);
+    }
+
+    /// <summary>Gets the current type of position in tabular data.</summary>
+    /// <value>A <see cref="TabularPositionType" /> value.</value>
+    public TabularPositionType PositionType
+    {
+        get
+        {
+            return _fieldWriter.PositionType;
+        }
+    }
+
+    /// <summary>Gets the total number of characters committed so far by the writer.</summary>
+    /// <value>A non-negative zero-based number.</value>
+    public long Position
+    {
+        get
+        {
+            return _fieldWriter.Position;
+        }
     }
 }

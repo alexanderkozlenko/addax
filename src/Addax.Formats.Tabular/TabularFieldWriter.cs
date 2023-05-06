@@ -8,7 +8,7 @@ using Addax.Formats.Tabular.Internal;
 namespace Addax.Formats.Tabular;
 
 /// <summary>Provides forward-only, write-only access to a tabular data on the field level.</summary>
-public sealed partial class TabularFieldWriter : IAsyncDisposable
+public sealed partial class TabularFieldWriter : IDisposable, IAsyncDisposable
 {
     private readonly TabularStreamWriter _streamWriter;
     private readonly TabularStreamFormatter _streamFormatter;
@@ -95,14 +95,33 @@ public sealed partial class TabularFieldWriter : IAsyncDisposable
     }
 
     /// <inheritdoc />
+    public void Dispose()
+    {
+        _isDisposed = true;
+        _fieldType = TabularFieldType.Undefined;
+        _positionType = TabularPositionType.EndOfStream;
+        _position = 0;
+        _streamWriter.Dispose();
+    }
+
+    /// <inheritdoc />
     public ValueTask DisposeAsync()
     {
         _isDisposed = true;
-        _positionType = TabularPositionType.EndOfStream;
         _fieldType = TabularFieldType.Undefined;
+        _positionType = TabularPositionType.EndOfStream;
         _position = 0;
 
         return _streamWriter.DisposeAsync();
+    }
+
+    /// <summary>Instructs the writer to write any buffered characters to the stream.</summary>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    public void Flush(CancellationToken cancellationToken = default)
+    {
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        _streamWriter.Flush(cancellationToken);
     }
 
     /// <summary>Asynchronously instructs the writer to write any buffered characters to the stream.</summary>

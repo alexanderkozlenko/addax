@@ -1,94 +1,42 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
-using System.Runtime.CompilerServices;
+using System.Collections;
 
 namespace Addax.Formats.Tabular;
 
-internal sealed class TabularRecordEnumerator<T> : IAsyncEnumerator<TabularRecord<T>>
+internal sealed class TabularRecordEnumerator<T> : IEnumerator<TabularRecord<T>>
 {
-    private readonly TabularFieldReader _reader;
-    private readonly TabularRecordReaderContext _context;
-    private readonly TabularRecordConverter<T> _converter;
     private readonly TabularRecordEnumerable<T> _enumerable;
-    private readonly CancellationToken _cancellationToken;
 
     private TabularRecord<T> _current;
 
-    public TabularRecordEnumerator(TabularFieldReader reader, TabularRecordReaderContext context, TabularRecordConverter<T> converter, TabularRecordEnumerable<T> enumerable, CancellationToken cancellationToken)
+    public TabularRecordEnumerator(TabularRecordEnumerable<T> enumerable, CancellationToken cancellationToken)
     {
-        _reader = reader;
-        _context = context;
-        _converter = converter;
         _enumerable = enumerable;
-        _cancellationToken = cancellationToken;
     }
 
-    public ValueTask DisposeAsync()
+    public void Dispose()
     {
-        return ValueTask.CompletedTask;
     }
 
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
-    public async ValueTask<bool> MoveNextAsync()
+    public bool MoveNext()
     {
-        if (_enumerable.Take == 0)
+        if (_enumerable.MoveNextRecord())
         {
-            return false;
-        }
+            _current = _enumerable.ReadRecord();
 
-        var cancellationToken = _cancellationToken;
-
-        if (!_enumerable.HasCriteria)
-        {
-            while ((_enumerable.Skip > 0) && await _reader.MoveNextRecordAsync(cancellationToken).ConfigureAwait(false))
-            {
-                _enumerable.Skip -= 1;
-            }
-
-            while (await _reader.MoveNextRecordAsync(cancellationToken).ConfigureAwait(false))
-            {
-                var record = await _converter.ReadRecordAsync(_reader, _context, cancellationToken).ConfigureAwait(false);
-
-                if (_enumerable.Take > 0)
-                {
-                    _enumerable.Take -= 1;
-                }
-
-                _current = record;
-
-                return true;
-            }
+            return true;
         }
         else
         {
-            while (await _reader.MoveNextRecordAsync(cancellationToken).ConfigureAwait(false))
-            {
-                var record = await _converter.ReadRecordAsync(_reader, _context, cancellationToken).ConfigureAwait(false);
+            _current = default;
 
-                if (!_enumerable.MeetsCriteria(record))
-                {
-                    continue;
-                }
-
-                if (_enumerable.Skip > 0)
-                {
-                    _enumerable.Skip -= 1;
-
-                    continue;
-                }
-
-                if (_enumerable.Take > 0)
-                {
-                    _enumerable.Take -= 1;
-                }
-
-                _current = record;
-
-                return true;
-            }
+            return false;
         }
+    }
 
-        return false;
+    public void Reset()
+    {
     }
 
     public TabularRecord<T> Current
@@ -96,6 +44,14 @@ internal sealed class TabularRecordEnumerator<T> : IAsyncEnumerator<TabularRecor
         get
         {
             return _current;
+        }
+    }
+
+    object IEnumerator.Current
+    {
+        get
+        {
+            return Current;
         }
     }
 }

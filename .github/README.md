@@ -1,4 +1,4 @@
-![Addax Banner](./README_HEADER.png)
+# Addax
 
 Addax is a high-performance and low-allocating framework for producing and consuming tabular data, represented as delimiter-separated values. The implementation is based on W3C draft recommendation "Model for Tabular Data and Metadata on the Web".
 
@@ -15,9 +15,7 @@ The main features are:
 
 - The framework supports data in any tabular dialect and stream encoding.
 - The framework supports working with tabular fields longer than 2,147,483,591 characters.
-- The framework and any generated code are fully compatible with native AOT compilation.
-- The framework provides high-performance I/O by using System.IO.Pipelines.
-- The framework provides high-speed reading by using SIMD-optimized lookups.
+- The framework and any generated code are fully compatible with [native AOT](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot) compilation.
 
 An example of reading from and writing to a CSV file formatted according to RFC 4180:
 
@@ -144,9 +142,7 @@ internal class MyConverter : TabularFieldConverter<DateTime>
 
 ## Advanced configuration
 
-The framework supports usage of custom factories for `string` instances. A custom implementation must be derived from `TabularStringFactory` type and specified in field reader options or record reader options. This allows applying advanced techniques during creation of `string` instances from a `ReadOnlySequence<char>` buffer, such as string deduplication.
-
-To produce `ReadOnlySequence<char>` values, the framework uses a pool of `ReadOnlySequenceSegment<T>` instances with the default capacity of `256 * Environment.ProcessorCount`. This can be customized by providing a different `int` value using `AppContext.SetData` method with `Addax.Formats.Tabular.SequenceSegmentPoolCapacity` as the data element name.
+The framework supports usage of custom factories for strings. The default implementation of the factory supports string deduplication, which can be enabled by specifying a parameterized factory instance in reader options.
 
 ## Supported runtime types
 

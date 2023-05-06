@@ -32,7 +32,10 @@ internal sealed class SequenceSegment<T> : ReadOnlySequenceSegment<T>
     {
         Debug.Assert(count >= 0);
 
-        Memory = new(_buffer, 0, Memory.Length + count);
+        if (count != 0)
+        {
+            Memory = new(_buffer, 0, Memory.Length + count);
+        }
     }
 
     public void AppendNext(SequenceSegment<T> segment)

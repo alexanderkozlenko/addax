@@ -10,6 +10,5 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageVersion Include="MSTest.TestAdapter" Version="3.0.2" />
     <PackageVersion Include="MSTest.TestFramework" Version="3.0.2" />
-    <PackageVersion Include="System.IO.Pipelines" Version="7.0.0" />
   </ItemGroup>
 </Project>

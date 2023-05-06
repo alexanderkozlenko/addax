@@ -10,7 +10,7 @@ using Addax.Formats.Tabular.Internal;
 namespace Addax.Formats.Tabular;
 
 /// <summary>Provides forward-only, read-only access to a tabular data on the field level.</summary>
-public sealed partial class TabularFieldReader : IAsyncDisposable
+public sealed partial class TabularFieldReader : IDisposable, IAsyncDisposable
 {
     private readonly TabularStreamReader _streamReader;
     private readonly TabularStreamParser _streamParser;
@@ -102,19 +102,74 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
     }
 
     /// <inheritdoc />
-    public async ValueTask DisposeAsync()
+    public void Dispose()
     {
         _isDisposed = true;
         _value = ReadOnlySequence<char>.Empty;
-        _bufferSource.Clear();
-        _bufferKind = BufferKind.None;
-        _positionType = TabularPositionType.EndOfStream;
         _fieldType = TabularFieldType.Undefined;
+        _positionType = TabularPositionType.EndOfStream;
         _position = 0;
+        _bufferKind = BufferKind.Undefined;
+        _bufferSource.Clear();
+        _streamReader.Dispose();
+    }
 
-        await _streamReader.DisposeAsync().ConfigureAwait(false);
+    /// <inheritdoc />
+    public ValueTask DisposeAsync()
+    {
+        _isDisposed = true;
+        _value = ReadOnlySequence<char>.Empty;
+        _fieldType = TabularFieldType.Undefined;
+        _positionType = TabularPositionType.EndOfStream;
+        _position = 0;
+        _bufferKind = BufferKind.Undefined;
+        _bufferSource.Clear();
 
-        _stringFactory.Dispose();
+        return _streamReader.DisposeAsync();
+    }
+
+    /// <summary>Advances the reader to the next record.</summary>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns><see langword="true" /> if the reader was successfully advanced, or <see langword="false" /> otherwise.</returns>
+    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
+    public bool MoveNextRecord(CancellationToken cancellationToken = default)
+    {
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        return _positionType switch
+        {
+            TabularPositionType.BeginningOfStream => AssumeNextRecord(),
+            TabularPositionType.BeginningOfRecord => MoveNextRecordCore(cancellationToken),
+            TabularPositionType.FieldSeparator => MoveNextRecordCore(cancellationToken),
+            TabularPositionType.EndOfRecord => AssumeNextRecord(),
+            _ => false,
+        };
+
+        bool AssumeNextRecord()
+        {
+            ReleaseValue();
+
+            _positionType = TabularPositionType.BeginningOfRecord;
+
+            return true;
+        }
+
+        bool MoveNextRecordCore(CancellationToken cancellationToken)
+        {
+            ReleaseValue();
+
+            while (_positionType is not (TabularPositionType.EndOfRecord or TabularPositionType.EndOfStream))
+            {
+                AdvanceNextToken(consume: false, cancellationToken);
+            }
+
+            if (_positionType is TabularPositionType.EndOfRecord)
+            {
+                _positionType = TabularPositionType.BeginningOfRecord;
+            }
+
+            return _positionType is TabularPositionType.BeginningOfRecord;
+        }
     }
 
     /// <summary>Asynchronously advances the reader to the next record.</summary>
@@ -134,7 +189,6 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
             _ => new(false),
         };
 
-        [StackTraceHidden]
         ValueTask<bool> AssumeNextRecordAsync()
         {
             ReleaseValue();
@@ -144,7 +198,6 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
             return new(true);
         }
 
-        [StackTraceHidden]
         [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
         async ValueTask<bool> MoveNextRecordAsyncCore(CancellationToken cancellationToken)
         {
@@ -164,6 +217,30 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         }
     }
 
+    /// <summary>Advances the reader to the next field in the current record.</summary>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns><see langword="true" /> if the reader was successfully advanced, or <see langword="false" /> otherwise.</returns>
+    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
+    public bool MoveNextField(CancellationToken cancellationToken = default)
+    {
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        return _positionType switch
+        {
+            TabularPositionType.BeginningOfRecord => MoveNextFieldCore(cancellationToken),
+            TabularPositionType.FieldSeparator => MoveNextFieldCore(cancellationToken),
+            _ => false,
+        };
+
+        bool MoveNextFieldCore(CancellationToken cancellationToken)
+        {
+            ReleaseValue();
+            AdvanceNextToken(consume: false, cancellationToken);
+
+            return _positionType is TabularPositionType.FieldSeparator;
+        }
+    }
+
     /// <summary>Asynchronously advances the reader to the next field in the current record.</summary>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task that will complete with a result of <see langword="true" /> if the reader was successfully advanced, or <see langword="false" /> otherwise.</returns>
@@ -179,7 +256,6 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
             _ => new(false),
         };
 
-        [StackTraceHidden]
         [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
         async ValueTask<bool> MoveNextFieldAsyncCore(CancellationToken cancellationToken)
         {
@@ -188,6 +264,29 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
             await AdvanceNextTokenAsync(consume: false, cancellationToken).ConfigureAwait(false);
 
             return _positionType is TabularPositionType.FieldSeparator;
+        }
+    }
+
+    /// <summary>Reads the next field in the current record.</summary>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns><see langword="true" /> if the value was successfully read, or <see langword="false" /> otherwise.</returns>
+    /// <exception cref="TabularDataException">The reader encountered an unexpected character or end of stream.</exception>
+    public bool ReadField(CancellationToken cancellationToken = default)
+    {
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        return _positionType switch
+        {
+            TabularPositionType.BeginningOfRecord => ReadFieldCore(cancellationToken),
+            TabularPositionType.FieldSeparator => ReadFieldCore(cancellationToken),
+            _ => false,
+        };
+
+        bool ReadFieldCore(CancellationToken cancellationToken)
+        {
+            ReleaseValue();
+
+            return AdvanceNextToken(consume: true, cancellationToken);
         }
     }
 
@@ -206,7 +305,6 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
             _ => new(false),
         };
 
-        [StackTraceHidden]
         ValueTask<bool> ReadFieldAsyncCore(CancellationToken cancellationToken)
         {
             ReleaseValue();
@@ -215,8 +313,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         }
     }
 
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
-    private async ValueTask<bool> AdvanceNextTokenAsync(bool consume, CancellationToken cancellationToken)
+    private bool AdvanceNextToken(bool consume, CancellationToken cancellationToken)
     {
         var examinedLength = 0L;
 
@@ -225,24 +322,24 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
             IsBeginningOfLine = _positionType is TabularPositionType.BeginningOfRecord,
         };
 
-        while (_positionType is not TabularPositionType.EndOfStream)
-        {
-            if (!_streamReader.TryRead())
-            {
-                await _streamReader.ReadAsync(cancellationToken).ConfigureAwait(false);
-            }
+        var streamReader = _streamReader;
+        var streamParser = _streamParser;
 
-            var readingBuffer = _streamReader.Buffer;
-            var parsingBuffer = readingBuffer.Slice(_streamReader.Examined);
-            var parsingStatus = _streamParser.Parse(parsingBuffer, ref parserState, out var parsedLength);
+        while (true)
+        {
+            streamReader.Read(cancellationToken);
+
+            var readingBuffer = streamReader.Buffer;
+            var parsingBuffer = readingBuffer.Slice(streamReader.ExaminedChars);
+            var parsingStatus = streamParser.Parse(parsingBuffer, ref parserState, out var parsedLength);
 
             examinedLength += parsedLength;
 
             if (parsingStatus is TabularStreamParsingStatus.NeedMoreData)
             {
-                if (!_streamReader.IsCompleted)
+                if (!streamReader.IsCompleted)
                 {
-                    _streamReader.Advance(0, examinedLength);
+                    streamReader.Advance(0, examinedLength);
 
                     continue;
                 }
@@ -260,16 +357,16 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
 
             if (consume)
             {
-                _value = _streamParser.Extract(readingBuffer, examinedLength, parsingStatus, parserState, _bufferSource, out _bufferKind);
+                _value = streamParser.Extract(readingBuffer, examinedLength, parsingStatus, parserState, _bufferSource, out _bufferKind);
             }
 
             if (_bufferKind is BufferKind.Shared)
             {
-                _streamReader.Advance(0, examinedLength);
+                streamReader.Advance(0, examinedLength);
             }
             else
             {
-                _streamReader.Advance(examinedLength);
+                streamReader.Advance(examinedLength);
             }
 
             _positionType = parsingStatus switch
@@ -284,7 +381,94 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
             return consume;
         }
 
-        return consume;
+        [DoesNotReturn]
+        [StackTraceHidden]
+        static void ThrowUnexpectedCharacterException(long position)
+        {
+            throw new TabularDataException($"The reader encountered an unexpected character at position {position}.", position);
+        }
+
+        [DoesNotReturn]
+        [StackTraceHidden]
+        static void ThrowUnexpectedEndOfStreamException(long position)
+        {
+            throw new TabularDataException($"The reader encountered an unexpected end of stream at position {position}.", position);
+        }
+    }
+
+    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
+    private async ValueTask<bool> AdvanceNextTokenAsync(bool consume, CancellationToken cancellationToken)
+    {
+        var examinedLength = 0L;
+
+        var parserState = new TabularStreamParserState
+        {
+            IsBeginningOfLine = _positionType is TabularPositionType.BeginningOfRecord,
+        };
+
+        var streamReader = _streamReader;
+        var streamParser = _streamParser;
+
+        while (true)
+        {
+            var readingTask = streamReader.ReadAsync(cancellationToken);
+
+            if (!readingTask.IsCompletedSuccessfully)
+            {
+                await readingTask.ConfigureAwait(false);
+            }
+
+            var readingBuffer = streamReader.Buffer;
+            var parsingBuffer = readingBuffer.Slice(streamReader.ExaminedChars);
+            var parsingStatus = streamParser.Parse(parsingBuffer, ref parserState, out var parsedLength);
+
+            examinedLength += parsedLength;
+
+            if (parsingStatus is TabularStreamParsingStatus.NeedMoreData)
+            {
+                if (!streamReader.IsCompleted)
+                {
+                    streamReader.Advance(0, examinedLength);
+
+                    continue;
+                }
+                if (parserState.IsIncomplete)
+                {
+                    ThrowUnexpectedEndOfStreamException(_position + examinedLength - 1);
+                }
+            }
+            else if (parsingStatus is TabularStreamParsingStatus.FoundInvalidData)
+            {
+                ThrowUnexpectedCharacterException(_position + examinedLength - 1);
+            }
+
+            _fieldType = !parserState.IsCommentPrefixFound ? TabularFieldType.Content : TabularFieldType.Comment;
+
+            if (consume)
+            {
+                _value = streamParser.Extract(readingBuffer, examinedLength, parsingStatus, parserState, _bufferSource, out _bufferKind);
+            }
+
+            if (_bufferKind is BufferKind.Shared)
+            {
+                streamReader.Advance(0, examinedLength);
+            }
+            else
+            {
+                streamReader.Advance(examinedLength);
+            }
+
+            _positionType = parsingStatus switch
+            {
+                TabularStreamParsingStatus.FoundFieldSeparation => TabularPositionType.FieldSeparator,
+                TabularStreamParsingStatus.FoundRecordSeparation => TabularPositionType.EndOfRecord,
+                _ => TabularPositionType.EndOfStream,
+            };
+
+            _position += examinedLength;
+
+            return consume;
+        }
 
         [DoesNotReturn]
         [StackTraceHidden]
@@ -311,7 +495,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         ArgumentNullException.ThrowIfNull(converter);
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
-        if (_bufferKind is BufferKind.None)
+        if (_bufferKind is BufferKind.Undefined)
         {
             throw new InvalidOperationException("The current reader value can only be accessed following a read operation.");
         }
@@ -412,7 +596,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
         {
             case BufferKind.Shared:
                 {
-                    _streamReader.Advance(_streamReader.Examined);
+                    _streamReader.Advance(_streamReader.ExaminedChars);
                 }
                 break;
             case BufferKind.Private:
@@ -422,7 +606,7 @@ public sealed partial class TabularFieldReader : IAsyncDisposable
                 break;
         }
 
-        _bufferKind = BufferKind.None;
+        _bufferKind = BufferKind.Undefined;
     }
 
     private TabularFieldConverter<T> SelectConverter<T>()
