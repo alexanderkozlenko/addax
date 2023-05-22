@@ -15,7 +15,7 @@ The main features are:
 
 - The framework supports data in any tabular dialect and stream encoding.
 - The framework supports working with tabular fields longer than 2,147,483,591 characters.
-- The framework and any generated code are fully compatible with [native AOT](https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot) compilation.
+- The framework and any generated code are fully compatible with native AOT compilation.
 
 An example of reading from and writing to a CSV file formatted according to RFC 4180:
 
