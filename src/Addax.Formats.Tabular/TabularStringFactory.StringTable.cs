@@ -194,9 +194,9 @@ public partial class TabularStringFactory
             }
         }
 
-        private static bool Equals(string value, ReadOnlySpan<char> buffer)
+        private static bool Equals(string value, ReadOnlyMemory<char> buffer)
         {
-            return value.AsSpan().SequenceEqual(buffer);
+            return value.AsSpan().SequenceEqual(buffer.Span);
         }
 
         private static bool Equals(string value, in ReadOnlySequence<char> buffer)
