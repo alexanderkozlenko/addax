@@ -1,5 +1,7 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
+#pragma warning disable IDE0060
+
 using System.Collections;
 
 namespace Addax.Formats.Tabular;

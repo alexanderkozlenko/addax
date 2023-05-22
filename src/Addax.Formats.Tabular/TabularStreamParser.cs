@@ -24,32 +24,29 @@ internal sealed class TabularStreamParser
         _commentPrefix = dialect.CommentPrefix;
     }
 
-    public TabularStreamParsingStatus Parse(in ReadOnlySequence<char> buffer, ref TabularStreamParserState state, out long parsed)
+    public TabularStreamParsingStatus Parse(ReadOnlySpan<char> buffer, ref TabularStreamParserState state, out long parsed)
     {
-        var reader = new SequenceReader<char>(buffer);
+        parsed = 0;
 
-        while (!reader.End)
+        while (!buffer.IsEmpty)
         {
             switch (state.LastTokenType)
             {
                 case TabularStreamParsingTokenType.None:
                     {
-                        var symbol = reader.UnreadSpan[0];
+                        var symbol = buffer[0];
 
-                        reader.Advance(1);
+                        parsed += 1;
+                        buffer = buffer[1..];
 
                         if (symbol == _fieldSeparationSymbol)
                         {
-                            parsed = reader.Consumed;
-
                             return TabularStreamParsingStatus.FoundFieldSeparation;
                         }
                         else if (symbol == _recordSeparationSymbol1)
                         {
                             if (_recordSeparationSymbol1 == _recordSeparationSymbol2)
                             {
-                                parsed = reader.Consumed;
-
                                 return TabularStreamParsingStatus.FoundRecordSeparation;
                             }
 
@@ -76,32 +73,29 @@ internal sealed class TabularStreamParser
                     break;
                 case TabularStreamParsingTokenType.FieldValue:
                     {
-                        var currentSegment = reader.UnreadSpan;
-                        var symbolIndex = currentSegment.IndexOfAny(_fieldSeparationSymbol, _recordSeparationSymbol1, _fieldQuoteSymbol);
+                        var symbolIndex = buffer.IndexOfAny(_fieldSeparationSymbol, _recordSeparationSymbol1, _fieldQuoteSymbol);
 
                         if (symbolIndex < 0)
                         {
-                            reader.Advance(currentSegment.Length);
+                            parsed += buffer.Length;
+                            buffer = ReadOnlySpan<char>.Empty;
 
                             continue;
                         }
 
-                        reader.Advance(symbolIndex + 1);
+                        var symbol = buffer[symbolIndex];
 
-                        var symbol = currentSegment[symbolIndex];
+                        parsed += symbolIndex + 1;
+                        buffer = buffer[(symbolIndex + 1)..];
 
                         if (symbol == _fieldSeparationSymbol)
                         {
-                            parsed = reader.Consumed;
-
                             return TabularStreamParsingStatus.FoundFieldSeparation;
                         }
                         else if (symbol == _recordSeparationSymbol1)
                         {
                             if (_recordSeparationSymbol1 == _recordSeparationSymbol2)
                             {
-                                parsed = reader.Consumed;
-
                                 return TabularStreamParsingStatus.FoundRecordSeparation;
                             }
 
@@ -109,30 +103,28 @@ internal sealed class TabularStreamParser
                         }
                         else
                         {
-                            parsed = reader.Consumed;
-
                             return TabularStreamParsingStatus.FoundInvalidData;
                         }
                     }
                     break;
                 case TabularStreamParsingTokenType.FieldQuoteBegin:
                     {
-                        var currentSegment = reader.UnreadSpan;
-
                         if (_fieldEscapeSymbol != _fieldQuoteSymbol)
                         {
-                            var symbolIndex = currentSegment.IndexOfAny(_fieldEscapeSymbol, _fieldQuoteSymbol);
+                            var symbolIndex = buffer.IndexOfAny(_fieldEscapeSymbol, _fieldQuoteSymbol);
 
                             if (symbolIndex < 0)
                             {
-                                reader.Advance(currentSegment.Length);
+                                parsed += buffer.Length;
+                                buffer = ReadOnlySpan<char>.Empty;
 
                                 continue;
                             }
 
-                            reader.Advance(symbolIndex + 1);
+                            var symbol = buffer[symbolIndex];
 
-                            var symbol = currentSegment[symbolIndex];
+                            parsed += symbolIndex + 1;
+                            buffer = buffer[(symbolIndex + 1)..];
 
                             if (symbol == _fieldEscapeSymbol)
                             {
@@ -146,25 +138,28 @@ internal sealed class TabularStreamParser
                         }
                         else
                         {
-                            var symbolIndex = currentSegment.IndexOf(_fieldQuoteSymbol);
+                            var symbolIndex = buffer.IndexOf(_fieldQuoteSymbol);
 
                             if (symbolIndex < 0)
                             {
-                                reader.Advance(currentSegment.Length);
+                                parsed += buffer.Length;
+                                buffer = ReadOnlySpan<char>.Empty;
 
                                 continue;
                             }
 
-                            reader.Advance(symbolIndex + 1);
+                            parsed += symbolIndex + 1;
+                            buffer = buffer[(symbolIndex + 1)..];
                             state.LastTokenType = TabularStreamParsingTokenType.FieldQuoteEnd;
                         }
                     }
                     break;
                 case TabularStreamParsingTokenType.FieldQuoteEnd:
                     {
-                        var symbol = reader.UnreadSpan[0];
+                        var symbol = buffer[0];
 
-                        reader.Advance(1);
+                        parsed += 1;
+                        buffer = buffer[1..];
 
                         if ((_fieldEscapeSymbol == _fieldQuoteSymbol) && (symbol == _fieldQuoteSymbol))
                         {
@@ -176,16 +171,12 @@ internal sealed class TabularStreamParser
 
                         if (symbol == _fieldSeparationSymbol)
                         {
-                            parsed = reader.Consumed;
-
                             return TabularStreamParsingStatus.FoundFieldSeparation;
                         }
                         else if (symbol == _recordSeparationSymbol1)
                         {
                             if (_recordSeparationSymbol1 == _recordSeparationSymbol2)
                             {
-                                parsed = reader.Consumed;
-
                                 return TabularStreamParsingStatus.FoundRecordSeparation;
                             }
 
@@ -193,22 +184,19 @@ internal sealed class TabularStreamParser
                         }
                         else
                         {
-                            parsed = reader.Consumed;
-
                             return TabularStreamParsingStatus.FoundInvalidData;
                         }
                     }
                     break;
                 case TabularStreamParsingTokenType.FieldEscape:
                     {
-                        var symbol = reader.UnreadSpan[0];
+                        var symbol = buffer[0];
 
-                        reader.Advance(1);
+                        parsed += 1;
+                        buffer = buffer[1..];
 
                         if ((symbol != _fieldQuoteSymbol) && (symbol != _fieldEscapeSymbol))
                         {
-                            parsed = reader.Consumed;
-
                             return TabularStreamParsingStatus.FoundInvalidData;
                         }
 
@@ -217,14 +205,13 @@ internal sealed class TabularStreamParser
                     break;
                 case TabularStreamParsingTokenType.RecordSeparation:
                     {
-                        var symbol = reader.UnreadSpan[0];
+                        var symbol = buffer[0];
 
-                        reader.Advance(1);
+                        parsed += 1;
+                        buffer = buffer[1..];
 
                         if (symbol == _recordSeparationSymbol2)
                         {
-                            parsed = reader.Consumed;
-
                             return TabularStreamParsingStatus.FoundRecordSeparation;
                         }
                         else if (!state.IsFieldQuoted)
@@ -233,30 +220,27 @@ internal sealed class TabularStreamParser
                         }
                         else
                         {
-                            parsed = reader.Consumed;
-
                             return TabularStreamParsingStatus.FoundInvalidData;
                         }
                     }
                     break;
                 case TabularStreamParsingTokenType.CommentPrefix:
                     {
-                        var currentSegment = reader.UnreadSpan;
-                        var symbolIndex = currentSegment.IndexOf(_recordSeparationSymbol1);
+                        var symbolIndex = buffer.IndexOf(_recordSeparationSymbol1);
 
                         if (symbolIndex < 0)
                         {
-                            reader.Advance(currentSegment.Length);
+                            parsed += buffer.Length;
+                            buffer = ReadOnlySpan<char>.Empty;
 
                             continue;
                         }
 
-                        reader.Advance(symbolIndex + 1);
+                        parsed += symbolIndex + 1;
+                        buffer = buffer[(symbolIndex + 1)..];
 
                         if (_recordSeparationSymbol1 == _recordSeparationSymbol2)
                         {
-                            parsed = reader.Consumed;
-
                             return TabularStreamParsingStatus.FoundRecordSeparation;
                         }
 
@@ -265,8 +249,6 @@ internal sealed class TabularStreamParser
                     break;
             }
         }
-
-        parsed = reader.Consumed;
 
         return TabularStreamParsingStatus.NeedMoreData;
     }

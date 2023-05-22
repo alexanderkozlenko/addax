@@ -26,7 +26,7 @@ internal ref struct BufferWriter<T>
         _buffer[_writtenCount++] = value;
     }
 
-    public Span<T> WriteBuffer
+    public readonly Span<T> WriteBuffer
     {
         get
         {
@@ -34,7 +34,7 @@ internal ref struct BufferWriter<T>
         }
     }
 
-    public int WrittenCount
+    public readonly int WrittenCount
     {
         get
         {

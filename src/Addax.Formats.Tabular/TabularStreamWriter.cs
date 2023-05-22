@@ -20,10 +20,8 @@ internal sealed class TabularStreamWriter : IBufferWriter<char>, IDisposable, IA
 
     public TabularStreamWriter(Stream stream, Encoding encoding, int bufferSize, bool leaveOpen)
     {
-        var charBufferSize = GetCharBufferSize(encoding, bufferSize);
-
         _byteBuffer = new(bufferSize);
-        _charBuffer = new(charBufferSize);
+        _charBuffer = new(GetCharBufferSize(encoding, bufferSize));
         _stream = stream;
         _encoding = encoding;
         _encoder = encoding.GetEncoder();
@@ -78,7 +76,7 @@ internal sealed class TabularStreamWriter : IBufferWriter<char>, IDisposable, IA
 
     public void Flush(CancellationToken cancellationToken)
     {
-        if (_charBuffer.IsEmpty)
+        if (_charBuffer.Length == 0)
         {
             return;
         }
@@ -124,7 +122,7 @@ internal sealed class TabularStreamWriter : IBufferWriter<char>, IDisposable, IA
 
     public ValueTask FlushAsync(CancellationToken cancellationToken)
     {
-        if (_charBuffer.IsEmpty)
+        if (_charBuffer.Length == 0)
         {
             return ValueTask.CompletedTask;
         }

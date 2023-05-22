@@ -17,7 +17,7 @@ public partial class TabularStringFactory
         private int _freeList = -1;
         private int _freeCount;
 
-        public unsafe string GetOrAdd(ReadOnlySpan<char> buffer, delegate*<ReadOnlySpan<char>, string> factory)
+        public unsafe string GetOrAdd(ReadOnlyMemory<char> buffer, delegate*<ReadOnlyMemory<char>, string> factory)
         {
             var buckets = _buckets;
             var entries = _entries;
@@ -221,11 +221,11 @@ public partial class TabularStringFactory
             return true;
         }
 
-        private static int GetHashCode(ReadOnlySpan<char> buffer)
+        private static int GetHashCode(ReadOnlyMemory<char> buffer)
         {
             var hashCode = new HashCode();
 
-            hashCode.AddBytes(MemoryMarshal.Cast<char, byte>(buffer));
+            hashCode.AddBytes(MemoryMarshal.Cast<char, byte>(buffer.Span));
 
             return hashCode.ToHashCode();
         }

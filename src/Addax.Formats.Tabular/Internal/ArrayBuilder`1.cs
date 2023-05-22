@@ -14,7 +14,7 @@ internal struct ArrayBuilder<T> : IDisposable
         _array = array;
     }
 
-    public void Dispose()
+    public readonly void Dispose()
     {
         ArrayPool<T>.Shared.Return(_array);
     }
@@ -34,7 +34,7 @@ internal struct ArrayBuilder<T> : IDisposable
         _array[_length++] = item;
     }
 
-    public T[] ToArray()
+    public readonly T[] ToArray()
     {
         if (_length != 0)
         {

@@ -68,13 +68,13 @@ public partial class TabularStringFactory : IDisposable
             if ((_stringTable is null) || (length > _maximumStringLength))
             {
                 result = value.IsSingleSegment ?
-                    CreateString(value.FirstSpan) :
+                    CreateString(value.First) :
                     CreateString(value);
             }
             else
             {
                 result = value.IsSingleSegment ?
-                    _stringTable.GetOrAdd(value.FirstSpan, &CreateString) :
+                    _stringTable.GetOrAdd(value.First, &CreateString) :
                     _stringTable.GetOrAdd(value, &CreateString);
             }
 
@@ -88,9 +88,9 @@ public partial class TabularStringFactory : IDisposable
         }
     }
 
-    private static string CreateString(ReadOnlySpan<char> buffer)
+    private static string CreateString(ReadOnlyMemory<char> buffer)
     {
-        return new(buffer);
+        return new(buffer.Span);
     }
 
     private static string CreateString(in ReadOnlySequence<char> buffer)

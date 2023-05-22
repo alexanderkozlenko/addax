@@ -135,19 +135,19 @@ internal sealed class SequenceSource<T> : IBufferWriter<T>
         }
     }
 
+    public int MinimumSegmentSize
+    {
+        get
+        {
+            return _minimumSegmentSize;
+        }
+    }
+
     public long Length
     {
         get
         {
             return _sequenceLength;
-        }
-    }
-
-    public bool IsEmpty
-    {
-        get
-        {
-            return _sequenceLength == 0;
         }
     }
 }

@@ -41,10 +41,6 @@ await writer.WriteRecordAsync(new[] { "Hello World!" });
 
 ## Working with records
 
-The framework contains two types that provide forward-only access to tabular data on record level: `TabularRecordReader` and `TabularRecordWriter`. A mapping between a runtime type and a tabular record is performed with record converters.
-
-The easiest way to create a record converter is by using the record converter source generator from Addax.Formats.Tabular.Analyzers package. To define a converter, the target type must be annotated with `TabularRecordAttribute` (can be applied to structures, classes, record structures, or records classes), and target type members must be annotated with `TabularFieldAttribute` (can be applied to fields or properties). A converter can be generated using one of two strategies: with or without a strict schema. The strategy without a strict schema is the default option, it ignores tabular structure errors and data type mismatches. The source generator supports specifying a field converter for a particular type member and automatically handles type members with `Nullable<T>` type. The generated converters are automatically registered in the shared converter registry.
-
 An example of working with records using a generated converter:
 
 ```cs
@@ -68,7 +64,7 @@ var record = new Experiment { Result = .9 };
 await writer.WriteRecordAsync(record);
 ```
 
-The annotation attributes can be trimmed using the standard approach with `ILLink.LinkAttributes.xml`:
+An example of `ILLink.LinkAttributes.xml` for trimming annotation attributes:
 
 ```xml
 <linker>
@@ -83,15 +79,9 @@ The annotation attributes can be trimmed using the standard approach with `ILLin
 </linker>
 ```
 
-The framework contains two built-in record converters, which can be used when the tabular structure is unknown, as a more convenient alternative to reading tabular data as fields. These converters represent a tabular record as `string[]` and `IEnumerable<string>` types respectively. To be noted, reading tabular data using these converters is not memory-efficient due to implicitly created string arrays.
-
 ## Working with fields
 
-The framework contains two types that provide forward-only access to tabular data on field level: `TabularFieldReader` and `TabularFieldWriter`. Both types support working with text data using `ReadOnlySpan<char>` and `ReadOnlySequence<char>`. A mapping between a type member and a tabular field is performed with field converters.
-
-The reader and writer provide generic and non-generic method groups to work with tabular fields. While both method groups work with built-in field converters, usage of non-generic methods is the primary approach due to advanced optimization (e.g., for reading fields as strings). 
-
-An example of working with fields using built-in converters:
+An example of working with fields using a built-in converter:
 
 ```cs
 await using var reader = new TabularFieldReader(stream, dialect);
@@ -112,8 +102,6 @@ writer.WriteDouble(.9);
 
 await writer.FlushAsync();
 ```
-
-A custom converter can be registered in the shared converter registry and options or specified for a particular operation. A custom converter can be also used in a record converter definition. Any built-in converter can be overridden by a custom implementation, that will affect all methods in generic and non-generic method groups (except non-generic methods that work with strings).
 
 An example of defining a record converter with a custom field converter:
 
@@ -139,10 +127,6 @@ internal class MyConverter : TabularFieldConverter<DateTime>
     }
 }
 ```
-
-## Advanced configuration
-
-The framework supports usage of custom factories for strings. The default implementation of the factory supports string deduplication, which can be enabled by specifying a parameterized factory instance in reader options.
 
 ## Supported runtime types
 

@@ -331,9 +331,26 @@ public sealed partial class TabularFieldReader : IDisposable, IAsyncDisposable
 
             var readingBuffer = streamReader.Buffer;
             var parsingBuffer = readingBuffer.Slice(streamReader.ExaminedChars);
-            var parsingStatus = streamParser.Parse(parsingBuffer, ref parserState, out var parsedLength);
+            var parsingStatus = TabularStreamParsingStatus.NeedMoreData;
 
-            examinedLength += parsedLength;
+            if (parsingBuffer.IsSingleSegment)
+            {
+                parsingStatus = streamParser.Parse(parsingBuffer.FirstSpan, ref parserState, out var parsedLength);
+                examinedLength += parsedLength;
+            }
+            else
+            {
+                foreach (var parsingBufferSegment in parsingBuffer)
+                {
+                    parsingStatus = streamParser.Parse(parsingBufferSegment.Span, ref parserState, out var parsedLength);
+                    examinedLength += parsedLength;
+
+                    if (parsingStatus is not TabularStreamParsingStatus.NeedMoreData)
+                    {
+                        break;
+                    }
+                }
+            }
 
             if (parsingStatus is TabularStreamParsingStatus.NeedMoreData)
             {
@@ -420,9 +437,26 @@ public sealed partial class TabularFieldReader : IDisposable, IAsyncDisposable
 
             var readingBuffer = streamReader.Buffer;
             var parsingBuffer = readingBuffer.Slice(streamReader.ExaminedChars);
-            var parsingStatus = streamParser.Parse(parsingBuffer, ref parserState, out var parsedLength);
+            var parsingStatus = TabularStreamParsingStatus.NeedMoreData;
 
-            examinedLength += parsedLength;
+            if (parsingBuffer.IsSingleSegment)
+            {
+                parsingStatus = streamParser.Parse(parsingBuffer.FirstSpan, ref parserState, out var parsedLength);
+                examinedLength += parsedLength;
+            }
+            else
+            {
+                foreach (var parsingBufferSegment in parsingBuffer)
+                {
+                    parsingStatus = streamParser.Parse(parsingBufferSegment.Span, ref parserState, out var parsedLength);
+                    examinedLength += parsedLength;
+
+                    if (parsingStatus is not TabularStreamParsingStatus.NeedMoreData)
+                    {
+                        break;
+                    }
+                }
+            }
 
             if (parsingStatus is TabularStreamParsingStatus.NeedMoreData)
             {
