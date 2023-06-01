@@ -9,6 +9,6 @@
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.6.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.6.1" />
     <PackageVersion Include="MSTest.TestAdapter" Version="3.0.3" />
-    <PackageVersion Include="MSTest.TestFramework" Version="3.0.3" />
+    <PackageVersion Include="MSTest.TestFramework" Version="3.0.4" />
   </ItemGroup>
 </Project>
