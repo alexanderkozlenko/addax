@@ -9,19 +9,14 @@ internal struct ArrayBuilder<T> : IDisposable
     private T[] _array;
     private int _length;
 
-    private ArrayBuilder(T[] array)
+    public ArrayBuilder(int capacity)
     {
-        _array = array;
+        _array = ArrayPool<T>.Shared.Rent(capacity);
     }
 
     public readonly void Dispose()
     {
         ArrayPool<T>.Shared.Return(_array);
-    }
-
-    public static ArrayBuilder<T> Create(int capacity)
-    {
-        return new(ArrayPool<T>.Shared.Rent(capacity));
     }
 
     public void Add(T item)

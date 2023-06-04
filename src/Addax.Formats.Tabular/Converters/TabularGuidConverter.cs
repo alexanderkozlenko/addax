@@ -13,7 +13,11 @@ internal sealed class TabularGuidConverter : TabularFieldConverter<Guid>
 
     public override bool TryFormat(Guid value, Span<char> buffer, IFormatProvider provider, out int charsWritten)
     {
-        return value.TryFormat(buffer, out charsWritten, "d");
+        var result = value.TryFormat(buffer, out charsWritten, "d");
+
+        Debug.Assert(result);
+
+        return true;
     }
 
     public override bool TryParse(ReadOnlySpan<char> buffer, IFormatProvider provider, out Guid value)

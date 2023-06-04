@@ -17,7 +17,9 @@ internal sealed class TabularDoubleConverter : TabularNumberConverter<double>
     {
         get
         {
-            return NumberStyles.Float | NumberStyles.AllowThousands;
+            return
+                NumberStyles.Float |
+                NumberStyles.AllowThousands;
         }
     }
 }

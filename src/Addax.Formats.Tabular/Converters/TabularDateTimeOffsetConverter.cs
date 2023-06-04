@@ -17,7 +17,11 @@ internal sealed class TabularDateTimeOffsetConverter : TabularFieldConverter<Dat
 
     public override bool TryFormat(DateTimeOffset value, Span<char> buffer, IFormatProvider provider, out int charsWritten)
     {
-        return value.TryFormat(buffer, out charsWritten, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK", provider);
+        var result = value.TryFormat(buffer, out charsWritten, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK", provider);
+
+        Debug.Assert(result);
+
+        return true;
     }
 
     public override bool TryParse(ReadOnlySpan<char> buffer, IFormatProvider provider, out DateTimeOffset value)

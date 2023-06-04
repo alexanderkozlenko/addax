@@ -9,7 +9,8 @@ internal sealed class TabularBigIntegerConverter : TabularNumberConverter<BigInt
 {
     public override bool TryGetFormatBufferLength(BigInteger value, out int result)
     {
-        if ((long.MinValue <= value) && (value <= long.MaxValue))
+        if ((value >= long.MinValue) &&
+            (value <= long.MaxValue))
         {
             result = 32;
 
@@ -18,18 +19,14 @@ internal sealed class TabularBigIntegerConverter : TabularNumberConverter<BigInt
 
         try
         {
-            var bufferLength = checked((int)Math.Ceiling(BigInteger.Log10(BigInteger.Abs(value)) + 1) + 1);
+            result = checked((int)Math.Ceiling(BigInteger.Log10(BigInteger.Abs(value)) + 1) + 1);
 
-            if (bufferLength > Array.MaxLength)
+            if (result <= Array.MaxLength)
             {
-                result = 0;
-
-                return false;
+                return true;
             }
 
-            result = bufferLength;
-
-            return true;
+            return false;
         }
         catch (ArgumentOutOfRangeException)
         {
@@ -49,7 +46,9 @@ internal sealed class TabularBigIntegerConverter : TabularNumberConverter<BigInt
     {
         get
         {
-            return NumberStyles.Integer | NumberStyles.AllowThousands;
+            return
+                NumberStyles.Integer |
+                NumberStyles.AllowThousands;
         }
     }
 }

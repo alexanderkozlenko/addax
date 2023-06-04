@@ -30,7 +30,7 @@ internal sealed class TabularTimeSpanConverter : TabularFieldConverter<TimeSpan>
 
         if (value.Days > 0)
         {
-            var result = value.Days.TryFormat(writer.WriteBuffer, out var charsWrittenD, "g", provider);
+            var result = value.Days.TryFormat(writer.FreeBuffer, out var charsWrittenD, "g", provider);
 
             Debug.Assert(result);
 
@@ -46,7 +46,7 @@ internal sealed class TabularTimeSpanConverter : TabularFieldConverter<TimeSpan>
         }
         if ((value.Hours != 0) || (value == TimeSpan.Zero))
         {
-            var result = value.Hours.TryFormat(writer.WriteBuffer, out var charsWrittenH, "g", provider);
+            var result = value.Hours.TryFormat(writer.FreeBuffer, out var charsWrittenH, "g", provider);
 
             Debug.Assert(result);
 
@@ -55,7 +55,7 @@ internal sealed class TabularTimeSpanConverter : TabularFieldConverter<TimeSpan>
         }
         if (value.Minutes != 0)
         {
-            var result = value.Minutes.TryFormat(writer.WriteBuffer, out var charsWrittenM, "g", provider);
+            var result = value.Minutes.TryFormat(writer.FreeBuffer, out var charsWrittenM, "g", provider);
 
             Debug.Assert(result);
 
@@ -64,7 +64,7 @@ internal sealed class TabularTimeSpanConverter : TabularFieldConverter<TimeSpan>
         }
         if (seconds != 0)
         {
-            var result = seconds.TryFormat(writer.WriteBuffer, out var charsWrittenS, "0.#######", provider);
+            var result = seconds.TryFormat(writer.FreeBuffer, out var charsWrittenS, "0.#######", provider);
 
             Debug.Assert(result);
 
@@ -72,7 +72,7 @@ internal sealed class TabularTimeSpanConverter : TabularFieldConverter<TimeSpan>
             writer.Write('S');
         }
 
-        charsWritten = writer.WrittenCount;
+        charsWritten = writer.Written;
 
         return true;
     }

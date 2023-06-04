@@ -17,7 +17,9 @@ internal sealed class TabularUInt64Converter : TabularNumberConverter<ulong>
     {
         get
         {
-            return NumberStyles.Integer | NumberStyles.AllowThousands;
+            return
+                NumberStyles.Integer |
+                NumberStyles.AllowThousands;
         }
     }
 }

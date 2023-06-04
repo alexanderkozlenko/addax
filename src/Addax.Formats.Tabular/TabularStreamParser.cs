@@ -276,7 +276,7 @@ internal sealed class TabularStreamParser
 
             if (valueLength == 0)
             {
-                bufferKind = BufferKind.None;
+                bufferKind = BufferKind.Empty;
 
                 return ReadOnlySequence<char>.Empty;
             }

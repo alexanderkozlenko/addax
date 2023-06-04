@@ -17,7 +17,9 @@ internal sealed class TabularSingleConverter : TabularNumberConverter<float>
     {
         get
         {
-            return NumberStyles.Float | NumberStyles.AllowThousands;
+            return
+                NumberStyles.Float |
+                NumberStyles.AllowThousands;
         }
     }
 }

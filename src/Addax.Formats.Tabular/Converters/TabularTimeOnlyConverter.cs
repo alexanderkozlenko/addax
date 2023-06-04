@@ -17,7 +17,11 @@ internal sealed class TabularTimeOnlyConverter : TabularFieldConverter<TimeOnly>
 
     public override bool TryFormat(TimeOnly value, Span<char> buffer, IFormatProvider provider, out int charsWritten)
     {
-        return value.TryFormat(buffer, out charsWritten, "HH':'mm':'ss.FFFFFFF", provider);
+        var result = value.TryFormat(buffer, out charsWritten, "HH':'mm':'ss.FFFFFFF", provider);
+
+        Debug.Assert(result);
+
+        return true;
     }
 
     public override bool TryParse(ReadOnlySpan<char> buffer, IFormatProvider provider, out TimeOnly value)

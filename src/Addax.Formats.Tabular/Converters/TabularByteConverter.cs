@@ -17,7 +17,9 @@ internal sealed class TabularByteConverter : TabularNumberConverter<byte>
     {
         get
         {
-            return NumberStyles.Integer | NumberStyles.AllowThousands;
+            return
+                NumberStyles.Integer |
+                NumberStyles.AllowThousands;
         }
     }
 }

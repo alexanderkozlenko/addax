@@ -17,7 +17,9 @@ internal sealed class TabularUInt32Converter : TabularNumberConverter<uint>
     {
         get
         {
-            return NumberStyles.Integer | NumberStyles.AllowThousands;
+            return
+                NumberStyles.Integer |
+                NumberStyles.AllowThousands;
         }
     }
 }

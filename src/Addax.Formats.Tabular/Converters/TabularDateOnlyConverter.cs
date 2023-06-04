@@ -17,7 +17,11 @@ internal sealed class TabularDateOnlyConverter : TabularFieldConverter<DateOnly>
 
     public override bool TryFormat(DateOnly value, Span<char> buffer, IFormatProvider provider, out int charsWritten)
     {
-        return value.TryFormat(buffer, out charsWritten, "yyyy'-'MM'-'dd", provider);
+        var result = value.TryFormat(buffer, out charsWritten, "yyyy'-'MM'-'dd", provider);
+
+        Debug.Assert(result);
+
+        return true;
     }
 
     public override bool TryParse(ReadOnlySpan<char> buffer, IFormatProvider provider, out DateOnly value)

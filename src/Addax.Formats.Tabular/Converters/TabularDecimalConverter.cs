@@ -17,7 +17,10 @@ internal sealed class TabularDecimalConverter : TabularNumberConverter<decimal>
     {
         get
         {
-            return NumberStyles.Integer | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands;
+            return
+                NumberStyles.Integer |
+                NumberStyles.AllowDecimalPoint |
+                NumberStyles.AllowThousands;
         }
     }
 }

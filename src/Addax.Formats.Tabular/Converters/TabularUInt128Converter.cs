@@ -17,7 +17,9 @@ internal sealed class TabularUInt128Converter : TabularNumberConverter<UInt128>
     {
         get
         {
-            return NumberStyles.Integer | NumberStyles.AllowThousands;
+            return
+                NumberStyles.Integer |
+                NumberStyles.AllowThousands;
         }
     }
 }

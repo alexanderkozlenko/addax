@@ -17,7 +17,9 @@ internal sealed class TabularSByteConverter : TabularNumberConverter<sbyte>
     {
         get
         {
-            return NumberStyles.Integer | NumberStyles.AllowThousands;
+            return
+                NumberStyles.Integer |
+                NumberStyles.AllowThousands;
         }
     }
 }

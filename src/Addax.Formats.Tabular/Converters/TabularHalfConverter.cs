@@ -17,7 +17,9 @@ internal sealed class TabularHalfConverter : TabularNumberConverter<Half>
     {
         get
         {
-            return NumberStyles.Float | NumberStyles.AllowThousands;
+            return
+                NumberStyles.Float |
+                NumberStyles.AllowThousands;
         }
     }
 }

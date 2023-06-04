@@ -6,7 +6,7 @@ internal ref struct BufferWriter<T>
 {
     private readonly Span<T> _buffer;
 
-    private int _writtenCount;
+    private int _written;
 
     public BufferWriter(Span<T> buffer)
     {
@@ -16,29 +16,29 @@ internal ref struct BufferWriter<T>
     public void Advance(int count)
     {
         Debug.Assert(count >= 0);
-        Debug.Assert(count <= _buffer.Length - _writtenCount);
+        Debug.Assert(count <= _buffer.Length - _written);
 
-        _writtenCount += count;
+        _written += count;
     }
 
     public void Write(T value)
     {
-        _buffer[_writtenCount++] = value;
+        _buffer[_written++] = value;
     }
 
-    public readonly Span<T> WriteBuffer
+    public readonly Span<T> FreeBuffer
     {
         get
         {
-            return _buffer[_writtenCount..];
+            return _buffer[_written..];
         }
     }
 
-    public readonly int WrittenCount
+    public readonly int Written
     {
         get
         {
-            return _writtenCount;
+            return _written;
         }
     }
 }

@@ -4,8 +4,8 @@ namespace Addax.Formats.Tabular.Internal;
 
 internal enum BufferKind
 {
-    Undefined,
     None,
+    Empty,
     Shared,
     Private,
 }

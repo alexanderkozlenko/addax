@@ -9,7 +9,7 @@ internal sealed class TabularStringArrayConverter : TabularRecordConverter<strin
 {
     public override TabularRecord<string[]> ReadRecord(TabularFieldReader reader, TabularRecordReaderContext context, CancellationToken cancellationToken)
     {
-        using var builder = ArrayBuilder<string>.Create(capacity: 32);
+        using var builder = new ArrayBuilder<string>(capacity: 32);
 
         while (reader.ReadField(cancellationToken))
         {
@@ -27,7 +27,7 @@ internal sealed class TabularStringArrayConverter : TabularRecordConverter<strin
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
     public override async ValueTask<TabularRecord<string[]>> ReadRecordAsync(TabularFieldReader reader, TabularRecordReaderContext context, CancellationToken cancellationToken)
     {
-        using var builder = ArrayBuilder<string>.Create(capacity: 32);
+        using var builder = new ArrayBuilder<string>(capacity: 32);
 
         while (await reader.ReadFieldAsync(cancellationToken).ConfigureAwait(false))
         {

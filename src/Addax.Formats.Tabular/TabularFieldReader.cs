@@ -109,7 +109,7 @@ public sealed partial class TabularFieldReader : IDisposable, IAsyncDisposable
         _fieldType = TabularFieldType.Undefined;
         _positionType = TabularPositionType.EndOfStream;
         _position = 0;
-        _bufferKind = BufferKind.Undefined;
+        _bufferKind = BufferKind.None;
         _bufferSource.Clear();
         _streamReader.Dispose();
     }
@@ -122,7 +122,7 @@ public sealed partial class TabularFieldReader : IDisposable, IAsyncDisposable
         _fieldType = TabularFieldType.Undefined;
         _positionType = TabularPositionType.EndOfStream;
         _position = 0;
-        _bufferKind = BufferKind.Undefined;
+        _bufferKind = BufferKind.None;
         _bufferSource.Clear();
 
         return _streamReader.DisposeAsync();
@@ -529,7 +529,7 @@ public sealed partial class TabularFieldReader : IDisposable, IAsyncDisposable
         ArgumentNullException.ThrowIfNull(converter);
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
-        if (_bufferKind is BufferKind.Undefined)
+        if (_bufferKind is BufferKind.None)
         {
             throw new InvalidOperationException("The current reader value can only be accessed following a read operation.");
         }
@@ -640,7 +640,7 @@ public sealed partial class TabularFieldReader : IDisposable, IAsyncDisposable
                 break;
         }
 
-        _bufferKind = BufferKind.Undefined;
+        _bufferKind = BufferKind.None;
     }
 
     private TabularFieldConverter<T> SelectConverter<T>()

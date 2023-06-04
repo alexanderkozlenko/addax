@@ -19,23 +19,23 @@ internal sealed class TabularComplexConverter : TabularFieldConverter<Complex>
     {
         var writer = new BufferWriter<char>(buffer);
 
-        if ((value.Real is not 0) || (value.Imaginary is 0))
+        if ((value.Real != 0) || (value.Imaginary == 0))
         {
-            var result = value.Real.TryFormat(writer.WriteBuffer, out var charsWrittenR, "g", provider);
+            var result = value.Real.TryFormat(writer.FreeBuffer, out var charsWrittenR, "g", provider);
 
             Debug.Assert(result);
 
             writer.Advance(charsWrittenR);
         }
-        if (value.Imaginary is not 0)
+        if (value.Imaginary != 0)
         {
-            if ((value.Real is not 0) || (value.Imaginary is < 0))
+            if ((value.Real != 0) || (value.Imaginary < 0))
             {
-                writer.Write(value.Imaginary is < 0 ? '-' : '+');
+                writer.Write(value.Imaginary < 0 ? '-' : '+');
             }
-            if (double.Abs(value.Imaginary) is not 1)
+            if (double.Abs(value.Imaginary) != 1)
             {
-                var result = double.Abs(value.Imaginary).TryFormat(writer.WriteBuffer, out var charsWrittenI, "g", provider);
+                var result = double.Abs(value.Imaginary).TryFormat(writer.FreeBuffer, out var charsWrittenI, "g", provider);
 
                 Debug.Assert(result);
 
@@ -45,7 +45,7 @@ internal sealed class TabularComplexConverter : TabularFieldConverter<Complex>
             writer.Write('i');
         }
 
-        charsWritten = writer.WrittenCount;
+        charsWritten = writer.Written;
 
         return true;
     }
@@ -62,27 +62,27 @@ internal sealed class TabularComplexConverter : TabularFieldConverter<Complex>
         }
 
         var splitIndex = -1;
-        var searchIndex = 0;
+        var startIndex = 0;
 
-        while (searchIndex < buffer.Length)
+        while (startIndex < buffer.Length)
         {
-            var symbolIndex = buffer[searchIndex..].IndexOfAny('-', '+');
+            var symbolIndex = buffer[startIndex..].IndexOfAny('-', '+');
 
             if (symbolIndex < 0)
             {
                 break;
             }
 
-            searchIndex += symbolIndex;
+            startIndex += symbolIndex;
 
-            if ((searchIndex != 0) && (buffer[searchIndex - 1] is not ('e' or 'E')))
+            if ((startIndex != 0) && (buffer[startIndex - 1] is not ('e' or 'E')))
             {
-                splitIndex = searchIndex;
+                splitIndex = startIndex;
 
                 break;
             }
 
-            searchIndex++;
+            startIndex++;
         }
 
         const NumberStyles styles =
