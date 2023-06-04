@@ -10,7 +10,7 @@ internal abstract class TabularNumberConverter<T> : TabularFieldConverter<T>
 {
     public sealed override bool TryFormat(T value, Span<char> buffer, IFormatProvider provider, out int charsWritten)
     {
-        var result =  value.TryFormat(buffer, out charsWritten, "g", provider);
+        var result = value.TryFormat(buffer, out charsWritten, "g", provider);
 
         Debug.Assert(result);
 
