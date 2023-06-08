@@ -17,7 +17,7 @@ public abstract class TabularFieldConverter<T> : TabularFieldConverter
     /// <returns><see langword="true" /> if the buffer length can be calculated; <see langword="false" /> otherwise.</returns>
     public virtual bool TryGetFormatBufferLength(T? value, out int result)
     {
-        result = TabularDataInfo.StackBufferLength;
+        result = TabularFormatInfo.StackBufferLength;
 
         return true;
     }

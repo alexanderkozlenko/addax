@@ -9,20 +9,20 @@ public sealed class TabularDataDialect
     {
         ArgumentException.ThrowIfNullOrEmpty(lineTerminator);
 
-        if (!TabularDataInfo.IsUnicodeMandatoryBreak(lineTerminator))
+        if (!TabularFormatInfo.IsUnicodeMandatoryBreak(lineTerminator))
         {
             throw new ArgumentException("The specified value cannot be used for this token.", nameof(lineTerminator));
         }
-        if (TabularDataInfo.IsUnicodeMandatoryBreak(delimiter))
+        if (TabularFormatInfo.IsUnicodeMandatoryBreak(delimiter))
         {
             throw new ArgumentException("The specified value cannot be used for this token.", nameof(delimiter));
         }
-        if (TabularDataInfo.IsUnicodeMandatoryBreak(quoteChar) ||
+        if (TabularFormatInfo.IsUnicodeMandatoryBreak(quoteChar) ||
             (quoteChar == delimiter))
         {
             throw new ArgumentException("The specified value cannot be used for this token.", nameof(quoteChar));
         }
-        if (TabularDataInfo.IsUnicodeMandatoryBreak(escapeChar) ||
+        if (TabularFormatInfo.IsUnicodeMandatoryBreak(escapeChar) ||
             (escapeChar == delimiter))
         {
             throw new ArgumentException("The specified value cannot be used for this token.", nameof(escapeChar));
@@ -30,7 +30,7 @@ public sealed class TabularDataDialect
 
         if (commentPrefix is not null)
         {
-            if (TabularDataInfo.IsUnicodeMandatoryBreak(commentPrefix.Value) ||
+            if (TabularFormatInfo.IsUnicodeMandatoryBreak(commentPrefix.Value) ||
                 (commentPrefix.Value == delimiter) ||
                 (commentPrefix.Value == quoteChar) ||
                 (commentPrefix.Value == escapeChar))

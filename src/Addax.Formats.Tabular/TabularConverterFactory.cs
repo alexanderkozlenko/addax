@@ -21,6 +21,6 @@ public sealed class TabularConverterFactory
     public T CreateFieldConverter<T>()
         where T : TabularFieldConverter, new()
     {
-        return Singleton<T>.Instance;
+        return RuntimeSingleton<T>.Instance;
     }
 }

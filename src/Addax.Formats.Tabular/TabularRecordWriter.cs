@@ -1,5 +1,6 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace Addax.Formats.Tabular;
@@ -251,10 +252,17 @@ public sealed class TabularRecordWriter : IDisposable, IAsyncDisposable
     {
         if (!_converters.TryGetValue(typeof(T), out var converter) || (converter is not TabularRecordConverter<T> converterT))
         {
-            throw new InvalidOperationException($"A record converter for type '{typeof(T)}' is not registered.");
+            ThrowInvalidOperationException();
         }
 
         return converterT;
+
+        [DoesNotReturn]
+        [StackTraceHidden]
+        static void ThrowInvalidOperationException()
+        {
+            throw new InvalidOperationException($"A record converter for type '{typeof(T)}' is not registered.");
+        }
     }
 
     private static long GetFlushThreshold(TabularRecordWriterOptions options)

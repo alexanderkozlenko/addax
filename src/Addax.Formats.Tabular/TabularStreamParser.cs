@@ -253,7 +253,7 @@ internal sealed class TabularStreamParser
         return TabularStreamParsingStatus.NeedMoreData;
     }
 
-    public ReadOnlySequence<char> Extract(in ReadOnlySequence<char> buffer, long bufferLength, TabularStreamParsingStatus status, in TabularStreamParserState state, SequenceSource<char> bufferSource, out BufferKind bufferKind)
+    public ReadOnlySequence<char> Extract(in ReadOnlySequence<char> buffer, long bufferLength, TabularStreamParsingStatus status, in TabularStreamParserState state, SequenceSource<char> bufferSource, out StringBufferKind bufferKind)
     {
         if (!state.IsCommentPrefixFound)
         {
@@ -276,7 +276,7 @@ internal sealed class TabularStreamParser
 
             if (valueLength == 0)
             {
-                bufferKind = BufferKind.Empty;
+                bufferKind = StringBufferKind.Empty;
 
                 return ReadOnlySequence<char>.Empty;
             }
@@ -285,13 +285,13 @@ internal sealed class TabularStreamParser
 
             if (!state.IsFieldEscapeFound)
             {
-                bufferKind = BufferKind.Shared;
+                bufferKind = StringBufferKind.Shared;
 
                 return value;
             }
             else
             {
-                bufferKind = BufferKind.Private;
+                bufferKind = StringBufferKind.Private;
 
                 Unescape(value, bufferSource, _fieldEscapeSymbol);
 
@@ -302,7 +302,7 @@ internal sealed class TabularStreamParser
         {
             Debug.Assert(status is not TabularStreamParsingStatus.FoundFieldSeparation);
 
-            bufferKind = BufferKind.Shared;
+            bufferKind = StringBufferKind.Shared;
 
             var valueLength = bufferLength - 1;
 

@@ -2,13 +2,13 @@
 
 namespace Addax.Formats.Tabular.Internal;
 
-internal ref struct BufferWriter<T>
+internal ref struct StringBufferWriter
 {
-    private readonly Span<T> _buffer;
+    private readonly Span<char> _buffer;
 
     private int _written;
 
-    public BufferWriter(Span<T> buffer)
+    public StringBufferWriter(Span<char> buffer)
     {
         _buffer = buffer;
     }
@@ -21,12 +21,12 @@ internal ref struct BufferWriter<T>
         _written += count;
     }
 
-    public void Write(T value)
+    public void Write(char value)
     {
         _buffer[_written++] = value;
     }
 
-    public readonly Span<T> FreeBuffer
+    public readonly Span<char> FreeBuffer
     {
         get
         {

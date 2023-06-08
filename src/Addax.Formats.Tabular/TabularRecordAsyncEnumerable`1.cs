@@ -23,7 +23,7 @@ internal sealed class TabularRecordAsyncEnumerable<T> : IAsyncEnumerable<Tabular
     {
         if (_reader.PositionType is TabularPositionType.EndOfStream)
         {
-            return Singleton<EmptyAsyncEnumerator<TabularRecord<T>>>.Instance;
+            return EmptyAsyncEnumerator<TabularRecord<T>>.Instance;
         }
 
         if (cancellationToken == default)

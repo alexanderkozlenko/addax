@@ -13,7 +13,7 @@ public partial class TabularFieldReader
     /// <exception cref="FormatException">The current reader value cannot be represented as <see cref="char" />.</exception>
     public char GetChar()
     {
-        return Get(_converterChar);
+        return Get(SelectConverter<char>());
     }
 
     /// <summary>Retrieves the current reader value as <see cref="Rune" />.</summary>
@@ -21,7 +21,7 @@ public partial class TabularFieldReader
     /// <exception cref="FormatException">The current reader value cannot be represented as <see cref="Rune" />.</exception>
     public Rune GetRune()
     {
-        return Get(_converterRune);
+        return Get(SelectConverter<Rune>());
     }
 
     /// <summary>Retrieves the current reader value as <see cref="string" />.</summary>
@@ -51,7 +51,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be represented as one of the supported literals: <c>"true"</c>, <c>"false"</c>, <c>"1"</c>, <c>"0"</c>.</remarks>
     public bool GetBoolean()
     {
-        return Get(_converterBoolean);
+        return Get(SelectConverter<bool>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="sbyte" />.</summary>
@@ -61,7 +61,7 @@ public partial class TabularFieldReader
     [CLSCompliant(false)]
     public sbyte GetSByte()
     {
-        return Get(_converterSByte);
+        return Get(SelectConverter<sbyte>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="byte" />.</summary>
@@ -70,7 +70,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted using invariant culture.</remarks>
     public byte GetByte()
     {
-        return Get(_converterByte);
+        return Get(SelectConverter<byte>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="short" />.</summary>
@@ -79,7 +79,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted using invariant culture.</remarks>
     public short GetInt16()
     {
-        return Get(_converterInt16);
+        return Get(SelectConverter<short>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="ushort" />.</summary>
@@ -89,7 +89,7 @@ public partial class TabularFieldReader
     [CLSCompliant(false)]
     public ushort GetUInt16()
     {
-        return Get(_converterUInt16);
+        return Get(SelectConverter<ushort>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="int" />.</summary>
@@ -98,7 +98,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted using invariant culture.</remarks>
     public int GetInt32()
     {
-        return Get(_converterInt32);
+        return Get(SelectConverter<int>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="uint" />.</summary>
@@ -108,7 +108,7 @@ public partial class TabularFieldReader
     [CLSCompliant(false)]
     public uint GetUInt32()
     {
-        return Get(_converterUInt32);
+        return Get(SelectConverter<uint>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="long" />.</summary>
@@ -117,7 +117,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted using invariant culture.</remarks>
     public long GetInt64()
     {
-        return Get(_converterInt64);
+        return Get(SelectConverter<long>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="ulong" />.</summary>
@@ -127,7 +127,7 @@ public partial class TabularFieldReader
     [CLSCompliant(false)]
     public ulong GetUInt64()
     {
-        return Get(_converterUInt64);
+        return Get(SelectConverter<ulong>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="Int128" />.</summary>
@@ -136,7 +136,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted using invariant culture.</remarks>
     public Int128 GetInt128()
     {
-        return Get(_converterInt128);
+        return Get(SelectConverter<Int128>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="UInt128" />.</summary>
@@ -146,7 +146,7 @@ public partial class TabularFieldReader
     [CLSCompliant(false)]
     public UInt128 GetUInt128()
     {
-        return Get(_converterUInt128);
+        return Get(SelectConverter<UInt128>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="BigInteger" />.</summary>
@@ -155,7 +155,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted using invariant culture.</remarks>
     public BigInteger GetBigInteger()
     {
-        return Get(_converterBigInteger);
+        return Get(SelectConverter<BigInteger>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="Half" />.</summary>
@@ -164,7 +164,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted in the fixed-point or scientific notation using invariant culture.</remarks>
     public Half GetHalf()
     {
-        return Get(_converterHalf);
+        return Get(SelectConverter<Half>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="float" />.</summary>
@@ -173,7 +173,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted in the fixed-point or scientific notation using invariant culture.</remarks>
     public float GetSingle()
     {
-        return Get(_converterSingle);
+        return Get(SelectConverter<float>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="double" />.</summary>
@@ -182,7 +182,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted in the fixed-point or scientific notation using invariant culture.</remarks>
     public double GetDouble()
     {
-        return Get(_converterDouble);
+        return Get(SelectConverter<double>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="decimal" />.</summary>
@@ -191,7 +191,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted in the fixed-point or scientific notation using invariant culture.</remarks>
     public decimal GetDecimal()
     {
-        return Get(_converterDecimal);
+        return Get(SelectConverter<decimal>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="Complex" />.</summary>
@@ -200,7 +200,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted in a ISO 80000-2:2019 compliant format with real numbers in the fixed-point or scientific notation using invariant culture (e.g., <c>"0.54+0.84i"</c>).</remarks>
     public Complex GetComplex()
     {
-        return Get(_converterComplex);
+        return Get(SelectConverter<Complex>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="TimeSpan" />.</summary>
@@ -209,7 +209,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted in an ISO 8601-1:2019 compliant format (e.g., <c>"PT13H13M12S"</c> for <c>13:12:12.0000000</c>). The value must include only D, H, M, and S designators; the precision must be lower than or equal to 100 ns.</remarks>
     public TimeSpan GetTimeSpan()
     {
-        return Get(_converterTimeSpan);
+        return Get(SelectConverter<TimeSpan>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="TimeOnly" />.</summary>
@@ -218,7 +218,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted in an ISO 8601-1:2019 compliant format (e.g., <c>"13:12:12"</c>). The precision must be lower than or equal to 100 ns.</remarks>
     public TimeOnly GetTimeOnly()
     {
-        return Get(_converterTimeOnly);
+        return Get(SelectConverter<TimeOnly>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="DateOnly" />.</summary>
@@ -227,7 +227,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted in an ISO 8601-1:2019 compliant format (e.g., <c>"2002-01-27"</c>).</remarks>
     public DateOnly GetDateOnly()
     {
-        return Get(_converterDateOnly);
+        return Get(SelectConverter<DateOnly>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="DateTime" />.</summary>
@@ -236,7 +236,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted in an ISO 8601-1:2019 compliant format (e.g., <c>"2002-01-27T13:12:12"</c>). The precision must be lower than or equal to 100 ns.</remarks>
     public DateTime GetDateTime()
     {
-        return Get(_converterDateTime);
+        return Get(SelectConverter<DateTime>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="DateTimeOffset" />.</summary>
@@ -245,7 +245,7 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted in an ISO 8601-1:2019 compliant format (e.g., <c>"2002-01-27T13:12:12-07:00"</c>). The precision must be lower than or equal to 100 ns.</remarks>
     public DateTimeOffset GetDateTimeOffset()
     {
-        return Get(_converterDateTimeOffset);
+        return Get(SelectConverter<DateTimeOffset>());
     }
 
     /// <summary>Parses and returns the current reader value as <see cref="Guid" />.</summary>
@@ -254,6 +254,6 @@ public partial class TabularFieldReader
     /// <remarks>The value must be formatted in the RFC 4122 format (e.g., <c>"fae04ec0-301f-11d3-bf4b-00c04f79efbc"</c>).</remarks>
     public Guid GetGuid()
     {
-        return Get(_converterGuid);
+        return Get(SelectConverter<Guid>());
     }
 }

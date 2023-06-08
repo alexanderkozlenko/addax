@@ -1,8 +1,8 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
 using System.Buffers;
-using System.Numerics;
-using System.Text;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using Addax.Formats.Tabular.Internal;
 
 namespace Addax.Formats.Tabular;
@@ -13,32 +13,6 @@ public sealed partial class TabularFieldWriter : IDisposable, IAsyncDisposable
     private readonly TabularStreamWriter _streamWriter;
     private readonly TabularStreamFormatter _streamFormatter;
     private readonly IReadOnlyDictionary<Type, TabularFieldConverter> _converters;
-
-    private readonly TabularFieldConverter<BigInteger> _converterBigInteger;
-    private readonly TabularFieldConverter<bool> _converterBoolean;
-    private readonly TabularFieldConverter<byte> _converterByte;
-    private readonly TabularFieldConverter<char> _converterChar;
-    private readonly TabularFieldConverter<Complex> _converterComplex;
-    private readonly TabularFieldConverter<DateOnly> _converterDateOnly;
-    private readonly TabularFieldConverter<DateTime> _converterDateTime;
-    private readonly TabularFieldConverter<DateTimeOffset> _converterDateTimeOffset;
-    private readonly TabularFieldConverter<decimal> _converterDecimal;
-    private readonly TabularFieldConverter<double> _converterDouble;
-    private readonly TabularFieldConverter<Guid> _converterGuid;
-    private readonly TabularFieldConverter<Half> _converterHalf;
-    private readonly TabularFieldConverter<short> _converterInt16;
-    private readonly TabularFieldConverter<int> _converterInt32;
-    private readonly TabularFieldConverter<long> _converterInt64;
-    private readonly TabularFieldConverter<Int128> _converterInt128;
-    private readonly TabularFieldConverter<Rune> _converterRune;
-    private readonly TabularFieldConverter<sbyte> _converterSByte;
-    private readonly TabularFieldConverter<float> _converterSingle;
-    private readonly TabularFieldConverter<TimeOnly> _converterTimeOnly;
-    private readonly TabularFieldConverter<TimeSpan> _converterTimeSpan;
-    private readonly TabularFieldConverter<uint> _converterUInt32;
-    private readonly TabularFieldConverter<ulong> _converterUInt64;
-    private readonly TabularFieldConverter<ushort> _converterUInt16;
-    private readonly TabularFieldConverter<UInt128> _converterUInt128;
 
     private long _position;
     private TabularPositionType _positionType;
@@ -58,32 +32,6 @@ public sealed partial class TabularFieldWriter : IDisposable, IAsyncDisposable
         _streamWriter = new(stream, options.Encoding, options.BufferSize, options.LeaveOpen);
         _streamFormatter = new(dialect);
         _converters = options.FieldConverters;
-
-        _converterBigInteger = SelectConverter<BigInteger>();
-        _converterBoolean = SelectConverter<bool>();
-        _converterByte = SelectConverter<byte>();
-        _converterChar = SelectConverter<char>();
-        _converterComplex = SelectConverter<Complex>();
-        _converterDateOnly = SelectConverter<DateOnly>();
-        _converterDateTime = SelectConverter<DateTime>();
-        _converterDateTimeOffset = SelectConverter<DateTimeOffset>();
-        _converterDecimal = SelectConverter<decimal>();
-        _converterDouble = SelectConverter<double>();
-        _converterGuid = SelectConverter<Guid>();
-        _converterHalf = SelectConverter<Half>();
-        _converterInt16 = SelectConverter<short>();
-        _converterInt32 = SelectConverter<int>();
-        _converterInt64 = SelectConverter<long>();
-        _converterInt128 = SelectConverter<Int128>();
-        _converterRune = SelectConverter<Rune>();
-        _converterSByte = SelectConverter<sbyte>();
-        _converterSingle = SelectConverter<float>();
-        _converterTimeOnly = SelectConverter<TimeOnly>();
-        _converterTimeSpan = SelectConverter<TimeSpan>();
-        _converterUInt16 = SelectConverter<ushort>();
-        _converterUInt32 = SelectConverter<uint>();
-        _converterUInt64 = SelectConverter<ulong>();
-        _converterUInt128 = SelectConverter<UInt128>();
     }
 
     /// <summary>Initializes a new instance of the <see cref="TabularFieldWriter" /> class using the specified stream, dialect, and default options.</summary>
@@ -269,16 +217,43 @@ public sealed partial class TabularFieldWriter : IDisposable, IAsyncDisposable
     /// <exception cref="InvalidOperationException">A record is not explicitly started or contains a comment.</exception>
     public void Write<T>(T? value)
     {
-        Write(value, SelectConverter<T>());
+        if (!_converters.TryGetValue(typeof(T), out var converter) || (converter is not TabularFieldConverter<T> converterT))
+        {
+            if (typeof(T) == typeof(string))
+            {
+                if (value is null)
+                {
+                    Write(ReadOnlySpan<char>.Empty);
+                }
+                else
+                {
+                    var source = value;
+                    var valueT = Unsafe.As<T, string>(ref source);
+
+                    Write(valueT.AsSpan());
+                }
+            }
+
+            ThrowInvalidOperationException();
+        }
+
+        Write(value, converterT);
+
+        [DoesNotReturn]
+        [StackTraceHidden]
+        static void ThrowInvalidOperationException()
+        {
+            throw new InvalidOperationException($"A field converter for type '{typeof(T)}' is not registered.");
+        }
     }
 
     private bool TryWrite<T>(T? value, TabularFieldConverter<T> converter, int bufferLength)
     {
-        using var formattingBuffer = bufferLength <= TabularDataInfo.StackBufferLength ?
-            HybridBuffer<char>.Create(stackalloc char[bufferLength]) :
-            HybridBuffer<char>.Create(bufferLength);
+        using var formattingBuffer = bufferLength <= TabularFormatInfo.StackBufferLength ?
+            new StringBuffer(stackalloc char[bufferLength]) :
+            new StringBuffer(bufferLength);
 
-        if (!converter.TryFormat(value, formattingBuffer.AsSpan(), TabularDataInfo.DefaultFormatProvider, out var charsWritten))
+        if (!converter.TryFormat(value, formattingBuffer.AsSpan(), TabularFormatInfo.DefaultFormatProvider, out var charsWritten))
         {
             return false;
         }
@@ -347,10 +322,17 @@ public sealed partial class TabularFieldWriter : IDisposable, IAsyncDisposable
     {
         if (!_converters.TryGetValue(typeof(T), out var converter) || (converter is not TabularFieldConverter<T> converterT))
         {
-            throw new InvalidOperationException($"A field converter for type '{typeof(T)}' is not registered.");
+            ThrowInvalidOperationException();
         }
 
         return converterT;
+
+        [DoesNotReturn]
+        [StackTraceHidden]
+        static void ThrowInvalidOperationException()
+        {
+            throw new InvalidOperationException($"A field converter for type '{typeof(T)}' is not registered.");
+        }
     }
 
     /// <summary>Gets the count of unflushed characters within the current writer.</summary>

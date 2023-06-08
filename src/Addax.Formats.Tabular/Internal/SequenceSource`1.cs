@@ -47,7 +47,8 @@ internal sealed class SequenceSource<T> : IBufferWriter<T>
             return _sequenceTail.FreeBuffer;
         }
 
-        var sequenceTail = SequenceSegmentPool<T>.Shared.Rent(Math.Max(_minimumSegmentSize, sizeHint));
+        var segmentSize = Math.Max(_minimumSegmentSize, sizeHint);
+        var sequenceTail = SequenceSegmentPool<T>.Shared.Rent(segmentSize);
 
         if (_sequenceTail is not null)
         {

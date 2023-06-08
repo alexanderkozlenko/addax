@@ -2,15 +2,18 @@
 
 using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 
 namespace Addax.Formats.Tabular;
 
 /// <summary>Provides creation of <see cref="string" /> instances.</summary>
 public partial class TabularStringFactory : IDisposable
 {
+    internal static readonly TabularStringFactory Default = new();
+
     private static readonly SpanAction<char, ReadOnlySequence<char>> _createAction = CreateString;
 
-    private readonly StringTable? _stringTable;
+    private readonly Dictionary<int, string>? _stringTable;
     private readonly int _maximumStringLength;
 
     /// <summary>Initializes a new instance of the <see cref="TabularStringFactory" /> class.</summary>
@@ -53,7 +56,7 @@ public partial class TabularStringFactory : IDisposable
     /// <param name="value">The sequence of characters to create a <see cref="string" /> instance from.</param>
     /// <param name="result">When this method returns, contains the result of successful creation, or an undefined value on failure.</param>
     /// <returns><see langword="true" /> if the sequence of characters was successfully creation; <see langword="false" /> otherwise.</returns>
-    public virtual unsafe bool TryCreateString(in ReadOnlySequence<char> value, [NotNullWhen(true)] out string? result)
+    public virtual bool TryCreateString(in ReadOnlySequence<char> value, [NotNullWhen(true)] out string? result)
     {
         var length = value.Length;
 
@@ -73,9 +76,18 @@ public partial class TabularStringFactory : IDisposable
             }
             else
             {
-                result = value.IsSingleSegment ?
-                    _stringTable.GetOrAdd(value.First, &CreateString) :
-                    _stringTable.GetOrAdd(value, &CreateString);
+                var hashCode = value.IsSingleSegment ?
+                    GetHashCode(value.First) :
+                    GetHashCode(value);
+
+                if (!_stringTable.TryGetValue(hashCode, out result))
+                {
+                    result = value.IsSingleSegment ?
+                        CreateString(value.First) :
+                        CreateString(value);
+
+                    _stringTable[hashCode] = result;
+                }
             }
 
             return true;
@@ -101,5 +113,26 @@ public partial class TabularStringFactory : IDisposable
     private static void CreateString(Span<char> target, ReadOnlySequence<char> source)
     {
         source.CopyTo(target);
+    }
+
+    private static int GetHashCode(ReadOnlyMemory<char> buffer)
+    {
+        var hashCode = new HashCode();
+
+        hashCode.AddBytes(MemoryMarshal.Cast<char, byte>(buffer.Span));
+
+        return hashCode.ToHashCode();
+    }
+
+    private static int GetHashCode(in ReadOnlySequence<char> buffer)
+    {
+        var hashCode = new HashCode();
+
+        foreach (var segment in buffer)
+        {
+            hashCode.AddBytes(MemoryMarshal.Cast<char, byte>(segment.Span));
+        }
+
+        return hashCode.ToHashCode();
     }
 }

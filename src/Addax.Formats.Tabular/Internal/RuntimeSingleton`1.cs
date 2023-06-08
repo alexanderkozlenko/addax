@@ -2,7 +2,7 @@
 
 namespace Addax.Formats.Tabular.Internal;
 
-internal static class Singleton<T>
+internal static class RuntimeSingleton<T>
     where T : class, new()
 {
     public static readonly T Instance = new();

@@ -12,7 +12,7 @@ public partial class TabularFieldWriter
     /// <exception cref="InvalidOperationException">A record is not explicitly started or contains a comment.</exception>
     public void WriteChar(char value)
     {
-        Write(value, _converterChar);
+        Write(value, SelectConverter<char>());
     }
 
     /// <summary>Writes the specified <see cref="Rune" /> value to the internal buffer.</summary>
@@ -20,7 +20,7 @@ public partial class TabularFieldWriter
     /// <exception cref="InvalidOperationException">A record is not explicitly started or contains a comment.</exception>
     public void WriteRune(Rune value)
     {
-        Write(value, _converterRune);
+        Write(value, SelectConverter<Rune>());
     }
 
     /// <summary>Writes the specified <see cref="string" /> value to the internal buffer.</summary>
@@ -37,7 +37,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be represented as one of the supported literals: <c>"true"</c>, <c>"false"</c>.</remarks>
     public void WriteBoolean(bool value)
     {
-        Write(value, _converterBoolean);
+        Write(value, SelectConverter<bool>());
     }
 
     /// <summary>Formats and writes the specified <see cref="sbyte" /> value as a sequence of characters to the internal buffer.</summary>
@@ -47,7 +47,7 @@ public partial class TabularFieldWriter
     [CLSCompliant(false)]
     public void WriteSByte(sbyte value)
     {
-        Write(value, _converterSByte);
+        Write(value, SelectConverter<sbyte>());
     }
 
     /// <summary>Formats and writes the specified <see cref="byte" /> value as a sequence of characters to the internal buffer.</summary>
@@ -56,7 +56,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted using invariant culture.</remarks>
     public void WriteByte(byte value)
     {
-        Write(value, _converterByte);
+        Write(value, SelectConverter<byte>());
     }
 
     /// <summary>Formats and writes the specified <see cref="short" /> value as a sequence of characters to the internal buffer.</summary>
@@ -65,7 +65,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted using invariant culture.</remarks>
     public void WriteInt16(short value)
     {
-        Write(value, _converterInt16);
+        Write(value, SelectConverter<short>());
     }
 
     /// <summary>Formats and writes the specified <see cref="ushort" /> value as a sequence of characters to the internal buffer.</summary>
@@ -75,7 +75,7 @@ public partial class TabularFieldWriter
     [CLSCompliant(false)]
     public void WriteUInt16(ushort value)
     {
-        Write(value, _converterUInt16);
+        Write(value, SelectConverter<ushort>());
     }
 
     /// <summary>Formats and writes the specified <see cref="int" /> value as a sequence of characters to the internal buffer.</summary>
@@ -84,7 +84,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted using invariant culture.</remarks>
     public void WriteInt32(int value)
     {
-        Write(value, _converterInt32);
+        Write(value, SelectConverter<int>());
     }
 
     /// <summary>Formats and writes the specified <see cref="uint" /> value as a sequence of characters to the internal buffer.</summary>
@@ -94,7 +94,7 @@ public partial class TabularFieldWriter
     [CLSCompliant(false)]
     public void WriteUInt32(uint value)
     {
-        Write(value, _converterUInt32);
+        Write(value, SelectConverter<uint>());
     }
 
     /// <summary>Formats and writes the specified <see cref="long" /> value as a sequence of characters to the internal buffer.</summary>
@@ -103,7 +103,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted using invariant culture.</remarks>
     public void WriteInt64(long value)
     {
-        Write(value, _converterInt64);
+        Write(value, SelectConverter<long>());
     }
 
     /// <summary>Formats and writes the specified <see cref="ulong" /> value as a sequence of characters to the internal buffer.</summary>
@@ -113,7 +113,7 @@ public partial class TabularFieldWriter
     [CLSCompliant(false)]
     public void WriteUInt64(ulong value)
     {
-        Write(value, _converterUInt64);
+        Write(value, SelectConverter<ulong>());
     }
 
     /// <summary>Formats and writes the specified <see cref="Int128" /> value as a sequence of characters to the internal buffer.</summary>
@@ -122,7 +122,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted using invariant culture.</remarks>
     public void WriteInt128(Int128 value)
     {
-        Write(value, _converterInt128);
+        Write(value, SelectConverter<Int128>());
     }
 
     /// <summary>Formats and writes the specified <see cref="UInt128" /> value as a sequence of characters to the internal buffer.</summary>
@@ -132,7 +132,7 @@ public partial class TabularFieldWriter
     [CLSCompliant(false)]
     public void WriteUInt128(UInt128 value)
     {
-        Write(value, _converterUInt128);
+        Write(value, SelectConverter<UInt128>());
     }
 
     /// <summary>Formats and writes the specified <see cref="BigInteger" /> value as a sequence of characters to the internal buffer.</summary>
@@ -142,7 +142,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted using invariant culture.</remarks>
     public void WriteBigInteger(BigInteger value)
     {
-        Write(value, _converterBigInteger);
+        Write(value, SelectConverter<BigInteger>());
     }
 
     /// <summary>Formats and writes the specified <see cref="Half" /> value as a sequence of characters to the internal buffer.</summary>
@@ -151,7 +151,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted to the more compact of either fixed-point or scientific notation using invariant culture.</remarks>
     public void WriteHalf(Half value)
     {
-        Write(value, _converterHalf);
+        Write(value, SelectConverter<Half>());
     }
 
     /// <summary>Formats and writes the specified <see cref="float" /> value as a sequence of characters to the internal buffer.</summary>
@@ -160,7 +160,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted to the more compact of either fixed-point or scientific notation using invariant culture.</remarks>
     public void WriteSingle(float value)
     {
-        Write(value, _converterSingle);
+        Write(value, SelectConverter<float>());
     }
 
     /// <summary>Formats and writes the specified <see cref="double" /> value as a sequence of characters to the internal buffer.</summary>
@@ -169,7 +169,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted to the more compact of either fixed-point or scientific notation using invariant culture.</remarks>
     public void WriteDouble(double value)
     {
-        Write(value, _converterDouble);
+        Write(value, SelectConverter<double>());
     }
 
     /// <summary>Formats and writes the specified <see cref="decimal" /> value as a sequence of characters to the internal buffer.</summary>
@@ -178,7 +178,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted to the more compact of either fixed-point or scientific notation using invariant culture.</remarks>
     public void WriteDecimal(decimal value)
     {
-        Write(value, _converterDecimal);
+        Write(value, SelectConverter<decimal>());
     }
 
     /// <summary>Formats and writes the specified <see cref="Complex" /> value as a sequence of characters to the internal buffer.</summary>
@@ -187,7 +187,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted in a ISO 80000-2:2019 compliant format with real numbers formatted to the more compact of either fixed-point or scientific notation using invariant culture (e.g., <c>"0.54+0.84i"</c>).</remarks>
     public void WriteComplex(Complex value)
     {
-        Write(value, _converterComplex);
+        Write(value, SelectConverter<Complex>());
     }
 
     /// <summary>Formats and writes the specified <see cref="TimeSpan" /> value as a sequence of characters to the internal buffer.</summary>
@@ -196,7 +196,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted in an ISO 8601-1:2019 compliant format (e.g., <c>"PT13H13M12S"</c> for <c>13:12:12.0000000</c>). The value can include only D, H, M, and S designators; the precision is lower than or equal to 100 ns.</remarks>
     public void WriteTimeSpan(TimeSpan value)
     {
-        Write(value, _converterTimeSpan);
+        Write(value, SelectConverter<TimeSpan>());
     }
 
     /// <summary>Formats and writes the specified <see cref="TimeOnly" /> value as a sequence of characters to the internal buffer.</summary>
@@ -205,7 +205,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted in an ISO 8601-1:2019 compliant format (e.g., <c>"13:12:12"</c>). The precision is lower than or equal to 100 ns.</remarks>
     public void WriteTimeOnly(TimeOnly value)
     {
-        Write(value, _converterTimeOnly);
+        Write(value, SelectConverter<TimeOnly>());
     }
 
     /// <summary>Formats and writes the specified <see cref="DateOnly" /> value as a sequence of characters to the internal buffer.</summary>
@@ -214,7 +214,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted in an ISO 8601-1:2019 compliant format (e.g., <c>"2002-01-27"</c>).</remarks>
     public void WriteDateOnly(DateOnly value)
     {
-        Write(value, _converterDateOnly);
+        Write(value, SelectConverter<DateOnly>());
     }
 
     /// <summary>Formats and writes the specified <see cref="DateTime" /> value as a sequence of characters to the internal buffer.</summary>
@@ -223,7 +223,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted in an ISO 8601-1:2019 compliant format (e.g., <c>"2002-01-27T13:12:12"</c>). The precision is lower than or equal to 100 ns.</remarks>
     public void WriteDateTime(DateTime value)
     {
-        Write(value, _converterDateTime);
+        Write(value, SelectConverter<DateTime>());
     }
 
     /// <summary>Formats and writes the specified <see cref="DateTimeOffset" /> value as a sequence of characters to the internal buffer.</summary>
@@ -232,7 +232,7 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted in an ISO 8601-1:2019 compliant format (e.g., <c>"2002-01-27T13:12:12-07:00"</c>). The precision is lower than or equal to 100 ns.</remarks>
     public void WriteDateTimeOffset(DateTimeOffset value)
     {
-        Write(value, _converterDateTimeOffset);
+        Write(value, SelectConverter<DateTimeOffset>());
     }
 
     /// <summary>Formats and writes the specified <see cref="Guid" /> value as a sequence of characters to the internal buffer.</summary>
@@ -241,6 +241,6 @@ public partial class TabularFieldWriter
     /// <remarks>The value will be formatted in the RFC 4122 format (e.g., <c>"fae04ec0-301f-11d3-bf4b-00c04f79efbc"</c>).</remarks>
     public void WriteGuid(Guid value)
     {
-        Write(value, _converterGuid);
+        Write(value, SelectConverter<Guid>());
     }
 }

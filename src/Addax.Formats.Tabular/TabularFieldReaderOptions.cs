@@ -1,7 +1,6 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
 using System.Text;
-using Addax.Formats.Tabular.Internal;
 
 namespace Addax.Formats.Tabular;
 
@@ -22,11 +21,11 @@ public class TabularFieldReaderOptions
             throw new ArgumentOutOfRangeException(nameof(bufferSize), bufferSize, "The buffer size must be greater than zero and less than or equal to 'System.Array.MaxLength'.");
         }
 
-        Encoding = encoding ?? TabularDataInfo.DefaultEncoding;
+        Encoding = encoding ?? TabularFormatInfo.DefaultEncoding;
         BufferSize = bufferSize;
         LeaveOpen = leaveOpen;
         FieldConverters = TabularFieldConverterRegistry.Shared.AppendTo(fieldConverters);
-        StringFactory = stringFactory ?? Singleton<TabularStringFactory>.Instance;
+        StringFactory = stringFactory ?? TabularStringFactory.Default;
     }
 
     /// <summary>Gets the character encoding for decoding a stream.</summary>

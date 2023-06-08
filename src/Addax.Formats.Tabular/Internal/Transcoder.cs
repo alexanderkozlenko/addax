@@ -11,10 +11,12 @@ internal static class Transcoder
     {
         while (!bytes.IsEmpty)
         {
-            var bytesFragment = bytes[..Math.Min(bytes.Length, 0x00100000)];
-            var charsBuffer = writer.GetSpan(encoding.GetMaxCharCount(bytesFragment.Length));
+            var byteCount = Math.Min(bytes.Length, 0x00100000);
+            var byteFragment = bytes[..byteCount];
+            var charCount = encoding.GetMaxCharCount(byteFragment.Length);
+            var charBuffer = writer.GetSpan(charCount);
 
-            decoder.Convert(bytesFragment, charsBuffer, flush: false, out var bytesUsed, out var charsUsed, out _);
+            decoder.Convert(byteFragment, charBuffer, flush: false, out var bytesUsed, out var charsUsed, out _);
             bytes = bytes[bytesUsed..];
             writer.Advance(charsUsed);
         }
@@ -22,23 +24,26 @@ internal static class Transcoder
 
     public static void Flush(Encoding encoding, Decoder decoder, IBufferWriter<char> writer)
     {
-        var charsBuffer = writer.GetSpan(encoding.GetMaxCharCount(byteCount: 0));
+        var byteFragment = ReadOnlySpan<byte>.Empty;
+        var charCount = encoding.GetMaxCharCount(byteCount: 0);
+        var charBuffer = writer.GetSpan();
 
-        decoder.Convert(bytes: ReadOnlySpan<byte>.Empty, charsBuffer, flush: true, out _, out var charsUsed, out var completed);
+        decoder.Convert(byteFragment, charBuffer, flush: true, out _, out var charsUsed, out var completed);
+        writer.Advance(charsUsed);
 
         Debug.Assert(completed);
-
-        writer.Advance(charsUsed);
     }
 
     public static void Convert(Encoding encoding, Encoder encoder, ReadOnlySpan<char> chars, IBufferWriter<byte> writer)
     {
         while (!chars.IsEmpty)
         {
-            var charsFragment = chars[..Math.Min(chars.Length, 0x00100000)];
-            var bytesBuffer = writer.GetSpan(encoding.GetMaxByteCount(charsFragment.Length));
+            var charCount = Math.Min(chars.Length, 0x00100000);
+            var charFragment = chars[..charCount];
+            var byteCount = encoding.GetMaxByteCount(charFragment.Length);
+            var byteBuffer = writer.GetSpan(byteCount);
 
-            encoder.Convert(charsFragment, bytesBuffer, flush: false, out var charsUsed, out var bytesUsed, out _);
+            encoder.Convert(charFragment, byteBuffer, flush: false, out var charsUsed, out var bytesUsed, out _);
             chars = chars[charsUsed..];
             writer.Advance(bytesUsed);
         }
@@ -46,12 +51,13 @@ internal static class Transcoder
 
     public static void Flush(Encoding encoding, Encoder encoder, IBufferWriter<byte> writer)
     {
-        var bytesBuffer = writer.GetSpan(encoding.GetMaxByteCount(charCount: 0));
+        var charFragment = ReadOnlySpan<char>.Empty;
+        var byteCount = encoding.GetMaxByteCount(charCount: 0);
+        var byteBuffer = writer.GetSpan(byteCount);
 
-        encoder.Convert(chars: ReadOnlySpan<char>.Empty, bytesBuffer, flush: true, out _, out var bytesUsed, out var completed);
+        encoder.Convert(charFragment, byteBuffer, flush: true, out _, out var bytesUsed, out var completed);
+        writer.Advance(bytesUsed);
 
         Debug.Assert(completed);
-
-        writer.Advance(bytesUsed);
     }
 }

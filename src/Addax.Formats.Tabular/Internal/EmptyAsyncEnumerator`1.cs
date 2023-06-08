@@ -6,6 +6,12 @@ namespace Addax.Formats.Tabular.Internal;
 
 internal sealed class EmptyAsyncEnumerator<T> : IAsyncEnumerator<T>
 {
+    public static EmptyAsyncEnumerator<T> Instance = new();
+
+    private EmptyAsyncEnumerator()
+    {
+    }
+
     public ValueTask DisposeAsync()
     {
         return ValueTask.CompletedTask;

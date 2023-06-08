@@ -1,5 +1,6 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Addax.Formats.Tabular.Internal;
 
@@ -155,7 +156,7 @@ public sealed class TabularRecordReader : IDisposable, IAsyncDisposable
 
         if (_fieldReader.PositionType is TabularPositionType.EndOfStream)
         {
-            return Singleton<EmptyEnumerable<TabularRecord<T>>>.Instance;
+            return EmptyEnumerable<TabularRecord<T>>.Instance;
         }
 
         return new TabularRecordEnumerable<T>(_fieldReader, _context, converter, cancellationToken);
@@ -174,7 +175,7 @@ public sealed class TabularRecordReader : IDisposable, IAsyncDisposable
 
         if (_fieldReader.PositionType is TabularPositionType.EndOfStream)
         {
-            return Singleton<EmptyAsyncEnumerable<TabularRecord<T>>>.Instance;
+            return EmptyAsyncEnumerable<TabularRecord<T>>.Instance;
         }
 
         return new TabularRecordAsyncEnumerable<T>(_fieldReader, _context, converter, cancellationToken);
@@ -204,10 +205,17 @@ public sealed class TabularRecordReader : IDisposable, IAsyncDisposable
     {
         if (!_converters.TryGetValue(typeof(T), out var converter) || (converter is not TabularRecordConverter<T> converterT))
         {
-            throw new InvalidOperationException($"A record converter for type '{typeof(T)}' is not registered.");
+            ThrowInvalidOperationException();
         }
 
         return converterT;
+
+        [DoesNotReturn]
+        [StackTraceHidden]
+        static void ThrowInvalidOperationException()
+        {
+            throw new InvalidOperationException($"A record converter for type '{typeof(T)}' is not registered.");
+        }
     }
 
     /// <summary>Gets the current type of position in tabular data.</summary>

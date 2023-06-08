@@ -20,7 +20,7 @@ public class TabularFieldWriterOptions
             throw new ArgumentOutOfRangeException(nameof(bufferSize), bufferSize, "The buffer size must be greater than zero and less than or equal to 'System.Array.MaxLength'.");
         }
 
-        Encoding = encoding ?? TabularDataInfo.DefaultEncoding;
+        Encoding = encoding ?? TabularFormatInfo.DefaultEncoding;
         BufferSize = bufferSize;
         LeaveOpen = leaveOpen;
         FieldConverters = TabularFieldConverterRegistry.Shared.AppendTo(fieldConverters);

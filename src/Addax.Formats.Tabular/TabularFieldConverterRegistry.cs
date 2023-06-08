@@ -50,7 +50,6 @@ public sealed class TabularFieldConverterRegistry : ConcurrentDictionary<Type, T
         registry.TryAdd(typeof(Rune), new TabularRuneConverter());
         registry.TryAdd(typeof(sbyte), new TabularSByteConverter());
         registry.TryAdd(typeof(float), new TabularSingleConverter());
-        registry.TryAdd(typeof(string), new TabularStringConverter());
         registry.TryAdd(typeof(TimeOnly), new TabularTimeOnlyConverter());
         registry.TryAdd(typeof(TimeSpan), new TabularTimeSpanConverter());
         registry.TryAdd(typeof(ushort), new TabularUInt16Converter());

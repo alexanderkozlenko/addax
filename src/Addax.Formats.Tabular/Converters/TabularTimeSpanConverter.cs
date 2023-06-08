@@ -18,7 +18,7 @@ internal sealed class TabularTimeSpanConverter : TabularFieldConverter<TimeSpan>
 
     public override bool TryFormat(TimeSpan value, Span<char> buffer, IFormatProvider provider, out int charsWritten)
     {
-        var writer = new BufferWriter<char>(buffer);
+        var writer = new StringBufferWriter(buffer);
 
         if (value < TimeSpan.Zero)
         {

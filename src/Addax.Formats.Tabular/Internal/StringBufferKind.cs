@@ -2,7 +2,7 @@
 
 namespace Addax.Formats.Tabular.Internal;
 
-internal enum BufferKind
+internal enum StringBufferKind
 {
     None,
     Empty,

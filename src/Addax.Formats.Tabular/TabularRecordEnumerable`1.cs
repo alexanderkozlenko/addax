@@ -24,7 +24,7 @@ internal sealed class TabularRecordEnumerable<T> : IEnumerable<TabularRecord<T>>
     {
         if (_reader.PositionType is TabularPositionType.EndOfStream)
         {
-            return Singleton<EmptyEnumerator<TabularRecord<T>>>.Instance;
+            return EmptyEnumerator<TabularRecord<T>>.Instance;
         }
 
         return new TabularRecordEnumerator<T>(this, _cancellationToken);

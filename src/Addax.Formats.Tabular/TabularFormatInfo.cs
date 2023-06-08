@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Addax.Formats.Tabular;
 
-internal static class TabularDataInfo
+internal static class TabularFormatInfo
 {
     public const int StackBufferLength = 128;
 

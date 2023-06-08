@@ -6,8 +6,14 @@ namespace Addax.Formats.Tabular.Internal;
 
 internal sealed class EmptyAsyncEnumerable<T> : IAsyncEnumerable<T>
 {
+    public static EmptyAsyncEnumerable<T> Instance = new();
+
+    private EmptyAsyncEnumerable()
+    {
+    }
+
     public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken cancellationToken = default)
     {
-        return Singleton<EmptyAsyncEnumerator<T>>.Instance;
+        return EmptyAsyncEnumerator<T>.Instance;
     }
 }

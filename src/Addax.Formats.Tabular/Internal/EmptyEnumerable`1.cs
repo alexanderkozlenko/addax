@@ -8,9 +8,15 @@ namespace Addax.Formats.Tabular.Internal;
 
 internal sealed class EmptyEnumerable<T> : IEnumerable<T>
 {
+    public static EmptyEnumerable<T> Instance = new();
+
+    private EmptyEnumerable()
+    {
+    }
+
     public IEnumerator<T> GetEnumerator()
     {
-        return Singleton<EmptyEnumerator<T>>.Instance;
+        return EmptyEnumerator<T>.Instance;
     }
 
     IEnumerator IEnumerable.GetEnumerator()

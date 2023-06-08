@@ -8,6 +8,12 @@ namespace Addax.Formats.Tabular.Internal;
 
 internal sealed class EmptyEnumerator<T> : IEnumerator<T>
 {
+    public static EmptyEnumerator<T> Instance = new();
+
+    private EmptyEnumerator()
+    {
+    }
+
     public void Dispose()
     {
     }

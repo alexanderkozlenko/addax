@@ -17,7 +17,7 @@ internal sealed class TabularComplexConverter : TabularFieldConverter<Complex>
 
     public override bool TryFormat(Complex value, Span<char> buffer, IFormatProvider provider, out int charsWritten)
     {
-        var writer = new BufferWriter<char>(buffer);
+        var writer = new StringBufferWriter(buffer);
 
         if ((value.Real != 0) || (value.Imaginary == 0))
         {
