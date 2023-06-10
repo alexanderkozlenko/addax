@@ -6,7 +6,7 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularUInt64Converter : TabularNumberConverter<ulong>
 {
-    public override bool TryGetFormatBufferLength(ulong value, out int result)
+    public override bool TryGetFormatBufferSize(ulong value, out int result)
     {
         result = 32;
 

@@ -6,7 +6,7 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularInt64Converter : TabularNumberConverter<long>
 {
-    public override bool TryGetFormatBufferLength(long value, out int result)
+    public override bool TryGetFormatBufferSize(long value, out int result)
     {
         result = 32;
 

@@ -185,25 +185,25 @@ public sealed partial class TabularFieldWriter : IDisposable, IAsyncDisposable
 
         EnsureCanWriteValue();
 
-        if (converter.TryGetFormatBufferLength(value, out var bufferLength))
+        if (converter.TryGetFormatBufferSize(value, out var bufferSize))
         {
-            if (bufferLength < 0)
+            if (bufferSize < 0)
             {
-                throw new InvalidOperationException("The maximum buffer length for formatting a value must be equal to or greater than zero.");
+                throw new InvalidOperationException("The maximum buffer size for formatting a value must be equal to or greater than zero.");
             }
 
-            while (bufferLength <= Array.MaxLength)
+            while (bufferSize <= Array.MaxLength)
             {
-                if (TryWrite(value, converter, bufferLength))
+                if (TryWrite(value, converter, bufferSize))
                 {
                     return;
                 }
 
-                bufferLength *= 2;
+                bufferSize *= 2;
 
-                if ((uint)bufferLength > (uint)Array.MaxLength)
+                if ((uint)bufferSize > (uint)Array.MaxLength)
                 {
-                    bufferLength = Math.Max(bufferLength + 1, Array.MaxLength);
+                    bufferSize = Math.Max(bufferSize + 1, Array.MaxLength);
                 }
             }
         }
@@ -221,6 +221,8 @@ public sealed partial class TabularFieldWriter : IDisposable, IAsyncDisposable
         {
             if (typeof(T) == typeof(string))
             {
+                // System.String does not have a default converter and is processed in a special way.
+
                 if (value is null)
                 {
                     Write(ReadOnlySpan<char>.Empty);
@@ -247,11 +249,11 @@ public sealed partial class TabularFieldWriter : IDisposable, IAsyncDisposable
         }
     }
 
-    private bool TryWrite<T>(T? value, TabularFieldConverter<T> converter, int bufferLength)
+    private bool TryWrite<T>(T? value, TabularFieldConverter<T> converter, int bufferSize)
     {
-        using var formattingBuffer = bufferLength <= TabularFormatInfo.StackBufferLength ?
-            new StringBuffer(stackalloc char[bufferLength]) :
-            new StringBuffer(bufferLength);
+        using var formattingBuffer = bufferSize <= TabularFormatInfo.StackBufferSize ?
+            new StringBuffer(stackalloc char[bufferSize]) :
+            new StringBuffer(bufferSize);
 
         if (!converter.TryFormat(value, formattingBuffer.AsSpan(), TabularFormatInfo.DefaultFormatProvider, out var charsWritten))
         {
@@ -280,6 +282,7 @@ public sealed partial class TabularFieldWriter : IDisposable, IAsyncDisposable
         {
             throw new InvalidOperationException("An explicitly started record is required.");
         }
+
         if (_fieldType is TabularFieldType.Comment)
         {
             throw new InvalidOperationException("A value cannot be written after a comment.");
@@ -292,10 +295,12 @@ public sealed partial class TabularFieldWriter : IDisposable, IAsyncDisposable
         {
             throw new InvalidOperationException("The current dialect does not support comments.");
         }
+
         if (!_streamFormatter.CanWriteComment(value))
         {
             throw new InvalidOperationException("A comment cannot contain the line terminator.");
         }
+
         if (_positionType is not TabularPositionType.BeginningOfRecord)
         {
             throw new InvalidOperationException("A comment can be written only to an empty record.");
@@ -308,10 +313,12 @@ public sealed partial class TabularFieldWriter : IDisposable, IAsyncDisposable
         {
             throw new InvalidOperationException("The current dialect does not support comments.");
         }
+
         if (!_streamFormatter.CanWriteComment(value))
         {
             throw new InvalidOperationException("A comment cannot contain the line terminator.");
         }
+
         if (_positionType is not TabularPositionType.BeginningOfRecord)
         {
             throw new InvalidOperationException("A comment can be written only to an empty record.");

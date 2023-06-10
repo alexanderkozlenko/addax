@@ -6,7 +6,7 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularHalfConverter : TabularNumberConverter<Half>
 {
-    public override bool TryGetFormatBufferLength(Half value, out int result)
+    public override bool TryGetFormatBufferSize(Half value, out int result)
     {
         result = 16;
 

@@ -7,7 +7,7 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularBigIntegerConverter : TabularNumberConverter<BigInteger>
 {
-    public override bool TryGetFormatBufferLength(BigInteger value, out int result)
+    public override bool TryGetFormatBufferSize(BigInteger value, out int result)
     {
         if ((value >= long.MinValue) &&
             (value <= long.MaxValue))

@@ -45,7 +45,7 @@ An example of working with records using a generated converter:
 
 ```cs
 [TabularRecord(strict: false)]
-internal struct Experiment
+public struct Experiment
 {
     [TabularField(index: 0)]
     public double? Result;
@@ -107,18 +107,18 @@ An example of defining a record converter with a custom field converter:
 
 ```cs
 [TabularRecord]
-internal struct Experiment
+public struct Experiment
 {
     [TabularField(0, typeof(MyConverter))]
     public DateTime Timestamp;
 }
 ```
 ```cs
-internal class MyConverter : TabularFieldConverter<DateTime>
+public class MyConverter : TabularFieldConverter<DateTime>
 {
-    public override bool TryFormat(DateTime v, Span<char> s, IFormatProvider p, out int charsWritten)
+    public override bool TryFormat(DateTime v, Span<char> s, IFormatProvider p, out int n)
     {
-        return v.TryFormat(s, out charsWritten, "MM/dd/yyyy", p);
+        return v.TryFormat(s, out n, "MM/dd/yyyy", p);
     }
 
     public override bool TryParse(ReadOnlySpan<char> s, IFormatProvider p, out DateTime v)

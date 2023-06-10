@@ -9,7 +9,7 @@ internal sealed class TabularTimeSpanConverter : TabularFieldConverter<TimeSpan>
 {
     private static readonly string[] _formats = CreateFormats();
 
-    public override bool TryGetFormatBufferLength(TimeSpan value, out int result)
+    public override bool TryGetFormatBufferSize(TimeSpan value, out int result)
     {
         result = 64;
 
@@ -44,6 +44,7 @@ internal sealed class TabularTimeSpanConverter : TabularFieldConverter<TimeSpan>
         {
             writer.Write('T');
         }
+
         if ((value.Hours != 0) || (value == TimeSpan.Zero))
         {
             var result = value.Hours.TryFormat(writer.FreeBuffer, out var charsWrittenH, "g", provider);
@@ -53,6 +54,7 @@ internal sealed class TabularTimeSpanConverter : TabularFieldConverter<TimeSpan>
             writer.Advance(charsWrittenH);
             writer.Write('H');
         }
+
         if (value.Minutes != 0)
         {
             var result = value.Minutes.TryFormat(writer.FreeBuffer, out var charsWrittenM, "g", provider);
@@ -62,6 +64,7 @@ internal sealed class TabularTimeSpanConverter : TabularFieldConverter<TimeSpan>
             writer.Advance(charsWrittenM);
             writer.Write('M');
         }
+
         if (seconds != 0)
         {
             var result = seconds.TryFormat(writer.FreeBuffer, out var charsWrittenS, "0.#######", provider);

@@ -4,7 +4,7 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularBooleanConverter : TabularFieldConverter<bool>
 {
-    public override bool TryGetFormatBufferLength(bool value, out int result)
+    public override bool TryGetFormatBufferSize(bool value, out int result)
     {
         result = 8;
 

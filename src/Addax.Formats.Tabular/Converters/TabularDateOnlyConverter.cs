@@ -8,7 +8,7 @@ internal sealed class TabularDateOnlyConverter : TabularFieldConverter<DateOnly>
 {
     private static readonly string[] _formats = CreateFormats();
 
-    public override bool TryGetFormatBufferLength(DateOnly value, out int result)
+    public override bool TryGetFormatBufferSize(DateOnly value, out int result)
     {
         result = 16;
 

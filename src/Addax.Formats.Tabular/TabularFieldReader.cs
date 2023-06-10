@@ -12,7 +12,7 @@ public sealed partial class TabularFieldReader : IDisposable, IAsyncDisposable
 {
     private readonly TabularStreamReader _streamReader;
     private readonly TabularStreamParser _streamParser;
-    private readonly SequenceSource<char> _bufferSource = new(minimumSegmentSize: TabularFormatInfo.StackBufferLength);
+    private readonly SequenceSource<char> _bufferSource = new(minimumSegmentSize: TabularFormatInfo.StackBufferSize);
     private readonly TabularStringFactory _stringFactory;
     private readonly IReadOnlyDictionary<Type, TabularFieldConverter> _converters;
 
@@ -306,6 +306,7 @@ public sealed partial class TabularFieldReader : IDisposable, IAsyncDisposable
 
                     continue;
                 }
+
                 if (parserState.IsIncomplete)
                 {
                     ThrowUnexpectedEndOfStreamException(_position + examinedLength - 1);
@@ -412,6 +413,7 @@ public sealed partial class TabularFieldReader : IDisposable, IAsyncDisposable
 
                     continue;
                 }
+
                 if (parserState.IsIncomplete)
                 {
                     ThrowUnexpectedEndOfStreamException(_position + examinedLength - 1);
@@ -481,28 +483,28 @@ public sealed partial class TabularFieldReader : IDisposable, IAsyncDisposable
         }
 
         var value = _value;
-        var bufferLength = value.Length;
+        var bufferSize = value.Length;
 
-        if (bufferLength > Array.MaxLength)
+        if (bufferSize > Array.MaxLength)
         {
             result = default;
 
             return false;
         }
 
-        if (!converter.TryGetParseBufferLength(out var bufferLengthLimit))
+        if (!converter.TryGetParseBufferSize(out var bufferSizeLimit))
         {
             result = default;
 
             return false;
         }
 
-        if (bufferLengthLimit < 0)
+        if (bufferSizeLimit < 0)
         {
-            throw new InvalidOperationException("The maximum buffer length for parsing a value must be equal to or greater than zero.");
+            throw new InvalidOperationException("The maximum buffer size for parsing a value must be equal to or greater than zero.");
         }
 
-        if (bufferLength > bufferLengthLimit)
+        if (bufferSize > bufferSizeLimit)
         {
             result = default;
 
@@ -515,9 +517,9 @@ public sealed partial class TabularFieldReader : IDisposable, IAsyncDisposable
         }
         else
         {
-            using var parsingBuffer = bufferLength <= TabularFormatInfo.StackBufferLength ?
-                new StringBuffer(stackalloc char[(int)bufferLength]) :
-                new StringBuffer((int)bufferLength);
+            using var parsingBuffer = bufferSize <= TabularFormatInfo.StackBufferSize ?
+                new StringBuffer(stackalloc char[(int)bufferSize]) :
+                new StringBuffer((int)bufferSize);
 
             value.CopyTo(parsingBuffer.AsSpan());
 
@@ -535,6 +537,8 @@ public sealed partial class TabularFieldReader : IDisposable, IAsyncDisposable
         {
             if (typeof(T) == typeof(string))
             {
+                // System.String does not have a default converter and is processed in a special way.
+
                 if (TryGetString(out var resultT))
                 {
                     result = Unsafe.As<string, T>(ref resultT);
@@ -596,6 +600,8 @@ public sealed partial class TabularFieldReader : IDisposable, IAsyncDisposable
         {
             if (typeof(T) == typeof(string))
             {
+                // System.String does not have a default converter and is processed in a special way.
+
                 var resultT = GetString();
 
                 return Unsafe.As<string, T>(ref resultT);

@@ -8,7 +8,7 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularComplexConverter : TabularFieldConverter<Complex>
 {
-    public override bool TryGetFormatBufferLength(Complex value, out int result)
+    public override bool TryGetFormatBufferSize(Complex value, out int result)
     {
         result = 64;
 
@@ -27,12 +27,14 @@ internal sealed class TabularComplexConverter : TabularFieldConverter<Complex>
 
             writer.Advance(charsWrittenR);
         }
+
         if (value.Imaginary != 0)
         {
             if ((value.Real != 0) || (value.Imaginary < 0))
             {
                 writer.Write(value.Imaginary < 0 ? '-' : '+');
             }
+
             if (double.Abs(value.Imaginary) != 1)
             {
                 var result = double.Abs(value.Imaginary).TryFormat(writer.FreeBuffer, out var charsWrittenI, "g", provider);
@@ -107,12 +109,14 @@ internal sealed class TabularComplexConverter : TabularFieldConverter<Complex>
 
                         return true;
                     }
+
                     if (fragmentI is ['+'])
                     {
                         value = new(valueR, +1);
 
                         return true;
                     }
+
                     if (double.TryParse(fragmentI, styles, provider, out var valueI))
                     {
                         value = new(valueR, valueI);
@@ -134,18 +138,21 @@ internal sealed class TabularComplexConverter : TabularFieldConverter<Complex>
 
                     return true;
                 }
+
                 if (buffer is ['-'])
                 {
                     value = new(0, -1);
 
                     return true;
                 }
+
                 if (buffer is ['+'])
                 {
                     value = new(0, +1);
 
                     return true;
                 }
+
                 if (double.TryParse(buffer, styles, provider, out var valueI))
                 {
                     value = new(0, valueI);

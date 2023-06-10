@@ -6,7 +6,7 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularUInt128Converter : TabularNumberConverter<UInt128>
 {
-    public override bool TryGetFormatBufferLength(UInt128 value, out int result)
+    public override bool TryGetFormatBufferSize(UInt128 value, out int result)
     {
         result = 64;
 

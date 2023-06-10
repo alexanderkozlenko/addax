@@ -329,22 +329,22 @@ internal sealed class TabularStreamParser
             if (escapeIndex >= 0)
             {
                 var sourceFragment = currentSegment[..escapeIndex];
-                var bufferLength = escapeIndex + 1;
-                var buffer = writer.GetSpan(bufferLength);
+                var bufferSize = escapeIndex + 1;
+                var buffer = writer.GetSpan(bufferSize);
 
                 sourceFragment.CopyTo(buffer);
-                buffer[bufferLength - 1] = currentSegment[escapeIndex + 1];
-                reader.Advance(bufferLength + 1);
-                writer.Advance(bufferLength);
+                buffer[bufferSize - 1] = currentSegment[escapeIndex + 1];
+                reader.Advance(bufferSize + 1);
+                writer.Advance(bufferSize);
             }
             else
             {
-                var bufferLength = currentSegment.Length;
-                var buffer = writer.GetSpan(bufferLength);
+                var bufferSize = currentSegment.Length;
+                var buffer = writer.GetSpan(bufferSize);
 
                 currentSegment.CopyTo(buffer);
-                reader.Advance(bufferLength);
-                writer.Advance(bufferLength);
+                reader.Advance(bufferSize);
+                writer.Advance(bufferSize);
             }
         }
     }

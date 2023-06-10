@@ -6,7 +6,7 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularUInt32Converter : TabularNumberConverter<uint>
 {
-    public override bool TryGetFormatBufferLength(uint value, out int result)
+    public override bool TryGetFormatBufferSize(uint value, out int result)
     {
         result = 16;
 

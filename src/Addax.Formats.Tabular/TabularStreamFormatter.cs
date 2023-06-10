@@ -64,12 +64,12 @@ internal sealed class TabularStreamFormatter
 
         if (!RequiresEscaping(value))
         {
-            var bufferLength = value.Length;
-            var buffer = writer.GetSpan(bufferLength);
+            var bufferSize = value.Length;
+            var buffer = writer.GetSpan(bufferSize);
 
             value.CopyTo(buffer);
-            writer.Advance(bufferLength);
-            committed += bufferLength;
+            writer.Advance(bufferSize);
+            committed += bufferSize;
         }
         else
         {
@@ -94,13 +94,13 @@ internal sealed class TabularStreamFormatter
                     if (symbolIndex > 0)
                     {
                         var sourceFragment = currentSegment[..symbolIndex];
-                        var bufferLength = symbolIndex;
-                        var buffer = writer.GetSpan(bufferLength);
+                        var bufferSize = symbolIndex;
+                        var buffer = writer.GetSpan(bufferSize);
 
                         sourceFragment.CopyTo(buffer);
                         currentSegment = currentSegment[symbolIndex..];
-                        writer.Advance(bufferLength);
-                        committed += bufferLength;
+                        writer.Advance(bufferSize);
+                        committed += bufferSize;
                     }
 
                     {
@@ -115,12 +115,12 @@ internal sealed class TabularStreamFormatter
                 }
                 else
                 {
-                    var bufferLength = currentSegment.Length;
-                    var buffer = writer.GetSpan(bufferLength);
+                    var bufferSize = currentSegment.Length;
+                    var buffer = writer.GetSpan(bufferSize);
 
                     currentSegment.CopyTo(buffer);
-                    writer.Advance(bufferLength);
-                    committed += bufferLength;
+                    writer.Advance(bufferSize);
+                    committed += bufferSize;
 
                     currentSegment = ReadOnlySpan<char>.Empty;
                 }
@@ -151,13 +151,13 @@ internal sealed class TabularStreamFormatter
         {
             while (!reader.End)
             {
-                var bufferLength = reader.UnreadSpan.Length;
-                var buffer = writer.GetSpan(bufferLength);
+                var bufferSize = reader.UnreadSpan.Length;
+                var buffer = writer.GetSpan(bufferSize);
 
                 reader.UnreadSpan.CopyTo(buffer);
-                reader.Advance(bufferLength);
-                writer.Advance(bufferLength);
-                committed += bufferLength;
+                reader.Advance(bufferSize);
+                writer.Advance(bufferSize);
+                committed += bufferSize;
             }
         }
         else
@@ -183,13 +183,13 @@ internal sealed class TabularStreamFormatter
                     if (symbolIndex > 0)
                     {
                         var sourceFragment = currentSegment[..symbolIndex];
-                        var bufferLength = symbolIndex;
-                        var buffer = writer.GetSpan(bufferLength);
+                        var bufferSize = symbolIndex;
+                        var buffer = writer.GetSpan(bufferSize);
 
                         sourceFragment.CopyTo(buffer);
-                        reader.Advance(bufferLength);
-                        writer.Advance(bufferLength);
-                        committed += bufferLength;
+                        reader.Advance(bufferSize);
+                        writer.Advance(bufferSize);
+                        committed += bufferSize;
                     }
 
                     {
@@ -204,13 +204,13 @@ internal sealed class TabularStreamFormatter
                 }
                 else
                 {
-                    var bufferLength = currentSegment.Length;
-                    var buffer = writer.GetSpan(bufferLength);
+                    var bufferSize = currentSegment.Length;
+                    var buffer = writer.GetSpan(bufferSize);
 
                     currentSegment.CopyTo(buffer);
                     reader.Advance(currentSegment.Length);
-                    writer.Advance(bufferLength);
-                    committed += bufferLength;
+                    writer.Advance(bufferSize);
+                    committed += bufferSize;
                 }
             }
 
@@ -239,12 +239,12 @@ internal sealed class TabularStreamFormatter
 
         if (!value.IsEmpty)
         {
-            var bufferLength = value.Length;
-            var buffer = writer.GetSpan(bufferLength);
+            var bufferSize = value.Length;
+            var buffer = writer.GetSpan(bufferSize);
 
             value.CopyTo(buffer);
-            writer.Advance(bufferLength);
-            committed += bufferLength;
+            writer.Advance(bufferSize);
+            committed += bufferSize;
         }
     }
 
@@ -265,13 +265,13 @@ internal sealed class TabularStreamFormatter
 
         while (!reader.End)
         {
-            var bufferLength = reader.UnreadSpan.Length;
-            var buffer = writer.GetSpan(bufferLength);
+            var bufferSize = reader.UnreadSpan.Length;
+            var buffer = writer.GetSpan(bufferSize);
 
             reader.UnreadSpan.CopyTo(buffer);
-            reader.Advance(bufferLength);
-            writer.Advance(bufferLength);
-            committed += bufferLength;
+            reader.Advance(bufferSize);
+            writer.Advance(bufferSize);
+            committed += bufferSize;
         }
     }
 

@@ -13,15 +13,18 @@ public sealed class TabularDataDialect
         {
             throw new ArgumentException("The specified value cannot be used for this token.", nameof(lineTerminator));
         }
+
         if (TabularFormatInfo.IsUnicodeMandatoryBreak(delimiter))
         {
             throw new ArgumentException("The specified value cannot be used for this token.", nameof(delimiter));
         }
+
         if (TabularFormatInfo.IsUnicodeMandatoryBreak(quoteChar) ||
             (quoteChar == delimiter))
         {
             throw new ArgumentException("The specified value cannot be used for this token.", nameof(quoteChar));
         }
+
         if (TabularFormatInfo.IsUnicodeMandatoryBreak(escapeChar) ||
             (escapeChar == delimiter))
         {

@@ -11,21 +11,21 @@ public abstract class TabularFieldConverter<T> : TabularFieldConverter
     {
     }
 
-    /// <summary>Tries to get the maximum buffer length for formatting an object or value to a sequence of characters.</summary>
+    /// <summary>Tries to get the maximum buffer size for formatting an object or value to a sequence of characters.</summary>
     /// <param name="value">The object or value to be formatted.</param>
-    /// <param name="result">When this method returns, contains the buffer length, or an undefined value on failure.</param>
-    /// <returns><see langword="true" /> if the buffer length can be calculated; <see langword="false" /> otherwise.</returns>
-    public virtual bool TryGetFormatBufferLength(T? value, out int result)
+    /// <param name="result">When this method returns, contains the buffer size, or an undefined value on failure.</param>
+    /// <returns><see langword="true" /> if the buffer size can be calculated; <see langword="false" /> otherwise.</returns>
+    public virtual bool TryGetFormatBufferSize(T? value, out int result)
     {
-        result = TabularFormatInfo.StackBufferLength;
+        result = TabularFormatInfo.StackBufferSize;
 
         return true;
     }
 
-    /// <summary>Tries to get the maximum buffer length for parsing an object or value from a sequence of characters.</summary>
-    /// <param name="result">When this method returns, contains the buffer length, or an undefined value on failure.</param>
-    /// <returns><see langword="true" /> if the buffer length can be calculated; <see langword="false" /> otherwise.</returns>
-    public virtual bool TryGetParseBufferLength(out int result)
+    /// <summary>Tries to get the maximum buffer size for parsing an object or value from a sequence of characters.</summary>
+    /// <param name="result">When this method returns, contains the buffer size, or an undefined value on failure.</param>
+    /// <returns><see langword="true" /> if the buffer size can be calculated; <see langword="false" /> otherwise.</returns>
+    public virtual bool TryGetParseBufferSize(out int result)
     {
         result = Array.MaxLength;
 

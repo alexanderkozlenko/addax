@@ -8,7 +8,7 @@ internal sealed class TabularDateTimeOffsetConverter : TabularFieldConverter<Dat
 {
     private static readonly string[] _formats = CreateFormats();
 
-    public override bool TryGetFormatBufferLength(DateTimeOffset value, out int result)
+    public override bool TryGetFormatBufferSize(DateTimeOffset value, out int result)
     {
         result = 64;
 

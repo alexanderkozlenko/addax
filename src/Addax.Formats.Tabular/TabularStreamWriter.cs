@@ -136,12 +136,12 @@ internal sealed class TabularStreamWriter : IBufferWriter<char>, IDisposable, IA
         {
             if (!_isPreambleCommitted)
             {
-                var preambleBufferLength = _encoding.Preamble.Length;
-                var preambleBuffer = ArrayPool<byte>.Shared.Rent(preambleBufferLength);
+                var preambleBufferSize = _encoding.Preamble.Length;
+                var preambleBuffer = ArrayPool<byte>.Shared.Rent(preambleBufferSize);
 
                 try
                 {
-                    var preambleBufferMemory = preambleBuffer.AsMemory(0, preambleBufferLength);
+                    var preambleBufferMemory = preambleBuffer.AsMemory(0, preambleBufferSize);
 
                     _encoding.Preamble.CopyTo(preambleBufferMemory.Span);
 

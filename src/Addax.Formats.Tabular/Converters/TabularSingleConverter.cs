@@ -6,7 +6,7 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularSingleConverter : TabularNumberConverter<float>
 {
-    public override bool TryGetFormatBufferLength(float value, out int result)
+    public override bool TryGetFormatBufferSize(float value, out int result)
     {
         result = 16;
 

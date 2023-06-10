@@ -74,16 +74,16 @@ internal sealed class TabularStreamReader : IDisposable, IAsyncDisposable
 
         if (!_isPreambleConsumed)
         {
-            var readBufferLength = _encoding.Preamble.Length;
-            var readBuffer = ArrayPool<byte>.Shared.Rent(readBufferLength);
+            var readBufferSize = _encoding.Preamble.Length;
+            var readBuffer = ArrayPool<byte>.Shared.Rent(readBufferSize);
 
             try
             {
-                var readBufferSpan = readBuffer.AsSpan(0, readBufferLength);
-                var readDataLength = _stream.ReadAtLeast(readBufferSpan, readBufferLength, throwOnEndOfStream: false);
+                var readBufferSpan = readBuffer.AsSpan(0, readBufferSize);
+                var readDataSize = _stream.ReadAtLeast(readBufferSpan, readBufferSize, throwOnEndOfStream: false);
 
-                isCompleted = readDataLength < readBufferLength;
-                readBufferSpan = readBufferSpan[..readDataLength];
+                isCompleted = readDataSize < readBufferSize;
+                readBufferSpan = readBufferSpan[..readDataSize];
 
                 if (!readBufferSpan.SequenceEqual(_encoding.Preamble))
                 {
@@ -103,10 +103,10 @@ internal sealed class TabularStreamReader : IDisposable, IAsyncDisposable
             var readBufferSize = _byteBufferSize;
             var readBuffer = _byteBuffer;
             var readBufferSpan = readBuffer.AsSpan(0, readBufferSize);
-            var readDataLength = _stream.ReadAtLeast(readBufferSpan, readBufferSize, throwOnEndOfStream: false);
+            var readDataSize = _stream.ReadAtLeast(readBufferSpan, readBufferSize, throwOnEndOfStream: false);
 
-            isCompleted = readDataLength < readBufferSize;
-            readBufferSpan = readBufferSpan[..readDataLength];
+            isCompleted = readDataSize < readBufferSize;
+            readBufferSpan = readBufferSpan[..readDataSize];
 
             Transcoder.Convert(_encoding, _decoder, readBufferSpan, _charBuffer);
 
@@ -137,16 +137,16 @@ internal sealed class TabularStreamReader : IDisposable, IAsyncDisposable
 
             if (!_isPreambleConsumed)
             {
-                var readBufferLength = _encoding.Preamble.Length;
-                var readBuffer = ArrayPool<byte>.Shared.Rent(readBufferLength);
+                var readBufferSize = _encoding.Preamble.Length;
+                var readBuffer = ArrayPool<byte>.Shared.Rent(readBufferSize);
 
                 try
                 {
-                    var readBufferMemory = readBuffer.AsMemory(0, readBufferLength);
-                    var readDataLength = await _stream.ReadAtLeastAsync(readBufferMemory, readBufferLength, throwOnEndOfStream: false, cancellationToken).ConfigureAwait(false);
+                    var readBufferMemory = readBuffer.AsMemory(0, readBufferSize);
+                    var readDataSize = await _stream.ReadAtLeastAsync(readBufferMemory, readBufferSize, throwOnEndOfStream: false, cancellationToken).ConfigureAwait(false);
 
-                    isCompleted = readDataLength < readBufferLength;
-                    readBufferMemory = readBufferMemory[..readDataLength];
+                    isCompleted = readDataSize < readBufferSize;
+                    readBufferMemory = readBufferMemory[..readDataSize];
 
                     if (!readBufferMemory.Span.SequenceEqual(_encoding.Preamble))
                     {
@@ -166,10 +166,10 @@ internal sealed class TabularStreamReader : IDisposable, IAsyncDisposable
                 var readBufferSize = _byteBufferSize;
                 var readBuffer = _byteBuffer;
                 var readBufferMemory = readBuffer.AsMemory(0, readBufferSize);
-                var readDataLength = await _stream.ReadAtLeastAsync(readBufferMemory, readBufferSize, throwOnEndOfStream: false, cancellationToken).ConfigureAwait(false);
+                var readDataSize = await _stream.ReadAtLeastAsync(readBufferMemory, readBufferSize, throwOnEndOfStream: false, cancellationToken).ConfigureAwait(false);
 
-                isCompleted = readDataLength < readBufferSize;
-                readBufferMemory = readBufferMemory[..readDataLength];
+                isCompleted = readDataSize < readBufferSize;
+                readBufferMemory = readBufferMemory[..readDataSize];
 
                 Transcoder.Convert(_encoding, _decoder, readBufferMemory.Span, _charBuffer);
 

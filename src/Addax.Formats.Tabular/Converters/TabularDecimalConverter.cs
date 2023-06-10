@@ -6,7 +6,7 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularDecimalConverter : TabularNumberConverter<decimal>
 {
-    public override bool TryGetFormatBufferLength(decimal value, out int result)
+    public override bool TryGetFormatBufferSize(decimal value, out int result)
     {
         result = 32;
 

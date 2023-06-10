@@ -14,9 +14,9 @@ internal readonly ref struct StringBuffer
         _span = source;
     }
 
-    public StringBuffer(int length)
+    public StringBuffer(int size)
     {
-        var source = ArrayPool<char>.Shared.Rent(length);
+        var source = ArrayPool<char>.Shared.Rent(size);
 
         _array = source;
         _span = source;

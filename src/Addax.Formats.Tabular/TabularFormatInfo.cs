@@ -7,7 +7,7 @@ namespace Addax.Formats.Tabular;
 
 internal static class TabularFormatInfo
 {
-    public const int StackBufferLength = 128;
+    public const int StackBufferSize = 128;
 
     public static readonly Encoding DefaultEncoding = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false, throwOnInvalidBytes: false);
     public static readonly IFormatProvider DefaultFormatProvider = CreateFormatProvider();
