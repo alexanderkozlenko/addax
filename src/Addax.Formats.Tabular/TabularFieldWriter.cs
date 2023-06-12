@@ -23,7 +23,7 @@ public sealed partial class TabularFieldWriter : IDisposable, IAsyncDisposable
     /// <param name="stream">The stream to write tabular data to.</param>
     /// <param name="dialect">The tabular data dialect to use.</param>
     /// <param name="options">The options to configure the writer.</param>
-    public TabularFieldWriter(Stream stream, TabularDataDialect dialect, TabularFieldWriterOptions options)
+    public TabularFieldWriter(Stream stream, TabularDataDialect dialect, TabularWriterOptions options)
     {
         ArgumentNullException.ThrowIfNull(stream);
         ArgumentNullException.ThrowIfNull(dialect);

@@ -2,10 +2,10 @@
 
 namespace Addax.Formats.Tabular;
 
-/// <summary>Represents a context for <see cref="TabularRecordReader" /> operations.</summary>
-public sealed class TabularRecordReaderContext
+/// <summary>Represents a context for a tabular stream reader.</summary>
+public sealed class TabularReaderContext
 {
-    internal TabularRecordReaderContext(TabularConverterFactory converterFactory, bool consumeComments)
+    internal TabularReaderContext(TabularConverterFactory converterFactory, bool consumeComments)
     {
         ConverterFactory = converterFactory;
         ConsumeComments = consumeComments;

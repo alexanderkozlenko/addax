@@ -7,11 +7,11 @@ namespace Addax.Formats.Tabular;
 internal sealed class TabularRecordAsyncEnumerable<T> : IAsyncEnumerable<TabularRecord<T>>
 {
     private readonly TabularFieldReader _reader;
-    private readonly TabularRecordReaderContext _context;
+    private readonly TabularReaderContext _context;
     private readonly TabularRecordConverter<T> _converter;
     private readonly CancellationToken _cancellationToken;
 
-    public TabularRecordAsyncEnumerable(TabularFieldReader reader, TabularRecordReaderContext context, TabularRecordConverter<T> converter, CancellationToken cancellationToken)
+    public TabularRecordAsyncEnumerable(TabularFieldReader reader, TabularReaderContext context, TabularRecordConverter<T> converter, CancellationToken cancellationToken)
     {
         _reader = reader;
         _context = context;

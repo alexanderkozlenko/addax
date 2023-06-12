@@ -27,7 +27,7 @@ public sealed partial class TabularFieldReader : IDisposable, IAsyncDisposable
     /// <param name="stream">The stream to read tabular data from.</param>
     /// <param name="dialect">The tabular data dialect to use.</param>
     /// <param name="options">The options to configure the reader.</param>
-    public TabularFieldReader(Stream stream, TabularDataDialect dialect, TabularFieldReaderOptions options)
+    public TabularFieldReader(Stream stream, TabularDataDialect dialect, TabularReaderOptions options)
     {
         ArgumentNullException.ThrowIfNull(stream);
         ArgumentNullException.ThrowIfNull(dialect);

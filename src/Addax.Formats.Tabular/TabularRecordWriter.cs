@@ -9,7 +9,7 @@ namespace Addax.Formats.Tabular;
 public sealed class TabularRecordWriter : IDisposable, IAsyncDisposable
 {
     private readonly TabularFieldWriter _fieldWriter;
-    private readonly TabularRecordWriterContext _context;
+    private readonly TabularWriterContext _context;
     private readonly IReadOnlyDictionary<Type, TabularRecordConverter> _converters;
 
     private bool _isDisposed;
@@ -18,14 +18,14 @@ public sealed class TabularRecordWriter : IDisposable, IAsyncDisposable
     /// <param name="stream">The stream to write tabular data to.</param>
     /// <param name="dialect">The tabular data dialect to use.</param>
     /// <param name="options">The options to configure the writer.</param>
-    public TabularRecordWriter(Stream stream, TabularDataDialect dialect, TabularRecordWriterOptions options)
+    public TabularRecordWriter(Stream stream, TabularDataDialect dialect, TabularWriterOptions options)
     {
         ArgumentNullException.ThrowIfNull(stream);
         ArgumentNullException.ThrowIfNull(dialect);
         ArgumentNullException.ThrowIfNull(options);
 
         _fieldWriter = new(stream, dialect, options);
-        _context = new(TabularConverterFactory.Instance, GetFlushThreshold(options));
+        _context = new(options.ConverterFactory, GetFlushThreshold(options));
         _converters = options.RecordConverters;
     }
 
@@ -265,7 +265,7 @@ public sealed class TabularRecordWriter : IDisposable, IAsyncDisposable
         }
     }
 
-    private static long GetFlushThreshold(TabularRecordWriterOptions options)
+    private static long GetFlushThreshold(TabularWriterOptions options)
     {
         return Math.Min(options.Encoding.GetMaxCharCount(options.BufferSize), Array.MaxLength);
     }

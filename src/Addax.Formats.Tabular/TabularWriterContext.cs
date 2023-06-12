@@ -2,10 +2,10 @@
 
 namespace Addax.Formats.Tabular;
 
-/// <summary>Represents a context for <see cref="TabularRecordWriter" /> operations.</summary>
-public sealed class TabularRecordWriterContext
+/// <summary>Represents a context for a tabular stream writer.</summary>
+public sealed class TabularWriterContext
 {
-    internal TabularRecordWriterContext(TabularConverterFactory converterFactory, long flushThreshold)
+    internal TabularWriterContext(TabularConverterFactory converterFactory, long flushThreshold)
     {
         ConverterFactory = converterFactory;
         FlushThreshold = flushThreshold;

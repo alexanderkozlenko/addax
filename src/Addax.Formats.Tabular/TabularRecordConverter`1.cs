@@ -16,7 +16,7 @@ public abstract class TabularRecordConverter<T> : TabularRecordConverter
     /// <param name="context">The current context for tabular records reading.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task that will complete with a record as a <see cref="TabularRecord{T}" /> instance.</returns>
-    public virtual ValueTask<TabularRecord<T>> ReadRecordAsync(TabularFieldReader reader, TabularRecordReaderContext context, CancellationToken cancellationToken)
+    public virtual ValueTask<TabularRecord<T>> ReadRecordAsync(TabularFieldReader reader, TabularReaderContext context, CancellationToken cancellationToken)
     {
         throw new NotSupportedException();
     }
@@ -26,7 +26,7 @@ public abstract class TabularRecordConverter<T> : TabularRecordConverter
     /// <param name="context">The current context for tabular records reading.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A record as a <see cref="TabularRecord{T}" /> instance.</returns>
-    public virtual TabularRecord<T> ReadRecord(TabularFieldReader reader, TabularRecordReaderContext context, CancellationToken cancellationToken)
+    public virtual TabularRecord<T> ReadRecord(TabularFieldReader reader, TabularReaderContext context, CancellationToken cancellationToken)
     {
         throw new NotSupportedException();
     }
@@ -37,7 +37,7 @@ public abstract class TabularRecordConverter<T> : TabularRecordConverter
     /// <param name="context">The current context for tabular records writing.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    public virtual ValueTask WriteRecordAsync(TabularFieldWriter writer, T record, TabularRecordWriterContext context, CancellationToken cancellationToken)
+    public virtual ValueTask WriteRecordAsync(TabularFieldWriter writer, T record, TabularWriterContext context, CancellationToken cancellationToken)
     {
         throw new NotSupportedException();
     }
@@ -47,7 +47,7 @@ public abstract class TabularRecordConverter<T> : TabularRecordConverter
     /// <param name="record">The tabular data record to write.</param>
     /// <param name="context">The current context for tabular records writing.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    public virtual void WriteRecord(TabularFieldWriter writer, T record, TabularRecordWriterContext context, CancellationToken cancellationToken)
+    public virtual void WriteRecord(TabularFieldWriter writer, T record, TabularWriterContext context, CancellationToken cancellationToken)
     {
         throw new NotSupportedException();
     }

@@ -10,7 +10,7 @@ namespace Addax.Formats.Tabular;
 public sealed class TabularRecordReader : IDisposable, IAsyncDisposable
 {
     private readonly TabularFieldReader _fieldReader;
-    private readonly TabularRecordReaderContext _context;
+    private readonly TabularReaderContext _context;
     private readonly IReadOnlyDictionary<Type, TabularRecordConverter> _converters;
 
     private bool _isDisposed;
@@ -19,14 +19,14 @@ public sealed class TabularRecordReader : IDisposable, IAsyncDisposable
     /// <param name="stream">The stream to read tabular data from.</param>
     /// <param name="dialect">The tabular data dialect to use.</param>
     /// <param name="options">The options to configure the reader.</param>
-    public TabularRecordReader(Stream stream, TabularDataDialect dialect, TabularRecordReaderOptions options)
+    public TabularRecordReader(Stream stream, TabularDataDialect dialect, TabularReaderOptions options)
     {
         ArgumentNullException.ThrowIfNull(stream);
         ArgumentNullException.ThrowIfNull(dialect);
         ArgumentNullException.ThrowIfNull(options);
 
         _fieldReader = new(stream, dialect, options);
-        _context = new(TabularConverterFactory.Instance, options.ConsumeComments);
+        _context = new(options.ConverterFactory, options.ConsumeComments);
         _converters = options.RecordConverters;
     }
 

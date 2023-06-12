@@ -64,7 +64,7 @@ internal partial class TabularConverterEmitter
         {
             var commentCheckEmitted = false;
 
-            builder.AppendLine($"    public override Tabular::TabularRecord<{recordSpec.TypeName}> ReadRecord(Tabular::TabularFieldReader reader, Tabular::TabularRecordReaderContext context, global::System.Threading.CancellationToken cancellationToken)");
+            builder.AppendLine($"    public override Tabular::TabularRecord<{recordSpec.TypeName}> ReadRecord(Tabular::TabularFieldReader reader, Tabular::TabularReaderContext context, global::System.Threading.CancellationToken cancellationToken)");
             builder.AppendLine("    {");
 
             if (typeHasFieldConverters)
@@ -370,7 +370,7 @@ internal partial class TabularConverterEmitter
             commentCheckEmitted = false;
 
             builder.AppendLine("    [global::System.Runtime.CompilerServices.AsyncMethodBuilder(typeof(global::System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<>))]");
-            builder.AppendLine($"    public override async global::System.Threading.Tasks.ValueTask<Tabular::TabularRecord<{recordSpec.TypeName}>> ReadRecordAsync(Tabular::TabularFieldReader reader, Tabular::TabularRecordReaderContext context, global::System.Threading.CancellationToken cancellationToken)");
+            builder.AppendLine($"    public override async global::System.Threading.Tasks.ValueTask<Tabular::TabularRecord<{recordSpec.TypeName}>> ReadRecordAsync(Tabular::TabularFieldReader reader, Tabular::TabularReaderContext context, global::System.Threading.CancellationToken cancellationToken)");
             builder.AppendLine("    {");
 
             if (typeHasFieldConverters)
@@ -680,7 +680,7 @@ internal partial class TabularConverterEmitter
                 builder.AppendLine();
             }
 
-            builder.AppendLine($"    public override void WriteRecord(Tabular::TabularFieldWriter writer, {recordSpec.TypeName} record, Tabular::TabularRecordWriterContext context, global::System.Threading.CancellationToken cancellationToken)");
+            builder.AppendLine($"    public override void WriteRecord(Tabular::TabularFieldWriter writer, {recordSpec.TypeName} record, Tabular::TabularWriterContext context, global::System.Threading.CancellationToken cancellationToken)");
             builder.AppendLine("    {");
 
             if (typeHasFieldConverters)
@@ -795,11 +795,11 @@ internal partial class TabularConverterEmitter
             if (typeWritingFieldsCount > 1)
             {
                 builder.AppendLine("    [global::System.Runtime.CompilerServices.AsyncMethodBuilder(typeof(global::System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder))]");
-                builder.AppendLine($"    public override async global::System.Threading.Tasks.ValueTask WriteRecordAsync(Tabular::TabularFieldWriter writer, {recordSpec.TypeName} record, Tabular::TabularRecordWriterContext context, global::System.Threading.CancellationToken cancellationToken)");
+                builder.AppendLine($"    public override async global::System.Threading.Tasks.ValueTask WriteRecordAsync(Tabular::TabularFieldWriter writer, {recordSpec.TypeName} record, Tabular::TabularWriterContext context, global::System.Threading.CancellationToken cancellationToken)");
             }
             else
             {
-                builder.AppendLine($"    public override global::System.Threading.Tasks.ValueTask WriteRecordAsync(Tabular::TabularFieldWriter writer, {recordSpec.TypeName} record, Tabular::TabularRecordWriterContext context, global::System.Threading.CancellationToken cancellationToken)");
+                builder.AppendLine($"    public override global::System.Threading.Tasks.ValueTask WriteRecordAsync(Tabular::TabularFieldWriter writer, {recordSpec.TypeName} record, Tabular::TabularWriterContext context, global::System.Threading.CancellationToken cancellationToken)");
             }
 
             builder.AppendLine("    {");

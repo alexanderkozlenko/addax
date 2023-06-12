@@ -7,7 +7,7 @@ namespace Addax.Formats.Tabular.Converters;
 
 internal sealed class TabularStringArrayConverter : TabularRecordConverter<string[]>
 {
-    public override TabularRecord<string[]> ReadRecord(TabularFieldReader reader, TabularRecordReaderContext context, CancellationToken cancellationToken)
+    public override TabularRecord<string[]> ReadRecord(TabularFieldReader reader, TabularReaderContext context, CancellationToken cancellationToken)
     {
         using var builder = new ArrayBuilder<string>(capacity: 32);
 
@@ -25,7 +25,7 @@ internal sealed class TabularStringArrayConverter : TabularRecordConverter<strin
     }
 
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
-    public override async ValueTask<TabularRecord<string[]>> ReadRecordAsync(TabularFieldReader reader, TabularRecordReaderContext context, CancellationToken cancellationToken)
+    public override async ValueTask<TabularRecord<string[]>> ReadRecordAsync(TabularFieldReader reader, TabularReaderContext context, CancellationToken cancellationToken)
     {
         using var builder = new ArrayBuilder<string>(capacity: 32);
 
@@ -42,7 +42,7 @@ internal sealed class TabularStringArrayConverter : TabularRecordConverter<strin
         return TabularRecord<string[]>.FromContent(builder.ToArray());
     }
 
-    public override void WriteRecord(TabularFieldWriter writer, string[] record, TabularRecordWriterContext context, CancellationToken cancellationToken)
+    public override void WriteRecord(TabularFieldWriter writer, string[] record, TabularWriterContext context, CancellationToken cancellationToken)
     {
         for (var i = 0; i < record.Length; i++)
         {
@@ -56,7 +56,7 @@ internal sealed class TabularStringArrayConverter : TabularRecordConverter<strin
     }
 
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
-    public override async ValueTask WriteRecordAsync(TabularFieldWriter writer, string[] record, TabularRecordWriterContext context, CancellationToken cancellationToken)
+    public override async ValueTask WriteRecordAsync(TabularFieldWriter writer, string[] record, TabularWriterContext context, CancellationToken cancellationToken)
     {
         for (var i = 0; i < record.Length; i++)
         {
