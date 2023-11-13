@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/alexanderkozlenko/addax/main/doc/images/app-128.png" alt="Addax Logo" />
-</p>
-
 ## Addax
 
 A high-performance and low-allocating framework to work with tabular data represented as delimiter-separated values. The implementation is based on W3C recommendation "Model for Tabular Data and Metadata on the Web".
