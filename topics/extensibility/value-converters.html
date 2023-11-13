@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Addax - Value Converters </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Addax - Value Converters ">
+      
+      <link rel="icon" href="../../images/app-32.png">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/alexanderkozlenko/addax/blob/main/artifacts\doc\topics\extensibility\value-converters.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+  </head>
+
+  <script type="module" src="./../../public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../images/app-32.png" alt="Addax">
+            Addax
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h2 id="addax---value-converters">Addax - Value Converters</h2>
+
+<p></p>
+<h3 id="a-custom-converter">A custom converter</h3>
+<p></p>
+<p>A complete example of a custom value converter that handles values of the <code>System.DateTime</code> type represented as Unix timestamps:</p>
+<p></p>
+<pre><code class="lang-cs">internal sealed class UnixDateTimeConverter : TabularConverter&lt;DateTime&gt;
+{
+    public override bool TryFormat(DateTime value, Span&lt;char&gt; destination, IFormatProvider? provider, out int charsWritten)
+    {
+        var seconds = (long)(value.ToUniversalTime() - DateTime.UnixEpoch).TotalSeconds;
+
+        return seconds.TryFormat(destination, out charsWritten, &quot;g&quot;, provider);
+    }
+
+    public override bool TryParse(ReadOnlySpan&lt;char&gt; source, IFormatProvider? provider, out DateTime value)
+    {
+        if (long.TryParse(source, NumberStyles.Integer, provider, out var seconds))
+        {
+            value = DateTime.UnixEpoch.AddSeconds(seconds);
+
+            return true;
+        }
+        else
+        {
+            value = default;
+
+            return false;
+        }
+    }
+}
+</code></pre>
+<p></p>
+<p>For using with low-level API, a custom converter have to be specified explicitly:</p>
+<p></p>
+<pre><code class="lang-cs">var converter = new UnixDateTimeConverter();
+
+var writer = new TabularWriter(stream1, dialect);
+var reader = new TabularReader(stream2, dialect);
+
+writer.Write(DateTime.Now, converter);
+reader.TryGet(converter, out var value);
+</code></pre>
+<p></p>
+<p>For using with high-level API, a custom converter have to be specified with an optional attribute:</p>
+<p></p>
+<pre><code class="lang-cs">[TabularRecord]
+internal struct Book
+{
+    [TabularFieldOrder(0)]
+    public string? Author;
+    
+    [TabularFieldOrder(1)]
+    public string? Title;
+
+    [TabularConverter(typeof(UnixDateTimeConverter))]
+    [TabularFieldOrder(2)]
+    public DateTime? Published;
+}
+</code></pre>
+<p></p>
+<h3 id="standard-date-and-time-converters">Standard date and time converters</h3>
+<p></p>
+<p>The following converters provide an option to customize the standard behavior by accepting a format specifier in the constructor:</p>
+<p></p>
+<ul>
+<li><code>Addax.Formats.Tabular.Converters.TabularDateOnlyConverter</code></li>
+<li><code>Addax.Formats.Tabular.Converters.TabularDateTimeConverter</code></li>
+<li><code>Addax.Formats.Tabular.Converters.TabularDateTimeOffsetConverter</code></li>
+<li><code>Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter</code></li>
+</ul>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          &copy; Oleksandr Kozlenko
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

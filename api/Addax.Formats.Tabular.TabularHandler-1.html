@@ -1,0 +1,403 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class TabularHandler&lt;T&gt;
+ </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class TabularHandler&lt;T&gt;
+ ">
+      
+      <link rel="icon" href="../images/app-32.png">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+  </head>
+
+  <script type="module" src="./../public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/app-32.png" alt="Addax">
+            Addax
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Addax.Formats.Tabular.TabularHandler`1">
+
+
+
+  <h1 id="Addax_Formats_Tabular_TabularHandler_1" data-uid="Addax.Formats.Tabular.TabularHandler`1" class="text-break">
+    Class TabularHandler&lt;T&gt;
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularHandler%601.cs"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Addax.html">Addax</a>.<a class="xref" href="Addax.Formats.html">Formats</a>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Defines the core behavior of reading an object from or writing an object to a tabular record and provides a base for derived classes.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class TabularHandler&lt;T&gt; where T : notnull</code></pre>
+  </div>
+
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of object handled by the handler.</p>
+</dd>
+  </dl>
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">TabularHandler&lt;T&gt;</span></div>
+    </dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Addax_Formats_Tabular_TabularHandler_1__ctor_" data-uid="Addax.Formats.Tabular.TabularHandler`1.#ctor*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularHandler_1__ctor" data-uid="Addax.Formats.Tabular.TabularHandler`1.#ctor">
+  TabularHandler()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularHandler%601.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularHandler-1.html">TabularHandler&lt;T&gt;</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected TabularHandler()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Addax_Formats_Tabular_TabularHandler_1_Header_" data-uid="Addax.Formats.Tabular.TabularHandler`1.Header*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularHandler_1_Header" data-uid="Addax.Formats.Tabular.TabularHandler`1.Header">
+  Header
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularHandler%601.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the names of the record fields.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual IEnumerable&lt;string?&gt;? Header { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>An collection of strings or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Addax_Formats_Tabular_TabularHandler_1_Read_" data-uid="Addax.Formats.Tabular.TabularHandler`1.Read*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularHandler_1_Read_Addax_Formats_Tabular_TabularReader_" data-uid="Addax.Formats.Tabular.TabularHandler`1.Read(Addax.Formats.Tabular.TabularReader)">
+  Read(TabularReader)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularHandler%601.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When overridden in a derived class, reads the next record using the specified reader.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual TabularRecord&lt;T&gt; Read(TabularReader reader)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>reader</code> <a class="xref" href="Addax.Formats.Tabular.TabularReader.html">TabularReader</a></dt>
+    <dd><p>The reader to read with.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularRecord-1.html">TabularRecord</a>&lt;T&gt;</dt>
+    <dd><p>A container that may or may not have a record.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularHandler_1_Read_Addax_Formats_Tabular_TabularReader__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularHandler_1_ReadAsync_" data-uid="Addax.Formats.Tabular.TabularHandler`1.ReadAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularHandler_1_ReadAsync_Addax_Formats_Tabular_TabularReader_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularHandler`1.ReadAsync(Addax.Formats.Tabular.TabularReader,System.Threading.CancellationToken)">
+  ReadAsync(TabularReader, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularHandler%601.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When overridden in a derived class, asynchronously reads the next record using the specified reader.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual ValueTask&lt;TabularRecord&lt;T&gt;&gt; ReadAsync(TabularReader reader, CancellationToken cancellationToken)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>reader</code> <a class="xref" href="Addax.Formats.Tabular.TabularReader.html">TabularReader</a></dt>
+    <dd><p>The reader to read with.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;<a class="xref" href="Addax.Formats.Tabular.TabularRecord-1.html">TabularRecord</a>&lt;T&gt;&gt;</dt>
+    <dd><p>A task object that, when awaited, produces a container that may or may not have a record.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularHandler_1_ReadAsync_Addax_Formats_Tabular_TabularReader_System_Threading_CancellationToken__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularHandler_1_Write_" data-uid="Addax.Formats.Tabular.TabularHandler`1.Write*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularHandler_1_Write_Addax_Formats_Tabular_TabularWriter__0_" data-uid="Addax.Formats.Tabular.TabularHandler`1.Write(Addax.Formats.Tabular.TabularWriter,`0)">
+  Write(TabularWriter, T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularHandler%601.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When overridden in a derived class, writes the next record using the specified writer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void Write(TabularWriter writer, T record)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <a class="xref" href="Addax.Formats.Tabular.TabularWriter.html">TabularWriter</a></dt>
+    <dd><p>The writer to write with.</p>
+</dd>
+    <dt><code>record</code> <span class="xref">T</span></dt>
+    <dd><p>The object to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularHandler_1_Write_Addax_Formats_Tabular_TabularWriter__0__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularHandler_1_WriteAsync_" data-uid="Addax.Formats.Tabular.TabularHandler`1.WriteAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularHandler_1_WriteAsync_Addax_Formats_Tabular_TabularWriter__0_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularHandler`1.WriteAsync(Addax.Formats.Tabular.TabularWriter,`0,System.Threading.CancellationToken)">
+  WriteAsync(TabularWriter, T, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularHandler%601.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When overridden in a derived class, asynchronously writes the next record using the specified writer.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual ValueTask WriteAsync(TabularWriter writer, T record, CancellationToken cancellationToken)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>writer</code> <a class="xref" href="Addax.Formats.Tabular.TabularWriter.html">TabularWriter</a></dt>
+    <dd><p>The writer to write with.</p>
+</dd>
+    <dt><code>record</code> <span class="xref">T</span></dt>
+    <dd><p>The object to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularHandler_1_WriteAsync_Addax_Formats_Tabular_TabularWriter__0_System_Threading_CancellationToken__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
+</div>
+
+
+
+
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          &copy; Oleksandr Kozlenko
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

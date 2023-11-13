@@ -1,0 +1,302 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Addax - Features </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Addax - Features ">
+      
+      <link rel="icon" href="../images/app-32.png">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/alexanderkozlenko/addax/blob/main/artifacts\doc\topics\features.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+  </head>
+
+  <script type="module" src="./../public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/app-32.png" alt="Addax">
+            Addax
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h2 id="addax---features">Addax - Features</h2>
+
+<p></p>
+<h3 id="value-types">Value Types</h3>
+<p></p>
+<p>The framework has built-in support for working with tabular fields as values of the following types:</p>
+<p></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Format</th>
+<th>Standard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>System.Boolean</code></td>
+<td>Lexical space: <code>true</code>, <code>false</code>, <code>1</code>, <code>0</code></td>
+<td>W3C XMLSCHEMA11-2</td>
+</tr>
+<tr>
+<td><code>System.Byte</code></td>
+<td>Format specifier: <code>g</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.Char</code></td>
+<td>One UTF-16 code unit</td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.DateOnly</code></td>
+<td><code>yyyy'-'MM'-'dd</code></td>
+<td>RFC 3339 / ISO 8601-1:2019</td>
+</tr>
+<tr>
+<td><code>System.DateTime</code></td>
+<td><code>yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK</code></td>
+<td>RFC 3339 / ISO 8601-1:2019</td>
+</tr>
+<tr>
+<td><code>System.DateTimeOffset</code></td>
+<td><code>yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK</code></td>
+<td>RFC 3339 / ISO 8601-1:2019</td>
+</tr>
+<tr>
+<td><code>System.Decimal</code></td>
+<td>Format specifier: <code>g</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.Double</code></td>
+<td>Format specifier: <code>g</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.Guid</code></td>
+<td><code>00000000-0000-0000-0000-000000000000</code></td>
+<td>RFC 4122</td>
+</tr>
+<tr>
+<td><code>System.Half</code></td>
+<td>Format specifier: <code>g</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.Int16</code></td>
+<td>Format specifier: <code>g</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.Int32</code></td>
+<td>Format specifier: <code>g</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.Int64</code></td>
+<td>Format specifier: <code>g</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.Int128</code></td>
+<td>Format specifier: <code>g</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.SByte</code></td>
+<td>Format specifier: <code>g</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.Single</code></td>
+<td>Format specifier: <code>g</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.String</code></td>
+<td>Up to 2,147,483,591 UTF-16 code units</td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.TimeOnly</code></td>
+<td><code>HH':'mm':'ss.FFFFFFF</code></td>
+<td>RFC 3339 / ISO 8601-1:2019</td>
+</tr>
+<tr>
+<td><code>System.TimeSpan</code></td>
+<td><code>[-]'P'd'DT'h'H'm'M's'.'FFFFFFF'S'</code></td>
+<td>RFC 3339 / ISO 8601-1:2019</td>
+</tr>
+<tr>
+<td><code>System.UInt16</code></td>
+<td>Format specifier: <code>g</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.UInt32</code></td>
+<td>Format specifier: <code>g</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.UInt64</code></td>
+<td>Format specifier: <code>g</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.UInt128</code></td>
+<td>Format specifier: <code>g</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.Uri</code></td>
+<td>See Appx. A &quot;Collected ABNF for URI&quot;</td>
+<td>RFC 3986</td>
+</tr>
+<tr>
+<td><code>System.Numerics.BigInteger</code></td>
+<td>Format specifier: <code>g</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>System.Byte[]</code></td>
+<td>Encoding: &quot;base16&quot; (&quot;hex&quot;) or &quot;base64&quot;</td>
+<td>RFC 4648</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>Any generated record handler also implicitly supports type members of the <code>System.Nullable&lt;T&gt;</code> type, where <code>T</code> can be any supported value type.</p>
+<p></p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>To use a type member of the <code>System.Byte[]</code> type with a generated record handler, one of the available converters must be specified explicitly:</p>
+<p></p>
+<ul>
+<li><code>Addax.Formats.Tabular.Converters.TabularBase16BinaryConverter</code></li>
+<li><code>Addax.Formats.Tabular.Converters.TabularBase64BinaryConverter</code></li>
+</ul>
+</div>
+<p></p>
+<h3 id="performance">Performance</h3>
+<p></p>
+<p>The field and record readers can advance through tabular data without reading it completely, potentially decreasing overall processing time:</p>
+<p></p>
+<pre><code class="lang-cs">public sealed class TabularReader
+{
+    public bool TrySkipField();
+    public ValueTask&lt;bool&gt; TrySkipFieldAsync(CancellationToken cancellationToken);
+}
+
+public sealed class TabularReader&lt;T&gt;
+{
+    public bool TrySkipRecord();
+    public ValueTask&lt;bool&gt; TrySkipRecordAsync(CancellationToken cancellationToken);
+}
+</code></pre>
+<p></p>
+<h3 id="memory-usage">Memory Usage</h3>
+<p></p>
+<p>The field reader provides access to the last read field in a way that allows reading the field without additional string allocations:</p>
+<p></p>
+<pre><code class="lang-cs">public sealed class TabularReader
+{
+    public ReadOnlyMemory&lt;char&gt; CurrentField { get; }
+}
+</code></pre>
+<p></p>
+<p>The default string factory supports a mode with a thread-safe pool based on hash codes, reducing allocations when reading fields as strings:</p>
+<p></p>
+<pre><code class="lang-cs">var options = new TabularOptions { StringFactory = new(maxLength: 128) };
+</code></pre>
+
+</article>
+
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          &copy; Oleksandr Kozlenko
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,3273 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class TabularWriter
+ </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class TabularWriter
+ ">
+      
+      <link rel="icon" href="../images/app-32.png">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+  </head>
+
+  <script type="module" src="./../public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/app-32.png" alt="Addax">
+            Addax
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Addax.Formats.Tabular.TabularWriter">
+
+
+
+  <h1 id="Addax_Formats_Tabular_TabularWriter" data-uid="Addax.Formats.Tabular.TabularWriter" class="text-break">
+    Class TabularWriter
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Addax.html">Addax</a>.<a class="xref" href="Addax.Formats.html">Formats</a>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides forward-only, write-only access to tabular data fields. This class cannot be inherited.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class TabularWriter : IDisposable, IAsyncDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">TabularWriter</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a></div>
+    </dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter__ctor_" data-uid="Addax.Formats.Tabular.TabularWriter.#ctor*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter__ctor_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_" data-uid="Addax.Formats.Tabular.TabularWriter.#ctor(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions)">
+  TabularWriter(Stream, TabularDialect, TabularOptions?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularWriter.html">TabularWriter</a> class for the specified stream using the provided dialect and options.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TabularWriter(Stream stream, TabularDialect dialect, TabularOptions? options = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to write to.</p>
+</dd>
+    <dt><code>dialect</code> <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>The dialect to use for writing.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="Addax.Formats.Tabular.TabularOptions.html">TabularOptions</a></dt>
+    <dd><p>The options to control the behavior during writing.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support writing.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code> or <code class="paramref">dialect</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+  </dl>
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_BytesCommitted_" data-uid="Addax.Formats.Tabular.TabularWriter.BytesCommitted*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_BytesCommitted" data-uid="Addax.Formats.Tabular.TabularWriter.BytesCommitted">
+  BytesCommitted
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the number of bytes committed so far.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long BytesCommitted { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>A non-negative 64-bit signed integer.</p>
+</dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_BytesCommitted_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Might be greater than the number of bytes written to the underlying stream.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_CurrentPositionType_" data-uid="Addax.Formats.Tabular.TabularWriter.CurrentPositionType*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_CurrentPositionType" data-uid="Addax.Formats.Tabular.TabularWriter.CurrentPositionType">
+  CurrentPositionType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the type of the current writer position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TabularPositionType CurrentPositionType { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularPositionType.html">TabularPositionType</a></dt>
+    <dd><p>A position type enumeration value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_FieldsWritten_" data-uid="Addax.Formats.Tabular.TabularWriter.FieldsWritten*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_FieldsWritten" data-uid="Addax.Formats.Tabular.TabularWriter.FieldsWritten">
+  FieldsWritten
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the number of fields written to the current record so far.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long FieldsWritten { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>A non-negative 64-bit signed integer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_RecordsWritten_" data-uid="Addax.Formats.Tabular.TabularWriter.RecordsWritten*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_RecordsWritten" data-uid="Addax.Formats.Tabular.TabularWriter.RecordsWritten">
+  RecordsWritten
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the number of records written so far.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long RecordsWritten { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>A non-negative 64-bit signed integer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_Dispose_" data-uid="Addax.Formats.Tabular.TabularWriter.Dispose*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_Dispose" data-uid="Addax.Formats.Tabular.TabularWriter.Dispose">
+  Dispose()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Releases the resources used by the current instance of the <a class="xref" href="Addax.Formats.Tabular.TabularWriter.html">TabularWriter</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_DisposeAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.DisposeAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_DisposeAsync" data-uid="Addax.Formats.Tabular.TabularWriter.DisposeAsync">
+  DisposeAsync()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously releases the resources used by the current instance of the <a class="xref" href="Addax.Formats.Tabular.TabularWriter.html">TabularWriter</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask DisposeAsync()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_FinishRecord_" data-uid="Addax.Formats.Tabular.TabularWriter.FinishRecord*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_FinishRecord" data-uid="Addax.Formats.Tabular.TabularWriter.FinishRecord">
+  FinishRecord()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Instructs the writer to finish accepting fields for the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void FinishRecord()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_Flush_" data-uid="Addax.Formats.Tabular.TabularWriter.Flush*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_Flush" data-uid="Addax.Formats.Tabular.TabularWriter.Flush">
+  Flush()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes any buffered data to the underlying stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Flush()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_FlushAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.FlushAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_FlushAsync_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.FlushAsync(System.Threading.CancellationToken)">
+  FlushAsync(CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes any buffered data to the underlying stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask FlushAsync(CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteAnnotation_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteAnnotation*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteAnnotation_System_ReadOnlySpan_System_Char__" data-uid="Addax.Formats.Tabular.TabularWriter.WriteAnnotation(System.ReadOnlySpan{System.Char})">
+  WriteAnnotation(ReadOnlySpan&lt;char&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a sequence of characters as the next record with annotation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteAnnotation(ReadOnlySpan&lt;char&gt; value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> instance to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>The value cannot be formatted into a sequence of characters or the formatted value exceeds the supported field length.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The current dialect does not support the operation.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteAnnotation_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteAnnotation*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteAnnotation_System_String_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteAnnotation(System.String)">
+  WriteAnnotation(string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> instance as the next record with annotation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteAnnotation(string? value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> instance to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>The value cannot be formatted into a sequence of characters or the formatted value exceeds the supported field length.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The current dialect does not support the operation.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteAnnotationAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteAnnotationAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteAnnotationAsync_System_ReadOnlyMemory_System_Char__System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteAnnotationAsync(System.ReadOnlyMemory{System.Char},System.Threading.CancellationToken)">
+  WriteAnnotationAsync(ReadOnlyMemory&lt;char&gt;, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a sequence of characters as the next record with annotation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteAnnotationAsync(ReadOnlyMemory&lt;char&gt; value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlymemory-1">ReadOnlyMemory</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlymemory-1">ReadOnlyMemory&lt;T&gt;</a> instance to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>The value cannot be formatted into a sequence of characters or the formatted value exceeds the supported field length. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The current dialect does not support the operation. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteAnnotationAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteAnnotationAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteAnnotationAsync_System_String_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteAnnotationAsync(System.String,System.Threading.CancellationToken)">
+  WriteAnnotationAsync(string?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> instance as the next record with annotation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteAnnotationAsync(string? value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> instance to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>The value cannot be formatted into a sequence of characters or the formatted value exceeds the supported field length. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The current dialect does not support the operation. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteAsync__1___0_Addax_Formats_Tabular_TabularConverter___0__System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteAsync``1(``0,Addax.Formats.Tabular.TabularConverter{``0},System.Threading.CancellationToken)">
+  WriteAsync&lt;T&gt;(T?, TabularConverter&lt;T&gt;, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes <code class="typeparamref">T</code> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteAsync&lt;T&gt;(T? value, TabularConverter&lt;T&gt; converter, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <span class="xref">T</span></dt>
+    <dd><p><code class="typeparamref">T</code> value to write.</p>
+</dd>
+    <dt><code>converter</code> <a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html">TabularConverter</a>&lt;T&gt;</dt>
+    <dd><p>The converter to format the value with.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of the value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>The formatted value exceeds the supported field length. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">converter</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteBase16Binary_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBase16Binary*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteBase16Binary_System_Byte___" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBase16Binary(System.Byte[])">
+  WriteBase16Binary(byte[]?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes binary data encoded with &quot;base16&quot; (&quot;hex&quot;) encoding as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteBase16Binary(byte[]? value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>An array of bytes to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteBase16Binary_System_Byte____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 4648.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>The formatted field exceeds the supported field length.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteBase16BinaryAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBase16BinaryAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteBase16BinaryAsync_System_Byte___System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBase16BinaryAsync(System.Byte[],System.Threading.CancellationToken)">
+  WriteBase16BinaryAsync(byte[]?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes binary data encoded with &quot;base16&quot; (&quot;hex&quot;) encoding as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteBase16BinaryAsync(byte[]? value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>An array of bytes to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteBase16BinaryAsync_System_Byte___System_Threading_CancellationToken__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 4648.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The value cannot be formatted into a sequence of characters. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteBase64Binary_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBase64Binary*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteBase64Binary_System_Byte___" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBase64Binary(System.Byte[])">
+  WriteBase64Binary(byte[]?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes binary data encoded with &quot;base64&quot; encoding as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteBase64Binary(byte[]? value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>An array of bytes to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteBase64Binary_System_Byte____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 4648.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>The formatted field exceeds the supported field length.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteBase64BinaryAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBase64BinaryAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteBase64BinaryAsync_System_Byte___System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBase64BinaryAsync(System.Byte[],System.Threading.CancellationToken)">
+  WriteBase64BinaryAsync(byte[]?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes binary data encoded with &quot;base64&quot; encoding as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteBase64BinaryAsync(byte[]? value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>An array of bytes to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteBase64BinaryAsync_System_Byte___System_Threading_CancellationToken__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 4648.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The value cannot be formatted into a sequence of characters. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteBigInteger_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBigInteger*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteBigInteger_System_Numerics_BigInteger_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBigInteger(System.Numerics.BigInteger)">
+  WriteBigInteger(BigInteger)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteBigInteger(BigInteger value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>The formatted field exceeds the supported field length.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteBigIntegerAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBigIntegerAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteBigIntegerAsync_System_Numerics_BigInteger_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBigIntegerAsync(System.Numerics.BigInteger,System.Threading.CancellationToken)">
+  WriteBigIntegerAsync(BigInteger, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteBigIntegerAsync(BigInteger value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The value cannot be formatted into a sequence of characters. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteBoolean_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBoolean*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteBoolean_System_Boolean_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBoolean(System.Boolean)">
+  WriteBoolean(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteBoolean(bool value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteBoolean_System_Boolean__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be represented as one of the literals: <code>&quot;false&quot;</code>, <code>&quot;true&quot;</code>.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteBooleanAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBooleanAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteBooleanAsync_System_Boolean_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteBooleanAsync(System.Boolean,System.Threading.CancellationToken)">
+  WriteBooleanAsync(bool, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteBooleanAsync(bool value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteBooleanAsync_System_Boolean_System_Threading_CancellationToken__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be represented as one of the literals: <code>&quot;false&quot;</code>, <code>&quot;true&quot;</code>.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteByte_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteByte*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteByte_System_Byte_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteByte(System.Byte)">
+  WriteByte(byte)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteByte(byte value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteByteAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteByteAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteByteAsync_System_Byte_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteByteAsync(System.Byte,System.Threading.CancellationToken)">
+  WriteByteAsync(byte, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteByteAsync(byte value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteChar_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteChar*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteChar_System_Char_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteChar(System.Char)">
+  WriteChar(char)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteChar(char value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteCharAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteCharAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteCharAsync_System_Char_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteCharAsync(System.Char,System.Threading.CancellationToken)">
+  WriteCharAsync(char, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteCharAsync(char value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteDateOnly_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDateOnly*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteDateOnly_System_DateOnly_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDateOnly(System.DateOnly)">
+  WriteDateOnly(DateOnly)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.dateonly">DateOnly</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteDateOnly(DateOnly value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.dateonly">DateOnly</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.dateonly">DateOnly</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteDateOnly_System_DateOnly__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 3339.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteDateOnlyAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDateOnlyAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteDateOnlyAsync_System_DateOnly_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDateOnlyAsync(System.DateOnly,System.Threading.CancellationToken)">
+  WriteDateOnlyAsync(DateOnly, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.dateonly">DateOnly</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteDateOnlyAsync(DateOnly value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.dateonly">DateOnly</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.dateonly">DateOnly</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteDateOnlyAsync_System_DateOnly_System_Threading_CancellationToken__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 3339.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteDateTime_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDateTime*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteDateTime_System_DateTime_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDateTime(System.DateTime)">
+  WriteDateTime(DateTime)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteDateTime(DateTime value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteDateTime_System_DateTime__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 3339.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteDateTimeAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDateTimeAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteDateTimeAsync_System_DateTime_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDateTimeAsync(System.DateTime,System.Threading.CancellationToken)">
+  WriteDateTimeAsync(DateTime, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteDateTimeAsync(DateTime value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteDateTimeAsync_System_DateTime_System_Threading_CancellationToken__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 3339.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteDateTimeOffset_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDateTimeOffset*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteDateTimeOffset_System_DateTimeOffset_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDateTimeOffset(System.DateTimeOffset)">
+  WriteDateTimeOffset(DateTimeOffset)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteDateTimeOffset(DateTimeOffset value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteDateTimeOffset_System_DateTimeOffset__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 3339.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteDateTimeOffsetAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDateTimeOffsetAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteDateTimeOffsetAsync_System_DateTimeOffset_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDateTimeOffsetAsync(System.DateTimeOffset,System.Threading.CancellationToken)">
+  WriteDateTimeOffsetAsync(DateTimeOffset, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteDateTimeOffsetAsync(DateTimeOffset value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteDateTimeOffsetAsync_System_DateTimeOffset_System_Threading_CancellationToken__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 3339.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteDecimal_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDecimal*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteDecimal_System_Decimal_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDecimal(System.Decimal)">
+  WriteDecimal(decimal)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteDecimal(decimal value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteDecimalAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDecimalAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteDecimalAsync_System_Decimal_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDecimalAsync(System.Decimal,System.Threading.CancellationToken)">
+  WriteDecimalAsync(decimal, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteDecimalAsync(decimal value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteDouble_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDouble*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteDouble_System_Double_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDouble(System.Double)">
+  WriteDouble(double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteDouble(double value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteDoubleAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDoubleAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteDoubleAsync_System_Double_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteDoubleAsync(System.Double,System.Threading.CancellationToken)">
+  WriteDoubleAsync(double, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteDoubleAsync(double value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteEmpty_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteEmpty*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteEmpty" data-uid="Addax.Formats.Tabular.TabularWriter.WriteEmpty">
+  WriteEmpty()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes an empty sequence of characters as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteEmpty()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteEmptyAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteEmptyAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteEmptyAsync_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteEmptyAsync(System.Threading.CancellationToken)">
+  WriteEmptyAsync(CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes an empty sequence of characters as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteEmptyAsync(CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteGuid_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteGuid*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteGuid_System_Guid_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteGuid(System.Guid)">
+  WriteGuid(Guid)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteGuid(Guid value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteGuid_System_Guid__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 4122.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteGuidAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteGuidAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteGuidAsync_System_Guid_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteGuidAsync(System.Guid,System.Threading.CancellationToken)">
+  WriteGuidAsync(Guid, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteGuidAsync(Guid value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteGuidAsync_System_Guid_System_Threading_CancellationToken__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 4122.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteHalf_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteHalf*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteHalf_System_Half_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteHalf(System.Half)">
+  WriteHalf(Half)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.half">Half</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteHalf(Half value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.half">Half</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.half">Half</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteHalfAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteHalfAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteHalfAsync_System_Half_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteHalfAsync(System.Half,System.Threading.CancellationToken)">
+  WriteHalfAsync(Half, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.half">Half</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteHalfAsync(Half value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.half">Half</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.half">Half</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteInt128_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt128*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteInt128_System_Int128_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt128(System.Int128)">
+  WriteInt128(Int128)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int128">Int128</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteInt128(Int128 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int128">Int128</a></dt>
+    <dd><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int128">Int128</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteInt128Async_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt128Async*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteInt128Async_System_Int128_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt128Async(System.Int128,System.Threading.CancellationToken)">
+  WriteInt128Async(Int128, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int128">Int128</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteInt128Async(Int128 value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int128">Int128</a></dt>
+    <dd><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int128">Int128</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteInt16_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt16*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteInt16_System_Int16_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt16(System.Int16)">
+  WriteInt16(short)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int16">short</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteInt16(short value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int16">short</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int16">short</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteInt16Async_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt16Async*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteInt16Async_System_Int16_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt16Async(System.Int16,System.Threading.CancellationToken)">
+  WriteInt16Async(short, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int16">short</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteInt16Async(short value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int16">short</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int16">short</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteInt32_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt32*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteInt32_System_Int32_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt32(System.Int32)">
+  WriteInt32(int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteInt32(int value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteInt32Async_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt32Async*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteInt32Async_System_Int32_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt32Async(System.Int32,System.Threading.CancellationToken)">
+  WriteInt32Async(int, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteInt32Async(int value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteInt64_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt64*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteInt64_System_Int64_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt64(System.Int64)">
+  WriteInt64(long)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteInt64(long value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteInt64Async_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt64Async*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteInt64Async_System_Int64_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteInt64Async(System.Int64,System.Threading.CancellationToken)">
+  WriteInt64Async(long, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteInt64Async(long value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteSByte_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteSByte*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteSByte_System_SByte_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteSByte(System.SByte)">
+  WriteSByte(sbyte)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.sbyte">sbyte</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public void WriteSByte(sbyte value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.sbyte">sbyte</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.sbyte">sbyte</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteSByteAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteSByteAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteSByteAsync_System_SByte_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteSByteAsync(System.SByte,System.Threading.CancellationToken)">
+  WriteSByteAsync(sbyte, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.sbyte">sbyte</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public ValueTask WriteSByteAsync(sbyte value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.sbyte">sbyte</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.sbyte">sbyte</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteSingle_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteSingle*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteSingle_System_Single_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteSingle(System.Single)">
+  WriteSingle(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteSingle(float value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteSingleAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteSingleAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteSingleAsync_System_Single_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteSingleAsync(System.Single,System.Threading.CancellationToken)">
+  WriteSingleAsync(float, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteSingleAsync(float value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteString_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteString*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteString_System_ReadOnlySpan_System_Char__" data-uid="Addax.Formats.Tabular.TabularWriter.WriteString(System.ReadOnlySpan{System.Char})">
+  WriteString(ReadOnlySpan&lt;char&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a sequence of characters as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteString(ReadOnlySpan&lt;char&gt; value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan&lt;T&gt;</a> instance to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>The formatted value exceeds the supported field length.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteString_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteString*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteString_System_String_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteString(System.String)">
+  WriteString(string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> instance as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteString(string? value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> instance to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>The formatted value exceeds the supported field length.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteStringAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteStringAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteStringAsync_System_ReadOnlyMemory_System_Char__System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteStringAsync(System.ReadOnlyMemory{System.Char},System.Threading.CancellationToken)">
+  WriteStringAsync(ReadOnlyMemory&lt;char&gt;, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a sequence of characters as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteStringAsync(ReadOnlyMemory&lt;char&gt; value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlymemory-1">ReadOnlyMemory</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlymemory-1">ReadOnlyMemory&lt;T&gt;</a> instance to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>The formatted value exceeds the supported field length. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteStringAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteStringAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteStringAsync_System_String_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteStringAsync(System.String,System.Threading.CancellationToken)">
+  WriteStringAsync(string?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> instance as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteStringAsync(string? value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> instance to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>The formatted value exceeds the supported field length. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteTimeOnly_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteTimeOnly*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteTimeOnly_System_TimeOnly_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteTimeOnly(System.TimeOnly)">
+  WriteTimeOnly(TimeOnly)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timeonly">TimeOnly</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteTimeOnly(TimeOnly value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timeonly">TimeOnly</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timeonly">TimeOnly</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteTimeOnly_System_TimeOnly__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 3339.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteTimeOnlyAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteTimeOnlyAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteTimeOnlyAsync_System_TimeOnly_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteTimeOnlyAsync(System.TimeOnly,System.Threading.CancellationToken)">
+  WriteTimeOnlyAsync(TimeOnly, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timeonly">TimeOnly</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteTimeOnlyAsync(TimeOnly value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timeonly">TimeOnly</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timeonly">TimeOnly</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteTimeOnlyAsync_System_TimeOnly_System_Threading_CancellationToken__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 3339.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteTimeSpan_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteTimeSpan*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteTimeSpan_System_TimeSpan_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteTimeSpan(System.TimeSpan)">
+  WriteTimeSpan(TimeSpan)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteTimeSpan(TimeSpan value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteTimeSpan_System_TimeSpan__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 3339.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteTimeSpanAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteTimeSpanAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteTimeSpanAsync_System_TimeSpan_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteTimeSpanAsync(System.TimeSpan,System.Threading.CancellationToken)">
+  WriteTimeSpanAsync(TimeSpan, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteTimeSpanAsync(TimeSpan value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteTimeSpanAsync_System_TimeSpan_System_Threading_CancellationToken__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 3339.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteUInt128_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt128*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteUInt128_System_UInt128_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt128(System.UInt128)">
+  WriteUInt128(UInt128)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint128">UInt128</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public void WriteUInt128(UInt128 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint128">UInt128</a></dt>
+    <dd><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint128">UInt128</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteUInt128Async_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt128Async*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteUInt128Async_System_UInt128_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt128Async(System.UInt128,System.Threading.CancellationToken)">
+  WriteUInt128Async(UInt128, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint128">UInt128</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public ValueTask WriteUInt128Async(UInt128 value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint128">UInt128</a></dt>
+    <dd><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint128">UInt128</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteUInt16_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt16*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteUInt16_System_UInt16_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt16(System.UInt16)">
+  WriteUInt16(ushort)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public void WriteUInt16(ushort value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteUInt16Async_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt16Async*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteUInt16Async_System_UInt16_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt16Async(System.UInt16,System.Threading.CancellationToken)">
+  WriteUInt16Async(ushort, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public ValueTask WriteUInt16Async(ushort value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteUInt32_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt32*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteUInt32_System_UInt32_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt32(System.UInt32)">
+  WriteUInt32(uint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public void WriteUInt32(uint value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteUInt32Async_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt32Async*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteUInt32Async_System_UInt32_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt32Async(System.UInt32,System.Threading.CancellationToken)">
+  WriteUInt32Async(uint, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public ValueTask WriteUInt32Async(uint value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteUInt64_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt64*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteUInt64_System_UInt64_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt64(System.UInt64)">
+  WriteUInt64(ulong)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">ulong</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public void WriteUInt64(ulong value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">ulong</a></dt>
+    <dd><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">ulong</a> value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteUInt64Async_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt64Async*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteUInt64Async_System_UInt64_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUInt64Async(System.UInt64,System.Threading.CancellationToken)">
+  WriteUInt64Async(ulong, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">ulong</a> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public ValueTask WriteUInt64Async(ulong value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">ulong</a></dt>
+    <dd><p>An <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">ulong</a> value to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteUri_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUri*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteUri_System_Uri_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUri(System.Uri)">
+  WriteUri(Uri?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes an <span class="xref">System.Uri</span> instance as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void WriteUri(Uri? value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <span class="xref">Uri</span></dt>
+    <dd><p>An <span class="xref">System.Uri</span> instance to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteUri_System_Uri__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 3986.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_WriteUriAsync_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUriAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_WriteUriAsync_System_Uri_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularWriter.WriteUriAsync(System.Uri,System.Threading.CancellationToken)">
+  WriteUriAsync(Uri?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes an <span class="xref">System.Uri</span> instance as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask WriteUriAsync(Uri? value, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <span class="xref">Uri</span></dt>
+    <dd><p>An <span class="xref">System.Uri</span> instance to write.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularWriter_WriteUriAsync_System_Uri_System_Threading_CancellationToken__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value will be formatted according to the RFC 3986.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularWriter_Write_" data-uid="Addax.Formats.Tabular.TabularWriter.Write*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularWriter_Write__1___0_Addax_Formats_Tabular_TabularConverter___0__" data-uid="Addax.Formats.Tabular.TabularWriter.Write``1(``0,Addax.Formats.Tabular.TabularConverter{``0})">
+  Write&lt;T&gt;(T?, TabularConverter&lt;T&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularWriter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes <code class="typeparamref">T</code> value as the next value field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Write&lt;T&gt;(T? value, TabularConverter&lt;T&gt; converter)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <span class="xref">T</span></dt>
+    <dd><p><code class="typeparamref">T</code> value to write.</p>
+</dd>
+    <dt><code>converter</code> <a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html">TabularConverter</a>&lt;T&gt;</dt>
+    <dd><p>The converter to format the value with.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of the value to write.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p>The formatted value exceeds the supported field length.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">converter</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          &copy; Oleksandr Kozlenko
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

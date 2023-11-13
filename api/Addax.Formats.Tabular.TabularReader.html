@@ -1,0 +1,3066 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class TabularReader
+ </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class TabularReader
+ ">
+      
+      <link rel="icon" href="../images/app-32.png">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+  </head>
+
+  <script type="module" src="./../public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/app-32.png" alt="Addax">
+            Addax
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Addax.Formats.Tabular.TabularReader">
+
+
+
+  <h1 id="Addax_Formats_Tabular_TabularReader" data-uid="Addax.Formats.Tabular.TabularReader" class="text-break">
+    Class TabularReader
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Addax.html">Addax</a>.<a class="xref" href="Addax.Formats.html">Formats</a>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides forward-only, read-only access to tabular data fields. This class cannot be inherited.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed class TabularReader : IDisposable, IAsyncDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">TabularReader</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a></div>
+    </dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Addax_Formats_Tabular_TabularReader__ctor_" data-uid="Addax.Formats.Tabular.TabularReader.#ctor*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader__ctor_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_" data-uid="Addax.Formats.Tabular.TabularReader.#ctor(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions)">
+  TabularReader(Stream, TabularDialect, TabularOptions?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularReader.html">TabularReader</a> class for the specified stream using the provided dialect and options.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TabularReader(Stream stream, TabularDialect dialect, TabularOptions? options = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to read from.</p>
+</dd>
+    <dt><code>dialect</code> <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>The dialect to use for reading.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="Addax.Formats.Tabular.TabularOptions.html">TabularOptions</a></dt>
+    <dd><p>The options to control the behavior during reading.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support reading.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code> or <code class="paramref">dialect</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+  </dl>
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_BytesConsumed_" data-uid="Addax.Formats.Tabular.TabularReader.BytesConsumed*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_BytesConsumed" data-uid="Addax.Formats.Tabular.TabularReader.BytesConsumed">
+  BytesConsumed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the number of bytes consumed so far.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long BytesConsumed { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>A non-negative 64-bit signed integer.</p>
+</dd>
+  </dl>
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_BytesConsumed_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Might be less than the number of bytes read from the underlying stream.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_CurrentField_" data-uid="Addax.Formats.Tabular.TabularReader.CurrentField*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_CurrentField" data-uid="Addax.Formats.Tabular.TabularReader.CurrentField">
+  CurrentField
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the last read field as a sequence of characters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ReadOnlyMemory&lt;char&gt; CurrentField { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlymemory-1">ReadOnlyMemory</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>A read-only region of memory.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_CurrentFieldType_" data-uid="Addax.Formats.Tabular.TabularReader.CurrentFieldType*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_CurrentFieldType" data-uid="Addax.Formats.Tabular.TabularReader.CurrentFieldType">
+  CurrentFieldType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the type of the last consumed field.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TabularFieldType CurrentFieldType { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularFieldType.html">TabularFieldType</a></dt>
+    <dd><p>A field type enumeration value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_CurrentPositionType_" data-uid="Addax.Formats.Tabular.TabularReader.CurrentPositionType*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_CurrentPositionType" data-uid="Addax.Formats.Tabular.TabularReader.CurrentPositionType">
+  CurrentPositionType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the type of the current reader position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TabularPositionType CurrentPositionType { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularPositionType.html">TabularPositionType</a></dt>
+    <dd><p>A position type enumeration value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_FieldsRead_" data-uid="Addax.Formats.Tabular.TabularReader.FieldsRead*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_FieldsRead" data-uid="Addax.Formats.Tabular.TabularReader.FieldsRead">
+  FieldsRead
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the number of fields read from the current record so far.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long FieldsRead { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>A non-negative 64-bit signed integer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_RecordsRead_" data-uid="Addax.Formats.Tabular.TabularReader.RecordsRead*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_RecordsRead" data-uid="Addax.Formats.Tabular.TabularReader.RecordsRead">
+  RecordsRead
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the number of records read so far.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long RecordsRead { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>A non-negative 64-bit signed integer.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_Dispose_" data-uid="Addax.Formats.Tabular.TabularReader.Dispose*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_Dispose" data-uid="Addax.Formats.Tabular.TabularReader.Dispose">
+  Dispose()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Releases the resources used by the current instance of the <a class="xref" href="Addax.Formats.Tabular.TabularReader.html">TabularReader</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_DisposeAsync_" data-uid="Addax.Formats.Tabular.TabularReader.DisposeAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_DisposeAsync" data-uid="Addax.Formats.Tabular.TabularReader.DisposeAsync">
+  DisposeAsync()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously releases the resources used by the current instance of the <a class="xref" href="Addax.Formats.Tabular.TabularReader.html">TabularReader</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask DisposeAsync()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetBase16Binary_" data-uid="Addax.Formats.Tabular.TabularReader.GetBase16Binary*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetBase16Binary" data-uid="Addax.Formats.Tabular.TabularReader.GetBase16Binary">
+  GetBase16Binary()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as binary data encoded with &quot;base16&quot; (&quot;hex&quot;) encoding.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] GetBase16Binary()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>An array of bytes.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetBase16Binary_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The field must be formatted according to the RFC 4648. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as an array of bytes using &quot;base16&quot; (&quot;hex&quot;) encoding.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetBase64Binary_" data-uid="Addax.Formats.Tabular.TabularReader.GetBase64Binary*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetBase64Binary" data-uid="Addax.Formats.Tabular.TabularReader.GetBase64Binary">
+  GetBase64Binary()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as binary data encoded with &quot;base64&quot; encoding.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] GetBase64Binary()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>An array of bytes.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetBase64Binary_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The field must be formatted according to the RFC 4648. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as an array of bytes using &quot;base64&quot; encoding.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetBigInteger_" data-uid="Addax.Formats.Tabular.TabularReader.GetBigInteger*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetBigInteger" data-uid="Addax.Formats.Tabular.TabularReader.GetBigInteger">
+  GetBigInteger()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public BigInteger GetBigInteger()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetBigInteger_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetBoolean_" data-uid="Addax.Formats.Tabular.TabularReader.GetBoolean*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetBoolean" data-uid="Addax.Formats.Tabular.TabularReader.GetBoolean">
+  GetBoolean()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool GetBoolean()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetBoolean_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The field must be represented as one of the literals: <code>&quot;false&quot;</code>, <code>&quot;true&quot;</code>, <code>&quot;0&quot;</code>, <code>&quot;1&quot;</code>. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetByte_" data-uid="Addax.Formats.Tabular.TabularReader.GetByte*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetByte" data-uid="Addax.Formats.Tabular.TabularReader.GetByte">
+  GetByte()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte GetByte()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetByte_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, percent sign are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetChar_" data-uid="Addax.Formats.Tabular.TabularReader.GetChar*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetChar" data-uid="Addax.Formats.Tabular.TabularReader.GetChar">
+  GetChar()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public char GetChar()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetChar_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The field must be represented as one UTF-16 code unit.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetDateOnly_" data-uid="Addax.Formats.Tabular.TabularReader.GetDateOnly*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetDateOnly" data-uid="Addax.Formats.Tabular.TabularReader.GetDateOnly">
+  GetDateOnly()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.dateonly">DateOnly</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateOnly GetDateOnly()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.dateonly">DateOnly</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.dateonly">DateOnly</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetDateOnly_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The field must be formatted according to the RFC 3339. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.dateonly">DateOnly</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetDateTime_" data-uid="Addax.Formats.Tabular.TabularReader.GetDateTime*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetDateTime" data-uid="Addax.Formats.Tabular.TabularReader.GetDateTime">
+  GetDateTime()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTime GetDateTime()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetDateTime_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The field must be formatted according to the RFC 3339. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetDateTimeOffset_" data-uid="Addax.Formats.Tabular.TabularReader.GetDateTimeOffset*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetDateTimeOffset" data-uid="Addax.Formats.Tabular.TabularReader.GetDateTimeOffset">
+  GetDateTimeOffset()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTimeOffset GetDateTimeOffset()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetDateTimeOffset_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The field must be formatted according to the RFC 3339. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetDecimal_" data-uid="Addax.Formats.Tabular.TabularReader.GetDecimal*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetDecimal" data-uid="Addax.Formats.Tabular.TabularReader.GetDecimal">
+  GetDecimal()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public decimal GetDecimal()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetDecimal_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetDouble_" data-uid="Addax.Formats.Tabular.TabularReader.GetDouble*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetDouble" data-uid="Addax.Formats.Tabular.TabularReader.GetDouble">
+  GetDouble()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double GetDouble()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetDouble_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetGuid_" data-uid="Addax.Formats.Tabular.TabularReader.GetGuid*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetGuid" data-uid="Addax.Formats.Tabular.TabularReader.GetGuid">
+  GetGuid()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Guid GetGuid()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetGuid_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The field must be formatted according to the RFC 4122. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetHalf_" data-uid="Addax.Formats.Tabular.TabularReader.GetHalf*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetHalf" data-uid="Addax.Formats.Tabular.TabularReader.GetHalf">
+  GetHalf()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.half">Half</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Half GetHalf()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.half">Half</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.half">Half</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetHalf_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.half">Half</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetInt128_" data-uid="Addax.Formats.Tabular.TabularReader.GetInt128*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetInt128" data-uid="Addax.Formats.Tabular.TabularReader.GetInt128">
+  GetInt128()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int128">Int128</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Int128 GetInt128()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int128">Int128</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int128">Int128</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetInt128_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int128">Int128</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetInt16_" data-uid="Addax.Formats.Tabular.TabularReader.GetInt16*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetInt16" data-uid="Addax.Formats.Tabular.TabularReader.GetInt16">
+  GetInt16()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int16">short</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public short GetInt16()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int16">short</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int16">short</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetInt16_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int16">short</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetInt32_" data-uid="Addax.Formats.Tabular.TabularReader.GetInt32*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetInt32" data-uid="Addax.Formats.Tabular.TabularReader.GetInt32">
+  GetInt32()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GetInt32()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetInt32_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetInt64_" data-uid="Addax.Formats.Tabular.TabularReader.GetInt64*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetInt64" data-uid="Addax.Formats.Tabular.TabularReader.GetInt64">
+  GetInt64()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public long GetInt64()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetInt64_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetSByte_" data-uid="Addax.Formats.Tabular.TabularReader.GetSByte*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetSByte" data-uid="Addax.Formats.Tabular.TabularReader.GetSByte">
+  GetSByte()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.sbyte">sbyte</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public sbyte GetSByte()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.sbyte">sbyte</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.sbyte">sbyte</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetSByte_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, percent sign are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.sbyte">sbyte</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetSingle_" data-uid="Addax.Formats.Tabular.TabularReader.GetSingle*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetSingle" data-uid="Addax.Formats.Tabular.TabularReader.GetSingle">
+  GetSingle()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float GetSingle()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetSingle_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetString_" data-uid="Addax.Formats.Tabular.TabularReader.GetString*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetString" data-uid="Addax.Formats.Tabular.TabularReader.GetString">
+  GetString()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Transcodes the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetString()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be transcoded as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetTimeOnly_" data-uid="Addax.Formats.Tabular.TabularReader.GetTimeOnly*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetTimeOnly" data-uid="Addax.Formats.Tabular.TabularReader.GetTimeOnly">
+  GetTimeOnly()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timeonly">TimeOnly</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeOnly GetTimeOnly()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timeonly">TimeOnly</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timeonly">TimeOnly</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetTimeOnly_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The field must be formatted according to the RFC 3339. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timeonly">TimeOnly</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetTimeSpan_" data-uid="Addax.Formats.Tabular.TabularReader.GetTimeSpan*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetTimeSpan" data-uid="Addax.Formats.Tabular.TabularReader.GetTimeSpan">
+  GetTimeSpan()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan GetTimeSpan()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetTimeSpan_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The field must be formatted according to the RFC 3339 and include only <code>&quot;D&quot;</code>, <code>&quot;H&quot;</code>, <code>&quot;M&quot;</code>, or <code>&quot;S&quot;</code> designators. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetUInt128_" data-uid="Addax.Formats.Tabular.TabularReader.GetUInt128*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetUInt128" data-uid="Addax.Formats.Tabular.TabularReader.GetUInt128">
+  GetUInt128()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint128">UInt128</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public UInt128 GetUInt128()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint128">UInt128</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint128">UInt128</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetUInt128_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint128">UInt128</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetUInt16_" data-uid="Addax.Formats.Tabular.TabularReader.GetUInt16*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetUInt16" data-uid="Addax.Formats.Tabular.TabularReader.GetUInt16">
+  GetUInt16()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public ushort GetUInt16()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetUInt16_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetUInt32_" data-uid="Addax.Formats.Tabular.TabularReader.GetUInt32*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetUInt32" data-uid="Addax.Formats.Tabular.TabularReader.GetUInt32">
+  GetUInt32()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public uint GetUInt32()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetUInt32_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetUInt64_" data-uid="Addax.Formats.Tabular.TabularReader.GetUInt64*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetUInt64" data-uid="Addax.Formats.Tabular.TabularReader.GetUInt64">
+  GetUInt64()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">ulong</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public ulong GetUInt64()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">ulong</a></dt>
+    <dd><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">ulong</a> value.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetUInt64_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as an <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">ulong</a> value.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_GetUri_" data-uid="Addax.Formats.Tabular.TabularReader.GetUri*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_GetUri" data-uid="Addax.Formats.Tabular.TabularReader.GetUri">
+  GetUri()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <span class="xref">System.Uri</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Uri GetUri()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">Uri</span></dt>
+    <dd><p>An <span class="xref">System.Uri</span> instance.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_GetUri_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The field must be formatted according to the RFC 3986. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as an <span class="xref">System.Uri</span> instance.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_Get_" data-uid="Addax.Formats.Tabular.TabularReader.Get*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_Get__1_Addax_Formats_Tabular_TabularConverter___0__" data-uid="Addax.Formats.Tabular.TabularReader.Get``1(Addax.Formats.Tabular.TabularConverter{``0})">
+  Get&lt;T&gt;(TabularConverter&lt;T&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Parses the current field as <code class="typeparamref">T</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public T? Get&lt;T&gt;(TabularConverter&lt;T&gt; converter)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>converter</code> <a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html">TabularConverter</a>&lt;T&gt;</dt>
+    <dd><p>The converter to parse the field with.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">T</span></dt>
+    <dd><p>A <code class="typeparamref">T</code> value.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type to parse the field as.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">converter</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.formatexception">FormatException</a></dt>
+    <dd><p>The current field cannot be parsed as <code class="typeparamref">T</code>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetBase16Binary_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetBase16Binary*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetBase16Binary_System_Byte____" data-uid="Addax.Formats.Tabular.TabularReader.TryGetBase16Binary(System.Byte[]@)">
+  TryGetBase16Binary(out byte[]?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as binary data encoded with &quot;base16&quot; (&quot;hex&quot;) encoding and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetBase16Binary(out byte[]? value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>When this method returns, contains an array of bytes that represents the current field, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetBase16Binary_System_Byte_____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value should be formatted according to the RFC 4648. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetBase64Binary_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetBase64Binary*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetBase64Binary_System_Byte____" data-uid="Addax.Formats.Tabular.TabularReader.TryGetBase64Binary(System.Byte[]@)">
+  TryGetBase64Binary(out byte[]?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as binary data encoded with &quot;base64&quot; encoding and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetBase64Binary(out byte[]? value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>When this method returns, contains an array of bytes that represents the current field, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetBase64Binary_System_Byte_____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value should be formatted according to the RFC 4648. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetBigInteger_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetBigInteger*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetBigInteger_System_Numerics_BigInteger__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetBigInteger(System.Numerics.BigInteger@)">
+  TryGetBigInteger(out BigInteger)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetBigInteger(out BigInteger value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.numerics.biginteger">BigInteger</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetBigInteger_System_Numerics_BigInteger___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetBoolean_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetBoolean*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetBoolean_System_Boolean__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetBoolean(System.Boolean@)">
+  TryGetBoolean(out bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetBoolean(out bool value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetBoolean_System_Boolean___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value should be represented as one of the literals: <code>&quot;false&quot;</code>, <code>&quot;true&quot;</code>, <code>&quot;0&quot;</code>, <code>&quot;1&quot;</code>. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetByte_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetByte*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetByte_System_Byte__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetByte(System.Byte@)">
+  TryGetByte(out byte)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetByte(out byte value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetByte_System_Byte___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, percent sign are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetChar_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetChar*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetChar_System_Char__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetChar(System.Char@)">
+  TryGetChar(out char)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetChar(out char value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetChar_System_Char___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value should be represented as one UTF-16 code unit.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetDateOnly_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetDateOnly*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetDateOnly_System_DateOnly__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetDateOnly(System.DateOnly@)">
+  TryGetDateOnly(out DateOnly)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.dateonly">DateOnly</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetDateOnly(out DateOnly value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.dateonly">DateOnly</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.dateonly">DateOnly</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetDateOnly_System_DateOnly___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value should be formatted according to the RFC 3339. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetDateTime_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetDateTime*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetDateTime_System_DateTime__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetDateTime(System.DateTime@)">
+  TryGetDateTime(out DateTime)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetDateTime(out DateTime value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetDateTime_System_DateTime___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value should be formatted according to the RFC 3339. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetDateTimeOffset_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetDateTimeOffset*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetDateTimeOffset_System_DateTimeOffset__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetDateTimeOffset(System.DateTimeOffset@)">
+  TryGetDateTimeOffset(out DateTimeOffset)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetDateTimeOffset(out DateTimeOffset value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetimeoffset">DateTimeOffset</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetDateTimeOffset_System_DateTimeOffset___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value should be formatted according to the RFC 3339. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetDecimal_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetDecimal*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetDecimal_System_Decimal__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetDecimal(System.Decimal@)">
+  TryGetDecimal(out decimal)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetDecimal(out decimal value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.decimal">decimal</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetDecimal_System_Decimal___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetDouble_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetDouble*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetDouble_System_Double__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetDouble(System.Double@)">
+  TryGetDouble(out double)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetDouble(out double value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.double">double</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetDouble_System_Double___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetGuid_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetGuid*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetGuid_System_Guid__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetGuid(System.Guid@)">
+  TryGetGuid(out Guid)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetGuid(out Guid value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetGuid_System_Guid___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value should be formatted according to the RFC 4122. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetHalf_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetHalf*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetHalf_System_Half__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetHalf(System.Half@)">
+  TryGetHalf(out Half)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.half">Half</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetHalf(out Half value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.half">Half</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.half">Half</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetHalf_System_Half___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetInt128_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetInt128*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetInt128_System_Int128__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetInt128(System.Int128@)">
+  TryGetInt128(out Int128)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int128">Int128</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetInt128(out Int128 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int128">Int128</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int128">Int128</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetInt128_System_Int128___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetInt16_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetInt16*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetInt16_System_Int16__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetInt16(System.Int16@)">
+  TryGetInt16(out short)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int16">short</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetInt16(out short value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int16">short</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int16">short</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetInt16_System_Int16___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetInt32_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetInt32*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetInt32_System_Int32__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetInt32(System.Int32@)">
+  TryGetInt32(out int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetInt32(out int value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetInt32_System_Int32___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetInt64_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetInt64*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetInt64_System_Int64__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetInt64(System.Int64@)">
+  TryGetInt64(out long)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetInt64(out long value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetInt64_System_Int64___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetSByte_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetSByte*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetSByte_System_SByte__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetSByte(System.SByte@)">
+  TryGetSByte(out sbyte)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.sbyte">sbyte</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public bool TryGetSByte(out sbyte value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.sbyte">sbyte</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.sbyte">sbyte</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetSByte_System_SByte___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, percent sign are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetSingle_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetSingle*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetSingle_System_Single__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetSingle(System.Single@)">
+  TryGetSingle(out float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetSingle(out float value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetSingle_System_Single___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetString_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetString*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetString_System_String__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetString(System.String@)">
+  TryGetString(out string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to transcode the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetString(out string? value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> instance that represents the current field, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if a value was successfully transcoded; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetTimeOnly_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetTimeOnly*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetTimeOnly_System_TimeOnly__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetTimeOnly(System.TimeOnly@)">
+  TryGetTimeOnly(out TimeOnly)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timeonly">TimeOnly</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetTimeOnly(out TimeOnly value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timeonly">TimeOnly</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timeonly">TimeOnly</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetTimeOnly_System_TimeOnly___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value should be formatted according to the RFC 3339. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetTimeSpan_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetTimeSpan*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetTimeSpan_System_TimeSpan__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetTimeSpan(System.TimeSpan@)">
+  TryGetTimeSpan(out TimeSpan)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetTimeSpan(out TimeSpan value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetTimeSpan_System_TimeSpan___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value should be formatted according to the RFC 3339 and include only <code>&quot;D&quot;</code>, <code>&quot;H&quot;</code>, <code>&quot;M&quot;</code>, or <code>&quot;S&quot;</code> designators. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetUInt128_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetUInt128*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetUInt128_System_UInt128__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetUInt128(System.UInt128@)">
+  TryGetUInt128(out UInt128)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint128">UInt128</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public bool TryGetUInt128(out UInt128 value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint128">UInt128</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint128">UInt128</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetUInt128_System_UInt128___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetUInt16_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetUInt16*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetUInt16_System_UInt16__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetUInt16(System.UInt16@)">
+  TryGetUInt16(out ushort)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public bool TryGetUInt16(out ushort value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint16">ushort</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetUInt16_System_UInt16___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetUInt32_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetUInt32*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetUInt32_System_UInt32__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetUInt32(System.UInt32@)">
+  TryGetUInt32(out uint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public bool TryGetUInt32(out uint value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetUInt32_System_UInt32___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetUInt64_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetUInt64*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetUInt64_System_UInt64__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetUInt64(System.UInt64@)">
+  TryGetUInt64(out ulong)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">ulong</a> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[CLSCompliant(false)]
+public bool TryGetUInt64(out ulong value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">ulong</a></dt>
+    <dd><p>When this method returns, contains a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">ulong</a> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetUInt64_System_UInt64___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGetUri_" data-uid="Addax.Formats.Tabular.TabularReader.TryGetUri*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGetUri_System_Uri__" data-uid="Addax.Formats.Tabular.TabularReader.TryGetUri(System.Uri@)">
+  TryGetUri(out Uri?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.T.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <span class="xref">System.Uri</span> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGetUri(out Uri? value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <span class="xref">Uri</span></dt>
+    <dd><p>When this method returns, contains an <span class="xref">System.Uri</span> instance that represents the current field, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_TryGetUri_System_Uri___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value should be formatted according to the RFC 3986. Leading and trailing white-space characters are allowed.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryGet_" data-uid="Addax.Formats.Tabular.TabularReader.TryGet*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryGet__1_Addax_Formats_Tabular_TabularConverter___0____0__" data-uid="Addax.Formats.Tabular.TabularReader.TryGet``1(Addax.Formats.Tabular.TabularConverter{``0},``0@)">
+  TryGet&lt;T&gt;(TabularConverter&lt;T&gt;, out T?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to parse the current field as <code class="typeparamref">T</code> and returns a value that indicates whether the operation succeeded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryGet&lt;T&gt;(TabularConverter&lt;T&gt; converter, out T? value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>converter</code> <a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html">TabularConverter</a>&lt;T&gt;</dt>
+    <dd><p>The converter to parse the field with.</p>
+</dd>
+    <dt><code>value</code> <span class="xref">T</span></dt>
+    <dd><p>When this method returns, contains a <code class="typeparamref">T</code> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type to parse the field as.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">converter</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryPickRecord_" data-uid="Addax.Formats.Tabular.TabularReader.TryPickRecord*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryPickRecord" data-uid="Addax.Formats.Tabular.TabularReader.TryPickRecord">
+  TryPickRecord()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to switch the reader to the next record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryPickRecord()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the reader was successfully switched; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryReadField_" data-uid="Addax.Formats.Tabular.TabularReader.TryReadField*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryReadField" data-uid="Addax.Formats.Tabular.TabularReader.TryReadField">
+  TryReadField()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to read the content of the next field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TryReadField()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully read; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularContentException.html">TabularContentException</a></dt>
+    <dd><p>An unexpected character or end of stream was encountered.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TryReadFieldAsync_" data-uid="Addax.Formats.Tabular.TabularReader.TryReadFieldAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TryReadFieldAsync_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularReader.TryReadFieldAsync(System.Threading.CancellationToken)">
+  TryReadFieldAsync(CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously tries to read the content of the next field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask&lt;bool&gt; TryReadFieldAsync(CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>A task object that, when awaited, produces <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the field was successfully read; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularContentException.html">TabularContentException</a></dt>
+    <dd><p>An unexpected character or end of stream was encountered. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TrySkipField_" data-uid="Addax.Formats.Tabular.TabularReader.TrySkipField*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TrySkipField" data-uid="Addax.Formats.Tabular.TabularReader.TrySkipField">
+  TrySkipField()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Tries to advance the reader to the next field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool TrySkipField()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the reader was successfully advanced; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularContentException.html">TabularContentException</a></dt>
+    <dd><p>An unexpected character or end of stream was encountered.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularReader_TrySkipFieldAsync_" data-uid="Addax.Formats.Tabular.TabularReader.TrySkipFieldAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularReader_TrySkipFieldAsync_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularReader.TrySkipFieldAsync(System.Threading.CancellationToken)">
+  TrySkipFieldAsync(CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/813e3832cbdccd98223a64254eed09050da95f69/src/Addax.Formats.Tabular/TabularReader.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously tries to advance the reader to the next field of the current record.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ValueTask&lt;bool&gt; TrySkipFieldAsync(CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd><p>A task object that, when awaited, produces <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the reader was successfully advanced; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularContentException.html">TabularContentException</a></dt>
+    <dd><p>An unexpected character or end of stream was encountered. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          &copy; Oleksandr Kozlenko
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
