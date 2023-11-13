@@ -1,4 +1,4 @@
-## Addax - Contributing
+## Contributing
 
 <p />
 
