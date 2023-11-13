@@ -1,0 +1,16 @@
+apiRules:
+- exclude:
+    uidRegex: ^System\.Attribute
+    type: member
+- exclude:
+    uidRegex: ^System\.Exception
+    type: member
+- exclude:
+    uidRegex: ^System\.Object
+    type: member
+- exclude:
+    uidRegex: ^System\.ValueType
+    type: member
+- exclude:
+    uidRegex: ^System\.Runtime\.Serialization\.ISerializable
+    type: type

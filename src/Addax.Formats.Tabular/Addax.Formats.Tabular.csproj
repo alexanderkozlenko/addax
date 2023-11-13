@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AnalysisMode>All</AnalysisMode>
+    <Features>$(Features);nullablePublicOnly;</Features>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Addax.Formats.Tabular.Analyzers.CSharp\Addax.Formats.Tabular.Analyzers.CSharp.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <PackAsAnalyzer>true</PackAsAnalyzer>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\ILLink.LinkAttributes.xml">
+      <LogicalName>ILLink.LinkAttributes.xml</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Package\Build\*.targets">
+      <Pack>true</Pack>
+      <PackagePath>build</PackagePath>
+    </None>
+  </ItemGroup>
+</Project>

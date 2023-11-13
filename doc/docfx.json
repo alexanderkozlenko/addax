@@ -1,0 +1,52 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../",
+          "files": [
+            "/bin/Addax.Formats.Tabular/Release/*.dll"
+          ]
+        }
+      ],
+      "dest": "api",
+      "filter": "api-filter.yml",
+      "namespaceLayout": "nested"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "topics/**/*.md",
+          "topics/**/*.yml"
+        ]
+      },
+      {
+        "files": [
+          "api/**.yml"
+        ]
+      },
+      {
+        "files": [
+          "index.md",
+          "toc.yml"
+        ]
+      }
+    ],
+    "globalMetadata": {
+      "_appName": "Addax",
+      "_appLogoPath": "images/app-32.png",
+      "_appFaviconPath": "images/app-32.png",
+      "_appFooter": "&copy; Oleksandr Kozlenko",
+      "_enableSearch": true,
+      "_disableContribution": true
+    },
+    "output": ".",
+    "template": [
+      "default",
+      "modern",
+      "template"
+    ]
+  }
+}

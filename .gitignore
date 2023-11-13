@@ -1,0 +1,6 @@
+syntax: glob
+
+.vs/
+.vscode/
+artifacts/
+*.user

@@ -1,0 +1,13 @@
+﻿<Project>
+  <PropertyGroup>
+    <ArtifactsPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', 'artifacts'))</ArtifactsPath>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+  </PropertyGroup>
+  <Import Project="$(MSBuildThisFileDirectory)\Directory.Compile.props" />
+  <Import Project="$(MSBuildThisFileDirectory)\Directory.Metadata.props" />
+  <PropertyGroup Condition="'$(ContinuousIntegrationBuild)' == 'true'">
+    <VersionSuffix Condition="'$(VersionSuffix)' != ''">$(VersionSuffix).$([System.DateTimeOffset]::UtcNow.ToUnixTimeSeconds())</VersionSuffix>
+  </PropertyGroup>
+  <Import Project="$(MSBuildThisFileDirectory)\Directory.Packaging.props" />
+</Project>

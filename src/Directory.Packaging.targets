@@ -1,0 +1,34 @@
+﻿<Project>
+  <PropertyGroup Condition="'$(IsPackable)' != 'false'">
+    <BeforePack>$(BeforePack);IncludeAnalyzersInPackage;</BeforePack>
+  </PropertyGroup>
+  <Target Name="GetAnalyzerPackFiles"
+          DependsOnTargets="$(GenerateNuspecDependsOn)"
+          Returns="@(AnalyzerPackFile)"
+          Condition="'$(AnalyzerLanguage)' != ''">
+    <ItemGroup>
+      <AnalyzerPackFile Include="@(_BuildOutputInPackage)"
+                        PackagePath="analyzers/dotnet/$(AnalyzerLanguage)/%(TargetPath)" />
+      <AnalyzerPackFile Include="@(_TargetPathsToSymbols)"
+                        PackagePath="analyzers/dotnet/$(AnalyzerLanguage)/%(TargetPath)"
+                        IsSymbol="true" />
+    </ItemGroup>
+  </Target>
+  <Target Name="IncludeAnalyzersInPackage"
+          Condition="'$(IsPackable)' != 'false'">
+    <MSBuild Projects="@(ProjectReference->WithMetadataValue('PackAsAnalyzer', 'true'))"
+             Targets="GetAnalyzerPackFiles"
+             RemoveProperties="SetTargetFramework">
+      <Output TaskParameter="TargetOutputs"
+              ItemName="AnalyzerPackFile" />
+    </MSBuild>
+    <ItemGroup>
+      <Content Include="@(AnalyzerPackFile)"
+               Pack="true"
+               Condition="'%(AnalyzerPackFile.IsSymbol)' != 'true'" />
+      <_TargetPathsToSymbols Include="@(AnalyzerPackFile)"
+                             TargetPath="/%(AnalyzerPackFile.PackagePath)"
+                             Condition="'%(AnalyzerPackFile.IsSymbol)' == 'true'" />
+    </ItemGroup>
+  </Target>
+</Project>

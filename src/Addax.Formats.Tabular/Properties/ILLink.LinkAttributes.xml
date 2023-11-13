@@ -1,0 +1,16 @@
+﻿<linker>
+  <assembly fullname="Addax.Formats.Tabular">
+    <type fullname="Addax.Formats.Tabular.TabularConverterAttribute">
+      <attribute internal="RemoveAttributeInstances" />
+    </type>
+    <type fullname="Addax.Formats.Tabular.TabularFieldNameAttribute">
+      <attribute internal="RemoveAttributeInstances" />
+    </type>
+    <type fullname="Addax.Formats.Tabular.TabularFieldOrderAttribute">
+      <attribute internal="RemoveAttributeInstances" />
+    </type>
+    <type fullname="Addax.Formats.Tabular.TabularRecordAttribute">
+      <attribute internal="RemoveAttributeInstances" />
+    </type>
+  </assembly>
+</linker>

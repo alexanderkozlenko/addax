@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34302.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A699582F-219D-47CC-A0A7-E1F7FFCB32E5}"
+	ProjectSection(SolutionItems) = preProject
+		src\.globalconfig = src\.globalconfig
+		src\Directory.Build.props = src\Directory.Build.props
+		src\Directory.Build.targets = src\Directory.Build.targets
+		src\Directory.Compile.props = src\Directory.Compile.props
+		src\Directory.Metadata.props = src\Directory.Metadata.props
+		src\Directory.Packages.props = src\Directory.Packages.props
+		src\Directory.Packaging.props = src\Directory.Packaging.props
+		src\Directory.Packaging.targets = src\Directory.Packaging.targets
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Addax.Formats.Tabular", "src\Addax.Formats.Tabular\Addax.Formats.Tabular.csproj", "{0E00C13E-13C2-4F58-AD0E-BFAC6A6FDD4B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Addax.Formats.Tabular.Analyzers.CSharp", "src\Addax.Formats.Tabular.Analyzers.CSharp\Addax.Formats.Tabular.Analyzers.CSharp.csproj", "{65C5A997-C1EE-40EF-930F-D4DACF0AE2C3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Addax.Formats.Tabular.UnitTests", "src\Addax.Formats.Tabular.UnitTests\Addax.Formats.Tabular.UnitTests.csproj", "{6F3D658E-DF6F-429E-84F4-8A71CA016624}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Addax.Formats.Tabular.Analyzers.CSharp.UnitTests", "src\Addax.Formats.Tabular.Analyzers.CSharp.UnitTests\Addax.Formats.Tabular.Analyzers.CSharp.UnitTests.csproj", "{ABCEAD3B-6CF5-4464-B023-5FD1A9247E42}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Addax.Formats.Tabular.Benchmarks", "src\Addax.Formats.Tabular.Benchmarks\Addax.Formats.Tabular.Benchmarks.csproj", "{4E6A2EB6-8EF9-4288-A1F5-1E35A327E638}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0E00C13E-13C2-4F58-AD0E-BFAC6A6FDD4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E00C13E-13C2-4F58-AD0E-BFAC6A6FDD4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E00C13E-13C2-4F58-AD0E-BFAC6A6FDD4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E00C13E-13C2-4F58-AD0E-BFAC6A6FDD4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65C5A997-C1EE-40EF-930F-D4DACF0AE2C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65C5A997-C1EE-40EF-930F-D4DACF0AE2C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65C5A997-C1EE-40EF-930F-D4DACF0AE2C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65C5A997-C1EE-40EF-930F-D4DACF0AE2C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F3D658E-DF6F-429E-84F4-8A71CA016624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F3D658E-DF6F-429E-84F4-8A71CA016624}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F3D658E-DF6F-429E-84F4-8A71CA016624}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F3D658E-DF6F-429E-84F4-8A71CA016624}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABCEAD3B-6CF5-4464-B023-5FD1A9247E42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABCEAD3B-6CF5-4464-B023-5FD1A9247E42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABCEAD3B-6CF5-4464-B023-5FD1A9247E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABCEAD3B-6CF5-4464-B023-5FD1A9247E42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E6A2EB6-8EF9-4288-A1F5-1E35A327E638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E6A2EB6-8EF9-4288-A1F5-1E35A327E638}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E6A2EB6-8EF9-4288-A1F5-1E35A327E638}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E6A2EB6-8EF9-4288-A1F5-1E35A327E638}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C8E40AA6-DDC7-4652-B1FB-EC13694DC46D}
+	EndGlobalSection
+EndGlobal

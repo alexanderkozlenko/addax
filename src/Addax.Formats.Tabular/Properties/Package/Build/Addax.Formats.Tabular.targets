@@ -1,0 +1,9 @@
+﻿<Project>
+  <Target Name="RemoveAddaxFormatsTabularSourceGenerator"
+          AfterTargets="ResolvePackageDependenciesForBuild;ResolveNuGetPackageAssets"
+          Condition="'$(DisableAddaxFormatsTabularSourceGenerator)' == 'true'">
+    <ItemGroup>
+      <Analyzer Remove="@(Analyzer->HasMetadata('FileName')->WithMetadataValue('FileName', 'Addax.Formats.Tabular.Analyzers'))" />
+    </ItemGroup>
+  </Target>
+</Project>

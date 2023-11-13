@@ -1,0 +1,20 @@
+﻿<Project>
+  <PropertyGroup>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsPackable)' != 'false'">
+    <PackageIconPath>Properties\Package\Icon.png</PackageIconPath>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+  <PropertyGroup Condition="Exists('$(MSBuildProjectDirectory)\$(PackageIconPath)')">
+    <PackageIcon>$([System.IO.Path]::GetFileName('$(MSBuildProjectDirectory)\$(PackageIconPath)'))</PackageIcon>
+  </PropertyGroup>
+  <ItemGroup Condition="Exists('$(MSBuildProjectDirectory)\$(PackageIconPath)')">
+    <None Include="$(PackageIconPath)"
+          Pack="true"
+          PackagePath="$([System.IO.Path]::GetFileName('$(MSBuildProjectDirectory)\$(PackageIconPath)'))"
+          Visible="false" />
+  </ItemGroup>
+</Project>

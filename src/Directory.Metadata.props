@@ -1,0 +1,13 @@
+﻿<Project>
+  <PropertyGroup>
+    <Authors><![CDATA[Oleksandr Kozlenko]]></Authors>
+    <Copyright><![CDATA[© Oleksandr Kozlenko. All rights reserved.]]></Copyright>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix>rc</VersionSuffix>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(IsPackable)' != 'false'">
+    <PackageDescription><![CDATA[A high-performance and low-allocating framework to work with tabular data represented as delimiter-separated values. The implementation is based on W3C recommendation "Model for Tabular Data and Metadata on the Web".]]></PackageDescription>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags><![CDATA[format tabular]]></PackageTags>
+  </PropertyGroup>
+</Project>
