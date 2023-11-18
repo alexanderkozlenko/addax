@@ -40,27 +40,42 @@ internal sealed class UnixDateTimeConverter : TabularConverter<DateTime>
 
 <p />
 
-For using with low-level API, a custom converter have to be specified explicitly:
-
-<p />
+# [High-level API](#tab/high-level-api)
 
 ```cs
-var converter = new UnixDateTimeConverter();
+var dialect = new TabularDialect("\r\n", ',', '\"');
 
-var writer = new TabularWriter(stream1, dialect);
-var reader = new TabularReader(stream2, dialect);
+using (var writer = new TabularWriter<Book>(File.Create("books.csv"), dialect))
+{
+    var book1 = new Book
+    {
+        Author = "Lewis Carroll",
+        Title = "Alice's Adventures in Wonderland",
+        Published = new(1865, 11, 09, 0, 0, 0, DateTimeKind.Utc)
+    };
 
-writer.Write(DateTime.Now, converter);
-reader.TryGet(converter, out var value);
-```
+    writer.WriteRecord(book1);
 
-<p />
+    var book2 = new Book
+    {
+        Author = "H. G. Wells",
+        Title = "The Time Machine",
+        Published = new(1894, 03, 17, 0, 0, 0, DateTimeKind.Utc)
+    };
 
-For using with high-level API, a custom converter have to be specified with an optional attribute:
+    writer.WriteRecord(book2);
+}
 
-<p />
+using (var reader = new TabularReader<Book>(File.OpenRead("books.csv"), dialect))
+{
+    while (reader.TryReadRecord())
+    {
+        var book = reader.CurrentRecord;
 
-```cs
+        Console.WriteLine($"{book.Author} '{book.Title}' ({book.Published})");
+    }
+}
+
 [TabularRecord]
 internal struct Book
 {
@@ -69,12 +84,50 @@ internal struct Book
     
     [TabularFieldOrder(1)]
     public string? Title;
-
+    
     [TabularConverter(typeof(UnixDateTimeConverter))]
     [TabularFieldOrder(2)]
     public DateTime? Published;
 }
 ```
+
+# [Low-level API](#tab/low-level-api)
+
+```cs
+using Addax.Formats.Tabular;
+
+var converter = new UnixDateTimeConverter();
+var dialect = new TabularDialect("\r\n", ',', '\"');
+
+using (var writer = new TabularWriter(File.Create("books.csv"), dialect))
+{
+    writer.WriteString("Lewis Carroll");
+    writer.WriteString("Alice's Adventures in Wonderland");
+    writer.Write(new(1865, 11, 09, 0, 0, 0, DateTimeKind.Utc), converter);
+    writer.FinishRecord();
+    writer.WriteString("H. G. Wells");
+    writer.WriteString("The Time Machine");
+    writer.Write(new(1894, 03, 17, 0, 0, 0, DateTimeKind.Utc), converter);
+    writer.FinishRecord();
+}
+
+using (var reader = new TabularReader(File.OpenRead("books.csv"), dialect))
+{
+    while (reader.TryPickRecord())
+    {
+        reader.TryReadField();
+        reader.TryGetString(out var author);
+        reader.TryReadField();
+        reader.TryGetString(out var title);
+        reader.TryReadField();
+        reader.TryGet(converter, out var published);
+
+        Console.WriteLine($"{author} '{title}' ({published})");
+    }
+}
+```
+
+---
 
 <p />
 

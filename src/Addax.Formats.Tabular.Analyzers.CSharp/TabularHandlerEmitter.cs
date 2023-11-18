@@ -14,6 +14,11 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
         public void EmitRecordMappings(SourceProductionContext context, ImmutableArray<TabularRecordMapping> recordMappings)
         {
+            if (recordMappings.IsDefaultOrEmpty)
+            {
+                return;
+            }
+
             var cancellationToken = context.CancellationToken;
 
             for (var i = 0; i < recordMappings.Length; i++)

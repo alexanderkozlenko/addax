@@ -17,7 +17,7 @@ var config = ManualConfig
     .AddColumnProvider(DefaultColumnProviders.Instance)
     .AddColumn(StatisticColumn.OperationsPerSecond, StatisticColumn.Median, StatisticColumn.Min, StatisticColumn.Max)
     .WithSummaryStyle(SummaryStyle.Default.WithSizeUnit(SizeUnit.B).WithTimeUnit(TimeUnit.Microsecond))
-    .AddLogger(ConsoleLogger.Unicode)
-    .AddExporter(MarkdownExporter.GitHub);
+    .AddLogger(ConsoleLogger.Default)
+    .AddExporter(MarkdownExporter.Console);
 
 BenchmarkSwitcher.FromAssembly(Assembly.GetEntryAssembly()!).Run(args, config);

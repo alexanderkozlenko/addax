@@ -1,13 +1,26 @@
 ﻿<Project>
+  <Import Project="$(MSBuildThisFileDirectory)\Directory.Metadata.props" />
   <PropertyGroup>
+    <AnalysisMode>Recommended</AnalysisMode>
     <ArtifactsPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', 'artifacts'))</ArtifactsPath>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <IsPackable>false</IsPackable>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <NoWarn>$(NoWarn);EnableGenerateDocumentationFile;</NoWarn>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RestoreUseStaticGraphEvaluation>true</RestoreUseStaticGraphEvaluation>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <UseArtifactsOutput>true</UseArtifactsOutput>
   </PropertyGroup>
-  <Import Project="$(MSBuildThisFileDirectory)\Directory.Compile.props" />
-  <Import Project="$(MSBuildThisFileDirectory)\Directory.Metadata.props" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <NoWarn>$(NoWarn);CS1591;</NoWarn>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(ContinuousIntegrationBuild)' == 'true'">
+    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <VersionSuffix Condition="'$(VersionSuffix)' != ''">$(VersionSuffix).$([System.DateTimeOffset]::UtcNow.ToUnixTimeSeconds())</VersionSuffix>
   </PropertyGroup>
-  <Import Project="$(MSBuildThisFileDirectory)\Directory.Packaging.props" />
 </Project>

@@ -25,19 +25,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
         private static void GenerateSources(SourceProductionContext context, (ImmutableArray<INamedTypeSymbol> RecordTypes, Compilation Compilation) generateArgs)
         {
-            if (generateArgs.RecordTypes.IsDefaultOrEmpty)
-            {
-                return;
-            }
-
-            var recordMappings = s_parser.GetRecordMappings((CSharpCompilation)generateArgs.Compilation, context, generateArgs.RecordTypes);
-
-            if (recordMappings.IsDefaultOrEmpty)
-            {
-                return;
-            }
-
-            s_emitter.EmitRecordMappings(context, recordMappings);
+            s_emitter.EmitRecordMappings(context, s_parser.GetRecordMappings((CSharpCompilation)generateArgs.Compilation, context, generateArgs.RecordTypes));
         }
 
         private static bool FilterSyntaxNode(SyntaxNode syntax, CancellationToken cancellationToken)
@@ -53,7 +41,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
         private static INamedTypeSymbol TransformSyntaxContext(GeneratorAttributeSyntaxContext context, CancellationToken cancellationToken)
         {
-            return context.TargetSymbol as INamedTypeSymbol;
+            return (INamedTypeSymbol)context.TargetSymbol;
         }
     }
 }

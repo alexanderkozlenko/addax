@@ -70,6 +70,11 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
         public ImmutableArray<TabularRecordMapping> GetRecordMappings(CSharpCompilation compilation, SourceProductionContext context, ImmutableArray<INamedTypeSymbol> recordTypes)
         {
+            if (recordTypes.IsDefaultOrEmpty)
+            {
+                return ImmutableArray<TabularRecordMapping>.Empty;
+            }
+
             var cancellationToken = context.CancellationToken;
 
             if (!TryGetReferencedAssembly(compilation, "Addax.Formats.Tabular", out var featureAssembly, cancellationToken))
@@ -88,7 +93,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (compilation.LanguageVersion < LanguageVersion.CSharp12)
+                if (compilation.LanguageVersion < LanguageVersion.CSharp11)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0000, recordType.Locations.FirstOrDefault()));
 

@@ -2,12 +2,6 @@
 
 Provides high-performance and low-allocating types that work with tabular data represented as delimiter-separated values (DSV). The implementation is based on W3C recommendation "Model for Tabular Data and Metadata on the Web" and can process any conventional tabular data dialect, such as comma-separated values (CSV).
 
-## Packages
-
-|ID|Stable|Preview|
-|:-|:-|:-|
-|Addax.Formats.Tabular|[![NuGet](https://img.shields.io/nuget/v/Addax.Formats.Tabular?style=flat-square)](https://nuget.org/packages/Addax.Formats.Tabular)|[![NuGet](https://img.shields.io/nuget/vpre/Addax.Formats.Tabular?style=flat-square)](https://nuget.org/packages/Addax.Formats.Tabular)|
-
 ## Key Features
 
 - A general-purpose framework that supports different tabular data dialects and character encodings.

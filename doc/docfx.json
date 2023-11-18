@@ -3,7 +3,7 @@
     {
       "src": [
         {
-          "src": "../",
+          "src": "./artifacts/",
           "files": [
             "/bin/Addax.Formats.Tabular/Release/*.dll"
           ]

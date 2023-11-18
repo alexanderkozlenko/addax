@@ -30,4 +30,4 @@ char = ? %x00-10FFFF ?;
 <p />
 
 > [!NOTE]
-> Fields with line terminator characters are always written as escaped to ensure formal compatibility with more specific dialects, such as RFC 4180.
+> Fields with line terminator characters are written as escaped to ensure compatibility with more specific dialects, such as RFC 4180.

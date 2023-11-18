@@ -1,3 +1,41 @@
 ﻿<Project>
-  <Import Project="$(MSBuildThisFileDirectory)\Directory.Packaging.targets" />
+  <PropertyGroup Condition="'$(IsPackable)' == 'true'">
+    <BeforePack>$(BeforePack);IncludeAnalyzersInPackage;</BeforePack>
+    <PackageIcon Condition="Exists('$(MSBuildProjectDirectory)\Properties\Package\Icon.png')">Icon.png</PackageIcon>
+    <PackageReadmeFile Condition="Exists('$(MSBuildProjectDirectory)\Properties\Package\PACKAGE.md')">PACKAGE.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\ILLink.*.xml"
+                      LogicalName="%(Filename)%(Extension)" />
+    <None Include="Properties\Package\**\*"
+          Pack="true"
+          PackagePath="\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+  <Target Name="GetAnalyzerPackFiles"
+          DependsOnTargets="$(GenerateNuspecDependsOn)"
+          Returns="@(AnalyzerPackFile)">
+    <ItemGroup>
+      <AnalyzerPackFile Include="@(_BuildOutputInPackage)"
+                        PackagePath="analyzers/dotnet/$(AnalyzerLanguage)/%(TargetPath)" />
+      <AnalyzerPackFile Include="@(_TargetPathsToSymbols)"
+                        PackagePath="analyzers/dotnet/$(AnalyzerLanguage)/%(TargetPath)"
+                        IsSymbol="true" />
+    </ItemGroup>
+  </Target>
+  <Target Name="IncludeAnalyzersInPackage">
+    <MSBuild Projects="@(ProjectReference->WithMetadataValue('PackAsAnalyzer', 'true'))"
+             Targets="GetAnalyzerPackFiles"
+             RemoveProperties="SetTargetFramework">
+      <Output TaskParameter="TargetOutputs"
+              ItemName="AnalyzerPackFile" />
+    </MSBuild>
+    <ItemGroup>
+      <Content Include="@(AnalyzerPackFile)"
+               Pack="true"
+               Condition="'%(AnalyzerPackFile.IsSymbol)' != 'true'" />
+      <_TargetPathsToSymbols Include="@(AnalyzerPackFile)"
+                             TargetPath="/%(AnalyzerPackFile.PackagePath)"
+                             Condition="'%(AnalyzerPackFile.IsSymbol)' == 'true'" />
+    </ItemGroup>
+  </Target>
 </Project>

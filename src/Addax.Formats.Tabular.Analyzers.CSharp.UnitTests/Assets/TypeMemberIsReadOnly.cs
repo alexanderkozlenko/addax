@@ -3,8 +3,13 @@ using Addax.Formats.Tabular;
 namespace MyNamespace;
 
 [TabularRecord]
-public readonly struct MyType(string myValue)
+public readonly struct MyType
 {
+    public MyType(string myValue)
+    {
+        MyValue = myValue;
+    }
+
     [TabularFieldOrder(0)]
-    public readonly string MyValue = myValue;
+    public readonly string MyValue;
 }

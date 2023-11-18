@@ -30,7 +30,7 @@ public class ReadBenchmark
         }
     }
 
-    [Benchmark(Description = "read string - normal")]
+    [Benchmark(Description = "read string - regular")]
     public void Read1()
     {
         _stream1.Seek(0, SeekOrigin.Begin);
@@ -76,7 +76,7 @@ public class ReadBenchmark
         }
     }
 
-    [Benchmark(Description = "read string - normal (async)")]
+    [Benchmark(Description = "read string - regular (async)")]
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Read1Async()
     {
