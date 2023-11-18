@@ -15,7 +15,7 @@
       <meta name="docfx:rel" content="../../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/alexanderkozlenko/addax/blob/main/artifacts\doc\topics\extensibility\record-handlers.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/alexanderkozlenko/addax/blob/gh-pages/topics/extensibility/record-handlers.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -111,18 +111,67 @@
 }
 </code></pre>
 <p></p>
-<p>The primary approach for using a custom record handler is to specify it explicitly:</p>
+<div class="tabGroup" id="tabgroup_1">
+<ul role="tablist">
+<li role="presentation">
+<a href="#tabpanel_1_high-level-api" role="tab" aria-controls="tabpanel_1_high-level-api" data-tab="high-level-api" tabindex="0" aria-selected="true">High-level API</a>
+</li>
+<li role="presentation">
+<a href="#tabpanel_1_low-level-api" role="tab" aria-controls="tabpanel_1_low-level-api" data-tab="low-level-api" tabindex="-1">Low-level API</a>
+</li>
+</ul>
+<section id="tabpanel_1_high-level-api" role="tabpanel" data-tab="high-level-api">
+
+<p>The primary approach is to specify the required handler for reader or writer explicitly:</p>
 <p></p>
 <pre><code class="lang-cs">var handler = new PointHandler();
+var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '\&quot;');
 
-var writer = new TabularWriter&lt;(double, double)&gt;(stream1, dialect, handler: handler);
-var reader = new TabularReader&lt;(double, double)&gt;(stream2, dialect, handler: handler);
+using (var writer = new TabularWriter&lt;(double, double)&gt;(File.Create(&quot;points.csv&quot;), dialect, handler: handler))
+{
+    writer.WriteRecord((50.4501, 30.5234));
+    writer.WriteRecord((45.4215, 75.6972));
+}
+
+using (var reader = new TabularReader&lt;(double, double)&gt;(File.OpenRead(&quot;points.csv&quot;), dialect, handler: handler))
+{
+    while (reader.TryReadRecord())
+    {
+        var (lat, lon) = reader.CurrentRecord;
+
+        Console.WriteLine($&quot;{lat} N, {lon} W&quot;);
+    }
+}
 </code></pre>
 <p></p>
 <p>Additonally, it can be added to the <code>TabularRegistry.Handlers</code> shared collection with generated record handlers:</p>
 <p></p>
 <pre><code class="lang-cs">TabularRegistry.Handlers[typeof((double, double))] = new PointHandler();
+
+var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '\&quot;');
+
+using (var writer = new TabularWriter&lt;(double, double)&gt;(File.Create(&quot;points.csv&quot;), dialect))
+{
+    writer.WriteRecord((50.4501, 30.5234));
+    writer.WriteRecord((45.4215, 75.6972));
+}
+
+using (var reader = new TabularReader&lt;(double, double)&gt;(File.OpenRead(&quot;points.csv&quot;), dialect))
+{
+    while (reader.TryReadRecord())
+    {
+        var (lat, lon) = reader.CurrentRecord;
+
+        Console.WriteLine($&quot;{lat} N, {lon} W&quot;);
+    }
+}
 </code></pre>
+</section>
+<section id="tabpanel_1_low-level-api" role="tabpanel" data-tab="low-level-api" aria-hidden="true" hidden="hidden">
+
+<p>N/A</p>
+</section>
+</div>
 
 </article>
 

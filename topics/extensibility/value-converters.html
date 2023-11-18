@@ -15,7 +15,7 @@
       <meta name="docfx:rel" content="../../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/alexanderkozlenko/addax/blob/main/artifacts\doc\topics\extensibility\value-converters.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/alexanderkozlenko/addax/blob/gh-pages/topics/extensibility/value-converters.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -118,20 +118,51 @@
 }
 </code></pre>
 <p></p>
-<p>For using with low-level API, a custom converter have to be specified explicitly:</p>
-<p></p>
-<pre><code class="lang-cs">var converter = new UnixDateTimeConverter();
+<div class="tabGroup" id="tabgroup_1">
+<ul role="tablist">
+<li role="presentation">
+<a href="#tabpanel_1_high-level-api" role="tab" aria-controls="tabpanel_1_high-level-api" data-tab="high-level-api" tabindex="0" aria-selected="true">High-level API</a>
+</li>
+<li role="presentation">
+<a href="#tabpanel_1_low-level-api" role="tab" aria-controls="tabpanel_1_low-level-api" data-tab="low-level-api" tabindex="-1">Low-level API</a>
+</li>
+</ul>
+<section id="tabpanel_1_high-level-api" role="tabpanel" data-tab="high-level-api">
 
-var writer = new TabularWriter(stream1, dialect);
-var reader = new TabularReader(stream2, dialect);
+<pre><code class="lang-cs">var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '\&quot;');
 
-writer.Write(DateTime.Now, converter);
-reader.TryGet(converter, out var value);
-</code></pre>
-<p></p>
-<p>For using with high-level API, a custom converter have to be specified with an optional attribute:</p>
-<p></p>
-<pre><code class="lang-cs">[TabularRecord]
+using (var writer = new TabularWriter&lt;Book&gt;(File.Create(&quot;books.csv&quot;), dialect))
+{
+    var book1 = new Book
+    {
+        Author = &quot;Lewis Carroll&quot;,
+        Title = &quot;Alice's Adventures in Wonderland&quot;,
+        Published = new(1865, 11, 09, 0, 0, 0, DateTimeKind.Utc)
+    };
+
+    writer.WriteRecord(book1);
+
+    var book2 = new Book
+    {
+        Author = &quot;H. G. Wells&quot;,
+        Title = &quot;The Time Machine&quot;,
+        Published = new(1894, 03, 17, 0, 0, 0, DateTimeKind.Utc)
+    };
+
+    writer.WriteRecord(book2);
+}
+
+using (var reader = new TabularReader&lt;Book&gt;(File.OpenRead(&quot;books.csv&quot;), dialect))
+{
+    while (reader.TryReadRecord())
+    {
+        var book = reader.CurrentRecord;
+
+        Console.WriteLine($&quot;{book.Author} '{book.Title}' ({book.Published})&quot;);
+    }
+}
+
+[TabularRecord]
 internal struct Book
 {
     [TabularFieldOrder(0)]
@@ -139,12 +170,49 @@ internal struct Book
     
     [TabularFieldOrder(1)]
     public string? Title;
-
+    
     [TabularConverter(typeof(UnixDateTimeConverter))]
     [TabularFieldOrder(2)]
     public DateTime? Published;
 }
 </code></pre>
+</section>
+<section id="tabpanel_1_low-level-api" role="tabpanel" data-tab="low-level-api" aria-hidden="true" hidden="hidden">
+
+<pre><code class="lang-cs">using Addax.Formats.Tabular;
+
+var converter = new UnixDateTimeConverter();
+var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '\&quot;');
+
+using (var writer = new TabularWriter(File.Create(&quot;books.csv&quot;), dialect))
+{
+    writer.WriteString(&quot;Lewis Carroll&quot;);
+    writer.WriteString(&quot;Alice's Adventures in Wonderland&quot;);
+    writer.Write(new(1865, 11, 09, 0, 0, 0, DateTimeKind.Utc), converter);
+    writer.FinishRecord();
+    writer.WriteString(&quot;H. G. Wells&quot;);
+    writer.WriteString(&quot;The Time Machine&quot;);
+    writer.Write(new(1894, 03, 17, 0, 0, 0, DateTimeKind.Utc), converter);
+    writer.FinishRecord();
+}
+
+using (var reader = new TabularReader(File.OpenRead(&quot;books.csv&quot;), dialect))
+{
+    while (reader.TryPickRecord())
+    {
+        reader.TryReadField();
+        reader.TryGetString(out var author);
+        reader.TryReadField();
+        reader.TryGetString(out var title);
+        reader.TryReadField();
+        reader.TryGet(converter, out var published);
+
+        Console.WriteLine($&quot;{author} '{title}' ({published})&quot;);
+    }
+}
+</code></pre>
+</section>
+</div>
 <p></p>
 <h3 id="standard-date-and-time-converters">Standard date and time converters</h3>
 <p></p>

@@ -1,0 +1,965 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class TabularData
+ </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class TabularData
+ ">
+      
+      <link rel="icon" href="../images/app-32.png">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+  </head>
+
+  <script type="module" src="./../public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/app-32.png" alt="Addax">
+            Addax
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Addax.Formats.Tabular.TabularData">
+
+
+
+  <h1 id="Addax_Formats_Tabular_TabularData" data-uid="Addax.Formats.Tabular.TabularData" class="text-break">
+    Class TabularData
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/4dcc0c9ec133d295e8bfbc5678dfef16d6d0174b/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Addax.html">Addax</a>.<a class="xref" href="Addax.Formats.html">Formats</a>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides static methods for reading and writing collections of tabular data records.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class TabularData</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">TabularData</span></div>
+    </dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Addax_Formats_Tabular_TabularData_ReadRecordsAsync_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecordsAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_ReadRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_Addax_Formats_Tabular_TabularHandler___0__System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions,Addax.Formats.Tabular.TabularHandler{``0},System.Threading.CancellationToken)">
+  ReadRecordsAsync&lt;T&gt;(Stream, TabularDialect, TabularOptions?, TabularHandler&lt;T&gt;?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/4dcc0c9ec133d295e8bfbc5678dfef16d6d0174b/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously reads all records from the stream that can be represented as <code class="typeparamref">T</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ValueTask&lt;T[]&gt; ReadRecordsAsync&lt;T&gt;(Stream stream, TabularDialect dialect, TabularOptions? options, TabularHandler&lt;T&gt;? handler, CancellationToken cancellationToken = default) where T : notnull</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to read from.</p>
+</dd>
+    <dt><code>dialect</code> <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>The dialect to use for reading.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="Addax.Formats.Tabular.TabularOptions.html">TabularOptions</a></dt>
+    <dd><p>The options to control the behavior during reading.</p>
+</dd>
+    <dt><code>handler</code> <a class="xref" href="Addax.Formats.Tabular.TabularHandler-1.html">TabularHandler</a>&lt;T&gt;</dt>
+    <dd><p>The handler to read a <code class="typeparamref">T</code> instance from a record.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;T[]&gt;</dt>
+    <dd><p>A task object that, when awaited, produces an array containing all records in the stream.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of an object that represents a record.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support reading.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code> or <code class="paramref">dialect</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The record handler is not specified and cannot be found in the registry.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularContentException.html">TabularContentException</a></dt>
+    <dd><p>An unexpected character or end of stream was encountered.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularData_ReadRecordsAsync_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecordsAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_ReadRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions,System.Threading.CancellationToken)">
+  ReadRecordsAsync&lt;T&gt;(Stream, TabularDialect, TabularOptions?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/4dcc0c9ec133d295e8bfbc5678dfef16d6d0174b/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously reads all records from the stream that can be represented as <code class="typeparamref">T</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ValueTask&lt;T[]&gt; ReadRecordsAsync&lt;T&gt;(Stream stream, TabularDialect dialect, TabularOptions? options, CancellationToken cancellationToken = default) where T : notnull</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to read from.</p>
+</dd>
+    <dt><code>dialect</code> <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>The dialect to use for reading.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="Addax.Formats.Tabular.TabularOptions.html">TabularOptions</a></dt>
+    <dd><p>The options to control the behavior during reading.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;T[]&gt;</dt>
+    <dd><p>A task object that, when awaited, produces an array containing all records in the stream.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of an object that represents a record.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support reading.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code> or <code class="paramref">dialect</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The record handler is not specified and cannot be found in the registry.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularContentException.html">TabularContentException</a></dt>
+    <dd><p>An unexpected character or end of stream was encountered.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularData_ReadRecordsAsync_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecordsAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_ReadRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Threading.CancellationToken)">
+  ReadRecordsAsync&lt;T&gt;(Stream, TabularDialect, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/4dcc0c9ec133d295e8bfbc5678dfef16d6d0174b/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously reads all records from the stream that can be represented as <code class="typeparamref">T</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ValueTask&lt;T[]&gt; ReadRecordsAsync&lt;T&gt;(Stream stream, TabularDialect dialect, CancellationToken cancellationToken = default) where T : notnull</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to read from.</p>
+</dd>
+    <dt><code>dialect</code> <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>The dialect to use for reading.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;T[]&gt;</dt>
+    <dd><p>A task object that, when awaited, produces an array containing all records in the stream.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of an object that represents a record.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support reading.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code> or <code class="paramref">dialect</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The record handler is not specified and cannot be found in the registry.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularContentException.html">TabularContentException</a></dt>
+    <dd><p>An unexpected character or end of stream was encountered.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularData_ReadRecords_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecords*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_ReadRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect)">
+  ReadRecords&lt;T&gt;(Stream, TabularDialect)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/4dcc0c9ec133d295e8bfbc5678dfef16d6d0174b/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Reads all records from the stream that can be represented as <code class="typeparamref">T</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[] ReadRecords&lt;T&gt;(Stream stream, TabularDialect dialect) where T : notnull</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to read from.</p>
+</dd>
+    <dt><code>dialect</code> <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>The dialect to use for reading.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt>T[]</dt>
+    <dd><p>An array containing all records in the stream.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of an object that represents a record.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support reading.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code> or <code class="paramref">dialect</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The record handler is not specified and cannot be found in the registry.</p>
+</dd>
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularContentException.html">TabularContentException</a></dt>
+    <dd><p>An unexpected character or end of stream was encountered.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularData_ReadRecords_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecords*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_ReadRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions)">
+  ReadRecords&lt;T&gt;(Stream, TabularDialect, TabularOptions?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/4dcc0c9ec133d295e8bfbc5678dfef16d6d0174b/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Reads all records that can be represented as <code class="typeparamref">T</code> from the stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[] ReadRecords&lt;T&gt;(Stream stream, TabularDialect dialect, TabularOptions? options) where T : notnull</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to read from.</p>
+</dd>
+    <dt><code>dialect</code> <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>The dialect to use for reading.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="Addax.Formats.Tabular.TabularOptions.html">TabularOptions</a></dt>
+    <dd><p>The options to control the behavior during reading.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt>T[]</dt>
+    <dd><p>An array containing all records in the stream.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of an object that represents a record.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support reading.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code> or <code class="paramref">dialect</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The record handler is not specified and cannot be found in the registry.</p>
+</dd>
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularContentException.html">TabularContentException</a></dt>
+    <dd><p>An unexpected character or end of stream was encountered.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularData_ReadRecords_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecords*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_ReadRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_Addax_Formats_Tabular_TabularHandler___0__" data-uid="Addax.Formats.Tabular.TabularData.ReadRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions,Addax.Formats.Tabular.TabularHandler{``0})">
+  ReadRecords&lt;T&gt;(Stream, TabularDialect, TabularOptions?, TabularHandler&lt;T&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/4dcc0c9ec133d295e8bfbc5678dfef16d6d0174b/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Reads all records that can be represented as <code class="typeparamref">T</code> from the stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static T[] ReadRecords&lt;T&gt;(Stream stream, TabularDialect dialect, TabularOptions? options, TabularHandler&lt;T&gt;? handler) where T : notnull</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to read from.</p>
+</dd>
+    <dt><code>dialect</code> <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>The dialect to use for reading.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="Addax.Formats.Tabular.TabularOptions.html">TabularOptions</a></dt>
+    <dd><p>The options to control the behavior during reading.</p>
+</dd>
+    <dt><code>handler</code> <a class="xref" href="Addax.Formats.Tabular.TabularHandler-1.html">TabularHandler</a>&lt;T&gt;</dt>
+    <dd><p>The handler to read a <code class="typeparamref">T</code> instance from a record.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt>T[]</dt>
+    <dd><p>An array containing all records in the stream.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of an object that represents a record.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support reading.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code> or <code class="paramref">dialect</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The record handler is not specified and cannot be found in the registry.</p>
+</dd>
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularContentException.html">TabularContentException</a></dt>
+    <dd><p>An unexpected character or end of stream was encountered.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularData_WriteRecordsAsync_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecordsAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_WriteRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__Addax_Formats_Tabular_TabularOptions_Addax_Formats_Tabular_TabularHandler___0__System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0},Addax.Formats.Tabular.TabularOptions,Addax.Formats.Tabular.TabularHandler{``0},System.Threading.CancellationToken)">
+  WriteRecordsAsync&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;, TabularOptions?, TabularHandler&lt;T&gt;?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/4dcc0c9ec133d295e8bfbc5678dfef16d6d0174b/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a collection of records to the stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ValueTask WriteRecordsAsync&lt;T&gt;(Stream stream, TabularDialect dialect, IEnumerable&lt;T&gt; records, TabularOptions? options, TabularHandler&lt;T&gt;? handler, CancellationToken cancellationToken = default) where T : notnull</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to write to.</p>
+</dd>
+    <dt><code>dialect</code> <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>The dialect to use for writing.</p>
+</dd>
+    <dt><code>records</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</dt>
+    <dd><p>The records to write to the stream.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="Addax.Formats.Tabular.TabularOptions.html">TabularOptions</a></dt>
+    <dd><p>The options to control the behavior during writing.</p>
+</dd>
+    <dt><code>handler</code> <a class="xref" href="Addax.Formats.Tabular.TabularHandler-1.html">TabularHandler</a>&lt;T&gt;</dt>
+    <dd><p>The handler to write a <code class="typeparamref">T</code> instance to a record.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of an object that represents a record.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support writing.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code>, <code class="paramref">dialect</code>, or <code class="paramref">records</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The record handler is not specified and cannot be found in the registry.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularData_WriteRecordsAsync_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecordsAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_WriteRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__Addax_Formats_Tabular_TabularOptions_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0},Addax.Formats.Tabular.TabularOptions,System.Threading.CancellationToken)">
+  WriteRecordsAsync&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;, TabularOptions?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/4dcc0c9ec133d295e8bfbc5678dfef16d6d0174b/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a collection of records to the stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ValueTask WriteRecordsAsync&lt;T&gt;(Stream stream, TabularDialect dialect, IEnumerable&lt;T&gt; records, TabularOptions? options, CancellationToken cancellationToken = default) where T : notnull</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to write to.</p>
+</dd>
+    <dt><code>dialect</code> <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>The dialect to use for writing.</p>
+</dd>
+    <dt><code>records</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</dt>
+    <dd><p>The records to write to the stream.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="Addax.Formats.Tabular.TabularOptions.html">TabularOptions</a></dt>
+    <dd><p>The options to control the behavior during writing.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of an object that represents a record.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support writing.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code>, <code class="paramref">dialect</code>, or <code class="paramref">records</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The record handler is not specified and cannot be found in the registry.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularData_WriteRecordsAsync_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecordsAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_WriteRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0},System.Threading.CancellationToken)">
+  WriteRecordsAsync&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/4dcc0c9ec133d295e8bfbc5678dfef16d6d0174b/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously writes a collection of records to the stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ValueTask WriteRecordsAsync&lt;T&gt;(Stream stream, TabularDialect dialect, IEnumerable&lt;T&gt; records, CancellationToken cancellationToken = default) where T : notnull</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to write to.</p>
+</dd>
+    <dt><code>dialect</code> <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>The dialect to use for writing.</p>
+</dd>
+    <dt><code>records</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</dt>
+    <dd><p>The records to write to the stream.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
+    <dd><p>A task object.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of an object that represents a record.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support writing.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code>, <code class="paramref">dialect</code>, or <code class="paramref">records</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The record handler is not specified and cannot be found in the registry.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
+    <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularData_WriteRecords_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecords*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_WriteRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__" data-uid="Addax.Formats.Tabular.TabularData.WriteRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0})">
+  WriteRecords&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/4dcc0c9ec133d295e8bfbc5678dfef16d6d0174b/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a collection of records to the stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void WriteRecords&lt;T&gt;(Stream stream, TabularDialect dialect, IEnumerable&lt;T&gt; records) where T : notnull</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to write to.</p>
+</dd>
+    <dt><code>dialect</code> <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>The dialect to use for writing.</p>
+</dd>
+    <dt><code>records</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</dt>
+    <dd><p>The records to write to the stream.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of an object that represents a record.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support writing.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code>, <code class="paramref">dialect</code>, or <code class="paramref">records</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The record handler is not specified and cannot be found in the registry.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularData_WriteRecords_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecords*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_WriteRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__Addax_Formats_Tabular_TabularOptions_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0},Addax.Formats.Tabular.TabularOptions)">
+  WriteRecords&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;, TabularOptions?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/4dcc0c9ec133d295e8bfbc5678dfef16d6d0174b/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a collection of records to the stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void WriteRecords&lt;T&gt;(Stream stream, TabularDialect dialect, IEnumerable&lt;T&gt; records, TabularOptions? options) where T : notnull</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to write to.</p>
+</dd>
+    <dt><code>dialect</code> <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>The dialect to use for writing.</p>
+</dd>
+    <dt><code>records</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</dt>
+    <dd><p>The records to write to the stream.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="Addax.Formats.Tabular.TabularOptions.html">TabularOptions</a></dt>
+    <dd><p>The options to control the behavior during writing.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of an object that represents a record.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support writing.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code>, <code class="paramref">dialect</code>, or <code class="paramref">records</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The record handler is not specified and cannot be found in the registry.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularData_WriteRecords_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecords*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_WriteRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__Addax_Formats_Tabular_TabularOptions_Addax_Formats_Tabular_TabularHandler___0__" data-uid="Addax.Formats.Tabular.TabularData.WriteRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0},Addax.Formats.Tabular.TabularOptions,Addax.Formats.Tabular.TabularHandler{``0})">
+  WriteRecords&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;, TabularOptions?, TabularHandler&lt;T&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/4dcc0c9ec133d295e8bfbc5678dfef16d6d0174b/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Writes a collection of records to the stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void WriteRecords&lt;T&gt;(Stream stream, TabularDialect dialect, IEnumerable&lt;T&gt; records, TabularOptions? options, TabularHandler&lt;T&gt;? handler) where T : notnull</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to write to.</p>
+</dd>
+    <dt><code>dialect</code> <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>The dialect to use for writing.</p>
+</dd>
+    <dt><code>records</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;T&gt;</dt>
+    <dd><p>The records to write to the stream.</p>
+</dd>
+    <dt><code>options</code> <a class="xref" href="Addax.Formats.Tabular.TabularOptions.html">TabularOptions</a></dt>
+    <dd><p>The options to control the behavior during writing.</p>
+</dd>
+    <dt><code>handler</code> <a class="xref" href="Addax.Formats.Tabular.TabularHandler-1.html">TabularHandler</a>&lt;T&gt;</dt>
+    <dd><p>The handler to write a <code class="typeparamref">T</code> instance to a record.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd><p>The type of an object that represents a record.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support writing.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code>, <code class="paramref">dialect</code>, or <code class="paramref">records</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>The record handler is not specified and cannot be found in the registry.</p>
+</dd>
+  </dl>
+
+
+
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          &copy; Oleksandr Kozlenko
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

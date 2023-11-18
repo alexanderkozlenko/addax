@@ -1,2 +1,12 @@
 .vs/
 .vscode/
+artifacts/
+template/
+*.ico
+*.map
+*.md
+*.svg
+*.yml
+.manifest
+docfx.json
+manifest.json
