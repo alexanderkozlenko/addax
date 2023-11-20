@@ -13,7 +13,7 @@ public static class TabularData
     /// <param name="dialect">The dialect to use for reading.</param>
     /// <param name="options">The options to control the behavior during reading.</param>
     /// <param name="handler">The handler to read a <typeparamref name="T" /> instance from a record.</param>
-    /// <returns>An array containing all records in the stream.</returns>
+    /// <returns>An array of records.</returns>
     /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
@@ -39,7 +39,7 @@ public static class TabularData
     /// <param name="stream">The stream to read from.</param>
     /// <param name="dialect">The dialect to use for reading.</param>
     /// <param name="options">The options to control the behavior during reading.</param>
-    /// <returns>An array containing all records in the stream.</returns>
+    /// <returns>An array of records.</returns>
     /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
@@ -54,7 +54,7 @@ public static class TabularData
     /// <typeparam name="T">The type of an object that represents a record.</typeparam>
     /// <param name="stream">The stream to read from.</param>
     /// <param name="dialect">The dialect to use for reading.</param>
-    /// <returns>An array containing all records in the stream.</returns>
+    /// <returns>An array of records.</returns>
     /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
@@ -72,7 +72,7 @@ public static class TabularData
     /// <param name="options">The options to control the behavior during reading.</param>
     /// <param name="handler">The handler to read a <typeparamref name="T" /> instance from a record.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>A task object that, when awaited, produces an array containing all records in the stream.</returns>
+    /// <returns>A task object that, when awaited, produces an array of records.</returns>
     /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
@@ -102,7 +102,7 @@ public static class TabularData
     /// <param name="dialect">The dialect to use for reading.</param>
     /// <param name="options">The options to control the behavior during reading.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>A task object that, when awaited, produces an array containing all records in the stream.</returns>
+    /// <returns>A task object that, when awaited, produces an array of records.</returns>
     /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
@@ -119,7 +119,7 @@ public static class TabularData
     /// <param name="stream">The stream to read from.</param>
     /// <param name="dialect">The dialect to use for reading.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>A task object that, when awaited, produces an array containing all records in the stream.</returns>
+    /// <returns>A task object that, when awaited, produces an array of records.</returns>
     /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>

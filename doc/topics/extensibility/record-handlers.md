@@ -1,3 +1,7 @@
+---
+uid: urn:topics:extensibility:record-handlers
+---
+
 ## Addax - Record Handlers
 
 <p />
@@ -6,12 +10,14 @@
 
 <p />
 
-A simple example of a custom record handler that interprets a record as the `(double, double)` type:
+A simple example of a custom record handler that interprets a record as a tuple with point coordinates:
 
 <p />
 
+# [C#](#tab/cs)
+
 ```cs
-internal sealed class PointHandler : TabularHandler<(double, double)>
+internal class PointHandler : TabularHandler<(double, double)>
 {
     public override TabularRecord<(double, double)> Read(TabularReader reader)
     {
@@ -31,11 +37,37 @@ internal sealed class PointHandler : TabularHandler<(double, double)>
 }
 ```
 
+# [F#](#tab/fs)
+
+```fs
+type internal PointHandler() =
+    inherit TabularHandler<(double * double)>()
+
+        override this.Read(reader) =
+            let mutable item1 = Unchecked.defaultof<double>
+            let mutable item2 = Unchecked.defaultof<double>
+
+            reader.TryReadField () |> ignore
+            reader.TryGetDouble &item1 |> ignore
+            reader.TryReadField () |> ignore
+            reader.TryGetDouble &item2 |> ignore
+
+            new TabularRecord<(double * double)>((item1, item2))
+
+        override this.Write(writer, record) =
+            let (item1, item2) = record
+
+            writer.WriteDouble item1
+            writer.WriteDouble item2
+```
+
+---
+
 <p />
 
-# [High-level API](#tab/high-level-api)
+# [High-level API (C#)](#tab/api-hl/cs)
 
-The primary approach is to specify the required record handler for reader or writer explicitly:
+The primary approach is to specify the record handler for reader or writer explicitly:
 
 <p />
 
@@ -88,8 +120,57 @@ using (var reader = new TabularReader<(double, double)>(File.OpenRead("points.cs
 }
 ```
 
-# [Low-level API](#tab/low-level-api)
+# [High-level API (F#)](#tab/api-hl/fs)
 
-N/A
+The primary approach is to specify the record handler for reader or writer explicitly:
+
+<p />
+
+```fs
+let private handler = new PointHandler()
+let dialect = new TabularDialect("\r\n", ',', '\"')
+
+using (new TabularWriter<(double * double)>(File.Create "points.csv", dialect, handler = handler)) (fun writer ->
+    let point1 = (double 50.4501, double 30.5234)
+    let point2 = (double 45.4215, double 75.6972)
+
+    writer.WriteRecord &point1
+    writer.WriteRecord &point2
+)
+
+using (new TabularReader<(double * double)>(File.OpenRead "points.csv", dialect, handler = handler)) (fun reader ->
+    while reader.TryReadRecord () do
+        let (lat, lon) = reader.CurrentRecord
+
+        printfn $"{lat} N, {lon} W"
+)
+```
+
+<p />
+
+Additonally, it can be added to the `TabularRegistry.Handlers` shared collection with generated record handlers:
+
+<p />
+
+```fs
+TabularRegistry.Handlers.Add(typeof<(double * double)>, new PointHandler())
+
+let dialect = new TabularDialect("\r\n", ',', '\"')
+
+using (new TabularWriter<(double * double)>(File.Create "points.csv", dialect)) (fun writer ->
+    let point1 = (double 50.4501, double 30.5234)
+    let point2 = (double 45.4215, double 75.6972)
+
+    writer.WriteRecord &point1
+    writer.WriteRecord &point2
+)
+
+using (new TabularReader<(double * double)>(File.OpenRead "points.csv", dialect)) (fun reader ->
+    while reader.TryReadRecord () do
+        let (lat, lon) = reader.CurrentRecord
+
+        printfn $"{lat} N, {lon} W"
+)
+```
 
 ---

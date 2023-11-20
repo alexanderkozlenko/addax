@@ -1,4 +1,12 @@
+---
+uid: urn:topics:limitations
+---
+
 ## Addax - Limitations
+
+<p />
+
+### Limitations
 
 <p />
 

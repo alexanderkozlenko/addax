@@ -3,7 +3,7 @@
           AfterTargets="ResolvePackageDependenciesForBuild;ResolveNuGetPackageAssets"
           Condition="'$(DisableAddaxFormatsTabularSourceGenerator)' == 'true'">
     <ItemGroup>
-      <Analyzer Remove="@(Analyzer->HasMetadata('FileName')->WithMetadataValue('FileName', 'Addax.Formats.Tabular.Analyzers'))" />
+      <Analyzer Remove="@(Analyzer->HasMetadata('FileName')->WithMetadataValue('FileName', 'Addax.Formats.Tabular.Analyzers.CSharp'))" />
     </ItemGroup>
   </Target>
 </Project>

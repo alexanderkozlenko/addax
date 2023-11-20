@@ -1,8 +1,16 @@
+---
+uid: urn:topics:grammar
+---
+
 ## Addax - Grammar
 
 <p />
 
-The engine is based on the following generalized grammar for tabular data:
+### Grammar
+
+<p />
+
+The engine is based on the following generalized EBNF grammar for tabular data:
 
 <p />
 
@@ -29,5 +37,12 @@ char = ? %x00-10FFFF ?;
 
 <p />
 
-> [!NOTE]
-> Fields with line terminator characters are written as escaped to ensure compatibility with more specific dialects, such as RFC 4180.
+Fields with line terminator characters are written as escaped to ensure compatibility with more specific dialects, such as RFC 4180.
+
+<p />
+
+### References
+
+<p />
+
+- [W3C - Model for Tabular Data and Metadata on the Web](https://w3.org/TR/2015/REC-tabular-data-model-20151217)

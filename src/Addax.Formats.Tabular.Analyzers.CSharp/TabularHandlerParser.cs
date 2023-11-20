@@ -112,34 +112,34 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                 var recordMembers = GetMappedRecordMembers(recordType, fieldOrderAttributeType, cancellationToken);
                 var fieldMappingsBuilder = ImmutableDictionary.CreateBuilder<int, TabularFieldMapping>();
 
-                foreach (var recordMemberInfo in recordMembers)
+                foreach (var (recordMember, fieldOrderAttribute) in recordMembers)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    if (recordMemberInfo.Member.IsStatic)
+                    if (recordMember.IsStatic)
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0002, recordMemberInfo.Member.Locations.FirstOrDefault()));
+                        context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0002, recordMember.Locations.FirstOrDefault()));
                         recordTypeHasErrors = true;
 
                         continue;
                     }
 
-                    var valueTypeInfo = GetValueTypeInfo(recordMemberInfo.Member);
+                    var valueTypeInfo = GetValueTypeInfo(recordMember);
 
                     if (valueTypeInfo.Type.IsStatic || (valueTypeInfo.Type.IsValueType && valueTypeInfo.Type.IsRefLikeType))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0002, recordMemberInfo.Member.Locations.FirstOrDefault()));
+                        context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0002, recordMember.Locations.FirstOrDefault()));
 
                         continue;
                     }
 
                     var converterTypeName = default(string);
 
-                    if (!TryGetAttribute(recordMemberInfo.Member, converterAttributeType, out var converterAttribute, cancellationToken))
+                    if (!TryGetAttribute(recordMember, converterAttributeType, out var converterAttribute, cancellationToken))
                     {
                         if (!valueTypeInfo.IsSupported)
                         {
-                            context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0003, recordMemberInfo.Member.Locations.FirstOrDefault()));
+                            context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0003, recordMember.Locations.FirstOrDefault()));
                             recordTypeHasErrors = true;
 
                             continue;
@@ -149,7 +149,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                     {
                         if (!TryGetConverterType(converterAttribute, out var converterType))
                         {
-                            context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0004, recordMemberInfo.Member.Locations.FirstOrDefault()));
+                            context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0004, recordMember.Locations.FirstOrDefault()));
                             recordTypeHasErrors = true;
 
                             continue;
@@ -157,7 +157,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
                         if (!TryGetConverterValueType(converterType, converterBaseType, out var converterValueType))
                         {
-                            context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0004, recordMemberInfo.Member.Locations.FirstOrDefault()));
+                            context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0004, recordMember.Locations.FirstOrDefault()));
                             recordTypeHasErrors = true;
 
                             continue;
@@ -165,7 +165,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
                         if (!SymbolEqualityComparer.Default.Equals(valueTypeInfo.Type, converterValueType))
                         {
-                            context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0004, recordMemberInfo.Member.Locations.FirstOrDefault()));
+                            context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0004, recordMember.Locations.FirstOrDefault()));
                             recordTypeHasErrors = true;
 
                             continue;
@@ -173,7 +173,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
                         if (!TryGetDefaultConstructor(converterType, out var converterConstructor))
                         {
-                            context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0004, recordMemberInfo.Member.Locations.FirstOrDefault()));
+                            context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0004, recordMember.Locations.FirstOrDefault()));
                             recordTypeHasErrors = true;
 
                             continue;
@@ -181,7 +181,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
                         if (!compilation.IsSymbolAccessibleWithin(converterConstructor, compilation.Assembly))
                         {
-                            context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0004, recordMemberInfo.Member.Locations.FirstOrDefault()));
+                            context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0004, recordMember.Locations.FirstOrDefault()));
                             recordTypeHasErrors = true;
 
                             continue;
@@ -190,7 +190,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                         converterTypeName = converterType.ToDisplayString(s_displayFormat);
                     }
 
-                    if (!TryGetFieldOrder(recordMemberInfo.FieldOrderAttribute, out var fieldOrder))
+                    if (!TryGetFieldOrder(fieldOrderAttribute, out var fieldOrder))
                     {
                         recordTypeHasErrors = true;
 
@@ -199,7 +199,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
                     if (fieldOrder < 0)
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0005, recordMemberInfo.Member.Locations.FirstOrDefault()));
+                        context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0005, recordMember.Locations.FirstOrDefault()));
                         recordTypeHasErrors = true;
 
                         continue;
@@ -207,13 +207,13 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
                     if (fieldMappingsBuilder.ContainsKey(fieldOrder))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0005, recordMemberInfo.Member.Locations.FirstOrDefault()));
+                        context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0005, recordMember.Locations.FirstOrDefault()));
                         recordTypeHasErrors = true;
 
                         continue;
                     }
 
-                    var mappedMemberAccess = GetTypeMemberAccess(recordMemberInfo.Member);
+                    var mappedMemberAccess = GetTypeMemberAccess(recordMember);
 
                     if (!recordTypeHasDefaultConstructor || !compilation.IsSymbolAccessibleWithin(recordTypeConstructor, compilation.Assembly))
                     {
@@ -227,7 +227,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
                     var fieldNameLiteral = default(SyntaxToken?);
 
-                    if (TryGetAttribute(recordMemberInfo.Member, fieldNameAttributeType, out var fieldNameAttribute, cancellationToken))
+                    if (TryGetAttribute(recordMember, fieldNameAttributeType, out var fieldNameAttribute, cancellationToken))
                     {
                         if (TryGetFieldName(fieldNameAttribute, out var fieldName))
                         {
@@ -236,7 +236,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                     }
 
                     var fieldMapping = new TabularFieldMapping(
-                        recordMemberInfo.Member.Name,
+                        recordMember.Name,
                         mappedMemberAccess,
                         valueTypeInfo.AsNullableT,
                         valueTypeInfo.Name,

@@ -1,3 +1,7 @@
+---
+uid: urn:topics:features
+---
+
 ## Addax - Features
 
 <p />
@@ -28,7 +32,7 @@ The framework has built-in support for working with tabular fields as values of 
 |`System.Int128`|Format specifier: `g`||
 |`System.SByte`|Format specifier: `g`||
 |`System.Single`|Format specifier: `g`||
-|`System.String`|Up to 2,147,483,591 UTF-16 code units||
+|`System.String`|Up to `2,147,483,591` UTF-16 code units||
 |`System.TimeOnly`|`HH':'mm':'ss.FFFFFFF`|RFC 3339 / ISO 8601-1:2019|
 |`System.TimeSpan`|`[-]'P'd'DT'h'H'm'M's'.'FFFFFFF'S'`|RFC 3339 / ISO 8601-1:2019|
 |`System.UInt16`|Format specifier: `g`||
@@ -63,19 +67,35 @@ The field and record readers can advance through tabular data without reading it
 
 <p />
 
+# [C#](#tab/cs)
+
 ```cs
-public sealed class TabularReader
+public class TabularReader
 {
     public bool TrySkipField();
     public ValueTask<bool> TrySkipFieldAsync(CancellationToken cancellationToken);
 }
 
-public sealed class TabularReader<T>
+public class TabularReader<T>
 {
     public bool TrySkipRecord();
     public ValueTask<bool> TrySkipRecordAsync(CancellationToken cancellationToken);
 }
 ```
+
+# [F#](#tab/fs)
+
+```fs
+type TabularReader =
+    member TrySkipField: unit -> bool
+    member TrySkipFieldAsync: CancellationToken -> ValueTask<bool>
+
+type TabularReader<'T> =
+    member TrySkipRecord: unit -> bool
+    member TrySkipRecordAsync: CancellationToken -> ValueTask<bool>
+```
+
+---
 
 <p />
 
@@ -87,12 +107,27 @@ The field reader provides access to the last read field in a way that allows rea
 
 <p />
 
+# [C#](#tab/cs)
+
 ```cs
-public sealed class TabularReader
+public class TabularReader
 {
-    public ReadOnlyMemory<char> CurrentField { get; }
+    public ReadOnlyMemory<char> CurrentField
+    {
+        get;
+    }
 }
 ```
+
+# [F#](#tab/fs)
+
+```fs
+type TabularReader =
+    member CurrentField: ReadOnlyMemory<char>
+        with get()
+```
+
+---
 
 <p />
 
@@ -100,6 +135,29 @@ The default string factory supports a mode with a thread-safe pool based on hash
 
 <p />
 
+# [C#](#tab/cs)
+
 ```cs
-var options = new TabularOptions { StringFactory = new(maxLength: 128) };
+var options = new TabularOptions
+{
+    StringFactory = new(maxLength: 128)
+};
 ```
+
+# [F#](#tab/fs)
+
+```fs
+let options = new TabularOptions (
+    StringFactory = new TabularStringFactory(maxLength = 128)
+)
+```
+
+---
+
+<p />
+
+### References
+
+<p />
+
+- [W3C - Model for Tabular Data and Metadata on the Web](https://w3.org/TR/2015/REC-tabular-data-model-20151217)

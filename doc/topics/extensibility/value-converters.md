@@ -1,3 +1,7 @@
+---
+uid: urn:topics:extensibility:value-converters
+---
+
 ## Addax - Value Converters
 
 <p />
@@ -6,12 +10,14 @@
 
 <p />
 
-A complete example of a custom value converter that handles values of the `System.DateTime` type represented as Unix timestamps:
+A complete example of a custom value converter that handles `System.DateTime` values represented as Unix timestamps:
 
 <p />
 
+# [C#](#tab/cs)
+
 ```cs
-internal sealed class UnixDateTimeConverter : TabularConverter<DateTime>
+internal class UnixDateTimeConverter : TabularConverter<DateTime>
 {
     public override bool TryFormat(DateTime value, Span<char> destination, IFormatProvider? provider, out int charsWritten)
     {
@@ -38,9 +44,33 @@ internal sealed class UnixDateTimeConverter : TabularConverter<DateTime>
 }
 ```
 
+# [F#](#tab/fs)
+
+```fs
+type internal UnixDateTimeConverter() =
+    inherit TabularConverter<DateTime>()
+
+        override this.TryFormat(value, destination, provider, charsWritten) =
+            let seconds = int64 (value.ToUniversalTime () - DateTime.UnixEpoch).TotalSeconds
+            
+            seconds.TryFormat(destination, &charsWritten, "g", provider)
+
+        override this.TryParse(source, provider, value) =
+            let mutable seconds = Unchecked.defaultof<int64>
+            
+            if Int64.TryParse(source, NumberStyles.Integer, provider, &seconds) then
+                value <- DateTime.UnixEpoch.AddSeconds (float seconds)
+                true
+            else
+                value <- Unchecked.defaultof<DateTime>
+                false
+```
+
+---
+
 <p />
 
-# [High-level API](#tab/high-level-api)
+# [High-level API (C#)](#tab/api-hl/cs)
 
 ```cs
 var dialect = new TabularDialect("\r\n", ',', '\"');
@@ -91,7 +121,7 @@ internal struct Book
 }
 ```
 
-# [Low-level API](#tab/low-level-api)
+# [Low-level API (C#)](#tab/api-ll/cs)
 
 ```cs
 using Addax.Formats.Tabular;
@@ -116,22 +146,94 @@ using (var reader = new TabularReader(File.OpenRead("books.csv"), dialect))
     while (reader.TryPickRecord())
     {
         reader.TryReadField();
-        reader.TryGetString(out var author);
+        reader.TryGetString(out var field0);
         reader.TryReadField();
-        reader.TryGetString(out var title);
+        reader.TryGetString(out var field1);
         reader.TryReadField();
-        reader.TryGet(converter, out var published);
+        reader.TryGet(converter, out var field2);
 
-        Console.WriteLine($"{author} '{title}' ({published})");
+        Console.WriteLine($"{field0} '{field1}' ({field2})");
     }
 }
+```
+
+<p />
+
+Consider adding extension methods for using a custom value converter with the low-level API:
+
+<p />
+
+```cs
+internal static class TabularUnixDateTimeExtensions
+{
+    private static readonly UnixDateTimeConverter s_converter = new();
+
+    public static bool TryGetUnixDateTime(this TabularReader reader, out DateTime value)
+    {
+        return reader.TryGet(s_converter, out value);
+    }
+
+    public static DateTime GetUnixDateTime(this TabularReader reader)
+    {
+        return reader.Get(s_converter);
+    }
+
+    public static void WriteUnixDateTime(this TabularWriter writer, DateTime value)
+    {
+        writer.Write(value, s_converter);
+    }
+
+    public static ValueTask WriteUnixDateTimeAsync(this TabularWriter writer, DateTime value, CancellationToken cancellationToken)
+    {
+        return writer.WriteAsync(value, s_converter, cancellationToken);
+    }
+}
+```
+
+# [High-level API (F#)](#tab/api-hl/fs)
+
+> [!NOTE]
+> Using a custom value converter in the high-level API with F# requires a custom record handler.
+
+# [Low-level API (F#)](#tab/api-ll/fs)
+
+```fs
+let private converter = new UnixDateTimeConverter()
+let dialect = new TabularDialect("\r\n", ',', '\"')
+
+using (new TabularWriter(File.Create "books.csv", dialect)) (fun writer ->
+    writer.WriteString "Lewis Carroll"
+    writer.WriteString "Alice's Adventures in Wonderland"
+    writer.Write (new DateTime(1865, 11, 09, 0, 0, 0, DateTimeKind.Utc), converter)
+    writer.FinishRecord ()
+    writer.WriteString "H. G. Wells"
+    writer.WriteString "The Time Machine"
+    writer.Write (new DateTime(1894, 03, 17, 0, 0, 0, DateTimeKind.Utc), converter)
+    writer.FinishRecord ()
+)
+
+using (new TabularReader(File.OpenRead "books.csv", dialect)) (fun reader ->
+    while reader.TryPickRecord () do
+        let mutable field0 = Unchecked.defaultof<string>
+        let mutable field1 = Unchecked.defaultof<string>
+        let mutable field2 = Unchecked.defaultof<DateTime>
+
+        reader.TryReadField () |> ignore
+        reader.TryGetString &field0 |> ignore
+        reader.TryReadField () |> ignore
+        reader.TryGetString &field1 |> ignore
+        reader.TryReadField () |> ignore
+        reader.TryGet (converter, &field2) |> ignore
+
+        printfn $"{field0} '{field1}' ({field2})"
+)
 ```
 
 ---
 
 <p />
 
-### Standard date and time converters 
+### Standard converters
 
 <p />
 

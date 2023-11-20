@@ -55,6 +55,9 @@ public abstract class TabularHandler<T>
     /// <value>An collection of strings or <see langword="null" />.</value>
     public virtual IEnumerable<string?>? Header
     {
-        get;
+        get
+        {
+            return null;
+        }
     }
 }

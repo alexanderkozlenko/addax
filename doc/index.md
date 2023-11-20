@@ -33,7 +33,7 @@ How to process tabular data with a known structure:
 
 <p />
 
-# [High-level API](#tab/high-level-api)
+# [High-level API (C#)](#tab/api-hl-cs)
 
 ```cs
 var dialect = new TabularDialect("\r\n", ',', '\"');
@@ -83,7 +83,7 @@ internal struct Book
 }
 ```
 
-# [Low-level API](#tab/low-level-api)
+# [Low-level API (C#)](#tab/api-ll-cs)
 
 ```cs
 var dialect = new TabularDialect("\r\n", ',', '\"');
@@ -105,15 +105,89 @@ using (var reader = new TabularReader(File.OpenRead("books.csv"), dialect))
     while (reader.TryPickRecord())
     {
         reader.TryReadField();
-        reader.TryGetString(out var author);
+        reader.TryGetString(out var field0);
         reader.TryReadField();
-        reader.TryGetString(out var title);
+        reader.TryGetString(out var field1);
         reader.TryReadField();
-        reader.TryGetDateOnly(out var published);
+        reader.TryGetDateOnly(out var field2);
 
-        Console.WriteLine($"{author} '{title}' ({published})");
+        Console.WriteLine($"{field0} '{field1}' ({field2})");
     }
 }
+```
+
+# [High-level API (F#)](#tab/api-hl-fs)
+
+```fs
+type internal Book =
+    struct
+        val mutable Author: string
+        val mutable Title: string
+        val mutable Published: Nullable<DateOnly>
+    end
+
+let dialect = new TabularDialect("\r\n", ',', '\"')
+
+using (new TabularWriter<Book>(File.Create "books.csv", dialect)) (fun writer ->
+    let book1 = new Book (
+        Author = "Lewis Carroll",
+        Title = "Alice's Adventures in Wonderland",
+        Published = new DateOnly(1865, 11, 09)
+    )
+
+    writer.WriteRecord &book1
+
+    let book2 = new Book (
+        Author = "H. G. Wells",
+        Title = "The Time Machine",
+        Published = new DateOnly(1894, 03, 17)
+    )
+
+    writer.WriteRecord &book2
+)
+
+using (new TabularReader<Book>(File.OpenRead "books.csv", dialect)) (fun reader ->
+    while reader.TryReadRecord () do
+        let book = reader.CurrentRecord
+
+        printfn $"{book.Author} '{book.Title}' ({book.Published})"
+)
+```
+
+> [!NOTE]
+> Using the high-level API with F# in this example requires a [custom](xref:urn:topics:extensibility:record-handlers) record handler.
+
+# [Low-level API (F#)](#tab/api-ll-fs)
+
+```fs
+let dialect = new TabularDialect("\r\n", ',', '\"')
+
+using (new TabularWriter(File.Create "books.csv", dialect)) (fun writer ->
+    writer.WriteString "Lewis Carroll"
+    writer.WriteString "Alice's Adventures in Wonderland"
+    writer.WriteDateOnly (new DateOnly(1865, 11, 09))
+    writer.FinishRecord ()
+    writer.WriteString "H. G. Wells"
+    writer.WriteString "The Time Machine"
+    writer.WriteDateOnly (new DateOnly(1894, 03, 17))
+    writer.FinishRecord ()
+)
+
+using (new TabularReader(File.OpenRead "books.csv", dialect)) (fun reader ->
+    while reader.TryPickRecord () do
+        let mutable field0 = Unchecked.defaultof<string>
+        let mutable field1 = Unchecked.defaultof<string>
+        let mutable field2 = Unchecked.defaultof<DateOnly>
+
+        reader.TryReadField () |> ignore
+        reader.TryGetString &field0 |> ignore
+        reader.TryReadField () |> ignore
+        reader.TryGetString &field1 |> ignore
+        reader.TryReadField () |> ignore
+        reader.TryGetDateOnly &field2 |> ignore
+
+        printfn $"{field0} '{field1}' ({field2})"
+)
 ```
 
 ---
@@ -124,7 +198,7 @@ How to process tabular data with a known structure that has a header:
 
 <p />
 
-# [High-level API](#tab/high-level-api)
+# [High-level API (C#)](#tab/api-hl-cs)
 
 ```cs
 var dialect = new TabularDialect("\r\n", ',', '\"');
@@ -177,7 +251,7 @@ internal struct Book
 }
 ```
 
-# [Low-level API](#tab/low-level-api)
+# [Low-level API (C#)](#tab/api-ll-cs)
 
 ```cs
 var dialect = new TabularDialect("\r\n", ',', '\"');
@@ -200,36 +274,114 @@ using (var writer = new TabularWriter(File.Create("books.csv"), dialect))
 
 using (var reader = new TabularReader(File.OpenRead("books.csv"), dialect))
 {
-    if (reader.TryPickRecord())
+    while (reader.TryReadField())
     {
-        while (reader.TryReadField())
-        {
-        }
     }
 
     while (reader.TryPickRecord())
     {
         reader.TryReadField();
-        reader.TryGetString(out var author);
+        reader.TryGetString(out var field0);
         reader.TryReadField();
-        reader.TryGetString(out var title);
+        reader.TryGetString(out var field1);
         reader.TryReadField();
-        reader.TryGetDateOnly(out var published);
+        reader.TryGetDateOnly(out var field2);
 
-        Console.WriteLine($"{author} '{title}' ({published})");
+        Console.WriteLine($"{field0} '{field1}' ({field2})");
     }
 }
+```
+
+# [High-level API (F#)](#tab/api-hl-fs)
+
+```fs
+type internal Book =
+    struct
+        val mutable Author: string
+        val mutable Title: string
+        val mutable Published: Nullable<DateOnly>
+    end
+
+let dialect = new TabularDialect("\r\n", ',', '\"')
+
+using (new TabularWriter<Book>(File.Create "books.csv", dialect)) (fun writer ->
+    let book1 = new Book (
+        Author = "Lewis Carroll",
+        Title = "Alice's Adventures in Wonderland",
+        Published = new DateOnly(1865, 11, 09)
+    )
+
+    writer.WriteRecord &book1
+
+    let book2 = new Book (
+        Author = "H. G. Wells",
+        Title = "The Time Machine",
+        Published = new DateOnly(1894, 03, 17)
+    )
+
+    writer.WriteRecord &book2
+)
+
+using (new TabularReader<Book>(File.OpenRead "books.csv", dialect)) (fun reader ->
+    while reader.TryReadRecord () do
+        let book = reader.CurrentRecord
+
+        printfn $"{book.Author} '{book.Title}' ({book.Published})"
+)
+```
+
+> [!NOTE]
+> Using the high-level API with F# in this example requires a [custom](xref:urn:topics:extensibility:record-handlers) record handler.
+
+# [Low-level API (F#)](#tab/api-ll-fs)
+
+```fs
+let dialect = new TabularDialect("\r\n", ',', '\"')
+
+using (new TabularWriter(File.Create "books.csv", dialect)) (fun writer ->
+    writer.WriteString "author"
+    writer.WriteString "title"
+    writer.WriteString "published"
+    writer.FinishRecord ()
+    writer.WriteString "Lewis Carroll"
+    writer.WriteString "Alice's Adventures in Wonderland"
+    writer.WriteDateOnly (new DateOnly(1865, 11, 09))
+    writer.FinishRecord ()
+    writer.WriteString "H. G. Wells"
+    writer.WriteString "The Time Machine"
+    writer.WriteDateOnly (new DateOnly(1894, 03, 17))
+    writer.FinishRecord ()
+)
+
+using (new TabularReader(File.OpenRead "books.csv", dialect)) (fun reader ->
+    while reader.TryReadField () do
+        ()
+
+    while reader.TryPickRecord () do
+        let mutable field0 = Unchecked.defaultof<string>
+        let mutable field1 = Unchecked.defaultof<string>
+        let mutable field2 = Unchecked.defaultof<DateOnly>
+
+        reader.TryReadField () |> ignore
+        reader.TryGetString &field0 |> ignore
+        reader.TryReadField () |> ignore
+        reader.TryGetString &field1 |> ignore
+        reader.TryReadField () |> ignore
+        reader.TryGetDateOnly &field2 |> ignore
+
+        printfn $"{field0} '{field1}' ({field2})"
+)
 ```
 
 ---
 
 <p />
 
-How to use minimal API for a limited amount of records:
+How to process a limited amount of records with the minimal API:
 
 <p />
 
-# [High-level API](#tab/high-level-api)
+# [High-level API (C#)](#tab/api-hl-cs)
 
 ```cs
 var dialect = new TabularDialect("\r\n", ',', '\"');
@@ -273,9 +425,51 @@ internal struct Book
 }
 ```
 
-# [Low-level API](#tab/low-level-api)
+# [Low-level API (C#)](#tab/api-ll-cs)
 
-N/A
+> [!NOTE]
+> The minimal API is an extension for the high-level API.
+
+# [High-level API (F#)](#tab/api-hl-fs)
+
+```fs
+type internal Book =
+    struct
+        val mutable Author: string
+        val mutable Title: string
+        val mutable Published: Nullable<DateOnly>
+    end
+
+let dialect = new TabularDialect("\r\n", ',', '\"')
+
+let mutable private books = [|
+    new Book (
+        Author = "Lewis Carroll",
+        Title = "Alice's Adventures in Wonderland",
+        Published = new DateOnly(1865, 11, 09)
+    )
+    new Book (
+        Author = "H. G. Wells",
+        Title = "The Time Machine",
+        Published = new DateOnly(1894, 03, 17)
+    )
+|]
+
+TabularData.WriteRecords(File.Create "books.csv", dialect, books)
+
+books <- TabularData.ReadRecords<Book>(File.OpenRead "books.csv", dialect)
+
+for book in books do
+    printfn $"{book.Author} '{book.Title}' ({book.Published})"
+```
+
+> [!NOTE]
+> Using the high-level API with F# in this example requires a [custom](xref:urn:topics:extensibility:record-handlers) record handler.
+
+# [Low-level API (F#)](#tab/api-ll-fs)
+
+> [!NOTE]
+> The minimal API is an extension for the high-level API.
 
 ---
 
@@ -285,7 +479,7 @@ How to display the first ten records from a file with an unknown structure:
 
 <p />
 
-# [High-level API](#tab/high-level-api)
+# [High-level API (C#)](#tab/api-hl-cs)
 
 ```cs
 var dialect = new TabularDialect("\r\n", ',', '\"');
@@ -299,24 +493,47 @@ using (var reader = new TabularReader<string?[]>(File.OpenRead("data.csv"), dial
 }
 ```
 
-# [Low-level API](#tab/low-level-api)
+# [Low-level API (C#)](#tab/api-ll-cs)
 
 ```cs
 var dialect = new TabularDialect("\r\n", ',', '\"');
 
-using (var reader = new TabularReader(File.OpenRead("data.csv"), dialect))
+using (var reader = new TabularReader(File.OpenRead("books.csv"), dialect))
 {
     while (reader.TryPickRecord() && (reader.RecordsRead <= 10))
     {
         while (reader.TryReadField())
         {
-            Console.Write(reader.GetString());
-            Console.Write('|');
+            Console.Write($"{reader.GetString()}|");
         }
 
         Console.WriteLine();
     }
 }
+```
+
+# [High-level API (F#)](#tab/api-hl-fs)
+
+```fs
+let dialect = new TabularDialect("\r\n", ',', '\"')
+
+using (new TabularReader<array<string>>(File.OpenRead "books.csv", dialect)) (fun reader ->
+    while reader.TryReadRecord () && (reader.RecordsRead <= 10) do
+        printfn "%s" (String.concat "|" reader.CurrentRecord)
+)
+```
+
+# [Low-level API (F#)](#tab/api-ll-fs)
+
+```fs
+let dialect = new TabularDialect("\r\n", ',', '\"')
+
+using (new TabularReader(File.OpenRead "books.csv", dialect)) (fun reader ->
+    while reader.TryPickRecord () && (reader.RecordsRead <= 10) do
+        while reader.TryReadField () do
+            printf "%s|" (reader.GetString ())
+        printfn ""
+)
 ```
 
 ---

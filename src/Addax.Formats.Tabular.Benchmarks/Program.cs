@@ -2,6 +2,7 @@
 using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Loggers;
@@ -12,12 +13,16 @@ using Perfolizer.Horology;
 
 var config = ManualConfig
     .CreateEmpty()
-    .AddJob(Job.Default.WithToolchain(InProcessEmitToolchain.Instance))
+    .AddJob(Job.Default
+        .WithToolchain(InProcessEmitToolchain.Instance)
+        .WithStrategy(RunStrategy.Throughput))
     .AddDiagnoser(MemoryDiagnoser.Default)
     .AddColumnProvider(DefaultColumnProviders.Instance)
     .AddColumn(StatisticColumn.OperationsPerSecond, StatisticColumn.Median, StatisticColumn.Min, StatisticColumn.Max)
-    .WithSummaryStyle(SummaryStyle.Default.WithSizeUnit(SizeUnit.B).WithTimeUnit(TimeUnit.Microsecond))
+    .WithSummaryStyle(SummaryStyle.Default
+        .WithSizeUnit(SizeUnit.B)
+        .WithTimeUnit(TimeUnit.Microsecond))
     .AddLogger(ConsoleLogger.Default)
-    .AddExporter(MarkdownExporter.Console);
+    .AddExporter(MarkdownExporter.GitHub);
 
 BenchmarkSwitcher.FromAssembly(Assembly.GetEntryAssembly()!).Run(args, config);
