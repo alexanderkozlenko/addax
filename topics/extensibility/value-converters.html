@@ -83,15 +83,26 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="">
+        <article data-uid="urn:topics:extensibility:value-converters">
 <h2 id="addax---value-converters">Addax - Value Converters</h2>
 
 <p></p>
 <h3 id="a-custom-converter">A custom converter</h3>
 <p></p>
-<p>A complete example of a custom value converter that handles values of the <code>System.DateTime</code> type represented as Unix timestamps:</p>
+<p>A complete example of a custom value converter that handles <code>System.DateTime</code> values represented as Unix timestamps:</p>
 <p></p>
-<pre><code class="lang-cs">internal sealed class UnixDateTimeConverter : TabularConverter&lt;DateTime&gt;
+<div class="tabGroup" id="tabgroup_1">
+<ul role="tablist">
+<li role="presentation">
+<a href="#tabpanel_1_cs" role="tab" aria-controls="tabpanel_1_cs" data-tab="cs" tabindex="0" aria-selected="true">C#</a>
+</li>
+<li role="presentation">
+<a href="#tabpanel_1_fs" role="tab" aria-controls="tabpanel_1_fs" data-tab="fs" tabindex="-1">F#</a>
+</li>
+</ul>
+<section id="tabpanel_1_cs" role="tabpanel" data-tab="cs">
+
+<pre><code class="lang-cs">internal class UnixDateTimeConverter : TabularConverter&lt;DateTime&gt;
 {
     public override bool TryFormat(DateTime value, Span&lt;char&gt; destination, IFormatProvider? provider, out int charsWritten)
     {
@@ -117,17 +128,46 @@
     }
 }
 </code></pre>
+</section>
+<section id="tabpanel_1_fs" role="tabpanel" data-tab="fs" aria-hidden="true" hidden="hidden">
+
+<pre><code class="lang-fs">type internal UnixDateTimeConverter() =
+    inherit TabularConverter&lt;DateTime&gt;()
+
+        override this.TryFormat(value, destination, provider, charsWritten) =
+            let seconds = int64 (value.ToUniversalTime () - DateTime.UnixEpoch).TotalSeconds
+            
+            seconds.TryFormat(destination, &amp;charsWritten, &quot;g&quot;, provider)
+
+        override this.TryParse(source, provider, value) =
+            let mutable seconds = Unchecked.defaultof&lt;int64&gt;
+            
+            if Int64.TryParse(source, NumberStyles.Integer, provider, &amp;seconds) then
+                value &lt;- DateTime.UnixEpoch.AddSeconds (float seconds)
+                true
+            else
+                value &lt;- Unchecked.defaultof&lt;DateTime&gt;
+                false
+</code></pre>
+</section>
+</div>
 <p></p>
-<div class="tabGroup" id="tabgroup_1">
+<div class="tabGroup" id="tabgroup_2">
 <ul role="tablist">
 <li role="presentation">
-<a href="#tabpanel_1_high-level-api" role="tab" aria-controls="tabpanel_1_high-level-api" data-tab="high-level-api" tabindex="0" aria-selected="true">High-level API</a>
+<a href="#tabpanel_2_api-hl_cs" role="tab" aria-controls="tabpanel_2_api-hl_cs" data-tab="api-hl" data-condition="cs" tabindex="0" aria-selected="true">High-level API (C#)</a>
 </li>
 <li role="presentation">
-<a href="#tabpanel_1_low-level-api" role="tab" aria-controls="tabpanel_1_low-level-api" data-tab="low-level-api" tabindex="-1">Low-level API</a>
+<a href="#tabpanel_2_api-ll_cs" role="tab" aria-controls="tabpanel_2_api-ll_cs" data-tab="api-ll" data-condition="cs" tabindex="-1">Low-level API (C#)</a>
+</li>
+<li role="presentation" aria-hidden="true" hidden="hidden">
+<a href="#tabpanel_2_api-hl_fs" role="tab" aria-controls="tabpanel_2_api-hl_fs" data-tab="api-hl" data-condition="fs" tabindex="-1">High-level API (F#)</a>
+</li>
+<li role="presentation" aria-hidden="true" hidden="hidden">
+<a href="#tabpanel_2_api-ll_fs" role="tab" aria-controls="tabpanel_2_api-ll_fs" data-tab="api-ll" data-condition="fs" tabindex="-1">Low-level API (F#)</a>
 </li>
 </ul>
-<section id="tabpanel_1_high-level-api" role="tabpanel" data-tab="high-level-api">
+<section id="tabpanel_2_api-hl_cs" role="tabpanel" data-tab="api-hl" data-condition="cs">
 
 <pre><code class="lang-cs">var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '\&quot;');
 
@@ -177,7 +217,7 @@ internal struct Book
 }
 </code></pre>
 </section>
-<section id="tabpanel_1_low-level-api" role="tabpanel" data-tab="low-level-api" aria-hidden="true" hidden="hidden">
+<section id="tabpanel_2_api-ll_cs" role="tabpanel" data-tab="api-ll" data-condition="cs" aria-hidden="true" hidden="hidden">
 
 <pre><code class="lang-cs">using Addax.Formats.Tabular;
 
@@ -201,28 +241,96 @@ using (var reader = new TabularReader(File.OpenRead(&quot;books.csv&quot;), dial
     while (reader.TryPickRecord())
     {
         reader.TryReadField();
-        reader.TryGetString(out var author);
+        reader.TryGetString(out var field0);
         reader.TryReadField();
-        reader.TryGetString(out var title);
+        reader.TryGetString(out var field1);
         reader.TryReadField();
-        reader.TryGet(converter, out var published);
+        reader.TryGet(converter, out var field2);
 
-        Console.WriteLine($&quot;{author} '{title}' ({published})&quot;);
+        Console.WriteLine($&quot;{field0} '{field1}' ({field2})&quot;);
+    }
+}
+</code></pre>
+<p></p>
+<p>Consider adding extension methods for using a custom value converter with the low-level API:</p>
+<p></p>
+<pre><code class="lang-cs">internal static class TabularUnixDateTimeExtensions
+{
+    private static readonly UnixDateTimeConverter s_converter = new();
+
+    public static bool TryGetUnixDateTime(this TabularReader reader, out DateTime value)
+    {
+        return reader.TryGet(s_converter, out value);
+    }
+
+    public static DateTime GetUnixDateTime(this TabularReader reader)
+    {
+        return reader.Get(s_converter);
+    }
+
+    public static void WriteUnixDateTime(this TabularWriter writer, DateTime value)
+    {
+        writer.Write(value, s_converter);
+    }
+
+    public static ValueTask WriteUnixDateTimeAsync(this TabularWriter writer, DateTime value, CancellationToken cancellationToken)
+    {
+        return writer.WriteAsync(value, s_converter, cancellationToken);
     }
 }
 </code></pre>
 </section>
+<section id="tabpanel_2_api-hl_fs" role="tabpanel" data-tab="api-hl" data-condition="fs" aria-hidden="true" hidden="hidden">
+
+<div class="NOTE">
+<h5>Note</h5>
+<p>Using a custom value converter in the high-level API with F# requires a custom record handler.</p>
+</div>
+</section>
+<section id="tabpanel_2_api-ll_fs" role="tabpanel" data-tab="api-ll" data-condition="fs" aria-hidden="true" hidden="hidden">
+
+<pre><code class="lang-fs">let private converter = new UnixDateTimeConverter()
+let dialect = new TabularDialect(&quot;\r\n&quot;, ',', '\&quot;')
+
+using (new TabularWriter(File.Create &quot;books.csv&quot;, dialect)) (fun writer -&gt;
+    writer.WriteString &quot;Lewis Carroll&quot;
+    writer.WriteString &quot;Alice's Adventures in Wonderland&quot;
+    writer.Write (new DateTime(1865, 11, 09, 0, 0, 0, DateTimeKind.Utc), converter)
+    writer.FinishRecord ()
+    writer.WriteString &quot;H. G. Wells&quot;
+    writer.WriteString &quot;The Time Machine&quot;
+    writer.Write (new DateTime(1894, 03, 17, 0, 0, 0, DateTimeKind.Utc), converter)
+    writer.FinishRecord ()
+)
+
+using (new TabularReader(File.OpenRead &quot;books.csv&quot;, dialect)) (fun reader -&gt;
+    while reader.TryPickRecord () do
+        let mutable field0 = Unchecked.defaultof&lt;string&gt;
+        let mutable field1 = Unchecked.defaultof&lt;string&gt;
+        let mutable field2 = Unchecked.defaultof&lt;DateTime&gt;
+
+        reader.TryReadField () |&gt; ignore
+        reader.TryGetString &amp;field0 |&gt; ignore
+        reader.TryReadField () |&gt; ignore
+        reader.TryGetString &amp;field1 |&gt; ignore
+        reader.TryReadField () |&gt; ignore
+        reader.TryGet (converter, &amp;field2) |&gt; ignore
+
+        printfn $&quot;{field0} '{field1}' ({field2})&quot;
+)
+</code></pre>
+</section>
 </div>
 <p></p>
-<h3 id="standard-date-and-time-converters">Standard date and time converters</h3>
+<h3 id="standard-converters">Standard converters</h3>
 <p></p>
 <p>The following converters provide an option to customize the standard behavior by accepting a format specifier in the constructor:</p>
 <p></p>
 <ul>
-<li><code>Addax.Formats.Tabular.Converters.TabularDateOnlyConverter</code></li>
-<li><code>Addax.Formats.Tabular.Converters.TabularDateTimeConverter</code></li>
-<li><code>Addax.Formats.Tabular.Converters.TabularDateTimeOffsetConverter</code></li>
-<li><code>Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter</code></li>
+<li><a class="xref" href="../../api/Addax.Formats.Tabular.Converters.TabularDateOnlyConverter.html">TabularDateOnlyConverter</a></li>
+<li><a class="xref" href="../../api/Addax.Formats.Tabular.Converters.TabularDateTimeConverter.html">TabularDateTimeConverter</a></li>
+<li><a class="xref" href="../../api/Addax.Formats.Tabular.Converters.TabularDateTimeOffsetConverter.html">TabularDateTimeOffsetConverter</a></li>
+<li><a class="xref" href="../../api/Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter.html">TabularTimeOnlyConverter</a></li>
 </ul>
 
 </article>

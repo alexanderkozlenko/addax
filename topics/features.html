@@ -83,7 +83,7 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="">
+        <article data-uid="urn:topics:features">
 <h2 id="addax---features">Addax - Features</h2>
 
 <p></p>
@@ -182,7 +182,7 @@
 </tr>
 <tr>
 <td><code>System.String</code></td>
-<td>Up to 2,147,483,591 UTF-16 code units</td>
+<td>Up to <code>2,147,483,591</code> UTF-16 code units</td>
 <td></td>
 </tr>
 <tr>
@@ -233,15 +233,15 @@
 </tbody>
 </table>
 <p></p>
-<p>Any generated record handler also implicitly supports type members of the <code>System.Nullable&lt;T&gt;</code> type, where <code>T</code> can be any supported value type.</p>
+<p>Any generated record handler also supports type members of the <code>System.Nullable&lt;T&gt;</code> type with any supported value type as the underlying type.</p>
 <p></p>
 <div class="NOTE">
 <h5>Note</h5>
 <p>To use a type member of the <code>System.Byte[]</code> type with a generated record handler, one of the available converters must be specified explicitly:</p>
 <p></p>
 <ul>
-<li><code>Addax.Formats.Tabular.Converters.TabularBase16BinaryConverter</code></li>
-<li><code>Addax.Formats.Tabular.Converters.TabularBase64BinaryConverter</code></li>
+<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase16BinaryConverter.html">TabularBase16BinaryConverter</a></li>
+<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase64BinaryConverter.html">TabularBase64BinaryConverter</a></li>
 </ul>
 </div>
 <p></p>
@@ -249,33 +249,109 @@
 <p></p>
 <p>The field and record readers can advance through tabular data without reading it completely, potentially decreasing overall processing time:</p>
 <p></p>
-<pre><code class="lang-cs">public sealed class TabularReader
+<div class="tabGroup" id="tabgroup_1">
+<ul role="tablist">
+<li role="presentation">
+<a href="#tabpanel_1_cs" role="tab" aria-controls="tabpanel_1_cs" data-tab="cs" tabindex="0" aria-selected="true">C#</a>
+</li>
+<li role="presentation">
+<a href="#tabpanel_1_fs" role="tab" aria-controls="tabpanel_1_fs" data-tab="fs" tabindex="-1">F#</a>
+</li>
+</ul>
+<section id="tabpanel_1_cs" role="tabpanel" data-tab="cs">
+
+<pre><code class="lang-cs">public class TabularReader
 {
     public bool TrySkipField();
     public ValueTask&lt;bool&gt; TrySkipFieldAsync(CancellationToken cancellationToken);
 }
 
-public sealed class TabularReader&lt;T&gt;
+public class TabularReader&lt;T&gt;
 {
     public bool TrySkipRecord();
     public ValueTask&lt;bool&gt; TrySkipRecordAsync(CancellationToken cancellationToken);
 }
 </code></pre>
+</section>
+<section id="tabpanel_1_fs" role="tabpanel" data-tab="fs" aria-hidden="true" hidden="hidden">
+
+<pre><code class="lang-fs">type TabularReader =
+    member TrySkipField: unit -&gt; bool
+    member TrySkipFieldAsync: CancellationToken -&gt; ValueTask&lt;bool&gt;
+
+type TabularReader&lt;'T&gt; =
+    member TrySkipRecord: unit -&gt; bool
+    member TrySkipRecordAsync: CancellationToken -&gt; ValueTask&lt;bool&gt;
+</code></pre>
+</section>
+</div>
 <p></p>
 <h3 id="memory-usage">Memory Usage</h3>
 <p></p>
 <p>The field reader provides access to the last read field in a way that allows reading the field without additional string allocations:</p>
 <p></p>
-<pre><code class="lang-cs">public sealed class TabularReader
+<div class="tabGroup" id="tabgroup_2">
+<ul role="tablist">
+<li role="presentation">
+<a href="#tabpanel_2_cs" role="tab" aria-controls="tabpanel_2_cs" data-tab="cs" tabindex="0" aria-selected="true">C#</a>
+</li>
+<li role="presentation">
+<a href="#tabpanel_2_fs" role="tab" aria-controls="tabpanel_2_fs" data-tab="fs" tabindex="-1">F#</a>
+</li>
+</ul>
+<section id="tabpanel_2_cs" role="tabpanel" data-tab="cs">
+
+<pre><code class="lang-cs">public class TabularReader
 {
-    public ReadOnlyMemory&lt;char&gt; CurrentField { get; }
+    public ReadOnlyMemory&lt;char&gt; CurrentField
+    {
+        get;
+    }
 }
 </code></pre>
+</section>
+<section id="tabpanel_2_fs" role="tabpanel" data-tab="fs" aria-hidden="true" hidden="hidden">
+
+<pre><code class="lang-fs">type TabularReader =
+    member CurrentField: ReadOnlyMemory&lt;char&gt;
+        with get()
+</code></pre>
+</section>
+</div>
 <p></p>
 <p>The default string factory supports a mode with a thread-safe pool based on hash codes, reducing allocations when reading fields as strings:</p>
 <p></p>
-<pre><code class="lang-cs">var options = new TabularOptions { StringFactory = new(maxLength: 128) };
+<div class="tabGroup" id="tabgroup_3">
+<ul role="tablist">
+<li role="presentation">
+<a href="#tabpanel_3_cs" role="tab" aria-controls="tabpanel_3_cs" data-tab="cs" tabindex="0" aria-selected="true">C#</a>
+</li>
+<li role="presentation">
+<a href="#tabpanel_3_fs" role="tab" aria-controls="tabpanel_3_fs" data-tab="fs" tabindex="-1">F#</a>
+</li>
+</ul>
+<section id="tabpanel_3_cs" role="tabpanel" data-tab="cs">
+
+<pre><code class="lang-cs">var options = new TabularOptions
+{
+    StringFactory = new(maxLength: 128)
+};
 </code></pre>
+</section>
+<section id="tabpanel_3_fs" role="tabpanel" data-tab="fs" aria-hidden="true" hidden="hidden">
+
+<pre><code class="lang-fs">let options = new TabularOptions (
+    StringFactory = new TabularStringFactory(maxLength = 128)
+)
+</code></pre>
+</section>
+</div>
+<p></p>
+<h3 id="references">References</h3>
+<p></p>
+<ul>
+<li><a href="https://w3.org/TR/2015/REC-tabular-data-model-20151217">W3C - Model for Tabular Data and Metadata on the Web</a></li>
+</ul>
 
 </article>
 

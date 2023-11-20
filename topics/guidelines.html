@@ -2,11 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Class TabularRecordAttribute
- </title>
+      <title>Addax - Guidelines </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class TabularRecordAttribute
- ">
+      <meta name="title" content="Addax - Guidelines ">
       
       <link rel="icon" href="../images/app-32.png">
       <link rel="stylesheet" href="../public/docfx.min.css">
@@ -17,7 +15,7 @@
       <meta name="docfx:rel" content="../">
       
       
-      
+      <meta name="docfx:docurl" content="https://github.com/alexanderkozlenko/addax/blob/gh-pages/topics/guidelines.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -40,7 +38,7 @@
   </script>
 
 
-  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
     <header class="bg-body border-bottom">
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
@@ -85,87 +83,20 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="Addax.Formats.Tabular.TabularRecordAttribute">
+        <article data-uid="urn:topics:guidelines">
+<h2 id="addax---guidelines">Addax - Guidelines</h2>
 
-
-
-  <h1 id="Addax_Formats_Tabular_TabularRecordAttribute" data-uid="Addax.Formats.Tabular.TabularRecordAttribute" class="text-break">
-    Class TabularRecordAttribute
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularRecordAttribute.cs"><i class="bi bi-code-slash"></i></a>
-  </h1>
-
-  <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="Addax.html">Addax</a>.<a class="xref" href="Addax.Formats.html">Formats</a>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a></dd></dl>
-  <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
-  </div>
-
-  <div class="markdown summary"><p>Instructs the source generator to generate a record handler for the target type. This class cannot be inherited.</p>
-</div>
-  <div class="markdown conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[AttributeUsage(AttributeTargets.Class|AttributeTargets.Struct)]
-public sealed class TabularRecordAttribute : Attribute</code></pre>
-  </div>
-
-
-
-
-  <dl class="typelist inheritance">
-    <dt>Inheritance</dt>
-    <dd>
-      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.attribute">Attribute</a></div>
-      <div><span class="xref">TabularRecordAttribute</span></div>
-    </dd>
-  </dl>
-
-
-
-
-
-
-
-  <h2 id="Addax_Formats_Tabular_TabularRecordAttribute_remarks">Remarks</h2>
-  <div class="markdown level0 remarks"><p>An instance of the generated record handler will be automatically added to the <a class="xref" href="Addax.Formats.Tabular.TabularRegistry.html#Addax_Formats_Tabular_TabularRegistry_Handlers">Handlers</a> shared collection, which is used to resolve the required handler for reading and writing records. Use the <a class="xref" href="Addax.Formats.Tabular.TabularFieldOrderAttribute.html">TabularFieldOrderAttribute</a> attribute to map a type member to a tabular field, and optional attributes <a class="xref" href="Addax.Formats.Tabular.TabularFieldNameAttribute.html">TabularFieldNameAttribute</a> and <a class="xref" href="Addax.Formats.Tabular.TabularConverterAttribute.html">TabularConverterAttribute</a> to define a field name and apply a value converter.</p>
-</div>
-
-
-  <h2 class="section" id="constructors">Constructors
-</h2>
-
-
-  <a id="Addax_Formats_Tabular_TabularRecordAttribute__ctor_" data-uid="Addax.Formats.Tabular.TabularRecordAttribute.#ctor*"></a>
-
-  <h3 id="Addax_Formats_Tabular_TabularRecordAttribute__ctor" data-uid="Addax.Formats.Tabular.TabularRecordAttribute.#ctor">
-  TabularRecordAttribute()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularRecordAttribute.cs"><i class="bi bi-code-slash"></i></a>
-  </h3>
-
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularRecordAttribute.html">TabularRecordAttribute</a> class.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TabularRecordAttribute()</code></pre>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
+<p></p>
+<h3 id="guidelines">Guidelines</h3>
+<p></p>
+<ul>
+<li><strong>DO</strong> reuse instances of the <a class="xref" href="../api/Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a> type as they contain pre-calculated data for parsing and formatting.</li>
+</ul>
 
 </article>
 
 
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
 
       </div>
 

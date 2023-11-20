@@ -83,11 +83,13 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="">
+        <article data-uid="urn:topics:grammar">
 <h2 id="addax---grammar">Addax - Grammar</h2>
 
 <p></p>
-<p>The engine is based on the following generalized grammar for tabular data:</p>
+<h3 id="grammar">Grammar</h3>
+<p></p>
+<p>The engine is based on the following generalized EBNF grammar for tabular data:</p>
 <p></p>
 <pre><code class="lang-ebnf">stream = record, {tt, record};
 record = field, {dt, field} | at, {char} - tt;
@@ -109,10 +111,13 @@ tchar1 = char;
 char = ? %x00-10FFFF ?;
 </code></pre>
 <p></p>
-<div class="NOTE">
-<h5>Note</h5>
 <p>Fields with line terminator characters are written as escaped to ensure compatibility with more specific dialects, such as RFC 4180.</p>
-</div>
+<p></p>
+<h3 id="references">References</h3>
+<p></p>
+<ul>
+<li><a href="https://w3.org/TR/2015/REC-tabular-data-model-20151217">W3C - Model for Tabular Data and Metadata on the Web</a></li>
+</ul>
 
 </article>
 
