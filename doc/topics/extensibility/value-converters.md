@@ -241,7 +241,7 @@ The following converters provide an option to customize the standard behavior by
 
 <p />
 
-- `Addax.Formats.Tabular.Converters.TabularDateOnlyConverter`
-- `Addax.Formats.Tabular.Converters.TabularDateTimeConverter`
-- `Addax.Formats.Tabular.Converters.TabularDateTimeOffsetConverter`
-- `Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter`
+- [TabularDateOnlyConverter](xref:Addax.Formats.Tabular.Converters.TabularDateOnlyConverter)
+- [TabularDateTimeConverter](xref:Addax.Formats.Tabular.Converters.TabularDateTimeConverter)
+- [TabularDateTimeOffsetConverter](xref:Addax.Formats.Tabular.Converters.TabularDateTimeOffsetConverter)
+- [TabularTimeOnlyConverter](xref:Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter)

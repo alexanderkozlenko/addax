@@ -45,7 +45,7 @@ The framework has built-in support for working with tabular fields as values of 
 
 <p />
 
-Any generated record handler also implicitly supports type members of the `System.Nullable<T>` type, where `T` can be any supported value type.
+Any generated record handler also supports type members of the `System.Nullable<T>` type with any supported value type as the underlying type.
 
 <p />
 
@@ -54,8 +54,8 @@ Any generated record handler also implicitly supports type members of the `Syste
 >
 > <p />
 >
-> - `Addax.Formats.Tabular.Converters.TabularBase16BinaryConverter`
-> - `Addax.Formats.Tabular.Converters.TabularBase64BinaryConverter`
+> - [TabularBase16BinaryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase16BinaryConverter)
+> - [TabularBase64BinaryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase64BinaryConverter)
 
 <p />
 

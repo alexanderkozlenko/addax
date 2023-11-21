@@ -94,7 +94,7 @@ using (var reader = new TabularReader<(double, double)>(File.OpenRead("points.cs
 
 <p />
 
-Additonally, it can be added to the `TabularRegistry.Handlers` shared collection with generated record handlers:
+Additonally, it can be added to the [TabularRegistry.Handlers](xref:Addax.Formats.Tabular.TabularRegistry.Handlers) collection with generated record handlers:
 
 <p />
 
@@ -148,7 +148,7 @@ using (new TabularReader<(double * double)>(File.OpenRead "points.csv", dialect,
 
 <p />
 
-Additonally, it can be added to the `TabularRegistry.Handlers` shared collection with generated record handlers:
+Additonally, it can be added to the [TabularRegistry.Handlers](xref:Addax.Formats.Tabular.TabularRegistry.Handlers) collection with generated record handlers:
 
 <p />
 

@@ -19,7 +19,7 @@ public class WriteBenchmark
 
     private readonly MemoryStream _stream = new();
 
-    [Benchmark(Description = "write string - empty")]
+    [Benchmark(Description = "write field: empty")]
     public void Write0()
     {
         _stream.Seek(0, SeekOrigin.Begin);
@@ -39,7 +39,7 @@ public class WriteBenchmark
         }
     }
 
-    [Benchmark(Description = "write string - regular")]
+    [Benchmark(Description = "write field: regular")]
     public void Write1()
     {
         _stream.Seek(0, SeekOrigin.Begin);
@@ -59,7 +59,7 @@ public class WriteBenchmark
         }
     }
 
-    [Benchmark(Description = "write string - escaped")]
+    [Benchmark(Description = "write field: escaped")]
     public void Write2()
     {
         _stream.Seek(0, SeekOrigin.Begin);
@@ -79,7 +79,7 @@ public class WriteBenchmark
         }
     }
 
-    [Benchmark(Description = "write string - empty (async)")]
+    [Benchmark(Description = "write field: empty (async)")]
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Write0Async()
     {
@@ -100,7 +100,7 @@ public class WriteBenchmark
         }
     }
 
-    [Benchmark(Description = "write string - regular (async)")]
+    [Benchmark(Description = "write field: regular (async)")]
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Write1Async()
     {
@@ -121,7 +121,7 @@ public class WriteBenchmark
         }
     }
 
-    [Benchmark(Description = "write string - escaped (async)")]
+    [Benchmark(Description = "write field: escaped (async)")]
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Write2Async()
     {

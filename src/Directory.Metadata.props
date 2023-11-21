@@ -1,7 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
-    <VersionPrefix>1.0.0</VersionPrefix>
-    <VersionSuffix></VersionSuffix>
+    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionSuffix>preview</VersionSuffix>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://alexanderkozlenko.github.io/addax</PackageProjectUrl>
     <PackageDescription><![CDATA[Provides high-performance and low-allocating types that work with tabular data represented as delimiter-separated values (DSV). The implementation is based on W3C recommendation "Model for Tabular Data and Metadata on the Web" and can process any conventional tabular data dialect, such as comma-separated values (CSV).]]></PackageDescription>

@@ -15,7 +15,7 @@ public class ReadBenchmark
     private readonly MemoryStream _stream1 = CreateStream("vvvv");
     private readonly MemoryStream _stream2 = CreateStream("dddd");
 
-    [Benchmark(Description = "read string - empty")]
+    [Benchmark(Description = "read field: empty")]
     public void Read0()
     {
         _stream0.Seek(0, SeekOrigin.Begin);
@@ -30,7 +30,7 @@ public class ReadBenchmark
         }
     }
 
-    [Benchmark(Description = "read string - regular")]
+    [Benchmark(Description = "read field: regular")]
     public void Read1()
     {
         _stream1.Seek(0, SeekOrigin.Begin);
@@ -45,7 +45,7 @@ public class ReadBenchmark
         }
     }
 
-    [Benchmark(Description = "read string - escaped")]
+    [Benchmark(Description = "read field: escaped")]
     public void Read2()
     {
         _stream2.Seek(0, SeekOrigin.Begin);
@@ -60,7 +60,7 @@ public class ReadBenchmark
         }
     }
 
-    [Benchmark(Description = "read string - empty (saync)")]
+    [Benchmark(Description = "read field: empty (async)")]
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Read0Async()
     {
@@ -76,7 +76,7 @@ public class ReadBenchmark
         }
     }
 
-    [Benchmark(Description = "read string - regular (async)")]
+    [Benchmark(Description = "read field: regular (async)")]
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Read1Async()
     {
@@ -92,7 +92,7 @@ public class ReadBenchmark
         }
     }
 
-    [Benchmark(Description = "read string - escaped (async)")]
+    [Benchmark(Description = "read field: escaped (async)")]
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Read2Async()
     {
