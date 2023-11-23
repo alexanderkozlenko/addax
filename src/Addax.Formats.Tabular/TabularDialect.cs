@@ -99,7 +99,7 @@ public sealed class TabularDialect
     {
     }
 
-    private static bool IsSupportedLineTerminator(string value)
+    internal static bool IsSupportedLineTerminator(string value)
     {
         return value.Length switch
         {

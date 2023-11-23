@@ -11,4 +11,4 @@ uid: urn:topics:limitations
 <p />
 
 - The maximum supported field length varies from $2^{30} - 31$ to $2^{31} - 59$ characters, dependent on escaping.
-- No built-in support for source generation of record handlers in languages other than C# (version 11 or higher).
+- No built-in support for source generation of record handlers in languages other than C# (version 12 or higher).

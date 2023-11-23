@@ -51,7 +51,7 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
         var bufferSize = Math.Max(1, Math.Min(options.BufferSize, Array.MaxLength));
 
         _textReader = new(stream, encoding, bufferSize, options.LeaveOpen);
-        _currentPositionType = !_textReader.IsAppending ? TabularPositionType.StartOfStream : TabularPositionType.EndOfRecord;
+        _currentPositionType = _textReader.IsStartOfStream ? TabularPositionType.StartOfStream : TabularPositionType.EndOfRecord;
         _tabularParser = new(dialect);
         _formatProvider = options.FormatProvider ?? TabularFormatInfo.DefaultCulture;
         _trimWhitespace = options.TrimWhitespace;

@@ -43,7 +43,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
         var bufferSize = Math.Max(1, Math.Min(options.BufferSize, Array.MaxLength));
 
         _textWriter = new(stream, encoding, bufferSize, options.LeaveOpen);
-        _currentPositionType = !_textWriter.IsAppending ? TabularPositionType.StartOfStream : TabularPositionType.EndOfRecord;
+        _currentPositionType = _textWriter.IsStartOfStream ? TabularPositionType.StartOfStream : TabularPositionType.EndOfRecord;
         _tabularFormatter = new(dialect);
         _formatProvider = options.FormatProvider ?? TabularFormatInfo.DefaultCulture;
         _trimWhitespace = options.TrimWhitespace;

@@ -15,7 +15,7 @@ internal sealed class LiteTextReader : IDisposable, IAsyncDisposable
     private readonly BufferWriter<char> _charBufferWriter;
     private readonly int _byteBufferSize;
     private readonly bool _leaveOpen;
-    private readonly bool _isAppending;
+    private readonly bool _isStartOfStream;
 
     private long _bytesDecoded;
     private bool _isPreambleConsumed;
@@ -35,8 +35,8 @@ internal sealed class LiteTextReader : IDisposable, IAsyncDisposable
         _decoder = encoding.GetDecoder();
         _byteBufferSize = bufferSize;
         _charBufferWriter = new(encoding.GetMaxCharCount(Math.Min(bufferSize, 0x00100000)));
-        _isAppending = stream.CanSeek && (stream.Position > 0);
-        _isPreambleConsumed = encoding.Preamble.IsEmpty || _isAppending;
+        _isStartOfStream = !stream.CanSeek || (stream.Position == 0);
+        _isPreambleConsumed = _isStartOfStream && encoding.Preamble.IsEmpty;
     }
 
     public void Dispose()
@@ -201,11 +201,11 @@ internal sealed class LiteTextReader : IDisposable, IAsyncDisposable
         }
     }
 
-    public bool IsAppending
+    public bool IsStartOfStream
     {
         get
         {
-            return _isAppending;
+            return _isStartOfStream;
         }
     }
 

@@ -1,10 +1,14 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
+using System.Collections.Frozen;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Addax.Formats.Tabular.Buffers;
 
 namespace Addax.Formats.Tabular;
 
-/// <summary>Provides static methods for reading and writing collections of tabular data records.</summary>
+/// <summary>Provides static methods for working with collections of tabular data records and inferring tabular data dialects.</summary>
 public static class TabularData
 {
     /// <summary>Reads all records that can be represented as <typeparamref name="T" /> from the stream.</summary>
@@ -252,5 +256,189 @@ public static class TabularData
         where T : notnull
     {
         return WriteRecordsAsync(stream, dialect, records, null, null, cancellationToken);
+    }
+
+    /// <summary>Attempts to infer a dialect from the stream based on frequency of the eligible token values.</summary>
+    /// <param name="stream">The stream to infer from.</param>
+    /// <param name="lineTerminators">The eligible values for a line terminator.</param>
+    /// <param name="delimiters">The eligible values for a delimiter.</param>
+    /// <param name="quoteSymbols">The eligible values for a quote symbol.</param>
+    /// <param name="sampleLength">The length of a sample in bytes.</param>
+    /// <param name="encoding">The encoding for reading from the stream.</param>
+    /// <returns>A successfully inferred dialect or <see langword="null" />.</returns>
+    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="lineTerminators" />, <paramref name="delimiters" />, or <paramref name="quoteSymbols" /> is <see langword="null" />.</exception>
+    public static TabularDialect? InferDialect(Stream stream, IEnumerable<string> lineTerminators, IEnumerable<char> delimiters, IEnumerable<char> quoteSymbols, int sampleLength, Encoding? encoding)
+    {
+        ArgumentNullException.ThrowIfNull(stream);
+        ArgumentNullException.ThrowIfNull(lineTerminators);
+        ArgumentNullException.ThrowIfNull(delimiters);
+        ArgumentNullException.ThrowIfNull(quoteSymbols);
+
+        if (!stream.CanRead)
+        {
+            ThrowUnreadableStreamException();
+        }
+
+        encoding ??= TabularFormatInfo.DefaultEncoding;
+
+        using (stream)
+        {
+            var isStartOfStream = !stream.CanSeek || (stream.Position == 0);
+            var byteBufferSize = Math.Max(1, Math.Min(sampleLength, Array.MaxLength));
+
+            using var byteBuffer = ArrayFactory<byte>.Create(byteBufferSize);
+
+            var byteBufferUsedSize = stream.ReadAtLeast(byteBuffer.AsSpan(), byteBufferSize, false);
+            var byteBufferUsed = byteBuffer.AsReadOnlySpan(0, byteBufferUsedSize);
+
+            if (isStartOfStream && byteBufferUsed.StartsWith(encoding.Preamble))
+            {
+                byteBufferUsed = byteBufferUsed.Slice(encoding.Preamble.Length);
+            }
+
+            var charBufferSize = encoding.GetMaxCharCount(Math.Min(byteBufferUsedSize, 0x00100000));
+
+            using var charBuffer = ArrayFactory<char>.Create(charBufferSize);
+
+            var charBufferUsedSize = encoding.GetChars(byteBufferUsed, charBuffer.AsSpan());
+            var charBufferUsed = charBuffer.AsReadOnlySpan(0, charBufferUsedSize);
+
+            return InferDialect(charBufferUsed, lineTerminators.ToFrozenSet(StringComparer.Ordinal), delimiters.ToFrozenSet(), quoteSymbols.ToFrozenSet());
+        }
+    }
+
+    /// <summary>Attempts to infer a dialect from the stream based on frequency of the eligible token values.</summary>
+    /// <param name="stream">The stream to infer from.</param>
+    /// <param name="lineTerminators">The eligible values for a line terminator.</param>
+    /// <param name="delimiters">The eligible values for a delimiter.</param>
+    /// <param name="quoteSymbols">The eligible values for a quote symbol.</param>
+    /// <returns>A successfully inferred dialect or <see langword="null" />.</returns>
+    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="lineTerminators" />, <paramref name="delimiters" />, or <paramref name="quoteSymbols" /> is <see langword="null" />.</exception>
+    /// <remarks>The operation consumes the first 65536 bytes as a sample and uses a UTF-8 encoding without byte order mark (BOM).</remarks>
+    public static TabularDialect? InferDialect(Stream stream, IEnumerable<string> lineTerminators, IEnumerable<char> delimiters, IEnumerable<char> quoteSymbols)
+    {
+        return InferDialect(stream, lineTerminators, delimiters, quoteSymbols, 65536, TabularFormatInfo.DefaultEncoding);
+    }
+
+    /// <summary>Asynchronously attempts to infer a dialect from the stream based on frequency of the eligible token values.</summary>
+    /// <param name="stream">The stream to infer from.</param>
+    /// <param name="lineTerminators">The eligible values for a line terminator.</param>
+    /// <param name="delimiters">The eligible values for a delimiter.</param>
+    /// <param name="quoteSymbols">The eligible values for a quote symbol.</param>
+    /// <param name="sampleLength">The length of a sample in bytes.</param>
+    /// <param name="encoding">The encoding for reading from the stream.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns>A task object that, when awaited, produces a successfully inferred dialect or <see langword="null" />.</returns>
+    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="lineTerminators" />, <paramref name="delimiters" />, or <paramref name="quoteSymbols" /> is <see langword="null" />.</exception>
+    public static async ValueTask<TabularDialect?> InferDialectAsync(Stream stream, IEnumerable<string> lineTerminators, IEnumerable<char> delimiters, IEnumerable<char> quoteSymbols, int sampleLength, Encoding? encoding, CancellationToken cancellationToken = default)
+    {
+        ArgumentNullException.ThrowIfNull(stream);
+        ArgumentNullException.ThrowIfNull(lineTerminators);
+        ArgumentNullException.ThrowIfNull(delimiters);
+        ArgumentNullException.ThrowIfNull(quoteSymbols);
+
+        if (!stream.CanRead)
+        {
+            ThrowUnreadableStreamException();
+        }
+
+        encoding ??= TabularFormatInfo.DefaultEncoding;
+
+        await using (stream.ConfigureAwait(false))
+        {
+            var isStartOfStream = !stream.CanSeek || (stream.Position == 0);
+            var byteBufferSize = Math.Max(1, Math.Min(sampleLength, Array.MaxLength));
+
+            using var byteBuffer = ArrayFactory<byte>.Create(byteBufferSize);
+
+            var byteBufferUsedSize = await stream.ReadAtLeastAsync(byteBuffer.AsMemory(), byteBufferSize, false, cancellationToken).ConfigureAwait(false);
+            var byteBufferUsed = byteBuffer.AsReadOnlyMemory(0, byteBufferUsedSize);
+
+            if (isStartOfStream && byteBufferUsed.Span.StartsWith(encoding.Preamble))
+            {
+                byteBufferUsed = byteBufferUsed.Slice(encoding.Preamble.Length);
+            }
+
+            var charBufferSize = encoding.GetMaxCharCount(Math.Min(byteBufferUsedSize, 0x00100000));
+
+            using var charBuffer = ArrayFactory<char>.Create(charBufferSize);
+
+            var charBufferUsedSize = encoding.GetChars(byteBufferUsed.Span, charBuffer.AsSpan());
+            var charBufferUsed = charBuffer.AsReadOnlyMemory(0, charBufferUsedSize);
+
+            return InferDialect(charBufferUsed.Span, lineTerminators.ToFrozenSet(StringComparer.Ordinal), delimiters.ToFrozenSet(), quoteSymbols.ToFrozenSet());
+        }
+    }
+
+    /// <summary>Asynchronously attempts to infer a dialect from the stream based on frequency of the eligible token values.</summary>
+    /// <param name="stream">The stream to infer from.</param>
+    /// <param name="lineTerminators">The eligible values for a line terminator.</param>
+    /// <param name="delimiters">The eligible values for a delimiter.</param>
+    /// <param name="quoteSymbols">The eligible values for a quote symbol.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns>A task object that, when awaited, produces a successfully inferred dialect or <see langword="null" />.</returns>
+    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="lineTerminators" />, <paramref name="delimiters" />, or <paramref name="quoteSymbols" /> is <see langword="null" />.</exception>
+    /// <remarks>The operation consumes the first 65536 bytes as a sample and uses a UTF-8 encoding without byte order mark (BOM).</remarks>
+    public static ValueTask<TabularDialect?> InferDialectAsync(Stream stream, IEnumerable<string> lineTerminators, IEnumerable<char> delimiters, IEnumerable<char> quoteSymbols, CancellationToken cancellationToken = default)
+    {
+        return InferDialectAsync(stream, lineTerminators, delimiters, quoteSymbols, 65536, TabularFormatInfo.DefaultEncoding, cancellationToken);
+    }
+
+    private static TabularDialect? InferDialect(ReadOnlySpan<char> source, FrozenSet<string> tokensT, FrozenSet<char> tokensD, FrozenSet<char> tokensQ)
+    {
+        var countersT = new Dictionary<string, int>(tokensT.Count, tokensT.Comparer);
+        var countersD = new Dictionary<char, int>(tokensD.Count);
+        var countersQ = new Dictionary<char, int>(tokensQ.Count);
+
+        foreach (var token in tokensT.Where(static x => (x is not null) && TabularDialect.IsSupportedLineTerminator(x)))
+        {
+            countersT[token] = source.Count(token);
+        }
+
+        foreach (var token in tokensD)
+        {
+            countersD[token] = source.Count(token);
+        }
+
+        foreach (var token in tokensQ)
+        {
+            countersQ[token] = source.Count(token);
+        }
+
+        var choicesT = countersT
+            .OrderByDescending(static x => x.Value)
+            .ThenByDescending(static x => x.Key.Length);
+
+        foreach (var tokenT in choicesT)
+        {
+            var choicesD = countersD
+                .Where(x => !tokenT.Key.Contains(x.Key, StringComparison.Ordinal))
+                .OrderByDescending(static x => x.Value);
+
+            foreach (var tokenD in choicesD)
+            {
+                var choicesQ = countersQ
+                    .Where(x => !tokenT.Key.Contains(x.Key, StringComparison.Ordinal) && (x.Key != tokenD.Key))
+                    .OrderByDescending(static x => x.Value);
+
+                foreach (var tokenQ in choicesQ)
+                {
+                    return new(tokenT.Key, tokenD.Key, tokenQ.Key);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    [DoesNotReturn]
+    [StackTraceHidden]
+    private static void ThrowUnreadableStreamException()
+    {
+        throw new ArgumentException("The stream does not support reading.");
     }
 }

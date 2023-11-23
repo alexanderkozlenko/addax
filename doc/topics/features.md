@@ -49,13 +49,41 @@ Any generated record handler also supports type members of the `System.Nullable<
 
 <p />
 
+To use a type member of the `System.Byte[]` type with a generated record handler, one of the available converters must be specified explicitly:
+
+<p />
+
+- [TabularBase16BinaryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase16BinaryConverter)
+- [TabularBase64BinaryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase64BinaryConverter)
+
+<p />
+
+### Dialect Inferrence
+
+<p />
+
 > [!NOTE]
->  To use a type member of the `System.Byte[]` type with a generated record handler, one of the available converters must be specified explicitly:
->
-> <p />
->
-> - [TabularBase16BinaryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase16BinaryConverter)
-> - [TabularBase64BinaryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase64BinaryConverter)
+> The section describes a preview feature that is available in the latest pre-release package.
+
+<p />
+
+A dialect can be inferred from a stream based on frequency of the eligible token values:
+
+<p />
+
+# [C#](#tab/cs)
+
+```cs
+var dialect = TabularData.InferDialect(File.OpenRead("books.csv"), ["\n", "\r\n"], [','], ['"']);
+```
+
+# [F#](#tab/fs)
+
+```fs
+let dialect = TabularData.InferDialect(File.OpenRead "books.csv", [ "\n"; "\r\n" ], [ ',' ], [ '"' ])
+```
+
+---
 
 <p />
 

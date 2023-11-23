@@ -39,5 +39,5 @@ Min       : Minimum
 Max       : Maximum
 Op/s      : Operation per second
 Allocated : Allocated memory per single operation (managed only, inclusive, 1KB = 1024B)
-1 us      : 1 Microsecond (0.000001 sec)
+1 μs      : 1 Microsecond (0.000001 sec)
 ```

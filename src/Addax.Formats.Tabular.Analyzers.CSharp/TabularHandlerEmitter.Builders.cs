@@ -60,8 +60,8 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
             if (recordTypeHasHeader)
             {
-                builder.Append("private static readonly global::System.String[] s_header = new[]");
-                builder.Append("{");
+                builder.Append("private static readonly global::System.String[] s_header =");
+                builder.Append("[");
                 builder.IndentLevel++;
 
                 for (var i = 0; i < fieldOrders.Length; i++)
@@ -80,7 +80,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                 }
 
                 builder.IndentLevel--;
-                builder.Append("};");
+                builder.Append("];");
                 builder.Append();
             }
 
