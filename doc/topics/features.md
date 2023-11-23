@@ -14,33 +14,33 @@ The framework has built-in support for working with tabular fields as values of 
 
 <p />
 
-|Type|Format|Standard|
+|Runtime Type|Representation|Standard|
 |-|-|-|
-|`System.Boolean`|Lexical space: `true`, `false`, `1`, `0`|W3C XMLSCHEMA11-2|
-|`System.Byte`|Format specifier: `g`||
+|`System.Boolean`|Lexical space: `"true" | "false" | "1" | "0"`|W3C XSD 1.1 P2|
+|`System.Byte`|Format specifier: `"g"`||
 |`System.Char`|One UTF-16 code unit||
-|`System.DateOnly`|`yyyy'-'MM'-'dd`|RFC 3339 / ISO 8601-1:2019|
-|`System.DateTime`|`yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK`|RFC 3339 / ISO 8601-1:2019|
-|`System.DateTimeOffset`|`yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK`|RFC 3339 / ISO 8601-1:2019|
-|`System.Decimal`|Format specifier: `g`||
-|`System.Double`|Format specifier: `g`||
-|`System.Guid`|`00000000-0000-0000-0000-000000000000`|RFC 4122|
-|`System.Half`|Format specifier: `g`||
-|`System.Int16`|Format specifier: `g`||
-|`System.Int32`|Format specifier: `g`||
-|`System.Int64`|Format specifier: `g`||
-|`System.Int128`|Format specifier: `g`||
-|`System.SByte`|Format specifier: `g`||
-|`System.Single`|Format specifier: `g`||
+|`System.DateOnly`|Format: `"yyyy'-'MM'-'dd"`|RFC 3339 / ISO 8601-1:2019|
+|`System.DateTime`|Format: `"yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK"`|RFC 3339 / ISO 8601-1:2019|
+|`System.DateTimeOffset`|Format: `"yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK"`|RFC 3339 / ISO 8601-1:2019|
+|`System.Decimal`|Format specifier: `"g"`||
+|`System.Double`|Format specifier: `"g"`||
+|`System.Guid`|Format: `"00000000-0000-0000-0000-000000000000"`|RFC 4122|
+|`System.Half`|Format specifier: `"g"`||
+|`System.Int16`|Format specifier: `"g"`||
+|`System.Int32`|Format specifier: `"g"`||
+|`System.Int64`|Format specifier: `"g"`||
+|`System.Int128`|Format specifier: `"g"`||
+|`System.SByte`|Format specifier: `"g"`||
+|`System.Single`|Format specifier: `"g"`||
 |`System.String`|Up to `2,147,483,591` UTF-16 code units||
-|`System.TimeOnly`|`HH':'mm':'ss.FFFFFFF`|RFC 3339 / ISO 8601-1:2019|
-|`System.TimeSpan`|`[-]'P'd'DT'h'H'm'M's'.'FFFFFFF'S'`|RFC 3339 / ISO 8601-1:2019|
-|`System.UInt16`|Format specifier: `g`||
-|`System.UInt32`|Format specifier: `g`||
-|`System.UInt64`|Format specifier: `g`||
-|`System.UInt128`|Format specifier: `g`||
+|`System.TimeOnly`|Format: `"HH':'mm':'ss.FFFFFFF"`|RFC 3339 / ISO 8601-1:2019|
+|`System.TimeSpan`|Format: `"[-]'P'd'DT'h'H'm'M's'.'FFFFFFF'S'"`|RFC 3339 / ISO 8601-1:2019|
+|`System.UInt16`|Format specifier: `"g"`||
+|`System.UInt32`|Format specifier: `"g"`||
+|`System.UInt64`|Format specifier: `"g"`||
+|`System.UInt128`|Format specifier: `"g"`||
 |`System.Uri`|See Appx. A "Collected ABNF for URI"|RFC 3986|
-|`System.Numerics.BigInteger`|Format specifier: `g`||
+|`System.Numerics.BigInteger`|Format specifier: `"g"`||
 |`System.Byte[]`|Encoding: "base16" ("hex") or "base64"|RFC 4648|
 
 <p />
