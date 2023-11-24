@@ -12,7 +12,7 @@ updates:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
     groups:
-       microsoft:
+       Microsoft:
           patterns:
             - "Microsoft.*"
             - "MSTest.*"
