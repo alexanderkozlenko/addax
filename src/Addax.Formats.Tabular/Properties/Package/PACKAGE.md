@@ -5,12 +5,12 @@ Provides high-performance and low-allocating types that work with tabular data r
 ## Key Features
 
 - A general-purpose framework that supports different tabular data dialects and character encodings.
-- Completely compatible with applications that have native ahead-of-time (AOT) deployment model.
-- Offers a customizable and extensible contract model for mapping tabular data to .NET types.
-- Includes built-in support for mapping tabular data fields and records to a wide range of common types.
+- Provides an extensible record mapping model based on source-generated and custom contracts.
+- Includes several extensible field converters for a wide range of commonly used built-in types.
+- Fully compatible with applications that are published using the Native AOT deployment model.
 
 ## Documentation
 
-- [Addax - Framework overview and API documentation](https://alexanderkozlenko.github.io/addax)
+- [Addax - Overview, examples, and API documentation](https://alexanderkozlenko.github.io/addax)
 - [W3C - Model for Tabular Data and Metadata on the Web](https://w3.org/TR/2015/REC-tabular-data-model-20151217)
 - [RFC 4180 - Common Format and MIME Type for Comma-Separated Values (CSV) Files](https://datatracker.ietf.org/doc/html/rfc4180)

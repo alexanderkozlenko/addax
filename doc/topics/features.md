@@ -34,7 +34,7 @@ The framework has built-in support for working with tabular fields as values of 
 |`System.Single`|Format specifier: `"g"`||
 |`System.String`|Up to `2,147,483,591` UTF-16 code units||
 |`System.TimeOnly`|Format: `"HH':'mm':'ss.FFFFFFF"`|RFC 3339 / ISO 8601-1:2019|
-|`System.TimeSpan`|Format: `"[-]'P'd'DT'h'H'm'M's'.'FFFFFFF'S'"`|RFC 3339 / ISO 8601-1:2019|
+|`System.TimeSpan`|Format: `"[-]'P'd'DT'h'H'm'M's.FFFFFFF'S'"`|RFC 3339 / ISO 8601-1:2019|
 |`System.UInt16`|Format specifier: `"g"`||
 |`System.UInt32`|Format specifier: `"g"`||
 |`System.UInt64`|Format specifier: `"g"`||

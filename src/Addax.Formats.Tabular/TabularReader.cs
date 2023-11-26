@@ -20,7 +20,7 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
     private readonly bool _trimWhitespace;
 
     private TabularParserState _parserState;
-    private ArrayRef<char> _currentField;
+    private ArrayBuffer<char> _currentField;
     private long _charsConsumed;
     private long _fieldsRead;
     private long _recordsRead;
@@ -33,7 +33,7 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
     /// <param name="stream">The stream to read from.</param>
     /// <param name="dialect">The dialect to use for reading.</param>
     /// <param name="options">The options to control the behavior during reading.</param>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     public TabularReader(Stream stream, TabularDialect dialect, TabularOptions? options = null)
     {
@@ -238,7 +238,7 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
     /// <returns><see langword="true" /> if a value was successfully transcoded; otherwise, <see langword="false" />.</returns>
     public bool TryGetString([NotNullWhen(true)] out string? value)
     {
-        var source = _currentField.AsReadOnlySpan();
+        var source = _currentField.AsSpan();
 
         if (_trimWhitespace)
         {
@@ -260,7 +260,7 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
     {
         ArgumentNullException.ThrowIfNull(converter);
 
-        return TryGet(_currentField.AsReadOnlySpan(), converter, out value);
+        return TryGet(_currentField.AsSpan(), converter, out value);
     }
 
     /// <summary>Transcodes the current field as <see cref="string" />.</summary>
@@ -511,7 +511,7 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
     {
         get
         {
-            return _currentField.AsReadOnlyMemory();
+            return _currentField.AsMemory();
         }
     }
 

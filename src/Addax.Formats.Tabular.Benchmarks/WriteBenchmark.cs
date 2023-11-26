@@ -1,7 +1,6 @@
 ﻿#pragma warning disable CA1001
 
 using System.Runtime.CompilerServices;
-using System.Text;
 using BenchmarkDotNet.Attributes;
 
 namespace Addax.Formats.Tabular.Benchmarks;
@@ -11,7 +10,7 @@ public class WriteBenchmark
     private const int s_count = 1024;
 
     private static readonly TabularDialect s_dialect = new("t", 'd', 'q');
-    private static readonly TabularOptions s_options = new() { Encoding = Encoding.ASCII, LeaveOpen = true };
+    private static readonly TabularOptions s_options = new() { LeaveOpen = true };
 
     private const string s_value0 = "";
     private const string s_value1 = "vvvv";

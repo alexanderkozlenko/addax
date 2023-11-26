@@ -230,18 +230,3 @@ using (new TabularReader(File.OpenRead "books.csv", dialect)) (fun reader ->
 ```
 
 ---
-
-<p />
-
-### Standard converters
-
-<p />
-
-The following converters provide an option to customize the standard behavior by accepting a format specifier in the constructor:
-
-<p />
-
-- [TabularDateOnlyConverter](xref:Addax.Formats.Tabular.Converters.TabularDateOnlyConverter)
-- [TabularDateTimeConverter](xref:Addax.Formats.Tabular.Converters.TabularDateTimeConverter)
-- [TabularDateTimeOffsetConverter](xref:Addax.Formats.Tabular.Converters.TabularDateTimeOffsetConverter)
-- [TabularTimeOnlyConverter](xref:Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter)

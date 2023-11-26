@@ -41,11 +41,11 @@ public class TabularBase64BinaryConverter : TabularConverter<byte[]>
         }
         else
         {
-            using var buffer = ArrayFactory<byte>.Create(bufferSize);
+            using var buffer = new ArrayBuffer<byte>(bufferSize);
 
             if (Convert.TryFromBase64Chars(source, buffer.AsSpan(), out var bytesWritten))
             {
-                var bufferUsed = buffer.AsReadOnlySpan(0, bytesWritten);
+                var bufferUsed = buffer.AsSpan(bytesWritten);
 
                 value = GC.AllocateUninitializedArray<byte>(bytesWritten);
                 bufferUsed.CopyTo(value);

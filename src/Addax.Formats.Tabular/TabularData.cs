@@ -18,7 +18,7 @@ public static class TabularData
     /// <param name="options">The options to control the behavior during reading.</param>
     /// <param name="handler">The handler to read a <typeparamref name="T" /> instance from a record.</param>
     /// <returns>An array of records.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     /// <exception cref="TabularContentException">An unexpected character or end of stream was encountered.</exception>
@@ -44,7 +44,7 @@ public static class TabularData
     /// <param name="dialect">The dialect to use for reading.</param>
     /// <param name="options">The options to control the behavior during reading.</param>
     /// <returns>An array of records.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     /// <exception cref="TabularContentException">An unexpected character or end of stream was encountered.</exception>
@@ -59,7 +59,7 @@ public static class TabularData
     /// <param name="stream">The stream to read from.</param>
     /// <param name="dialect">The dialect to use for reading.</param>
     /// <returns>An array of records.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     /// <exception cref="TabularContentException">An unexpected character or end of stream was encountered.</exception>
@@ -77,7 +77,7 @@ public static class TabularData
     /// <param name="handler">The handler to read a <typeparamref name="T" /> instance from a record.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object that, when awaited, produces an array of records.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
@@ -107,7 +107,7 @@ public static class TabularData
     /// <param name="options">The options to control the behavior during reading.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object that, when awaited, produces an array of records.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
@@ -124,7 +124,7 @@ public static class TabularData
     /// <param name="dialect">The dialect to use for reading.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object that, when awaited, produces an array of records.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
@@ -266,7 +266,7 @@ public static class TabularData
     /// <param name="sampleLength">The length of a sample in bytes.</param>
     /// <param name="encoding">The encoding for reading from the stream.</param>
     /// <returns>A successfully inferred dialect or <see langword="null" />.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="lineTerminators" />, <paramref name="delimiters" />, or <paramref name="quoteSymbols" /> is <see langword="null" />.</exception>
     public static TabularDialect? InferDialect(Stream stream, IEnumerable<string> lineTerminators, IEnumerable<char> delimiters, IEnumerable<char> quoteSymbols, int sampleLength, Encoding? encoding)
     {
@@ -287,10 +287,10 @@ public static class TabularData
             var isStartOfStream = !stream.CanSeek || (stream.Position == 0);
             var byteBufferSize = Math.Max(1, Math.Min(sampleLength, Array.MaxLength));
 
-            using var byteBuffer = ArrayFactory<byte>.Create(byteBufferSize);
+            using var byteBuffer = new ArrayBuffer<byte>(byteBufferSize);
 
             var byteBufferUsedSize = stream.ReadAtLeast(byteBuffer.AsSpan(), byteBufferSize, false);
-            var byteBufferUsed = byteBuffer.AsReadOnlySpan(0, byteBufferUsedSize);
+            var byteBufferUsed = byteBuffer.AsSpan(byteBufferUsedSize);
 
             if (isStartOfStream && byteBufferUsed.StartsWith(encoding.Preamble))
             {
@@ -299,10 +299,10 @@ public static class TabularData
 
             var charBufferSize = encoding.GetMaxCharCount(Math.Min(byteBufferUsedSize, 0x00100000));
 
-            using var charBuffer = ArrayFactory<char>.Create(charBufferSize);
+            using var charBuffer = new ArrayBuffer<char>(charBufferSize);
 
             var charBufferUsedSize = encoding.GetChars(byteBufferUsed, charBuffer.AsSpan());
-            var charBufferUsed = charBuffer.AsReadOnlySpan(0, charBufferUsedSize);
+            var charBufferUsed = charBuffer.AsSpan(charBufferUsedSize);
 
             return InferDialect(charBufferUsed, lineTerminators.ToFrozenSet(StringComparer.Ordinal), delimiters.ToFrozenSet(), quoteSymbols.ToFrozenSet());
         }
@@ -314,7 +314,7 @@ public static class TabularData
     /// <param name="delimiters">The eligible values for a delimiter.</param>
     /// <param name="quoteSymbols">The eligible values for a quote symbol.</param>
     /// <returns>A successfully inferred dialect or <see langword="null" />.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="lineTerminators" />, <paramref name="delimiters" />, or <paramref name="quoteSymbols" /> is <see langword="null" />.</exception>
     /// <remarks>The operation consumes the first 65536 bytes as a sample and uses a UTF-8 encoding without byte order mark (BOM).</remarks>
     public static TabularDialect? InferDialect(Stream stream, IEnumerable<string> lineTerminators, IEnumerable<char> delimiters, IEnumerable<char> quoteSymbols)
@@ -331,7 +331,7 @@ public static class TabularData
     /// <param name="encoding">The encoding for reading from the stream.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object that, when awaited, produces a successfully inferred dialect or <see langword="null" />.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="lineTerminators" />, <paramref name="delimiters" />, or <paramref name="quoteSymbols" /> is <see langword="null" />.</exception>
     public static async ValueTask<TabularDialect?> InferDialectAsync(Stream stream, IEnumerable<string> lineTerminators, IEnumerable<char> delimiters, IEnumerable<char> quoteSymbols, int sampleLength, Encoding? encoding, CancellationToken cancellationToken = default)
     {
@@ -352,10 +352,10 @@ public static class TabularData
             var isStartOfStream = !stream.CanSeek || (stream.Position == 0);
             var byteBufferSize = Math.Max(1, Math.Min(sampleLength, Array.MaxLength));
 
-            using var byteBuffer = ArrayFactory<byte>.Create(byteBufferSize);
+            using var byteBuffer = new ArrayBuffer<byte>(byteBufferSize);
 
             var byteBufferUsedSize = await stream.ReadAtLeastAsync(byteBuffer.AsMemory(), byteBufferSize, false, cancellationToken).ConfigureAwait(false);
-            var byteBufferUsed = byteBuffer.AsReadOnlyMemory(0, byteBufferUsedSize);
+            var byteBufferUsed = byteBuffer.AsMemory(byteBufferUsedSize);
 
             if (isStartOfStream && byteBufferUsed.Span.StartsWith(encoding.Preamble))
             {
@@ -364,10 +364,10 @@ public static class TabularData
 
             var charBufferSize = encoding.GetMaxCharCount(Math.Min(byteBufferUsedSize, 0x00100000));
 
-            using var charBuffer = ArrayFactory<char>.Create(charBufferSize);
+            using var charBuffer = new ArrayBuffer<char>(charBufferSize);
 
             var charBufferUsedSize = encoding.GetChars(byteBufferUsed.Span, charBuffer.AsSpan());
-            var charBufferUsed = charBuffer.AsReadOnlyMemory(0, charBufferUsedSize);
+            var charBufferUsed = charBuffer.AsMemory(charBufferUsedSize);
 
             return InferDialect(charBufferUsed.Span, lineTerminators.ToFrozenSet(StringComparer.Ordinal), delimiters.ToFrozenSet(), quoteSymbols.ToFrozenSet());
         }
@@ -380,7 +380,7 @@ public static class TabularData
     /// <param name="quoteSymbols">The eligible values for a quote symbol.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object that, when awaited, produces a successfully inferred dialect or <see langword="null" />.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="lineTerminators" />, <paramref name="delimiters" />, or <paramref name="quoteSymbols" /> is <see langword="null" />.</exception>
     /// <remarks>The operation consumes the first 65536 bytes as a sample and uses a UTF-8 encoding without byte order mark (BOM).</remarks>
     public static ValueTask<TabularDialect?> InferDialectAsync(Stream stream, IEnumerable<string> lineTerminators, IEnumerable<char> delimiters, IEnumerable<char> quoteSymbols, CancellationToken cancellationToken = default)

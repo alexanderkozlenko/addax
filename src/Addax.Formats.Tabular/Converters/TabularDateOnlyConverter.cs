@@ -9,19 +9,15 @@ public class TabularDateOnlyConverter : TabularConverter<DateOnly>
 {
     internal static readonly TabularDateOnlyConverter Instance = new();
 
-    private readonly string? _format;
-
-    /// <summary>Initializes a new instance of the <see cref="TabularDateOnlyConverter" /> class with the specified format.</summary>
-    /// <param name="format">The format to use for parsing and formatting.</param>
-    public TabularDateOnlyConverter(string? format = "yyyy'-'MM'-'dd")
+    /// <summary>Initializes a new instance of the <see cref="TabularDateOnlyConverter" /> class.</summary>
+    public TabularDateOnlyConverter()
     {
-        _format = format;
     }
 
     /// <inheritdoc />
     public override bool TryFormat(DateOnly value, Span<char> destination, IFormatProvider? provider, out int charsWritten)
     {
-        return value.TryFormat(destination, out charsWritten, _format, provider);
+        return value.TryFormat(destination, out charsWritten, "o", provider);
     }
 
     /// <inheritdoc />
@@ -29,7 +25,7 @@ public class TabularDateOnlyConverter : TabularConverter<DateOnly>
     {
         const DateTimeStyles styles = DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite | DateTimeStyles.AssumeUniversal;
 
-        if (DateTimeOffset.TryParseExact(source, _format, provider, styles, out var dateTimeOffset))
+        if (DateTimeOffset.TryParseExact(source, "yyyy'-'MM'-'dd", provider, styles, out var dateTimeOffset))
         {
             value = DateOnly.FromDateTime(dateTimeOffset.Date);
 

@@ -25,7 +25,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
     /// <param name="stream">The stream to write to.</param>
     /// <param name="dialect">The dialect to use for writing.</param>
     /// <param name="options">The options to control the behavior during writing.</param>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support writing.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support writing.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     public TabularWriter(Stream stream, TabularDialect dialect, TabularOptions? options = null)
     {
@@ -263,7 +263,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
 
         if (_currentPositionType == TabularPositionType.Delimiter)
         {
-            if (_textWriter.UnusedBufferSize < 1)
+            if (_textWriter.FreeBufferSize < 1)
             {
                 _textWriter.Flush();
             }
@@ -272,7 +272,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
         }
         else if (_currentPositionType == TabularPositionType.EndOfRecord)
         {
-            if (_textWriter.UnusedBufferSize < _tabularFormatter.LineTerminatorLength)
+            if (_textWriter.FreeBufferSize < _tabularFormatter.LineTerminatorLength)
             {
                 _textWriter.Flush();
             }
@@ -280,7 +280,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
             _tabularFormatter.WriteLineTerminator(_textWriter.BufferWriter);
         }
 
-        if (_textWriter.UnusedBufferSize < textInfo.CharsRequired)
+        if (_textWriter.FreeBufferSize < textInfo.CharsRequired)
         {
             _textWriter.Flush();
         }
@@ -313,7 +313,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
 
         if (_currentPositionType == TabularPositionType.Delimiter)
         {
-            if (_textWriter.UnusedBufferSize < 1)
+            if (_textWriter.FreeBufferSize < 1)
             {
                 await _textWriter.FlushAsync(cancellationToken).ConfigureAwait(false);
             }
@@ -322,7 +322,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
         }
         else if (_currentPositionType == TabularPositionType.EndOfRecord)
         {
-            if (_textWriter.UnusedBufferSize < _tabularFormatter.LineTerminatorLength)
+            if (_textWriter.FreeBufferSize < _tabularFormatter.LineTerminatorLength)
             {
                 await _textWriter.FlushAsync(cancellationToken).ConfigureAwait(false);
             }
@@ -330,7 +330,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
             _tabularFormatter.WriteLineTerminator(_textWriter.BufferWriter);
         }
 
-        if (_textWriter.UnusedBufferSize < textInfo.CharsRequired)
+        if (_textWriter.FreeBufferSize < textInfo.CharsRequired)
         {
             await _textWriter.FlushAsync(cancellationToken).ConfigureAwait(false);
         }
@@ -365,11 +365,11 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
         {
             bufferLength = (int)Math.Min(2 * (uint)bufferLength, (uint)Array.MaxLength);
 
-            using var buffer = ArrayFactory<char>.Create(bufferLength);
+            using var buffer = new ArrayBuffer<char>(bufferLength);
 
             if (converter.TryFormat(value, buffer.AsSpan(), _formatProvider, out var charsWritten))
             {
-                WriteValueCore(buffer.AsReadOnlySpan(0, charsWritten));
+                WriteValueCore(buffer.AsSpan(charsWritten));
 
                 return;
             }
@@ -387,11 +387,11 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
         {
             bufferLength = (int)Math.Min(2 * (uint)bufferLength, (uint)Array.MaxLength);
 
-            using var buffer = ArrayFactory<char>.Create(bufferLength);
+            using var buffer = new ArrayBuffer<char>(bufferLength);
 
             if (converter.TryFormat(value, buffer.AsSpan(), _formatProvider, out var charsWritten))
             {
-                await WriteValueCoreAsync(buffer.AsReadOnlyMemory(0, charsWritten), cancellationToken).ConfigureAwait(false);
+                await WriteValueCoreAsync(buffer.AsMemory(charsWritten), cancellationToken).ConfigureAwait(false);
 
                 return;
             }
@@ -424,14 +424,14 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
 
         if (_currentPositionType == TabularPositionType.Delimiter)
         {
-            if (_textWriter.UnusedBufferSize < _tabularFormatter.LineTerminatorLength)
+            if (_textWriter.FreeBufferSize < _tabularFormatter.LineTerminatorLength)
             {
                 _textWriter.Flush();
             }
 
             _tabularFormatter.WriteLineTerminator(_textWriter.BufferWriter);
 
-            if (_textWriter.UnusedBufferSize < value.Length + 1)
+            if (_textWriter.FreeBufferSize < value.Length + 1)
             {
                 _textWriter.Flush();
             }
@@ -475,14 +475,14 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
 
         if (_currentPositionType == TabularPositionType.Delimiter)
         {
-            if (_textWriter.UnusedBufferSize < _tabularFormatter.LineTerminatorLength)
+            if (_textWriter.FreeBufferSize < _tabularFormatter.LineTerminatorLength)
             {
                 await _textWriter.FlushAsync(cancellationToken).ConfigureAwait(false);
             }
 
             _tabularFormatter.WriteLineTerminator(_textWriter.BufferWriter);
 
-            if (_textWriter.UnusedBufferSize < value.Length + 1)
+            if (_textWriter.FreeBufferSize < value.Length + 1)
             {
                 await _textWriter.FlushAsync(cancellationToken).ConfigureAwait(false);
             }

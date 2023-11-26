@@ -77,7 +77,7 @@ internal sealed class LiteTextWriter : IDisposable, IAsyncDisposable
 
     public void Flush()
     {
-        if (_charBufferWriter.IsEmpty && _isPreambleCommitted)
+        if ((_charBufferWriter.WrittenCount == 0) && _isPreambleCommitted)
         {
             return;
         }
@@ -97,11 +97,11 @@ internal sealed class LiteTextWriter : IDisposable, IAsyncDisposable
             var byteBufferSize = Math.Min(_byteBufferSize, _encoding.GetMaxByteCount(charBufferSlice.Length));
             var flush = charBufferSlice.Length == charBuffer.Length;
 
-            using (var byteBuffer = ArrayFactory<byte>.Create(byteBufferSize))
+            using (var byteBuffer = new ArrayBuffer<byte>(byteBufferSize))
             {
                 _encoder.Convert(charBufferSlice, byteBuffer.AsSpan(), flush, out var charsUsed, out var bytesUsed, out completed);
 
-                var byteBufferUsed = byteBuffer.AsReadOnlySpan(0, bytesUsed);
+                var byteBufferUsed = byteBuffer.AsSpan(bytesUsed);
 
                 _stream.Write(byteBufferUsed);
                 _charBufferWriter.Truncate(charsUsed);
@@ -115,7 +115,7 @@ internal sealed class LiteTextWriter : IDisposable, IAsyncDisposable
 
     public ValueTask FlushAsync(CancellationToken cancellationToken)
     {
-        if (_charBufferWriter.IsEmpty && _isPreambleCommitted)
+        if ((_charBufferWriter.WrittenCount == 0) && _isPreambleCommitted)
         {
             return ValueTask.CompletedTask;
         }
@@ -127,11 +127,11 @@ internal sealed class LiteTextWriter : IDisposable, IAsyncDisposable
         {
             if (!_isPreambleCommitted)
             {
-                using (var byteBuffer = ArrayFactory<byte>.Create(_encoding.Preamble.Length))
+                using (var byteBuffer = new ArrayBuffer<byte>(_encoding.Preamble.Length))
                 {
                     _encoding.Preamble.CopyTo(byteBuffer.AsSpan());
 
-                    await _stream.WriteAsync(byteBuffer.AsReadOnlyMemory(), cancellationToken).ConfigureAwait(false);
+                    await _stream.WriteAsync(byteBuffer.AsMemory(), cancellationToken).ConfigureAwait(false);
                 }
 
                 _isPreambleCommitted = true;
@@ -146,11 +146,11 @@ internal sealed class LiteTextWriter : IDisposable, IAsyncDisposable
                 var byteBufferSize = Math.Min(_byteBufferSize, _encoding.GetMaxByteCount(charBufferSlice.Length));
                 var flushSlice = charBufferSlice.Length == charBuffer.Length;
 
-                using (var byteBuffer = ArrayFactory<byte>.Create(byteBufferSize))
+                using (var byteBuffer = new ArrayBuffer<byte>(byteBufferSize))
                 {
                     _encoder.Convert(charBufferSlice.Span, byteBuffer.AsSpan(), flushSlice, out var charsUsed, out var bytesUsed, out isCompleted);
 
-                    var byteBufferUsed = byteBuffer.AsReadOnlyMemory(0, bytesUsed);
+                    var byteBufferUsed = byteBuffer.AsMemory(bytesUsed);
 
                     await _stream.WriteAsync(byteBufferUsed, cancellationToken).ConfigureAwait(false);
 
@@ -199,15 +199,15 @@ internal sealed class LiteTextWriter : IDisposable, IAsyncDisposable
     {
         get
         {
-            return _charBufferWriter.WrittenSize;
+            return _charBufferWriter.WrittenCount;
         }
     }
 
-    public int UnusedBufferSize
+    public int FreeBufferSize
     {
         get
         {
-            return _charBufferWriter.UnusedSize;
+            return _charBufferWriter.FreeCapacity;
         }
     }
 

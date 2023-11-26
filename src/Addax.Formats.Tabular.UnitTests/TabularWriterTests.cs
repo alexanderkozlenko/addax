@@ -6,7 +6,7 @@ namespace Addax.Formats.Tabular.UnitTests;
 [TestClass]
 public sealed partial class TabularWriterTests
 {
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "", "")]
     [DataRow("ndqq", "", "")]
     [DataRow("rdqe", "", "")]
@@ -162,7 +162,7 @@ public sealed partial class TabularWriterTests
         Assert.AreEqual(content, Encoding.ASCII.GetString(stream.ToArray()));
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqea", "a", "a")]
     [DataRow("ndqqa", "a", "a")]
     [DataRow("rdqea", "a", "a")]
@@ -213,7 +213,7 @@ public sealed partial class TabularWriterTests
         Assert.AreEqual(content, Encoding.ASCII.GetString(stream.ToArray()));
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "a")]
     [DataRow("ndqq", "a")]
     [DataRow("rdqe", "a")]
@@ -260,7 +260,7 @@ public sealed partial class TabularWriterTests
         }
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "")]
     [DataRow("ndqq", "")]
     [DataRow("rdqe", "")]
@@ -281,7 +281,7 @@ public sealed partial class TabularWriterTests
         Assert.AreEqual(content, Encoding.ASCII.GetString(stream.ToArray()));
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "h1.h2:v11.v12:v21.v22", "h1dh2nv11dv12nv21dv22")]
     [DataRow("ndqq", "h1.h2:v11.v12:v21.v22", "h1dh2nv11dv12nv21dv22")]
     [DataRow("rdqe", "h1.h2:v11.v12:v21.v22", "h1dh2rnv11dv12rnv21dv22")]

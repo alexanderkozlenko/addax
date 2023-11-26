@@ -29,7 +29,7 @@ internal readonly ref struct RegionWriter<T>
         return false;
     }
 
-    public Span<T> UnusedRegion
+    public Span<T> FreeRegion
     {
         get
         {

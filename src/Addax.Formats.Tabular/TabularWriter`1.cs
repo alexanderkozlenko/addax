@@ -19,7 +19,7 @@ public sealed class TabularWriter<T> : IDisposable, IAsyncDisposable
     /// <param name="dialect">The dialect to use for writing.</param>
     /// <param name="options">The options to control the behavior during writing.</param>
     /// <param name="handler">The handler to write a <typeparamref name="T" /> instance to a record.</param>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support writing.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support writing.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     public TabularWriter(Stream stream, TabularDialect dialect, TabularOptions? options = null, TabularHandler<T>? handler = null)

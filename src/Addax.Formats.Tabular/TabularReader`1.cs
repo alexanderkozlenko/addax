@@ -21,7 +21,7 @@ public sealed class TabularReader<T> : IDisposable, IAsyncDisposable
     /// <param name="dialect">The dialect to use for reading.</param>
     /// <param name="options">The options to control the behavior during reading.</param>
     /// <param name="handler">The handler to read a <typeparamref name="T" /> instance from a record.</param>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support reading.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     public TabularReader(Stream stream, TabularDialect dialect, TabularOptions? options = null, TabularHandler<T>? handler = null)

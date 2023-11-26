@@ -56,7 +56,7 @@ public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
         {
             var formatInfo = NumberFormatInfo.GetInstance(provider);
 
-            if (!formatInfo.NegativeSign.TryCopyTo(writer.UnusedRegion))
+            if (!formatInfo.NegativeSign.TryCopyTo(writer.FreeRegion))
             {
                 return false;
             }
@@ -72,7 +72,7 @@ public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
 
         if (value.Days > 0)
         {
-            if (!value.Days.TryFormat(writer.UnusedRegion, out var charsWrittenD, "g", provider))
+            if (!value.Days.TryFormat(writer.FreeRegion, out var charsWrittenD, "g", provider))
             {
                 return false;
             }
@@ -97,7 +97,7 @@ public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
 
         if ((value.Hours != 0) || (value == TimeSpan.Zero))
         {
-            if (!value.Hours.TryFormat(writer.UnusedRegion, out var charsWrittenH, "g", provider))
+            if (!value.Hours.TryFormat(writer.FreeRegion, out var charsWrittenH, "g", provider))
             {
                 return false;
             }
@@ -112,7 +112,7 @@ public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
 
         if (value.Minutes != 0)
         {
-            if (!value.Minutes.TryFormat(writer.UnusedRegion, out var charsWrittenM, "g", provider))
+            if (!value.Minutes.TryFormat(writer.FreeRegion, out var charsWrittenM, "g", provider))
             {
                 return false;
             }
@@ -127,7 +127,7 @@ public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
 
         if (seconds != 0)
         {
-            if (!seconds.TryFormat(writer.UnusedRegion, out var charsWrittenS, "0.#######", provider))
+            if (!seconds.TryFormat(writer.FreeRegion, out var charsWrittenS, "0.#######", provider))
             {
                 return false;
             }

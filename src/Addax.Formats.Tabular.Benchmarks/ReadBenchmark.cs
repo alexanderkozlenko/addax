@@ -1,5 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using System.Text;
 using BenchmarkDotNet.Attributes;
 
 namespace Addax.Formats.Tabular.Benchmarks;
@@ -9,11 +8,11 @@ public class ReadBenchmark
     private const int s_count = 1024;
 
     private static readonly TabularDialect s_dialect = new("t", 'd', 'q');
-    private static readonly TabularOptions s_options = new() { Encoding = Encoding.ASCII, LeaveOpen = true };
+    private static readonly TabularOptions s_options = new() { LeaveOpen = true };
 
     private readonly MemoryStream _stream0 = CreateStream("");
     private readonly MemoryStream _stream1 = CreateStream("vvvv");
-    private readonly MemoryStream _stream2 = CreateStream("dddd");
+    private readonly MemoryStream _stream2 = CreateStream("qddd");
 
     [Benchmark(Description = "read field: empty")]
     public void Read0()
@@ -112,24 +111,16 @@ public class ReadBenchmark
     {
         var stream = new MemoryStream();
 
-        using (var writer = new StreamWriter(stream, s_options.Encoding, leaveOpen: true))
+        using (var writer = new TabularWriter(stream, s_dialect, s_options))
         {
             for (var i = 0; i < s_count; i++)
             {
-                if (i > 0)
-                {
-                    writer.Write(s_dialect.LineTerminator);
-                }
-
                 for (var j = 0; j < s_count; j++)
                 {
-                    if (j > 0)
-                    {
-                        writer.Write(s_dialect.Delimiter);
-                    }
-
-                    writer.Write(value);
+                    writer.WriteString(value);
                 }
+
+                writer.FinishRecord();
             }
         }
 

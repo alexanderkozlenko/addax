@@ -17,12 +17,12 @@ internal sealed class LiteQueue<T> : IDisposable
         Debug.Assert(capacity >= 0);
         Debug.Assert(capacity <= Array.MaxLength);
 
-        _array = ArrayFactory<T>.ArrayPool.Rent(capacity);
+        _array = ArraySource<T>.ArrayPool.Rent(capacity);
     }
 
     public void Dispose()
     {
-        ArrayFactory<T>.ArrayPool.Return(_array);
+        ArraySource<T>.ArrayPool.Return(_array);
     }
 
     public void Enqueue(in T item)
@@ -54,7 +54,7 @@ internal sealed class LiteQueue<T> : IDisposable
     private void Resize()
     {
         var arrayLength = (int)Math.Max(Math.Min(2 * (uint)_array.Length, (uint)Array.MaxLength), (uint)_array.Length + 1);
-        var array = ArrayFactory<T>.ArrayPool.Rent(arrayLength);
+        var array = ArraySource<T>.ArrayPool.Rent(arrayLength);
 
         if (_length != 0)
         {
@@ -69,7 +69,7 @@ internal sealed class LiteQueue<T> : IDisposable
             }
         }
 
-        ArrayFactory<T>.ArrayPool.Return(_array);
+        ArraySource<T>.ArrayPool.Return(_array);
 
         _array = array;
         _head = 0;

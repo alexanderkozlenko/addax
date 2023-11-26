@@ -1,5 +1,6 @@
 ﻿<Project>
-  <Import Project="$(MSBuildThisFileDirectory)\Directory.Metadata.props" />
+  <Import Project="$(MSBuildThisFileDirectory)\Directory.Package.props" />
+  <Import Project="$(MSBuildProjectDirectory)\**\Directory.Package.props" />
   <PropertyGroup>
     <AnalysisMode>Recommended</AnalysisMode>
     <ArtifactsPath>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '..', 'artifacts'))</ArtifactsPath>

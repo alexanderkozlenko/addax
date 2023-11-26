@@ -14,7 +14,7 @@ public partial class TabularReader
     /// <remarks>The value should be represented as one UTF-16 code unit.</remarks>
     public bool TryGetChar(out char value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularCharConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularCharConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="bool" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -23,7 +23,7 @@ public partial class TabularReader
     /// <remarks>The value should be represented as one of the literals: <c>"false"</c>, <c>"true"</c>, <c>"0"</c>, <c>"1"</c>. Leading and trailing white-space characters are allowed.</remarks>
     public bool TryGetBoolean(out bool value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularBooleanConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularBooleanConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="sbyte" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -33,7 +33,7 @@ public partial class TabularReader
     [CLSCompliant(false)]
     public bool TryGetSByte(out sbyte value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularSByteConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularSByteConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="byte" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -42,7 +42,7 @@ public partial class TabularReader
     /// <remarks>Leading and trailing white-space characters, percent sign are allowed.</remarks>
     public bool TryGetByte(out byte value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularByteConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularByteConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="short" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -51,7 +51,7 @@ public partial class TabularReader
     /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
     public bool TryGetInt16(out short value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularInt16Converter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularInt16Converter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="ushort" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -61,7 +61,7 @@ public partial class TabularReader
     [CLSCompliant(false)]
     public bool TryGetUInt16(out ushort value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularUInt16Converter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularUInt16Converter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="int" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -70,7 +70,7 @@ public partial class TabularReader
     /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
     public bool TryGetInt32(out int value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularInt32Converter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularInt32Converter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="uint" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -80,7 +80,7 @@ public partial class TabularReader
     [CLSCompliant(false)]
     public bool TryGetUInt32(out uint value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularUInt32Converter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularUInt32Converter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="long" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -89,7 +89,7 @@ public partial class TabularReader
     /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
     public bool TryGetInt64(out long value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularInt64Converter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularInt64Converter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="ulong" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -99,7 +99,7 @@ public partial class TabularReader
     [CLSCompliant(false)]
     public bool TryGetUInt64(out ulong value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularUInt64Converter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularUInt64Converter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="Int128" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -108,7 +108,7 @@ public partial class TabularReader
     /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
     public bool TryGetInt128(out Int128 value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularInt128Converter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularInt128Converter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="UInt128" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -118,7 +118,7 @@ public partial class TabularReader
     [CLSCompliant(false)]
     public bool TryGetUInt128(out UInt128 value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularUInt128Converter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularUInt128Converter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="BigInteger" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -127,7 +127,7 @@ public partial class TabularReader
     /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
     public bool TryGetBigInteger(out BigInteger value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularBigIntegerConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularBigIntegerConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="Half" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -136,7 +136,7 @@ public partial class TabularReader
     /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
     public bool TryGetHalf(out Half value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularHalfConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularHalfConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="float" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -145,7 +145,7 @@ public partial class TabularReader
     /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
     public bool TryGetSingle(out float value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularSingleConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularSingleConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="double" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -154,7 +154,7 @@ public partial class TabularReader
     /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
     public bool TryGetDouble(out double value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularDoubleConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularDoubleConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="decimal" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -163,7 +163,7 @@ public partial class TabularReader
     /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
     public bool TryGetDecimal(out decimal value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularDecimalConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularDecimalConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="TimeSpan" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -172,7 +172,7 @@ public partial class TabularReader
     /// <remarks>The value should be formatted according to the RFC 3339 and include only <c>"D"</c>, <c>"H"</c>, <c>"M"</c>, or <c>"S"</c> designators. Leading and trailing white-space characters are allowed.</remarks>
     public bool TryGetTimeSpan(out TimeSpan value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularTimeSpanConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularTimeSpanConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="TimeOnly" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -181,7 +181,7 @@ public partial class TabularReader
     /// <remarks>The value should be formatted according to the RFC 3339. Leading and trailing white-space characters are allowed.</remarks>
     public bool TryGetTimeOnly(out TimeOnly value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularTimeOnlyConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularTimeOnlyConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="DateOnly" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -190,7 +190,7 @@ public partial class TabularReader
     /// <remarks>The value should be formatted according to the RFC 3339. Leading and trailing white-space characters are allowed.</remarks>
     public bool TryGetDateOnly(out DateOnly value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularDateOnlyConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularDateOnlyConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="DateTime" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -199,7 +199,7 @@ public partial class TabularReader
     /// <remarks>The value should be formatted according to the RFC 3339. Leading and trailing white-space characters are allowed.</remarks>
     public bool TryGetDateTime(out DateTime value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularDateTimeConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularDateTimeConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="DateTimeOffset" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -208,7 +208,7 @@ public partial class TabularReader
     /// <remarks>The value should be formatted according to the RFC 3339. Leading and trailing white-space characters are allowed.</remarks>
     public bool TryGetDateTimeOffset(out DateTimeOffset value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularDateTimeOffsetConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularDateTimeOffsetConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="Guid" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -217,7 +217,7 @@ public partial class TabularReader
     /// <remarks>The value should be formatted according to the RFC 4122. Leading and trailing white-space characters are allowed.</remarks>
     public bool TryGetGuid(out Guid value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularGuidConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularGuidConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="Uri" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -226,7 +226,7 @@ public partial class TabularReader
     /// <remarks>The value should be formatted according to the RFC 3986. Leading and trailing white-space characters are allowed.</remarks>
     public bool TryGetUri([NotNullWhen(true)] out Uri? value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularUriConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularUriConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as binary data encoded with "base16" ("hex") encoding and returns a value that indicates whether the operation succeeded.</summary>
@@ -235,7 +235,7 @@ public partial class TabularReader
     /// <remarks>The value should be formatted according to the RFC 4648. Leading and trailing white-space characters are allowed.</remarks>
     public bool TryGetBase16Binary([NotNullWhen(true)] out byte[]? value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularBase16BinaryConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularBase16BinaryConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as binary data encoded with "base64" encoding and returns a value that indicates whether the operation succeeded.</summary>
@@ -244,7 +244,7 @@ public partial class TabularReader
     /// <remarks>The value should be formatted according to the RFC 4648. Leading and trailing white-space characters are allowed.</remarks>
     public bool TryGetBase64Binary([NotNullWhen(true)] out byte[]? value)
     {
-        return TryGet(_currentField.AsReadOnlySpan(), TabularBase64BinaryConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularBase64BinaryConverter.Instance, out value);
     }
 
     /// <summary>Parses the current field as <see cref="char" />.</summary>

@@ -68,17 +68,17 @@ internal sealed class LiteTextReader : IDisposable, IAsyncDisposable
             return false;
         }
 
-        var byteBufferSize = Math.Min(_byteBufferSize, _encoding.GetMaxByteCount(Math.Min(_charBufferWriter.UnusedSize, 0x00100000)));
+        var byteBufferSize = Math.Min(_byteBufferSize, _encoding.GetMaxByteCount(Math.Min(_charBufferWriter.FreeCapacity, 0x00100000)));
 
         if (!_isPreambleConsumed)
         {
             byteBufferSize = Math.Max(byteBufferSize, _encoding.Preamble.Length);
         }
 
-        using (var byteBuffer = ArrayFactory<byte>.Create(byteBufferSize))
+        using (var byteBuffer = new ArrayBuffer<byte>(byteBufferSize))
         {
             var byteBufferUsedSize = _stream.ReadAtLeast(byteBuffer.AsSpan(), byteBufferSize, false);
-            var byteBufferUsed = byteBuffer.AsReadOnlySpan(0, byteBufferUsedSize);
+            var byteBufferUsed = byteBuffer.AsSpan(byteBufferUsedSize);
 
             _isEndOfStream = byteBufferUsedSize < byteBufferSize;
 
@@ -106,17 +106,17 @@ internal sealed class LiteTextReader : IDisposable, IAsyncDisposable
             return false;
         }
 
-        var byteBufferSize = Math.Min(_byteBufferSize, _encoding.GetMaxByteCount(Math.Min(_charBufferWriter.UnusedSize, 0x00100000)));
+        var byteBufferSize = Math.Min(_byteBufferSize, _encoding.GetMaxByteCount(Math.Min(_charBufferWriter.FreeCapacity, 0x00100000)));
 
         if (!_isPreambleConsumed)
         {
             byteBufferSize = Math.Max(byteBufferSize, _encoding.Preamble.Length);
         }
 
-        using (var byteBuffer = ArrayFactory<byte>.Create(byteBufferSize))
+        using (var byteBuffer = new ArrayBuffer<byte>(byteBufferSize))
         {
             var byteBufferUsedSize = await _stream.ReadAtLeastAsync(byteBuffer.AsMemory(), byteBufferSize, false, cancellationToken).ConfigureAwait(false);
-            var byteBufferUsed = byteBuffer.AsReadOnlyMemory(0, byteBufferUsedSize);
+            var byteBufferUsed = byteBuffer.AsMemory(byteBufferUsedSize);
 
             _isEndOfStream = byteBufferUsedSize < byteBufferSize;
 
@@ -140,7 +140,7 @@ internal sealed class LiteTextReader : IDisposable, IAsyncDisposable
     {
         Debug.Assert(consumed >= 0);
         Debug.Assert(consumed <= Array.MaxLength);
-        Debug.Assert(consumed <= _charBufferWriter.WrittenSize);
+        Debug.Assert(consumed <= _charBufferWriter.WrittenCount);
 
         _charBufferWriter.Truncate(consumed);
     }

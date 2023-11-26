@@ -6,7 +6,7 @@ namespace Addax.Formats.Tabular.UnitTests;
 [TestClass]
 public sealed partial class TabularReaderTests
 {
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "", "")]
     [DataRow("ndqq", "", "")]
     [DataRow("rdqe", "", "")]
@@ -158,7 +158,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(structureScript, structureBuilder.ToString());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "vq")]
     [DataRow("ndqq", "vq")]
     [DataRow("rdqe", "vq")]
@@ -243,7 +243,7 @@ public sealed partial class TabularReaderTests
         }
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "v", true)]
     [DataRow("ndqq", "v", true)]
     [DataRow("rdqe", "v", true)]
@@ -259,7 +259,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(expected, reader.TryPickRecord());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "v", false)]
     [DataRow("ndqq", "v", false)]
     [DataRow("rdqe", "v", false)]
@@ -277,7 +277,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(expected, reader.TryPickRecord());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "vdv", false)]
     [DataRow("ndqq", "vdv", false)]
     [DataRow("rdqe", "vdv", false)]
@@ -295,7 +295,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(expected, reader.TryPickRecord());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "vnv", true)]
     [DataRow("ndqq", "vnv", true)]
     [DataRow("rdqe", "vrnv", true)]
@@ -313,7 +313,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(expected, reader.TryPickRecord());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "v", false)]
     [DataRow("ndqq", "v", false)]
     [DataRow("rdqe", "v", false)]
@@ -331,7 +331,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(expected, reader.TryPickRecord());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "v", true)]
     [DataRow("ndqq", "v", true)]
     [DataRow("rdqe", "v", true)]
@@ -347,7 +347,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(expected, reader.TryReadField());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "v", true)]
     [DataRow("ndqq", "v", true)]
     [DataRow("rdqe", "v", true)]
@@ -365,7 +365,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(expected, reader.TryReadField());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "vdv", true)]
     [DataRow("ndqq", "vdv", true)]
     [DataRow("rdqe", "vdv", true)]
@@ -383,7 +383,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(expected, reader.TryReadField());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "vnv", false)]
     [DataRow("ndqq", "vnv", false)]
     [DataRow("rdqe", "vrnv", false)]
@@ -401,7 +401,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(expected, reader.TryReadField());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "v", false)]
     [DataRow("ndqq", "v", false)]
     [DataRow("rdqe", "v", false)]
@@ -419,7 +419,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(expected, reader.TryReadField());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "v", true)]
     [DataRow("ndqq", "v", true)]
     [DataRow("rdqe", "v", true)]
@@ -435,7 +435,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(expected, reader.TrySkipField());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "v", true)]
     [DataRow("ndqq", "v", true)]
     [DataRow("rdqe", "v", true)]
@@ -453,7 +453,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(expected, reader.TrySkipField());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "vdv", true)]
     [DataRow("ndqq", "vdv", true)]
     [DataRow("rdqe", "vdv", true)]
@@ -471,7 +471,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(expected, reader.TrySkipField());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "vnv", false)]
     [DataRow("ndqq", "vnv", false)]
     [DataRow("rdqe", "vrnv", false)]
@@ -489,7 +489,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(expected, reader.TrySkipField());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "v", false)]
     [DataRow("ndqq", "v", false)]
     [DataRow("rdqe", "v", false)]
@@ -507,7 +507,7 @@ public sealed partial class TabularReaderTests
         Assert.AreEqual(expected, reader.TrySkipField());
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ndqe", "h1dh2nv11dv12nv21dv22")]
     [DataRow("ndqq", "h1dh2nv11dv12nv21dv22")]
     [DataRow("rdqe", "h1dh2rnv11dv12rnv21dv22")]

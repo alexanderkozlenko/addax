@@ -11,7 +11,7 @@ public sealed class TabularHandlerGeneratorTests
 {
     private static readonly Compilation s_compilation = CreateCompilation();
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("NamespaceHasNoMappings", 0)]
     [DataRow("TypeHasSkippedIndices", 2)]
     [DataRow("TypeMemberHasName", 2)]
@@ -39,7 +39,7 @@ public sealed class TabularHandlerGeneratorTests
         Assert.AreEqual(0, compilationDiagnostics.Length);
     }
 
-    [DataTestMethod]
+    [TestMethod]
     [DataRow("ConverterValueTypeMismatch", "TAB0004")]
     [DataRow("TypeMemberHasDuplicateIndex", "TAB0005")]
     [DataRow("TypeMemberHasUnsupportedType", "TAB0003")]

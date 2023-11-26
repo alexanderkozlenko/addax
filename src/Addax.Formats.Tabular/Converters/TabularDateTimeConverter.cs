@@ -9,19 +9,15 @@ public class TabularDateTimeConverter : TabularConverter<DateTime>
 {
     internal static readonly TabularDateTimeConverter Instance = new();
 
-    private readonly string? _format;
-
-    /// <summary>Initializes a new instance of the <see cref="TabularDateTimeConverter" /> class with the specified format.</summary>
-    /// <param name="format">The format to use for parsing and formatting.</param>
-    public TabularDateTimeConverter(string? format = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK")
+    /// <summary>Initializes a new instance of the <see cref="TabularDateTimeConverter" /> class.</summary>
+    public TabularDateTimeConverter()
     {
-        _format = format;
     }
 
     /// <inheritdoc />
     public override bool TryFormat(DateTime value, Span<char> destination, IFormatProvider? provider, out int charsWritten)
     {
-        return value.TryFormat(destination, out charsWritten, _format, provider);
+        return value.TryFormat(destination, out charsWritten, "o", provider);
     }
 
     /// <inheritdoc />
@@ -29,7 +25,7 @@ public class TabularDateTimeConverter : TabularConverter<DateTime>
     {
         const DateTimeStyles styles = DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite | DateTimeStyles.AssumeUniversal;
 
-        if (DateTimeOffset.TryParseExact(source, _format, provider, styles, out var dateTimeOffset))
+        if (DateTimeOffset.TryParseExact(source, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK", provider, styles, out var dateTimeOffset))
         {
             value = dateTimeOffset.UtcDateTime;
 

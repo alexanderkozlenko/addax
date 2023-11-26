@@ -8,7 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		src\.globalconfig = src\.globalconfig
 		src\Directory.Build.props = src\Directory.Build.props
 		src\Directory.Build.targets = src\Directory.Build.targets
-		src\Directory.Metadata.props = src\Directory.Metadata.props
+		src\Directory.Package.props = src\Directory.Package.props
 		src\Directory.Packages.props = src\Directory.Packages.props
 	EndProjectSection
 EndProject

@@ -316,7 +316,7 @@ internal sealed class TabularParser(TabularDialect dialect)
         return true;
     }
 
-    public void ReadField(ReadOnlyMemory<char> source, ref readonly TabularFieldInfo fieldInfo, ref ArrayRef<char> target)
+    public void ReadField(ReadOnlyMemory<char> source, ref readonly TabularFieldInfo fieldInfo, ref ArrayBuffer<char> field)
     {
         if (!fieldInfo.IsAnnotation)
         {
@@ -344,18 +344,17 @@ internal sealed class TabularParser(TabularDialect dialect)
                 if (fieldInfo.CharsEscaped == 0)
                 {
                     MemoryMarshal.TryGetArray(source, out var array);
-
                     Debug.Assert(array.Array is not null);
 
-                    target = new(array.Array, array.Offset, array.Count, true);
+                    field = new(array.Array, array.Offset, array.Count);
 
                     return;
                 }
                 else
                 {
-                    target = ArrayFactory<char>.Create(length - fieldInfo.CharsEscaped);
+                    field = new(length - fieldInfo.CharsEscaped);
 
-                    UnescapeField(source.Span, target.AsSpan(), fieldInfo.CharsEscaped);
+                    UnescapeField(source.Span, field.AsSpan(), _tokenE);
                 }
             }
         }
@@ -374,26 +373,29 @@ internal sealed class TabularParser(TabularDialect dialect)
 
             if (length > 0)
             {
+                field = new(length);
                 source = source.Slice(1, length);
-                target = ArrayFactory<char>.Create(length);
-                source.Span.CopyTo(target.AsSpan());
+                source.Span.CopyTo(field.AsSpan());
             }
         }
     }
 
-    private void UnescapeField(ReadOnlySpan<char> source, Span<char> target, int count)
+    private static void UnescapeField(ReadOnlySpan<char> source, Span<char> target, char token)
     {
-        while (count > 0)
+        var escape = false;
+        var j = 0;
+
+        for (var i = 0; i < source.Length; i++)
         {
-            var index = source.IndexOfAny(_searchValues.ValuesE);
+            var value = source[i];
 
-            source.Slice(0, index).CopyTo(target);
-            target = target.Slice(index);
-            source = source.Slice(index + 1);
-            count--;
+            escape = (value == token) && !escape;
+
+            if (!escape)
+            {
+                target[j++] = value;
+            }
         }
-
-        source.CopyTo(target);
     }
 
     private static void StoreField(LiteQueue<TabularFieldInfo> fields, ref TabularParserState state, TabularSeparator separator)

@@ -16,6 +16,4 @@ internal sealed class TabularSearchValues(string lineTerminator, char delimiter,
         SearchValues.Create(stackalloc[] { quoteSymbol });
     public readonly SearchValues<char> ValuesQE =
         SearchValues.Create(stackalloc[] { quoteSymbol, escapeSymbol });
-    public readonly SearchValues<char> ValuesE =
-        SearchValues.Create(stackalloc[] { escapeSymbol });
 }
