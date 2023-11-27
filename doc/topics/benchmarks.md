@@ -41,3 +41,11 @@ Op/s      : Operation per second
 Allocated : Allocated memory per single operation (managed only, inclusive, 1KB = 1024B)
 1 μs      : 1 Microsecond (0.000001 sec)
 ```
+
+<p />
+
+### References
+
+<p />
+
+- [Addax - Performance benchmarks for .NET libraries that work with CSV files](https://github.com/alexanderkozlenko/addax-benchmarks)
