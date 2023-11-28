@@ -23,11 +23,11 @@ public class TabularDateOnlyConverter : TabularConverter<DateOnly>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out DateOnly value)
     {
-        const DateTimeStyles styles = DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite | DateTimeStyles.AssumeUniversal;
+        const DateTimeStyles styles = DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite | DateTimeStyles.AdjustToUniversal;
 
-        if (DateTimeOffset.TryParseExact(source, "yyyy'-'MM'-'dd", provider, styles, out var dateTimeOffset))
+        if (DateTime.TryParseExact(source, "yyyy'-'MM'-'dd", provider, styles, out var dateTime))
         {
-            value = DateOnly.FromDateTime(dateTimeOffset.Date);
+            value = DateOnly.FromDateTime(dateTime);
 
             return true;
         }

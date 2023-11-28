@@ -21,7 +21,7 @@ var config = ManualConfig
     .AddColumn(StatisticColumn.OperationsPerSecond, StatisticColumn.Median, StatisticColumn.Min, StatisticColumn.Max)
     .WithSummaryStyle(SummaryStyle.Default
         .WithSizeUnit(SizeUnit.B)
-        .WithTimeUnit(TimeUnit.Microsecond))
+        .WithTimeUnit(TimeUnit.Millisecond))
     .AddLogger(ConsoleLogger.Default)
     .AddExporter(MarkdownExporter.GitHub);
 
