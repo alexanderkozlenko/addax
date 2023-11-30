@@ -18,8 +18,8 @@ internal sealed class TabularStringArrayHandler : TabularHandler<string?[]>
                 return default;
             }
 
-            reader.TryGetString(out var value);
-            builder.Add(value);
+            reader.TryGetString(out var field);
+            builder.Add(field);
         }
 
         return new(builder.ToArray());
@@ -37,8 +37,8 @@ internal sealed class TabularStringArrayHandler : TabularHandler<string?[]>
                 return default;
             }
 
-            reader.TryGetString(out var value);
-            builder.Add(value);
+            reader.TryGetString(out var field);
+            builder.Add(field);
         }
 
         return new(builder.ToArray());

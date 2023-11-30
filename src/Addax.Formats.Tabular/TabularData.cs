@@ -8,7 +8,7 @@ using Addax.Formats.Tabular.Buffers;
 
 namespace Addax.Formats.Tabular;
 
-/// <summary>Provides static methods for working with collections of tabular data records and inferring tabular data dialects.</summary>
+/// <summary>Provides static methods for working with collections of tabular data records and inferring dialects.</summary>
 public static class TabularData
 {
     /// <summary>Reads all records that can be represented as <typeparamref name="T" /> from the stream.</summary>
@@ -142,7 +142,7 @@ public static class TabularData
     /// <param name="records">The records to write to the stream.</param>
     /// <param name="options">The options to control the behavior during writing.</param>
     /// <param name="handler">The handler to write a <typeparamref name="T" /> instance to a record.</param>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support writing.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support writing.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="dialect" />, or <paramref name="records" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     public static void WriteRecords<T>(Stream stream, TabularDialect dialect, IEnumerable<T> records, TabularOptions? options, TabularHandler<T>? handler)
@@ -168,7 +168,7 @@ public static class TabularData
     /// <param name="dialect">The dialect to use for writing.</param>
     /// <param name="records">The records to write to the stream.</param>
     /// <param name="options">The options to control the behavior during writing.</param>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support writing.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support writing.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="dialect" />, or <paramref name="records" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     public static void WriteRecords<T>(Stream stream, TabularDialect dialect, IEnumerable<T> records, TabularOptions? options)
@@ -182,7 +182,7 @@ public static class TabularData
     /// <param name="stream">The stream to write to.</param>
     /// <param name="dialect">The dialect to use for writing.</param>
     /// <param name="records">The records to write to the stream.</param>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support writing.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support writing.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="dialect" />, or <paramref name="records" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     public static void WriteRecords<T>(Stream stream, TabularDialect dialect, IEnumerable<T> records)
@@ -200,7 +200,7 @@ public static class TabularData
     /// <param name="handler">The handler to write a <typeparamref name="T" /> instance to a record.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support writing.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support writing.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="dialect" />, or <paramref name="records" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
@@ -231,7 +231,7 @@ public static class TabularData
     /// <param name="options">The options to control the behavior during writing.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support writing.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support writing.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="dialect" />, or <paramref name="records" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
@@ -248,7 +248,7 @@ public static class TabularData
     /// <param name="records">The records to write to the stream.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream"/> does not support writing.</exception>
+    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support writing.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="dialect" />, or <paramref name="records" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>

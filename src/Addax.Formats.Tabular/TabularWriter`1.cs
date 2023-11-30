@@ -1,7 +1,5 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace Addax.Formats.Tabular;
@@ -28,7 +26,7 @@ public sealed class TabularWriter<T> : IDisposable, IAsyncDisposable
         ArgumentNullException.ThrowIfNull(dialect);
 
         _fieldWriter = new(stream, dialect, options);
-        _recordHandler = handler ?? SelectHandler();
+        _recordHandler = handler ?? TabularRegistry.SelectHandler<T>();
     }
 
     /// <summary>Releases the resources used by the current instance of the <see cref="TabularWriter{T}" /> class.</summary>
@@ -134,23 +132,6 @@ public sealed class TabularWriter<T> : IDisposable, IAsyncDisposable
             }
 
             _fieldWriter.FinishRecord();
-        }
-    }
-
-    private static TabularHandler<T> SelectHandler()
-    {
-        if (!TabularRegistry.Handlers.TryGetValue(typeof(T), out var handler) || (handler is not TabularHandler<T> handlerT))
-        {
-            ThrowHandlerNotFoundException();
-        }
-
-        return handlerT;
-
-        [DoesNotReturn]
-        [StackTraceHidden]
-        static void ThrowHandlerNotFoundException()
-        {
-            throw new InvalidOperationException($"A record handler for type '{typeof(T)}' cannot be found in the registry.");
         }
     }
 

@@ -2,7 +2,7 @@
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="Guid" /> value from or to a sequence of characters.</summary>
+/// <summary>Converts a <see cref="Guid" /> value from or to a character sequence.</summary>
 public class TabularGuidConverter : TabularConverter<Guid>
 {
     internal static readonly TabularGuidConverter Instance = new();

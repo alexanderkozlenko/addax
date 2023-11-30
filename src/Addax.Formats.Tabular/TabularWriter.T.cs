@@ -413,7 +413,7 @@ public partial class TabularWriter
     /// <param name="value">A <see cref="BigInteger" /> value to write.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object.</returns>
-    /// <exception cref="FormatException">The value cannot be formatted into a sequence of characters. This exception is stored into the returned task.</exception>
+    /// <exception cref="FormatException">The value cannot be formatted into a character sequence. This exception is stored into the returned task.</exception>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
     public ValueTask WriteBigIntegerAsync(BigInteger value, CancellationToken cancellationToken = default)
     {
@@ -565,7 +565,7 @@ public partial class TabularWriter
     /// <param name="value">An array of bytes to write.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object.</returns>
-    /// <exception cref="FormatException">The value cannot be formatted into a sequence of characters. This exception is stored into the returned task.</exception>
+    /// <exception cref="FormatException">The value cannot be formatted into a character sequence. This exception is stored into the returned task.</exception>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
     /// <remarks>The value will be formatted according to the RFC 4648.</remarks>
     public ValueTask WriteBase16BinaryAsync(byte[]? value, CancellationToken cancellationToken = default)
@@ -579,7 +579,7 @@ public partial class TabularWriter
     /// <param name="value">An array of bytes to write.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object.</returns>
-    /// <exception cref="FormatException">The value cannot be formatted into a sequence of characters. This exception is stored into the returned task.</exception>
+    /// <exception cref="FormatException">The value cannot be formatted into a character sequence. This exception is stored into the returned task.</exception>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
     /// <remarks>The value will be formatted according to the RFC 4648.</remarks>
     public ValueTask WriteBase64BinaryAsync(byte[]? value, CancellationToken cancellationToken = default)

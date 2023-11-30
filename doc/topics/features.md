@@ -6,16 +6,16 @@ uid: urn:topics:features
 
 <p />
 
-### Value Types
+### Tabular Fields
 
 <p />
 
-The framework has built-in support for working with tabular fields as values of the following types: 
+The framework has built-in support for working with tabular fields as values of the following types:
 
 <p />
 
-|Runtime Type|Representation|Standard|
-|-|-|-|
+|Type|String Format|Standard|
+|:-|:-|:-|
 |`System.Boolean`|Lexical space: `"true" | "false" | "1" | "0"`|W3C XSD 1.1 P2|
 |`System.Byte`|Format specifier: `"g"`||
 |`System.Char`|One UTF-16 code unit||
@@ -32,7 +32,7 @@ The framework has built-in support for working with tabular fields as values of 
 |`System.Int128`|Format specifier: `"g"`||
 |`System.SByte`|Format specifier: `"g"`||
 |`System.Single`|Format specifier: `"g"`||
-|`System.String`|Up to `2,147,483,591` UTF-16 code units||
+|`System.String`|Up to 2,147,483,591 UTF-16 code units||
 |`System.TimeOnly`|Format: `"HH':'mm':'ss.FFFFFFF"`|RFC 3339 / ISO 8601-1:2019|
 |`System.TimeSpan`|Format: `"[-]'P'd'DT'h'H'm'M's.FFFFFFF'S'"`|RFC 3339 / ISO 8601-1:2019|
 |`System.UInt16`|Format specifier: `"g"`||
@@ -45,11 +45,7 @@ The framework has built-in support for working with tabular fields as values of 
 
 <p />
 
-Any generated record handler also supports type members of the `System.Nullable<T>` type with any supported value type as the underlying type.
-
-<p />
-
-To use a type member of the `System.Byte[]` type with a generated record handler, one of the available converters must be specified explicitly:
+Any generated record handler also supports type members of the `System.Nullable<T>` type with any supported value type as the underlying type. To map a type member of the `System.Byte[]` type for a generated record handler, one of the available value converters must be specified explicitly:
 
 <p />
 
@@ -58,16 +54,57 @@ To use a type member of the `System.Byte[]` type with a generated record handler
 
 <p />
 
+### Tabular Records
+
+<p />
+
+The framework has built-in support for working with tabular records as single-dimensional arrays `T[]` or `System.Nullable<T>[]` of any supported type (except `System.Byte[]`). For example, tabular records of any file can be interpreted as string arrays, even if they have different number of fields:
+
+<p />
+
+# [C#](#tab/cs)
+
+```cs
+var dialect = new TabularDialect("\r\n", ',', '\"');
+
+using (var reader = new TabularReader<string?[]>(File.OpenRead("data.csv"), dialect))
+{
+    while (reader.TryReadRecord())
+    {
+        Console.WriteLine(string.Join('|', reader.CurrentRecord));
+    }
+}
+```
+
+# [F#](#tab/fs)
+
+```fs
+let dialect = new TabularDialect("\r\n", ',', '\"')
+
+using (new TabularReader<array<string>>(File.OpenRead "books.csv", dialect)) (fun reader ->
+    while reader.TryReadRecord ()) do
+        printfn "%s" (String.concat "|" reader.CurrentRecord)
+)
+```
+
+---
+
+<p />
+
+The framework also provides generic record handlers for working with tabular records as single-dimensional arrays of any type:
+
+<p />
+
+- [TabularArrayHandler\<T\>](xref:Addax.Formats.Tabular.Handlers.TabularArrayHandler`1)
+- [TabularSparseArrayHandler\<T\>](xref:Addax.Formats.Tabular.Handlers.TabularSparseArrayHandler`1)
+
+<p />
+
 ### Dialect Inferrence
 
 <p />
 
-> [!NOTE]
-> The section describes a preview feature that is available in the latest pre-release package.
-
-<p />
-
-A dialect can be inferred from a stream based on frequency of the eligible token values:
+A tabular dialect can be inferred from a stream based on frequency of the eligible token values:
 
 <p />
 
@@ -127,10 +164,6 @@ type TabularReader<'T> =
 
 <p />
 
-### Memory Usage
-
-<p />
-
 The field reader provides access to the last read field in a way that allows reading the field without additional string allocations:
 
 <p />
@@ -181,11 +214,3 @@ let options = new TabularOptions (
 ```
 
 ---
-
-<p />
-
-### References
-
-<p />
-
-- [W3C - Model for Tabular Data and Metadata on the Web](https://w3.org/TR/2015/REC-tabular-data-model-20151217)

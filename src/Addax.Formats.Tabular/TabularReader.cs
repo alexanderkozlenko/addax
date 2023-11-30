@@ -252,11 +252,11 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
 
     /// <summary>Tries to parse the current field as <typeparamref name="T" /> and returns a value that indicates whether the operation succeeded.</summary>
     /// <typeparam name="T">The type to parse the field as.</typeparam>
-    /// <param name="converter">The converter to parse the field with.</param>
+    /// <param name="converter">The converter to parse the value with.</param>
     /// <param name="value">When this method returns, contains a <typeparamref name="T" /> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</param>
     /// <returns><see langword="true" /> if the field was successfully parsed; otherwise, <see langword="false" />.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="converter" /> is <see langword="null" />.</exception>
-    public bool TryGet<T>(TabularConverter<T> converter, out T? value)
+    public bool TryGet<T>(TabularConverter<T?> converter, out T? value)
     {
         ArgumentNullException.ThrowIfNull(converter);
 
@@ -278,11 +278,11 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
 
     /// <summary>Parses the current field as <typeparamref name="T" />.</summary>
     /// <typeparam name="T">The type to parse the field as.</typeparam>
-    /// <param name="converter">The converter to parse the field with.</param>
+    /// <param name="converter">The converter to parse the value with.</param>
     /// <returns>A <typeparamref name="T" /> value.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="converter" /> is <see langword="null" />.</exception>
     /// <exception cref="FormatException">The current field cannot be parsed as <typeparamref name="T" />.</exception>
-    public T? Get<T>(TabularConverter<T> converter)
+    public T? Get<T>(TabularConverter<T?> converter)
     {
         ArgumentNullException.ThrowIfNull(converter);
 
@@ -452,7 +452,7 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
         _currentFieldCharsUsed = 0;
     }
 
-    private bool TryGet<T>(ReadOnlySpan<char> source, TabularConverter<T> converter, out T? result)
+    private bool TryGet<T>(ReadOnlySpan<char> source, TabularConverter<T?> converter, out T? result)
     {
         return converter.TryParse(source, _formatProvider, out result);
     }
@@ -505,7 +505,7 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
         }
     }
 
-    /// <summary>Gets the last read field as a sequence of characters.</summary>
+    /// <summary>Gets the last read field as a character sequence.</summary>
     /// <value>A read-only region of memory.</value>
     public ReadOnlyMemory<char> CurrentField
     {

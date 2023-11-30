@@ -1,9 +1,11 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts binary data encoded with "base16" ("hex") encoding from or to a sequence of characters.</summary>
-public class TabularBase16BinaryConverter : TabularConverter<byte[]>
+/// <summary>Converts binary data encoded with "base16" ("hex") encoding from or to a character sequence.</summary>
+public class TabularBase16BinaryConverter : TabularConverter<byte[]?>
 {
     internal static readonly TabularBase16BinaryConverter Instance = new();
 
@@ -41,7 +43,7 @@ public class TabularBase16BinaryConverter : TabularConverter<byte[]>
     }
 
     /// <inheritdoc />
-    public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out byte[]? value)
+    public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, [NotNullWhen(true)] out byte[]? value)
     {
         source = source.Trim();
 

@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="Int128" /> value from or to a sequence of characters.</summary>
+/// <summary>Converts a <see cref="Int128" /> value from or to a character sequence.</summary>
 public class TabularInt128Converter : TabularConverter<Int128>
 {
     internal static readonly TabularInt128Converter Instance = new();

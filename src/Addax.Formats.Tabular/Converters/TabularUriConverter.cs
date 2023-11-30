@@ -1,9 +1,11 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="Uri" /> instance from or to a sequence of characters.</summary>
-public class TabularUriConverter : TabularConverter<Uri>
+/// <summary>Converts a <see cref="Uri" /> instance from or to a character sequence.</summary>
+public class TabularUriConverter : TabularConverter<Uri?>
 {
     internal static readonly TabularUriConverter Instance = new();
 
@@ -26,7 +28,7 @@ public class TabularUriConverter : TabularConverter<Uri>
     }
 
     /// <inheritdoc />
-    public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out Uri? value)
+    public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, [NotNullWhen(true)] out Uri? value)
     {
         var uriString = source.IsEmpty ? string.Empty : new(source);
 

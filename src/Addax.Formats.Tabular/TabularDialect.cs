@@ -63,7 +63,7 @@ public sealed class TabularDialect
         }
     }
 
-    /// <summary>Initializes a new instance of the <see cref="TabularDialect" /> class with specified tokens.</summary>
+    /// <summary>Initializes a new instance of the <see cref="TabularDialect" /> class with the specified tokens.</summary>
     /// <param name="lineTerminator">The character sequence that is used to separate records. Must have one or two distinct characters.</param>
     /// <param name="delimiter">The character that is used to separate fields. Must differ from line terminator characters.</param>
     /// <param name="quoteSymbol">The character that is used to surround an escaped field. Must differ from line terminator and delimiter characters.</param>
@@ -76,7 +76,7 @@ public sealed class TabularDialect
     {
     }
 
-    /// <summary>Initializes a new instance of the <see cref="TabularDialect" /> class with specified tokens.</summary>
+    /// <summary>Initializes a new instance of the <see cref="TabularDialect" /> class with the specified tokens.</summary>
     /// <param name="lineTerminator">The character sequence that is used to separate records. Must have one or two distinct characters.</param>
     /// <param name="delimiter">The character that is used to separate fields. Must differ from line terminator characters.</param>
     /// <param name="quoteSymbol">The character that is used to surround an escaped field. Must differ from line terminator and delimiter characters.</param>
@@ -88,7 +88,7 @@ public sealed class TabularDialect
     {
     }
 
-    /// <summary>Initializes a new instance of the <see cref="TabularDialect" /> class with specified tokens.</summary>
+    /// <summary>Initializes a new instance of the <see cref="TabularDialect" /> class with the specified tokens.</summary>
     /// <param name="lineTerminator">The character sequence that is used to separate records. Must have one or two distinct characters.</param>
     /// <param name="delimiter">The character that is used to separate fields. Must differ from line terminator characters.</param>
     /// <param name="quoteSymbol">The character that is used to surround an escaped field and escape itself within an escaped field. Must differ from line terminator and delimiter characters.</param>

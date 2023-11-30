@@ -9,7 +9,7 @@
           ]
         }
       ],
-      "dest": "api",
+      "output": "api",
       "filter": "api-filter.yml",
       "namespaceLayout": "nested"
     }

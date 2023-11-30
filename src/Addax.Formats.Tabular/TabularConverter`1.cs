@@ -2,7 +2,7 @@
 
 namespace Addax.Formats.Tabular;
 
-/// <summary>Defines the core behavior of converting a value from or to a sequence of characters and provides a base for derived classes.</summary>
+/// <summary>Defines the core behavior of converting a value from or to a character sequence and provides a base for derived classes.</summary>
 /// <typeparam name="T">The type of value handled by the converter.</typeparam>
 public abstract class TabularConverter<T>
 {
@@ -11,7 +11,7 @@ public abstract class TabularConverter<T>
     {
     }
 
-    /// <summary>When overridden in a derived class, tries to format the value into a sequence of characters.</summary>
+    /// <summary>When overridden in a derived class, tries to format the value into a character sequence.</summary>
     /// <param name="value">The value to format.</param>
     /// <param name="destination">The buffer to write the value to.</param>
     /// <param name="provider">An object that supplies culture-specific formatting information.</param>
@@ -23,7 +23,7 @@ public abstract class TabularConverter<T>
         throw new NotSupportedException();
     }
 
-    /// <summary>When overridden in a derived class, tries to parse the sequence of characters into a value.</summary>
+    /// <summary>When overridden in a derived class, tries to parse the character sequence into a value.</summary>
     /// <param name="source">The buffer to read a value from.</param>
     /// <param name="provider">An object that supplies culture-specific formatting information.</param>
     /// <param name="value">When this method returns, contains a value that is the result of successfully parsing <paramref name="source" />, or an undefined value on failure. This parameter is treated as uninitialized.</param>

@@ -5,7 +5,7 @@ using Addax.Formats.Tabular.Buffers;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="TimeSpan" /> value from or to a sequence of characters.</summary>
+/// <summary>Converts a <see cref="TimeSpan" /> value from or to a character sequence.</summary>
 public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
 {
     internal static readonly TabularTimeSpanConverter Instance = new();

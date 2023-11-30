@@ -72,7 +72,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
         return _textWriter.DisposeAsync();
     }
 
-    /// <summary>Writes an empty sequence of characters as the next value field of the current record.</summary>
+    /// <summary>Writes an empty character sequence as the next value field of the current record.</summary>
     public void WriteEmpty()
     {
         ObjectDisposedException.ThrowIf(_isDisposed, this);
@@ -80,7 +80,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
         WriteValueCore(default);
     }
 
-    /// <summary>Asynchronously writes an empty sequence of characters as the next value field of the current record.</summary>
+    /// <summary>Asynchronously writes an empty character sequence as the next value field of the current record.</summary>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object.</returns>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
@@ -91,7 +91,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
         return WriteValueCoreAsync(default, cancellationToken);
     }
 
-    /// <summary>Writes a sequence of characters as the next value field of the current record.</summary>
+    /// <summary>Writes a character sequence as the next value field of the current record.</summary>
     /// <param name="value">A <see cref="ReadOnlySpan{T}" /> instance to write.</param>
     /// <exception cref="ArgumentException">The formatted value exceeds the supported field length.</exception>
     public void WriteString(ReadOnlySpan<char> value)
@@ -111,7 +111,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
         WriteValueCore(value);
     }
 
-    /// <summary>Asynchronously writes a sequence of characters as the next value field of the current record.</summary>
+    /// <summary>Asynchronously writes a character sequence as the next value field of the current record.</summary>
     /// <param name="value">A <see cref="ReadOnlyMemory{T}" /> instance to write.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object.</returns>
@@ -168,9 +168,9 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
         return WriteValueCoreAsync(value, converter, cancellationToken);
     }
 
-    /// <summary>Writes a sequence of characters as the next record with annotation.</summary>
+    /// <summary>Writes a character sequence as the next record with annotation.</summary>
     /// <param name="value">A <see cref="ReadOnlySpan{T}" /> instance to write.</param>
-    /// <exception cref="ArgumentException">The value cannot be formatted into a sequence of characters or the formatted value exceeds the supported field length.</exception>
+    /// <exception cref="ArgumentException">The value cannot be formatted into a character sequence or the formatted value exceeds the supported field length.</exception>
     /// <exception cref="InvalidOperationException">The current dialect does not support the operation.</exception>
     public void WriteAnnotation(ReadOnlySpan<char> value)
     {
@@ -181,7 +181,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
 
     /// <summary>Writes a <see cref="string" /> instance as the next record with annotation.</summary>
     /// <param name="value">A <see cref="string" /> instance to write.</param>
-    /// <exception cref="ArgumentException">The value cannot be formatted into a sequence of characters or the formatted value exceeds the supported field length.</exception>
+    /// <exception cref="ArgumentException">The value cannot be formatted into a character sequence or the formatted value exceeds the supported field length.</exception>
     /// <exception cref="InvalidOperationException">The current dialect does not support the operation.</exception>
     public void WriteAnnotation(string? value)
     {
@@ -190,11 +190,11 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
         WriteAnnotationCore(value);
     }
 
-    /// <summary>Asynchronously writes a sequence of characters as the next record with annotation.</summary>
+    /// <summary>Asynchronously writes a character sequence as the next record with annotation.</summary>
     /// <param name="value">A <see cref="ReadOnlyMemory{T}" /> instance to write.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object.</returns>
-    /// <exception cref="ArgumentException">The value cannot be formatted into a sequence of characters or the formatted value exceeds the supported field length. This exception is stored into the returned task.</exception>
+    /// <exception cref="ArgumentException">The value cannot be formatted into a character sequence or the formatted value exceeds the supported field length. This exception is stored into the returned task.</exception>
     /// <exception cref="InvalidOperationException">The current dialect does not support the operation. This exception is stored into the returned task.</exception>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
     public ValueTask WriteAnnotationAsync(ReadOnlyMemory<char> value, CancellationToken cancellationToken = default)
@@ -208,7 +208,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
     /// <param name="value">A <see cref="string" /> instance to write.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object.</returns>
-    /// <exception cref="ArgumentException">The value cannot be formatted into a sequence of characters or the formatted value exceeds the supported field length. This exception is stored into the returned task.</exception>
+    /// <exception cref="ArgumentException">The value cannot be formatted into a character sequence or the formatted value exceeds the supported field length. This exception is stored into the returned task.</exception>
     /// <exception cref="InvalidOperationException">The current dialect does not support the operation. This exception is stored into the returned task.</exception>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
     public ValueTask WriteAnnotationAsync(string? value, CancellationToken cancellationToken = default)
@@ -520,7 +520,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
     [StackTraceHidden]
     private static void ThrowFieldFormatException()
     {
-        throw new FormatException("The value cannot be formatted into a sequence of characters.");
+        throw new FormatException("The value cannot be formatted into a character sequence.");
     }
 
     /// <summary>Gets the type of the current writer position.</summary>

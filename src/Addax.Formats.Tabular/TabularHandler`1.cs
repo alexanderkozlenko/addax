@@ -3,7 +3,7 @@
 namespace Addax.Formats.Tabular;
 
 /// <summary>Defines the core behavior of reading an object from or writing an object to a tabular record and provides a base for derived classes.</summary>
-/// <typeparam name="T">The type of object handled by the handler.</typeparam>
+/// <typeparam name="T">The type of object handled by the record handler.</typeparam>
 public abstract class TabularHandler<T>
     where T : notnull
 {

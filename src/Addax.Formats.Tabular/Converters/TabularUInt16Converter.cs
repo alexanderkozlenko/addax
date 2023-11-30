@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="ushort" /> value from or to a sequence of characters.</summary>
+/// <summary>Converts a <see cref="ushort" /> value from or to a character sequence.</summary>
 [CLSCompliant(false)]
 public class TabularUInt16Converter : TabularConverter<ushort>
 {

@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="long" /> value from or to a sequence of characters.</summary>
+/// <summary>Converts a <see cref="long" /> value from or to a character sequence.</summary>
 public class TabularInt64Converter : TabularConverter<long>
 {
     internal static readonly TabularInt64Converter Instance = new();

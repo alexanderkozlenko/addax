@@ -30,7 +30,7 @@ public sealed class TabularReader<T> : IDisposable, IAsyncDisposable
         ArgumentNullException.ThrowIfNull(dialect);
 
         _fieldReader = new(stream, dialect, options);
-        _recordHandler = handler ?? SelectHandler();
+        _recordHandler = handler ?? TabularRegistry.SelectHandler<T>();
     }
 
     /// <summary>Releases the resources used by the current instance of the <see cref="TabularReader{T}" /> class.</summary>
@@ -213,23 +213,6 @@ public sealed class TabularReader<T> : IDisposable, IAsyncDisposable
         }
 
         return true;
-    }
-
-    private static TabularHandler<T> SelectHandler()
-    {
-        if (!TabularRegistry.Handlers.TryGetValue(typeof(T), out var handler) || (handler is not TabularHandler<T> handlerT))
-        {
-            ThrowHandlerNotFoundException();
-        }
-
-        return handlerT;
-
-        [DoesNotReturn]
-        [StackTraceHidden]
-        static void ThrowHandlerNotFoundException()
-        {
-            throw new InvalidOperationException($"A record handler for type '{typeof(T)}' cannot be found in the registry.");
-        }
     }
 
     [DoesNotReturn]

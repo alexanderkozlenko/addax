@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="float" /> value from or to a sequence of characters.</summary>
+/// <summary>Converts a <see cref="float" /> value from or to a character sequence.</summary>
 public class TabularSingleConverter : TabularConverter<float>
 {
     internal static readonly TabularSingleConverter Instance = new();

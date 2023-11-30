@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="DateTimeOffset" /> value from or to a sequence of characters.</summary>
+/// <summary>Converts a <see cref="DateTimeOffset" /> value from or to a character sequence.</summary>
 public class TabularDateTimeOffsetConverter : TabularConverter<DateTimeOffset>
 {
     internal static readonly TabularDateTimeOffsetConverter Instance = new();

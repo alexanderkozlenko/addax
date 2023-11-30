@@ -6,7 +6,7 @@ uid: urn:topics:benchmarks
 
 <p />
 
-The following benchmarks reflect the approximate time and memory required to process `1,048,576` fields:
+The following benchmarks reflect the approximate time and memory required to process 1,048,576 fields:
 
 <p />
 

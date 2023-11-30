@@ -1,11 +1,12 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using Addax.Formats.Tabular.Buffers;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts binary data encoded with "base64" encoding from or to a sequence of characters.</summary>
-public class TabularBase64BinaryConverter : TabularConverter<byte[]>
+/// <summary>Converts binary data encoded with "base64" encoding from or to a character sequence.</summary>
+public class TabularBase64BinaryConverter : TabularConverter<byte[]?>
 {
     internal static readonly TabularBase64BinaryConverter Instance = new();
 
@@ -21,7 +22,7 @@ public class TabularBase64BinaryConverter : TabularConverter<byte[]>
     }
 
     /// <inheritdoc />
-    public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out byte[]? value)
+    public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, [NotNullWhen(true)] out byte[]? value)
     {
         var bufferSize = (int)Math.Ceiling(source.Length / 4.0) * 3;
 
