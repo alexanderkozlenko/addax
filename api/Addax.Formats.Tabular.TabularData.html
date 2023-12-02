@@ -91,7 +91,7 @@
 
   <h1 id="Addax_Formats_Tabular_TabularData" data-uid="Addax.Formats.Tabular.TabularData" class="text-break">
     Class TabularData
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -99,7 +99,7 @@
   <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Provides static methods for reading and writing collections of tabular data records.</p>
+  <div class="markdown summary"><p>Provides static methods for working with collections of tabular data records and inferring dialects.</p>
 </div>
   <div class="markdown conceptual"></div>
 
@@ -130,11 +130,263 @@
 </h2>
 
 
+  <a id="Addax_Formats_Tabular_TabularData_InferDialect_" data-uid="Addax.Formats.Tabular.TabularData.InferDialect*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_InferDialect_System_IO_Stream_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_Char__System_Collections_Generic_IEnumerable_System_Char__" data-uid="Addax.Formats.Tabular.TabularData.InferDialect(System.IO.Stream,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.Char},System.Collections.Generic.IEnumerable{System.Char})">
+  InferDialect(Stream, IEnumerable&lt;string&gt;, IEnumerable&lt;char&gt;, IEnumerable&lt;char&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attempts to infer a dialect from the stream based on frequency of the eligible token values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TabularDialect? InferDialect(Stream stream, IEnumerable&lt;string&gt; lineTerminators, IEnumerable&lt;char&gt; delimiters, IEnumerable&lt;char&gt; quoteSymbols)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to infer from.</p>
+</dd>
+    <dt><code>lineTerminators</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>The eligible values for a line terminator.</p>
+</dd>
+    <dt><code>delimiters</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>The eligible values for a delimiter.</p>
+</dd>
+    <dt><code>quoteSymbols</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>The eligible values for a quote symbol.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>A successfully inferred dialect or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularData_InferDialect_System_IO_Stream_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_Char__System_Collections_Generic_IEnumerable_System_Char___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The operation consumes the first 65536 bytes as a sample and uses a UTF-8 encoding without byte order mark (BOM).</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support reading.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code>, <code class="paramref">lineTerminators</code>, <code class="paramref">delimiters</code>, or <code class="paramref">quoteSymbols</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularData_InferDialect_" data-uid="Addax.Formats.Tabular.TabularData.InferDialect*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_InferDialect_System_IO_Stream_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_Char__System_Collections_Generic_IEnumerable_System_Char__System_Int32_System_Text_Encoding_" data-uid="Addax.Formats.Tabular.TabularData.InferDialect(System.IO.Stream,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.Char},System.Collections.Generic.IEnumerable{System.Char},System.Int32,System.Text.Encoding)">
+  InferDialect(Stream, IEnumerable&lt;string&gt;, IEnumerable&lt;char&gt;, IEnumerable&lt;char&gt;, int, Encoding?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Attempts to infer a dialect from the stream based on frequency of the eligible token values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TabularDialect? InferDialect(Stream stream, IEnumerable&lt;string&gt; lineTerminators, IEnumerable&lt;char&gt; delimiters, IEnumerable&lt;char&gt; quoteSymbols, int sampleLength, Encoding? encoding)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to infer from.</p>
+</dd>
+    <dt><code>lineTerminators</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>The eligible values for a line terminator.</p>
+</dd>
+    <dt><code>delimiters</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>The eligible values for a delimiter.</p>
+</dd>
+    <dt><code>quoteSymbols</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>The eligible values for a quote symbol.</p>
+</dd>
+    <dt><code>sampleLength</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The length of a sample in bytes.</p>
+</dd>
+    <dt><code>encoding</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.encoding">Encoding</a></dt>
+    <dd><p>The encoding for reading from the stream.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
+    <dd><p>A successfully inferred dialect or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support reading.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code>, <code class="paramref">lineTerminators</code>, <code class="paramref">delimiters</code>, or <code class="paramref">quoteSymbols</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularData_InferDialectAsync_" data-uid="Addax.Formats.Tabular.TabularData.InferDialectAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_InferDialectAsync_System_IO_Stream_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_Char__System_Collections_Generic_IEnumerable_System_Char__System_Int32_System_Text_Encoding_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.InferDialectAsync(System.IO.Stream,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.Char},System.Collections.Generic.IEnumerable{System.Char},System.Int32,System.Text.Encoding,System.Threading.CancellationToken)">
+  InferDialectAsync(Stream, IEnumerable&lt;string&gt;, IEnumerable&lt;char&gt;, IEnumerable&lt;char&gt;, int, Encoding?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously attempts to infer a dialect from the stream based on frequency of the eligible token values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ValueTask&lt;TabularDialect?&gt; InferDialectAsync(Stream stream, IEnumerable&lt;string&gt; lineTerminators, IEnumerable&lt;char&gt; delimiters, IEnumerable&lt;char&gt; quoteSymbols, int sampleLength, Encoding? encoding, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to infer from.</p>
+</dd>
+    <dt><code>lineTerminators</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>The eligible values for a line terminator.</p>
+</dd>
+    <dt><code>delimiters</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>The eligible values for a delimiter.</p>
+</dd>
+    <dt><code>quoteSymbols</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>The eligible values for a quote symbol.</p>
+</dd>
+    <dt><code>sampleLength</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The length of a sample in bytes.</p>
+</dd>
+    <dt><code>encoding</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.encoding">Encoding</a></dt>
+    <dd><p>The encoding for reading from the stream.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;<a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a>&gt;</dt>
+    <dd><p>A task object that, when awaited, produces a successfully inferred dialect or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support reading.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code>, <code class="paramref">lineTerminators</code>, <code class="paramref">delimiters</code>, or <code class="paramref">quoteSymbols</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+  </dl>
+
+
+
+  <a id="Addax_Formats_Tabular_TabularData_InferDialectAsync_" data-uid="Addax.Formats.Tabular.TabularData.InferDialectAsync*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularData_InferDialectAsync_System_IO_Stream_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_Char__System_Collections_Generic_IEnumerable_System_Char__System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.InferDialectAsync(System.IO.Stream,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.Char},System.Collections.Generic.IEnumerable{System.Char},System.Threading.CancellationToken)">
+  InferDialectAsync(Stream, IEnumerable&lt;string&gt;, IEnumerable&lt;char&gt;, IEnumerable&lt;char&gt;, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Asynchronously attempts to infer a dialect from the stream based on frequency of the eligible token values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static ValueTask&lt;TabularDialect?&gt; InferDialectAsync(Stream stream, IEnumerable&lt;string&gt; lineTerminators, IEnumerable&lt;char&gt; delimiters, IEnumerable&lt;char&gt; quoteSymbols, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd><p>The stream to infer from.</p>
+</dd>
+    <dt><code>lineTerminators</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>The eligible values for a line terminator.</p>
+</dd>
+    <dt><code>delimiters</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>The eligible values for a delimiter.</p>
+</dd>
+    <dt><code>quoteSymbols</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>The eligible values for a quote symbol.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The token to monitor for cancellation requests.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;<a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a>&gt;</dt>
+    <dd><p>A task object that, when awaited, produces a successfully inferred dialect or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularData_InferDialectAsync_System_IO_Stream_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_Char__System_Collections_Generic_IEnumerable_System_Char__System_Threading_CancellationToken__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The operation consumes the first 65536 bytes as a sample and uses a UTF-8 encoding without byte order mark (BOM).</p>
+</div>
+
+  <h4 class="section">Exceptions</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
+    <dd><p><code class="paramref">stream</code> does not support reading.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
+    <dd><p><code class="paramref">stream</code>, <code class="paramref">lineTerminators</code>, <code class="paramref">delimiters</code>, or <code class="paramref">quoteSymbols</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+</dd>
+  </dl>
+
+
+
   <a id="Addax_Formats_Tabular_TabularData_ReadRecordsAsync_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecordsAsync*"></a>
 
   <h3 id="Addax_Formats_Tabular_TabularData_ReadRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_Addax_Formats_Tabular_TabularHandler___0__System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions,Addax.Formats.Tabular.TabularHandler{``0},System.Threading.CancellationToken)">
   ReadRecordsAsync&lt;T&gt;(Stream, TabularDialect, TabularOptions?, TabularHandler&lt;T&gt;?, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously reads all records from the stream that can be represented as <code class="typeparamref">T</code>.</p>
@@ -209,7 +461,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_ReadRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions,System.Threading.CancellationToken)">
   ReadRecordsAsync&lt;T&gt;(Stream, TabularDialect, TabularOptions?, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously reads all records from the stream that can be represented as <code class="typeparamref">T</code>.</p>
@@ -281,7 +533,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_ReadRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Threading.CancellationToken)">
   ReadRecordsAsync&lt;T&gt;(Stream, TabularDialect, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously reads all records from the stream that can be represented as <code class="typeparamref">T</code>.</p>
@@ -350,7 +602,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_ReadRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect)">
   ReadRecords&lt;T&gt;(Stream, TabularDialect)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Reads all records from the stream that can be represented as <code class="typeparamref">T</code>.</p>
@@ -413,7 +665,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_ReadRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions)">
   ReadRecords&lt;T&gt;(Stream, TabularDialect, TabularOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Reads all records that can be represented as <code class="typeparamref">T</code> from the stream.</p>
@@ -479,7 +731,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_ReadRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_Addax_Formats_Tabular_TabularHandler___0__" data-uid="Addax.Formats.Tabular.TabularData.ReadRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions,Addax.Formats.Tabular.TabularHandler{``0})">
   ReadRecords&lt;T&gt;(Stream, TabularDialect, TabularOptions?, TabularHandler&lt;T&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Reads all records that can be represented as <code class="typeparamref">T</code> from the stream.</p>
@@ -548,7 +800,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_WriteRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__Addax_Formats_Tabular_TabularOptions_Addax_Formats_Tabular_TabularHandler___0__System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0},Addax.Formats.Tabular.TabularOptions,Addax.Formats.Tabular.TabularHandler{``0},System.Threading.CancellationToken)">
   WriteRecordsAsync&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;, TabularOptions?, TabularHandler&lt;T&gt;?, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously writes a collection of records to the stream.</p>
@@ -623,7 +875,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_WriteRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__Addax_Formats_Tabular_TabularOptions_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0},Addax.Formats.Tabular.TabularOptions,System.Threading.CancellationToken)">
   WriteRecordsAsync&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;, TabularOptions?, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously writes a collection of records to the stream.</p>
@@ -695,7 +947,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_WriteRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0},System.Threading.CancellationToken)">
   WriteRecordsAsync&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously writes a collection of records to the stream.</p>
@@ -764,7 +1016,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_WriteRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__" data-uid="Addax.Formats.Tabular.TabularData.WriteRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0})">
   WriteRecords&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Writes a collection of records to the stream.</p>
@@ -821,7 +1073,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_WriteRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__Addax_Formats_Tabular_TabularOptions_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0},Addax.Formats.Tabular.TabularOptions)">
   WriteRecords&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;, TabularOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Writes a collection of records to the stream.</p>
@@ -881,7 +1133,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_WriteRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__Addax_Formats_Tabular_TabularOptions_Addax_Formats_Tabular_TabularHandler___0__" data-uid="Addax.Formats.Tabular.TabularData.WriteRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0},Addax.Formats.Tabular.TabularOptions,Addax.Formats.Tabular.TabularHandler{``0})">
   WriteRecords&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;, TabularOptions?, TabularHandler&lt;T&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Writes a collection of records to the stream.</p>

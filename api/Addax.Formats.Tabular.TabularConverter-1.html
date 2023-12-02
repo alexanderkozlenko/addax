@@ -91,7 +91,7 @@
 
   <h1 id="Addax_Formats_Tabular_TabularConverter_1" data-uid="Addax.Formats.Tabular.TabularConverter`1" class="text-break">
     Class TabularConverter&lt;T&gt;
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularConverter%601.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularConverter%601.cs"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -99,7 +99,7 @@
   <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Defines the core behavior of converting a value from or to a sequence of characters and provides a base for derived classes.</p>
+  <div class="markdown summary"><p>Defines the core behavior of converting a value from or to a character sequence and provides a base for derived classes.</p>
 </div>
   <div class="markdown conceptual"></div>
 
@@ -128,8 +128,12 @@
   <dl class="typelist derived">
     <dt>Derived</dt>
     <dd>
-      <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularBase16BinaryConverter.html">TabularBase16BinaryConverter</a></div>
-      <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularBase64BinaryConverter.html">TabularBase64BinaryConverter</a></div>
+      <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.html">TabularBase16ArrayConverter</a></div>
+      <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularBase16MemoryConverter.html">TabularBase16MemoryConverter</a></div>
+      <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularBase16ReadOnlyMemoryConverter.html">TabularBase16ReadOnlyMemoryConverter</a></div>
+      <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter.html">TabularBase64ArrayConverter</a></div>
+      <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularBase64MemoryConverter.html">TabularBase64MemoryConverter</a></div>
+      <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularBase64ReadOnlyMemoryConverter.html">TabularBase64ReadOnlyMemoryConverter</a></div>
       <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularBigIntegerConverter.html">TabularBigIntegerConverter</a></div>
       <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularBooleanConverter.html">TabularBooleanConverter</a></div>
       <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularByteConverter.html">TabularByteConverter</a></div>
@@ -171,7 +175,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularConverter_1__ctor" data-uid="Addax.Formats.Tabular.TabularConverter`1.#ctor">
   TabularConverter()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularConverter%601.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularConverter%601.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html">TabularConverter&lt;T&gt;</a> class.</p>
@@ -202,10 +206,10 @@
 
   <h3 id="Addax_Formats_Tabular_TabularConverter_1_TryFormat__0_System_Span_System_Char__System_IFormatProvider_System_Int32__" data-uid="Addax.Formats.Tabular.TabularConverter`1.TryFormat(`0,System.Span{System.Char},System.IFormatProvider,System.Int32@)">
   TryFormat(T?, Span&lt;char&gt;, IFormatProvider?, out int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularConverter%601.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularConverter%601.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to format the value into a sequence of characters.</p>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to format the value into a character sequence.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -253,10 +257,10 @@
 
   <h3 id="Addax_Formats_Tabular_TabularConverter_1_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider__0__" data-uid="Addax.Formats.Tabular.TabularConverter`1.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,`0@)">
   TryParse(ReadOnlySpan&lt;char&gt;, IFormatProvider?, out T?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/TabularConverter%601.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/TabularConverter%601.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to parse the sequence of characters into a value.</p>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to parse the character sequence into a value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 

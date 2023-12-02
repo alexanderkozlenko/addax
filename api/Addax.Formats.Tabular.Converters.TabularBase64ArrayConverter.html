@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class TabularBase64ArrayConverter
+ </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class TabularBase64ArrayConverter
+ ">
+      
+      <link rel="icon" href="../images/app-32.png">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+  </head>
+
+  <script type="module" src="./../public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/app-32.png" alt="Addax">
+            Addax
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter">
+
+
+
+  <h1 id="Addax_Formats_Tabular_Converters_TabularBase64ArrayConverter" data-uid="Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter" class="text-break">
+    Class TabularBase64ArrayConverter
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/Converters/TabularBase64ArrayConverter.cs"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Addax.html">Addax</a>.<a class="xref" href="Addax.Formats.html">Formats</a>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a>.<a class="xref" href="Addax.Formats.Tabular.Converters.html">Converters</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Converts binary data encoded with &quot;base64&quot; encoding from or to a character sequence.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class TabularBase64ArrayConverter : TabularConverter&lt;byte[]?&gt;</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html">TabularConverter</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]&gt;</div>
+      <div><span class="xref">TabularBase64ArrayConverter</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist derived">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html#Addax_Formats_Tabular_TabularConverter_1_TryFormat__0_System_Span_System_Char__System_IFormatProvider_System_Int32__">TabularConverter&lt;byte[]&gt;.TryFormat(byte[], Span&lt;char&gt;, IFormatProvider, out int)</a>
+    </div>
+    <div>
+      <a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html#Addax_Formats_Tabular_TabularConverter_1_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider__0__">TabularConverter&lt;byte[]&gt;.TryParse(ReadOnlySpan&lt;char&gt;, IFormatProvider, out byte[])</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Addax_Formats_Tabular_Converters_TabularBase64ArrayConverter__ctor_" data-uid="Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter.#ctor*"></a>
+
+  <h3 id="Addax_Formats_Tabular_Converters_TabularBase64ArrayConverter__ctor" data-uid="Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter.#ctor">
+  TabularBase64ArrayConverter()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/Converters/TabularBase64ArrayConverter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter.html">TabularBase64ArrayConverter</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TabularBase64ArrayConverter()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Addax_Formats_Tabular_Converters_TabularBase64ArrayConverter_TryFormat_" data-uid="Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter.TryFormat*"></a>
+
+  <h3 id="Addax_Formats_Tabular_Converters_TabularBase64ArrayConverter_TryFormat_System_Byte___System_Span_System_Char__System_IFormatProvider_System_Int32__" data-uid="Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter.TryFormat(System.Byte[],System.Span{System.Char},System.IFormatProvider,System.Int32@)">
+  TryFormat(byte[]?, Span&lt;char&gt;, IFormatProvider?, out int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/Converters/TabularBase64ArrayConverter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to format the value into a character sequence.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool TryFormat(byte[]? value, Span&lt;char&gt; destination, IFormatProvider? provider, out int charsWritten)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>The value to format.</p>
+</dd>
+    <dt><code>destination</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.span-1">Span</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>The buffer to write the value to.</p>
+</dd>
+    <dt><code>provider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
+    <dd><p>An object that supplies culture-specific formatting information.</p>
+</dd>
+    <dt><code>charsWritten</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>When this method returns, contains an integer that is the number of characters that were written in <code class="paramref">destination</code>. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">value</code> was successfully formatted; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_Converters_TabularBase64ArrayConverter_TryFormat_System_Byte___System_Span_System_Char__System_IFormatProvider_System_Int32___remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
+</div>
+
+
+
+
+  <a id="Addax_Formats_Tabular_Converters_TabularBase64ArrayConverter_TryParse_" data-uid="Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter.TryParse*"></a>
+
+  <h3 id="Addax_Formats_Tabular_Converters_TabularBase64ArrayConverter_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider_System_Byte____" data-uid="Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,System.Byte[]@)">
+  TryParse(ReadOnlySpan&lt;char&gt;, IFormatProvider?, out byte[]?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/Converters/TabularBase64ArrayConverter.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to parse the character sequence into a value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool TryParse(ReadOnlySpan&lt;char&gt; source, IFormatProvider? provider, out byte[]? value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
+    <dd><p>The buffer to read a value from.</p>
+</dd>
+    <dt><code>provider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
+    <dd><p>An object that supplies culture-specific formatting information.</p>
+</dd>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dd><p>When this method returns, contains a value that is the result of successfully parsing <code class="paramref">source</code>, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">source</code> was successfully parsed; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_Converters_TabularBase64ArrayConverter_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider_System_Byte_____remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
+</div>
+
+
+
+
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          &copy; Oleksandr Kozlenko
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

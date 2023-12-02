@@ -91,7 +91,7 @@
 
   <h1 id="Addax_Formats_Tabular_Converters_TabularBase16BinaryConverter" data-uid="Addax.Formats.Tabular.Converters.TabularBase16BinaryConverter" class="text-break">
     Class TabularBase16BinaryConverter
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/Converters/TabularBase16BinaryConverter.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/60eb54315341c4aa840e95232f2f0193f594995a/src/Addax.Formats.Tabular/Converters/TabularBase16BinaryConverter.cs"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -99,12 +99,12 @@
   <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Converts binary data encoded with &quot;base16&quot; (&quot;hex&quot;) encoding from or to a sequence of characters.</p>
+  <div class="markdown summary"><p>Converts binary data encoded with &quot;base16&quot; (&quot;hex&quot;) encoding from or to a character sequence.</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TabularBase16BinaryConverter : TabularConverter&lt;byte[]&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class TabularBase16BinaryConverter : TabularConverter&lt;byte[]?&gt;</code></pre>
   </div>
 
 
@@ -145,7 +145,7 @@
 
   <h3 id="Addax_Formats_Tabular_Converters_TabularBase16BinaryConverter__ctor" data-uid="Addax.Formats.Tabular.Converters.TabularBase16BinaryConverter.#ctor">
   TabularBase16BinaryConverter()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/Converters/TabularBase16BinaryConverter.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/60eb54315341c4aa840e95232f2f0193f594995a/src/Addax.Formats.Tabular/Converters/TabularBase16BinaryConverter.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.Converters.TabularBase16BinaryConverter.html">TabularBase16BinaryConverter</a> class.</p>
@@ -176,10 +176,10 @@
 
   <h3 id="Addax_Formats_Tabular_Converters_TabularBase16BinaryConverter_TryFormat_System_Byte___System_Span_System_Char__System_IFormatProvider_System_Int32__" data-uid="Addax.Formats.Tabular.Converters.TabularBase16BinaryConverter.TryFormat(System.Byte[],System.Span{System.Char},System.IFormatProvider,System.Int32@)">
   TryFormat(byte[]?, Span&lt;char&gt;, IFormatProvider?, out int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/Converters/TabularBase16BinaryConverter.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/60eb54315341c4aa840e95232f2f0193f594995a/src/Addax.Formats.Tabular/Converters/TabularBase16BinaryConverter.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to format the value into a sequence of characters.</p>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to format the value into a character sequence.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -227,10 +227,10 @@
 
   <h3 id="Addax_Formats_Tabular_Converters_TabularBase16BinaryConverter_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider_System_Byte____" data-uid="Addax.Formats.Tabular.Converters.TabularBase16BinaryConverter.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,System.Byte[]@)">
   TryParse(ReadOnlySpan&lt;char&gt;, IFormatProvider?, out byte[]?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/Converters/TabularBase16BinaryConverter.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/60eb54315341c4aa840e95232f2f0193f594995a/src/Addax.Formats.Tabular/Converters/TabularBase16BinaryConverter.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to parse the sequence of characters into a value.</p>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to parse the character sequence into a value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 

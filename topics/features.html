@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Addax - Features </title>
+      <title> </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Addax - Features ">
+      <meta name="title" content=" ">
       
       <link rel="icon" href="../images/app-32.png">
       <link rel="stylesheet" href="../public/docfx.min.css">
@@ -84,172 +84,171 @@
         </div>
 
         <article data-uid="urn:topics:features">
-<h2 id="addax---features">Addax - Features</h2>
 
+<h2 id="addax---features">Addax - Features</h2>
 <p></p>
-<h3 id="value-types">Value Types</h3>
+<h3 id="tabular-fields">Tabular Fields</h3>
 <p></p>
-<p>The framework has built-in support for working with tabular fields as values of the following types:</p>
+<p>The framework has built-in support for interpreting tabular fields as values of the following types:</p>
 <p></p>
 <table>
 <thead>
 <tr>
-<th>Runtime Type</th>
-<th>Representation</th>
-<th>Standard</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">String Format</th>
+<th style="text-align: left;">Standard</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>System.Boolean</code></td>
-<td>Lexical space: <code>&quot;true&quot; | &quot;false&quot; | &quot;1&quot; | &quot;0&quot;</code></td>
-<td>W3C XSD 1.1 P2</td>
+<td style="text-align: left;"><code>System.Boolean</code></td>
+<td style="text-align: left;">Lexical space: <code>&quot;true&quot; | &quot;false&quot; | &quot;1&quot; | &quot;0&quot;</code></td>
+<td style="text-align: left;">W3C XSD 1.1 P2</td>
 </tr>
 <tr>
-<td><code>System.Byte</code></td>
-<td>Format specifier: <code>&quot;g&quot;</code></td>
-<td></td>
+<td style="text-align: left;"><code>System.Byte</code></td>
+<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.Char</code></td>
-<td>One UTF-16 code unit</td>
-<td></td>
+<td style="text-align: left;"><code>System.Char</code></td>
+<td style="text-align: left;">One UTF-16 code unit</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.DateOnly</code></td>
-<td>Format: <code>&quot;yyyy'-'MM'-'dd&quot;</code></td>
-<td>RFC 3339 / ISO 8601-1:2019</td>
+<td style="text-align: left;"><code>System.DateOnly</code></td>
+<td style="text-align: left;">Format: <code>&quot;yyyy'-'MM'-'dd&quot;</code></td>
+<td style="text-align: left;">RFC 3339 / ISO 8601-1:2019</td>
 </tr>
 <tr>
-<td><code>System.DateTime</code></td>
-<td>Format: <code>&quot;yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK&quot;</code></td>
-<td>RFC 3339 / ISO 8601-1:2019</td>
+<td style="text-align: left;"><code>System.DateTime</code></td>
+<td style="text-align: left;">Format: <code>&quot;yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK&quot;</code></td>
+<td style="text-align: left;">RFC 3339 / ISO 8601-1:2019</td>
 </tr>
 <tr>
-<td><code>System.DateTimeOffset</code></td>
-<td>Format: <code>&quot;yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK&quot;</code></td>
-<td>RFC 3339 / ISO 8601-1:2019</td>
+<td style="text-align: left;"><code>System.DateTimeOffset</code></td>
+<td style="text-align: left;">Format: <code>&quot;yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK&quot;</code></td>
+<td style="text-align: left;">RFC 3339 / ISO 8601-1:2019</td>
 </tr>
 <tr>
-<td><code>System.Decimal</code></td>
-<td>Format specifier: <code>&quot;g&quot;</code></td>
-<td></td>
+<td style="text-align: left;"><code>System.Decimal</code></td>
+<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.Double</code></td>
-<td>Format specifier: <code>&quot;g&quot;</code></td>
-<td></td>
+<td style="text-align: left;"><code>System.Double</code></td>
+<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.Guid</code></td>
-<td>Format: <code>&quot;00000000-0000-0000-0000-000000000000&quot;</code></td>
-<td>RFC 4122</td>
+<td style="text-align: left;"><code>System.Guid</code></td>
+<td style="text-align: left;">Format: <code>&quot;00000000-0000-0000-0000-000000000000&quot;</code></td>
+<td style="text-align: left;">RFC 4122</td>
 </tr>
 <tr>
-<td><code>System.Half</code></td>
-<td>Format specifier: <code>&quot;g&quot;</code></td>
-<td></td>
+<td style="text-align: left;"><code>System.Half</code></td>
+<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.Int16</code></td>
-<td>Format specifier: <code>&quot;g&quot;</code></td>
-<td></td>
+<td style="text-align: left;"><code>System.Int16</code></td>
+<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.Int32</code></td>
-<td>Format specifier: <code>&quot;g&quot;</code></td>
-<td></td>
+<td style="text-align: left;"><code>System.Int32</code></td>
+<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.Int64</code></td>
-<td>Format specifier: <code>&quot;g&quot;</code></td>
-<td></td>
+<td style="text-align: left;"><code>System.Int64</code></td>
+<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.Int128</code></td>
-<td>Format specifier: <code>&quot;g&quot;</code></td>
-<td></td>
+<td style="text-align: left;"><code>System.Int128</code></td>
+<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.SByte</code></td>
-<td>Format specifier: <code>&quot;g&quot;</code></td>
-<td></td>
+<td style="text-align: left;"><code>System.SByte</code></td>
+<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.Single</code></td>
-<td>Format specifier: <code>&quot;g&quot;</code></td>
-<td></td>
+<td style="text-align: left;"><code>System.Single</code></td>
+<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.String</code></td>
-<td>Up to <code>2,147,483,591</code> UTF-16 code units</td>
-<td></td>
+<td style="text-align: left;"><code>System.String</code></td>
+<td style="text-align: left;">Up to 2,147,483,591 UTF-16 code units</td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.TimeOnly</code></td>
-<td>Format: <code>&quot;HH':'mm':'ss.FFFFFFF&quot;</code></td>
-<td>RFC 3339 / ISO 8601-1:2019</td>
+<td style="text-align: left;"><code>System.TimeOnly</code></td>
+<td style="text-align: left;">Format: <code>&quot;HH':'mm':'ss.FFFFFFF&quot;</code></td>
+<td style="text-align: left;">RFC 3339 / ISO 8601-1:2019</td>
 </tr>
 <tr>
-<td><code>System.TimeSpan</code></td>
-<td>Format: <code>&quot;[-]'P'd'DT'h'H'm'M's.FFFFFFF'S'&quot;</code></td>
-<td>RFC 3339 / ISO 8601-1:2019</td>
+<td style="text-align: left;"><code>System.TimeSpan</code></td>
+<td style="text-align: left;">Format: <code>&quot;[-]'P'd'DT'h'H'm'M's.FFFFFFF'S'&quot;</code></td>
+<td style="text-align: left;">RFC 3339 / ISO 8601-1:2019</td>
 </tr>
 <tr>
-<td><code>System.UInt16</code></td>
-<td>Format specifier: <code>&quot;g&quot;</code></td>
-<td></td>
+<td style="text-align: left;"><code>System.UInt16</code></td>
+<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.UInt32</code></td>
-<td>Format specifier: <code>&quot;g&quot;</code></td>
-<td></td>
+<td style="text-align: left;"><code>System.UInt32</code></td>
+<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.UInt64</code></td>
-<td>Format specifier: <code>&quot;g&quot;</code></td>
-<td></td>
+<td style="text-align: left;"><code>System.UInt64</code></td>
+<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.UInt128</code></td>
-<td>Format specifier: <code>&quot;g&quot;</code></td>
-<td></td>
+<td style="text-align: left;"><code>System.UInt128</code></td>
+<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.Uri</code></td>
-<td>See Appx. A &quot;Collected ABNF for URI&quot;</td>
-<td>RFC 3986</td>
+<td style="text-align: left;"><code>System.Uri</code></td>
+<td style="text-align: left;">See Appx. A &quot;Collected ABNF for URI&quot;</td>
+<td style="text-align: left;">RFC 3986</td>
 </tr>
 <tr>
-<td><code>System.Numerics.BigInteger</code></td>
-<td>Format specifier: <code>&quot;g&quot;</code></td>
-<td></td>
+<td style="text-align: left;"><code>System.Numerics.BigInteger</code></td>
+<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
 </tr>
 <tr>
-<td><code>System.Byte[]</code></td>
-<td>Encoding: &quot;base16&quot; (&quot;hex&quot;) or &quot;base64&quot;</td>
-<td>RFC 4648</td>
+<td style="text-align: left;"><code>System.Byte[]</code></td>
+<td style="text-align: left;">Encoding: &quot;base16&quot; (&quot;hex&quot;) or &quot;base64&quot;</td>
+<td style="text-align: left;">RFC 4648</td>
 </tr>
 </tbody>
 </table>
 <p></p>
-<p>Any generated record handler also supports type members of the <code>System.Nullable&lt;T&gt;</code> type with any supported value type as the underlying type.</p>
-<p></p>
-<p>To use a type member of the <code>System.Byte[]</code> type with a generated record handler, one of the available converters must be specified explicitly:</p>
+<p>To work with binary data fields, the corresponding value converter must be specified explicitly:</p>
 <p></p>
 <ul>
-<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase16BinaryConverter.html">TabularBase16BinaryConverter</a></li>
-<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase64BinaryConverter.html">TabularBase64BinaryConverter</a></li>
+<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.html">TabularBase16ArrayConverter</a></li>
+<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter.html">TabularBase64ArrayConverter</a></li>
+<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase16MemoryConverter.html">TabularBase16MemoryConverter</a></li>
+<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase64MemoryConverter.html">TabularBase64MemoryConverter</a></li>
+<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase16ReadOnlyMemoryConverter.html">TabularBase16ReadOnlyMemoryConverter</a></li>
+<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase64ReadOnlyMemoryConverter.html">TabularBase64ReadOnlyMemoryConverter</a></li>
 </ul>
 <p></p>
-<h3 id="dialect-inferrence">Dialect Inferrence</h3>
+<p>Any generated record handler also supports type members of the <code>Nullable&lt;T&gt;</code> type with any supported value type as the underlying type.</p>
 <p></p>
-<div class="NOTE">
-<h5>Note</h5>
-<p>The section describes a preview feature that is available in the latest pre-release package.</p>
-</div>
+<h3 id="tabular-records">Tabular Records</h3>
 <p></p>
-<p>A dialect can be inferred from a stream based on frequency of the eligible token values:</p>
+<p>The framework has built-in support for interpreting tabular records as single-dimensional arrays <code>T[]</code> or <code>Nullable&lt;T&gt;[]</code> of any supported type (except binary data). For example, tabular records of any file can be interpreted as string arrays, even if the number of fields is not fixed:</p>
 <p></p>
 <div class="tabGroup" id="tabgroup_1">
 <ul role="tablist">
@@ -262,19 +261,39 @@
 </ul>
 <section id="tabpanel_1_cs" role="tabpanel" data-tab="cs">
 
-<pre><code class="lang-cs">var dialect = TabularData.InferDialect(File.OpenRead(&quot;books.csv&quot;), [&quot;\n&quot;, &quot;\r\n&quot;], [','], ['&quot;']);
+<pre><code class="lang-cs">var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '\&quot;');
+
+using (var reader = new TabularReader&lt;string?[]&gt;(File.OpenRead(&quot;data.csv&quot;), dialect))
+{
+    while (reader.TryReadRecord())
+    {
+        Console.WriteLine(string.Join('|', reader.CurrentRecord));
+    }
+}
 </code></pre>
 </section>
 <section id="tabpanel_1_fs" role="tabpanel" data-tab="fs" aria-hidden="true" hidden="hidden">
 
-<pre><code class="lang-fs">let dialect = TabularData.InferDialect(File.OpenRead &quot;books.csv&quot;, [ &quot;\n&quot;; &quot;\r\n&quot; ], [ ',' ], [ '&quot;' ])
+<pre><code class="lang-fs">let dialect = new TabularDialect(&quot;\r\n&quot;, ',', '\&quot;')
+
+using (new TabularReader&lt;array&lt;string&gt;&gt;(File.OpenRead &quot;books.csv&quot;, dialect)) (fun reader -&gt;
+    while reader.TryReadRecord ()) do
+        printfn &quot;%s&quot; (String.concat &quot;|&quot; reader.CurrentRecord)
+)
 </code></pre>
 </section>
 </div>
 <p></p>
-<h3 id="performance">Performance</h3>
+<p>The framework also provides generic record handlers for working with tabular records as single-dimensional arrays of any type:</p>
 <p></p>
-<p>The field and record readers can advance through tabular data without reading it completely, potentially decreasing overall processing time:</p>
+<ul>
+<li><a class="xref" href="../api/Addax.Formats.Tabular.Handlers.TabularArrayHandler-1.html">TabularArrayHandler&lt;T&gt;</a></li>
+<li><a class="xref" href="../api/Addax.Formats.Tabular.Handlers.TabularSparseArrayHandler-1.html">TabularSparseArrayHandler&lt;T&gt;</a></li>
+</ul>
+<p></p>
+<h3 id="dialect-inferrence">Dialect Inferrence</h3>
+<p></p>
+<p>A tabular dialect can be inferred from a stream based on frequency of the eligible token values:</p>
 <p></p>
 <div class="tabGroup" id="tabgroup_2">
 <ul role="tablist">
@@ -287,35 +306,19 @@
 </ul>
 <section id="tabpanel_2_cs" role="tabpanel" data-tab="cs">
 
-<pre><code class="lang-cs">public class TabularReader
-{
-    public bool TrySkipField();
-    public ValueTask&lt;bool&gt; TrySkipFieldAsync(CancellationToken cancellationToken);
-}
-
-public class TabularReader&lt;T&gt;
-{
-    public bool TrySkipRecord();
-    public ValueTask&lt;bool&gt; TrySkipRecordAsync(CancellationToken cancellationToken);
-}
+<pre><code class="lang-cs">var dialect = TabularData.InferDialect(File.OpenRead(&quot;books.csv&quot;), [&quot;\n&quot;, &quot;\r\n&quot;], [','], ['&quot;']);
 </code></pre>
 </section>
 <section id="tabpanel_2_fs" role="tabpanel" data-tab="fs" aria-hidden="true" hidden="hidden">
 
-<pre><code class="lang-fs">type TabularReader =
-    member TrySkipField: unit -&gt; bool
-    member TrySkipFieldAsync: CancellationToken -&gt; ValueTask&lt;bool&gt;
-
-type TabularReader&lt;'T&gt; =
-    member TrySkipRecord: unit -&gt; bool
-    member TrySkipRecordAsync: CancellationToken -&gt; ValueTask&lt;bool&gt;
+<pre><code class="lang-fs">let dialect = TabularData.InferDialect(File.OpenRead &quot;books.csv&quot;, [ &quot;\n&quot;; &quot;\r\n&quot; ], [ ',' ], [ '&quot;' ])
 </code></pre>
 </section>
 </div>
 <p></p>
-<h3 id="memory-usage">Memory Usage</h3>
+<h3 id="performance">Performance</h3>
 <p></p>
-<p>The field reader provides access to the last read field in a way that allows reading the field without additional string allocations:</p>
+<p>The field and record readers can advance through tabular data without reading it completely, potentially decreasing overall processing time:</p>
 <p></p>
 <div class="tabGroup" id="tabgroup_3">
 <ul role="tablist">
@@ -330,23 +333,31 @@ type TabularReader&lt;'T&gt; =
 
 <pre><code class="lang-cs">public class TabularReader
 {
-    public ReadOnlyMemory&lt;char&gt; CurrentField
-    {
-        get;
-    }
+    public bool TrySkipField();
+    public ValueTask&lt;bool&gt; TrySkipFieldAsync(CancellationToken cancellationToken);
+}
+
+public class TabularReader&lt;T&gt;
+{
+    public bool TrySkipRecord();
+    public ValueTask&lt;bool&gt; TrySkipRecordAsync(CancellationToken cancellationToken);
 }
 </code></pre>
 </section>
 <section id="tabpanel_3_fs" role="tabpanel" data-tab="fs" aria-hidden="true" hidden="hidden">
 
 <pre><code class="lang-fs">type TabularReader =
-    member CurrentField: ReadOnlyMemory&lt;char&gt;
-        with get()
+    member TrySkipField: unit -&gt; bool
+    member TrySkipFieldAsync: CancellationToken -&gt; ValueTask&lt;bool&gt;
+
+type TabularReader&lt;'T&gt; =
+    member TrySkipRecord: unit -&gt; bool
+    member TrySkipRecordAsync: CancellationToken -&gt; ValueTask&lt;bool&gt;
 </code></pre>
 </section>
 </div>
 <p></p>
-<p>The default string factory supports a mode with a thread-safe pool based on hash codes, reducing allocations when reading fields as strings:</p>
+<p>The field reader provides access to the last read field in a way that allows reading the field without additional string allocations:</p>
 <p></p>
 <div class="tabGroup" id="tabgroup_4">
 <ul role="tablist">
@@ -359,13 +370,44 @@ type TabularReader&lt;'T&gt; =
 </ul>
 <section id="tabpanel_4_cs" role="tabpanel" data-tab="cs">
 
+<pre><code class="lang-cs">public class TabularReader
+{
+    public ReadOnlyMemory&lt;char&gt; CurrentField
+    {
+        get;
+    }
+}
+</code></pre>
+</section>
+<section id="tabpanel_4_fs" role="tabpanel" data-tab="fs" aria-hidden="true" hidden="hidden">
+
+<pre><code class="lang-fs">type TabularReader =
+    member CurrentField: ReadOnlyMemory&lt;char&gt;
+        with get()
+</code></pre>
+</section>
+</div>
+<p></p>
+<p>The default string factory supports a mode with a thread-safe pool based on hash codes, reducing allocations when reading fields as strings:</p>
+<p></p>
+<div class="tabGroup" id="tabgroup_5">
+<ul role="tablist">
+<li role="presentation">
+<a href="#tabpanel_5_cs" role="tab" aria-controls="tabpanel_5_cs" data-tab="cs" tabindex="0" aria-selected="true">C#</a>
+</li>
+<li role="presentation">
+<a href="#tabpanel_5_fs" role="tab" aria-controls="tabpanel_5_fs" data-tab="fs" tabindex="-1">F#</a>
+</li>
+</ul>
+<section id="tabpanel_5_cs" role="tabpanel" data-tab="cs">
+
 <pre><code class="lang-cs">var options = new TabularOptions
 {
     StringFactory = new(maxLength: 128)
 };
 </code></pre>
 </section>
-<section id="tabpanel_4_fs" role="tabpanel" data-tab="fs" aria-hidden="true" hidden="hidden">
+<section id="tabpanel_5_fs" role="tabpanel" data-tab="fs" aria-hidden="true" hidden="hidden">
 
 <pre><code class="lang-fs">let options = new TabularOptions (
     StringFactory = new TabularStringFactory(maxLength = 128)
@@ -373,12 +415,6 @@ type TabularReader&lt;'T&gt; =
 </code></pre>
 </section>
 </div>
-<p></p>
-<h3 id="references">References</h3>
-<p></p>
-<ul>
-<li><a href="https://w3.org/TR/2015/REC-tabular-data-model-20151217">W3C - Model for Tabular Data and Metadata on the Web</a></li>
-</ul>
 
 </article>
 

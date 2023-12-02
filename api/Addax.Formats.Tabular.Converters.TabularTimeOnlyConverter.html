@@ -91,7 +91,7 @@
 
   <h1 id="Addax_Formats_Tabular_Converters_TabularTimeOnlyConverter" data-uid="Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter" class="text-break">
     Class TabularTimeOnlyConverter
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/Converters/TabularTimeOnlyConverter.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/Converters/TabularTimeOnlyConverter.cs"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -99,7 +99,7 @@
   <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Converts a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timeonly">TimeOnly</a> value from or to a sequence of characters.</p>
+  <div class="markdown summary"><p>Converts a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timeonly">TimeOnly</a> value from or to a character sequence.</p>
 </div>
   <div class="markdown conceptual"></div>
 
@@ -133,25 +133,19 @@
 
   <a id="Addax_Formats_Tabular_Converters_TabularTimeOnlyConverter__ctor_" data-uid="Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter.#ctor*"></a>
 
-  <h3 id="Addax_Formats_Tabular_Converters_TabularTimeOnlyConverter__ctor_System_String_" data-uid="Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter.#ctor(System.String)">
-  TabularTimeOnlyConverter(string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/Converters/TabularTimeOnlyConverter.cs"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Addax_Formats_Tabular_Converters_TabularTimeOnlyConverter__ctor" data-uid="Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter.#ctor">
+  TabularTimeOnlyConverter()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/Converters/TabularTimeOnlyConverter.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter.html">TabularTimeOnlyConverter</a> class with the specified format.</p>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter.html">TabularTimeOnlyConverter</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TabularTimeOnlyConverter(string? format = &quot;HH&#39;:&#39;mm&#39;:&#39;ss.FFFFFFF&quot;)</code></pre>
+    <pre><code class="lang-csharp hljs">public TabularTimeOnlyConverter()</code></pre>
   </div>
 
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>format</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd><p>The format to use for parsing and formatting.</p>
-</dd>
-  </dl>
 
 
 
@@ -172,10 +166,10 @@
 
   <h3 id="Addax_Formats_Tabular_Converters_TabularTimeOnlyConverter_TryFormat_System_TimeOnly_System_Span_System_Char__System_IFormatProvider_System_Int32__" data-uid="Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter.TryFormat(System.TimeOnly,System.Span{System.Char},System.IFormatProvider,System.Int32@)">
   TryFormat(TimeOnly, Span&lt;char&gt;, IFormatProvider?, out int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/Converters/TabularTimeOnlyConverter.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/Converters/TabularTimeOnlyConverter.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to format the value into a sequence of characters.</p>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to format the value into a character sequence.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -223,10 +217,10 @@
 
   <h3 id="Addax_Formats_Tabular_Converters_TabularTimeOnlyConverter_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider_System_TimeOnly__" data-uid="Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,System.TimeOnly@)">
   TryParse(ReadOnlySpan&lt;char&gt;, IFormatProvider?, out TimeOnly)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/c6459ea789525b72418d925b0eb6fd95e1a8e405/src/Addax.Formats.Tabular/Converters/TabularTimeOnlyConverter.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5b85cf1681d12f432c898c02dd1df85b6761f382/src/Addax.Formats.Tabular/Converters/TabularTimeOnlyConverter.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to parse the sequence of characters into a value.</p>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to parse the character sequence into a value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
