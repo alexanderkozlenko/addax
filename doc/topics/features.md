@@ -10,7 +10,7 @@ uid: urn:topics:features
 
 <p />
 
-The framework has built-in support for working with tabular fields as values of the following types:
+The framework has built-in support for interpreting tabular fields as values of the following types:
 
 <p />
 
@@ -45,12 +45,20 @@ The framework has built-in support for working with tabular fields as values of 
 
 <p />
 
-Any generated record handler also supports type members of the `System.Nullable<T>` type with any supported value type as the underlying type. To map a type member of the `System.Byte[]` type for a generated record handler, one of the available value converters must be specified explicitly:
+To work with binary data fields, the corresponding value converter must be specified explicitly:
 
 <p />
 
-- [TabularBase16BinaryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase16BinaryConverter)
-- [TabularBase64BinaryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase64BinaryConverter)
+- [TabularBase16ArrayConverter](xref:Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter)
+- [TabularBase64ArrayConverter](xref:Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter)
+- [TabularBase16MemoryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase16MemoryConverter)
+- [TabularBase64MemoryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase64MemoryConverter)
+- [TabularBase16ReadOnlyMemoryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase16ReadOnlyMemoryConverter)
+- [TabularBase64ReadOnlyMemoryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase64ReadOnlyMemoryConverter)
+
+<p />
+
+Any generated record handler also supports type members of the `Nullable<T>` type with any supported value type as the underlying type. 
 
 <p />
 
@@ -58,7 +66,7 @@ Any generated record handler also supports type members of the `System.Nullable<
 
 <p />
 
-The framework has built-in support for working with tabular records as single-dimensional arrays `T[]` or `System.Nullable<T>[]` of any supported type (except `System.Byte[]`). For example, tabular records of any file can be interpreted as string arrays, even if they have different number of fields:
+The framework has built-in support for interpreting tabular records as single-dimensional arrays `T[]` or `Nullable<T>[]` of any supported type (except binary data). For example, tabular records of any file can be interpreted as string arrays, even if the number of fields is not fixed:
 
 <p />
 

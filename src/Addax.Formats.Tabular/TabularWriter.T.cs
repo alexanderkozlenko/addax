@@ -245,7 +245,7 @@ public partial class TabularWriter
     {
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
-        WriteValueCore(value, TabularBase16BinaryConverter.Instance);
+        WriteValueCore(value, TabularBase16ArrayConverter.Instance);
     }
 
     /// <summary>Writes binary data encoded with "base64" encoding as the next value field of the current record.</summary>
@@ -256,7 +256,7 @@ public partial class TabularWriter
     {
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
-        WriteValueCore(value, TabularBase64BinaryConverter.Instance);
+        WriteValueCore(value, TabularBase64ArrayConverter.Instance);
     }
 
     /// <summary>Asynchronously writes a <see cref="char" /> value as the next value field of the current record.</summary>
@@ -572,7 +572,7 @@ public partial class TabularWriter
     {
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
-        return WriteValueCoreAsync(value, TabularBase16BinaryConverter.Instance, cancellationToken);
+        return WriteValueCoreAsync(value, TabularBase16ArrayConverter.Instance, cancellationToken);
     }
 
     /// <summary>Asynchronously writes binary data encoded with "base64" encoding as the next value field of the current record.</summary>
@@ -586,6 +586,6 @@ public partial class TabularWriter
     {
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
-        return WriteValueCoreAsync(value, TabularBase64BinaryConverter.Instance, cancellationToken);
+        return WriteValueCoreAsync(value, TabularBase64ArrayConverter.Instance, cancellationToken);
     }
 }

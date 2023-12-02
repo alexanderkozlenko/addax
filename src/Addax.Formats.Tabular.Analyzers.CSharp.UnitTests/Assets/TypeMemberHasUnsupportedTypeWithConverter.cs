@@ -7,10 +7,10 @@ namespace MyNamespace;
 public struct MyType
 {
     [TabularFieldOrder(0)]
-    [TabularConverter(typeof(TabularBase16BinaryConverter))]
+    [TabularConverter(typeof(TabularBase16ArrayConverter))]
     public byte[]? MyValue0;
 
     [TabularFieldOrder(1)]
-    [TabularConverter(typeof(TabularBase64BinaryConverter))]
+    [TabularConverter(typeof(TabularBase64ArrayConverter))]
     public byte[]? MyValue1;
 }

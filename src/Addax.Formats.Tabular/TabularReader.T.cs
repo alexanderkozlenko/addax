@@ -235,7 +235,7 @@ public partial class TabularReader
     /// <remarks>The value should be formatted according to the RFC 4648. Leading and trailing white-space characters are allowed.</remarks>
     public bool TryGetBase16Binary([NotNullWhen(true)] out byte[]? value)
     {
-        return TryGet(_currentField.AsSpan(), TabularBase16BinaryConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularBase16ArrayConverter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as binary data encoded with "base64" encoding and returns a value that indicates whether the operation succeeded.</summary>
@@ -244,7 +244,7 @@ public partial class TabularReader
     /// <remarks>The value should be formatted according to the RFC 4648. Leading and trailing white-space characters are allowed.</remarks>
     public bool TryGetBase64Binary([NotNullWhen(true)] out byte[]? value)
     {
-        return TryGet(_currentField.AsSpan(), TabularBase64BinaryConverter.Instance, out value);
+        return TryGet(_currentField.AsSpan(), TabularBase64ArrayConverter.Instance, out value);
     }
 
     /// <summary>Parses the current field as <see cref="char" />.</summary>
