@@ -8,7 +8,7 @@ using Addax.Formats.Tabular.Buffers;
 
 namespace Addax.Formats.Tabular;
 
-/// <summary>Provides static methods for working with collections of tabular data records and inferring dialects.</summary>
+/// <summary>Provides static methods for working with collections of tabular data records and inferring dialects. This class cannot be inherited.</summary>
 public static class TabularData
 {
     /// <summary>Reads all records that can be represented as <typeparamref name="T" /> from the stream.</summary>

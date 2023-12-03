@@ -14,8 +14,11 @@ public readonly struct TabularRecord<T>
 
     /// <summary>Initializes a new instance of the <see cref="TabularRecord{T}" /> struct with the specified object.</summary>
     /// <param name="value">The object to initialize the container with.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="value" /> is <see langword="null" />.</exception>
     public TabularRecord(T value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         Value = value;
         HasValue = true;
     }
