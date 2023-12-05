@@ -1,5 +1,6 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
@@ -9,31 +10,26 @@ public class TabularDateOnlyConverter : TabularConverter<DateOnly>
 {
     internal static readonly TabularDateOnlyConverter Instance = new();
 
-    /// <summary>Initializes a new instance of the <see cref="TabularDateOnlyConverter" /> class.</summary>
-    public TabularDateOnlyConverter()
+    private readonly string? _format;
+
+    /// <summary>Initializes a new instance of the <see cref="TabularDateOnlyConverter" /> class with the specified format.</summary>
+    /// <param name="format">A standard or custom date format string.</param>
+    public TabularDateOnlyConverter([StringSyntax(StringSyntaxAttribute.DateOnlyFormat)] string? format = null)
     {
+        _format = format;
     }
 
     /// <inheritdoc />
     public override bool TryFormat(DateOnly value, Span<char> destination, IFormatProvider? provider, out int charsWritten)
     {
-        return value.TryFormat(destination, out charsWritten, "o", provider);
+        return value.TryFormat(destination, out charsWritten, _format ?? "o", provider);
     }
 
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out DateOnly value)
     {
-        const DateTimeStyles styles = DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite | DateTimeStyles.AdjustToUniversal;
+        const DateTimeStyles styles = DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite;
 
-        if (DateTime.TryParseExact(source, "yyyy'-'MM'-'dd", provider, styles, out var dateTime))
-        {
-            value = DateOnly.FromDateTime(dateTime);
-
-            return true;
-        }
-
-        value = default;
-
-        return false;
+        return DateOnly.TryParseExact(source, _format ?? "yyyy'-'MM'-'dd", provider, styles, out value);
     }
 }
