@@ -45,7 +45,18 @@ The framework has built-in support for interpreting tabular fields as values of 
 
 <p />
 
-To work with binary data fields, the corresponding value converter must be specified explicitly:
+Each date and time value converter can be instantiated or derived using a custom format string:
+
+<p />
+
+- [TabularDateOnlyConverter](xref:Addax.Formats.Tabular.Converters.TabularDateOnlyConverter)
+- [TabularDateTimeConverter](xref:Addax.Formats.Tabular.Converters.TabularDateTimeConverter)
+- [TabularDateTimeOffsetConverter](xref:Addax.Formats.Tabular.Converters.TabularDateTimeOffsetConverter)
+- [TabularTimeOnlyConverter](xref:Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter)
+
+<p />
+
+A generated record handler implicitly supports type members of the `Nullable<T>` type with any supported value type as the underlying type. However, a generated record handler requires an explicitly specified value converter for every base16 or base64 binary field mapped:
 
 <p />
 
@@ -55,10 +66,6 @@ To work with binary data fields, the corresponding value converter must be speci
 - [TabularBase64MemoryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase64MemoryConverter)
 - [TabularBase16ReadOnlyMemoryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase16ReadOnlyMemoryConverter)
 - [TabularBase64ReadOnlyMemoryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase64ReadOnlyMemoryConverter)
-
-<p />
-
-Any generated record handler also supports type members of the `Nullable<T>` type with any supported value type as the underlying type. 
 
 <p />
 
