@@ -107,7 +107,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                     continue;
                 }
 
-                var recordTypeHasDefaultConstructor = TryGetDefaultConstructor(recordType, out var recordTypeConstructor);
+                var recordTypeHasSuitableConstructor = TryGetSuitableConstructor(recordType, out var recordTypeConstructor);
                 var recordTypeHasErrors = false;
                 var recordMembers = GetMappedRecordMembers(recordType, fieldOrderAttributeType, cancellationToken);
                 var fieldMappingsBuilder = ImmutableDictionary.CreateBuilder<int, TabularFieldMapping>();
@@ -171,7 +171,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                             continue;
                         }
 
-                        if (!TryGetDefaultConstructor(converterType, out var converterConstructor))
+                        if (!TryGetSuitableConstructor(converterType, out var converterConstructor))
                         {
                             context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0004, recordMember.Locations.FirstOrDefault()));
                             recordTypeHasErrors = true;
@@ -215,7 +215,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
                     var mappedMemberAccess = GetTypeMemberAccess(recordMember);
 
-                    if (!recordTypeHasDefaultConstructor || !compilation.IsSymbolAccessibleWithin(recordTypeConstructor, compilation.Assembly))
+                    if (!recordTypeHasSuitableConstructor || !compilation.IsSymbolAccessibleWithin(recordTypeConstructor, compilation.Assembly))
                     {
                         mappedMemberAccess &= ~TypeMemberAccess.Write;
 
@@ -532,11 +532,33 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             return false;
         }
 
-        private static bool TryGetDefaultConstructor(INamedTypeSymbol type, out IMethodSymbol constructor)
+        private static bool TryGetSuitableConstructor(INamedTypeSymbol type, out IMethodSymbol constructor)
         {
             foreach (var instanceConstructor in type.InstanceConstructors)
             {
                 if (instanceConstructor.Parameters.IsDefaultOrEmpty)
+                {
+                    constructor = instanceConstructor;
+
+                    return true;
+                }
+            }
+
+            foreach (var instanceConstructor in type.InstanceConstructors)
+            {
+                var parametersHaveExplicitDefaultValues = true;
+
+                foreach (var parameter in instanceConstructor.Parameters)
+                {
+                    if (!parameter.HasExplicitDefaultValue)
+                    {
+                        parametersHaveExplicitDefaultValues = false;
+
+                        break;
+                    }
+                }
+
+                if (parametersHaveExplicitDefaultValues)
                 {
                     constructor = instanceConstructor;
 
