@@ -115,7 +115,7 @@ internal struct Book
     [TabularFieldOrder(1)]
     public string? Title;
     
-    [TabularConverter(typeof(UnixDateTimeConverter))]
+    [TabularConverter<UnixDateTimeConverter>]
     [TabularFieldOrder(2)]
     public DateTime? Published;
 }

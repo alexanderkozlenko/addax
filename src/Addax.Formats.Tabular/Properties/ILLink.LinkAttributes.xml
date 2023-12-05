@@ -3,6 +3,9 @@
     <type fullname="Addax.Formats.Tabular.TabularConverterAttribute">
       <attribute internal="RemoveAttributeInstances" />
     </type>
+    <type fullname="Addax.Formats.Tabular.TabularConverterAttribute`1">
+      <attribute internal="RemoveAttributeInstances" />
+    </type>
     <type fullname="Addax.Formats.Tabular.TabularFieldNameAttribute">
       <attribute internal="RemoveAttributeInstances" />
     </type>

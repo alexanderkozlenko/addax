@@ -83,7 +83,8 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             }
 
             var converterBaseType = featureAssembly.GetTypeByMetadataName("Addax.Formats.Tabular.TabularConverter`1");
-            var converterAttributeType = featureAssembly.GetTypeByMetadataName("Addax.Formats.Tabular.TabularConverterAttribute");
+            var converterAttributeType1 = featureAssembly.GetTypeByMetadataName("Addax.Formats.Tabular.TabularConverterAttribute`1");
+            var converterAttributeType2 = featureAssembly.GetTypeByMetadataName("Addax.Formats.Tabular.TabularConverterAttribute");
             var fieldOrderAttributeType = featureAssembly.GetTypeByMetadataName("Addax.Formats.Tabular.TabularFieldOrderAttribute");
             var fieldNameAttributeType = featureAssembly.GetTypeByMetadataName("Addax.Formats.Tabular.TabularFieldNameAttribute");
 
@@ -107,14 +108,19 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                     continue;
                 }
 
-                var recordTypeHasSuitableConstructor = TryGetSuitableConstructor(recordType, out var recordTypeConstructor);
+                var recordTypeHasSuitableConstructor = TryGetSuitableConstructor(recordType, out var recordConstructor);
                 var recordTypeHasErrors = false;
-                var recordMembers = GetMappedRecordMembers(recordType, fieldOrderAttributeType, cancellationToken);
+                var recordMembers = GetSuitableMembers(recordType);
                 var fieldMappingsBuilder = ImmutableDictionary.CreateBuilder<int, TabularFieldMapping>();
 
-                foreach (var (recordMember, fieldOrderAttribute) in recordMembers)
+                foreach (var recordMember in recordMembers)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
+
+                    if (!TryGetAttribute(recordMember, fieldOrderAttributeType, out var fieldOrderAttribute))
+                    {
+                        continue;
+                    }
 
                     if (recordMember.IsStatic)
                     {
@@ -133,9 +139,11 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                         continue;
                     }
 
+                    var converterAttribute = default(AttributeData);
                     var converterTypeName = default(string);
 
-                    if (!TryGetAttribute(recordMember, converterAttributeType, out var converterAttribute, cancellationToken))
+                    if (!TryGetAttribute(recordMember, converterAttributeType1, out converterAttribute) &&
+                        !TryGetAttribute(recordMember, converterAttributeType2, out converterAttribute))
                     {
                         if (!valueTypeInfo.IsSupported)
                         {
@@ -213,13 +221,13 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                         continue;
                     }
 
-                    var mappedMemberAccess = GetTypeMemberAccess(recordMember);
+                    var recordMemberAccess = GetTypeMemberAccess(recordMember);
 
-                    if (!recordTypeHasSuitableConstructor || !compilation.IsSymbolAccessibleWithin(recordTypeConstructor, compilation.Assembly))
+                    if (!recordTypeHasSuitableConstructor || !compilation.IsSymbolAccessibleWithin(recordConstructor, compilation.Assembly))
                     {
-                        mappedMemberAccess &= ~TypeMemberAccess.Write;
+                        recordMemberAccess &= ~TypeMemberAccess.Write;
 
-                        if (mappedMemberAccess == TypeMemberAccess.None)
+                        if (recordMemberAccess == TypeMemberAccess.None)
                         {
                             continue;
                         }
@@ -227,7 +235,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
                     var fieldNameLiteral = default(SyntaxToken?);
 
-                    if (TryGetAttribute(recordMember, fieldNameAttributeType, out var fieldNameAttribute, cancellationToken))
+                    if (TryGetAttribute(recordMember, fieldNameAttributeType, out var fieldNameAttribute))
                     {
                         if (TryGetFieldName(fieldNameAttribute, out var fieldName))
                         {
@@ -237,7 +245,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
                     var fieldMapping = new TabularFieldMapping(
                         recordMember.Name,
-                        mappedMemberAccess,
+                        recordMemberAccess,
                         valueTypeInfo.AsNullableT,
                         valueTypeInfo.Name,
                         converterTypeName,
@@ -258,41 +266,23 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             return recordMappingsBuilder.ToImmutable();
         }
 
-        private static ImmutableArray<(ISymbol Member, AttributeData FieldOrderAttribute)> GetMappedRecordMembers(ITypeSymbol recordType, INamedTypeSymbol fieldOrderAttributeType, CancellationToken cancellationToken)
+        private static ImmutableArray<ISymbol> GetSuitableMembers(ITypeSymbol type)
         {
-            var membersBuilder = ImmutableArray.CreateBuilder<(ISymbol, AttributeData)>();
+            var membersBuilder = ImmutableArray.CreateBuilder<ISymbol>();
 
-            while (recordType != null)
+            while (type != null)
             {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var members = recordType.GetMembers();
+                var members = type.GetMembers();
 
                 foreach (var member in members)
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
-
-                    if (!(member is IFieldSymbol) && !(member is IPropertySymbol))
+                    if ((member is IFieldSymbol) || (member is IPropertySymbol))
                     {
-                        continue;
-                    }
-
-                    var attributes = member.GetAttributes();
-
-                    foreach (var attribute in attributes)
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-
-                        if (SymbolEqualityComparer.Default.Equals(attribute.AttributeClass, fieldOrderAttributeType))
-                        {
-                            membersBuilder.Add((member, attribute));
-
-                            break;
-                        }
+                        membersBuilder.Add(member);
                     }
                 }
 
-                recordType = recordType.BaseType;
+                type = type.BaseType;
             }
 
             return membersBuilder.ToImmutable();
@@ -432,29 +422,29 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
         {
             if (member is IFieldSymbol field)
             {
-                var access = TypeMemberAccess.Read;
+                var memberAccess = TypeMemberAccess.Read;
 
                 if (!field.IsReadOnly && !field.IsConst)
                 {
-                    access |= TypeMemberAccess.Write;
+                    memberAccess |= TypeMemberAccess.Write;
                 }
 
-                return access;
+                return memberAccess;
             }
             else if (member is IPropertySymbol property)
             {
-                var access = TypeMemberAccess.None;
+                var memberAccess = TypeMemberAccess.None;
 
                 if (property.GetMethod != null)
                 {
-                    access |= TypeMemberAccess.Read;
+                    memberAccess |= TypeMemberAccess.Read;
                 }
                 if (property.SetMethod != null)
                 {
-                    access |= TypeMemberAccess.Write;
+                    memberAccess |= TypeMemberAccess.Write;
                 }
 
-                return access;
+                return memberAccess;
             }
             else
             {
@@ -499,11 +489,22 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
         private static bool TryGetConverterType(AttributeData attribute, out INamedTypeSymbol converterType)
         {
             if ((attribute != null) &&
+                (attribute.AttributeClass != null) &&
+                (attribute.AttributeClass.IsGenericType) &&
+                (attribute.AttributeClass.TypeArguments.Length == 1) &&
+                (attribute.AttributeClass.TypeArguments[0] is INamedTypeSymbol))
+            {
+                converterType = (INamedTypeSymbol)attribute.AttributeClass.TypeArguments[0];
+
+                return true;
+            }
+
+            if ((attribute != null) &&
                 (attribute.ConstructorArguments.Length == 1) &&
                 (attribute.ConstructorArguments[0].Kind == TypedConstantKind.Type) &&
-                (attribute.ConstructorArguments[0].Value is INamedTypeSymbol namedType))
+                (attribute.ConstructorArguments[0].Value is INamedTypeSymbol))
             {
-                converterType = namedType;
+                converterType = (INamedTypeSymbol)attribute.ConstructorArguments[0].Value;
 
                 return true;
             }
@@ -571,17 +572,19 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             return false;
         }
 
-        private static bool TryGetAttribute(ISymbol member, INamedTypeSymbol attributeType, out AttributeData attribute, CancellationToken cancellationToken)
+        private static bool TryGetAttribute(ISymbol member, INamedTypeSymbol attributeType, out AttributeData attribute)
         {
-            var definedAttributes = member.GetAttributes();
+            var memberAttributes = member.GetAttributes();
 
-            foreach (var definedAttribute in definedAttributes)
+            foreach (var memberAttribute in memberAttributes)
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                var memberAttributeType = attributeType.IsGenericType ?
+                    memberAttribute.AttributeClass?.ConstructedFrom :
+                    memberAttribute.AttributeClass;
 
-                if (SymbolEqualityComparer.Default.Equals(definedAttribute.AttributeClass, attributeType))
+                if (SymbolEqualityComparer.Default.Equals(memberAttributeType, attributeType))
                 {
-                    attribute = definedAttribute;
+                    attribute = memberAttribute;
 
                     return true;
                 }

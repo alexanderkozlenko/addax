@@ -7,6 +7,6 @@ namespace MyNamespace;
 public struct MyType
 {
     [TabularFieldOrder(0)]
-    [TabularConverter(typeof(TabularBooleanConverter))]
+    [TabularConverter<TabularBooleanConverter>]
     public string? MyValue0;
 }
