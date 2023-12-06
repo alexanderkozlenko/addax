@@ -9,9 +9,13 @@ public class TabularUriConverter : TabularConverter<Uri?>
 {
     internal static readonly TabularUriConverter Instance = new();
 
-    /// <summary>Initializes a new instance of the <see cref="TabularUriConverter" /> class.</summary>
-    public TabularUriConverter()
+    private readonly TabularStringFactory _stringFactory;
+
+    /// <summary>Initializes a new instance of the <see cref="TabularUriConverter" /> class with the specified string factory.</summary>
+    /// <param name="stringFactory">The factory that creates <see cref="string" /> instances from character sequences.</param>
+    public TabularUriConverter(TabularStringFactory? stringFactory = null)
     {
+        _stringFactory = stringFactory ?? TabularStringFactory.Default;
     }
 
     /// <inheritdoc />
@@ -30,8 +34,6 @@ public class TabularUriConverter : TabularConverter<Uri?>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, [NotNullWhen(true)] out Uri? value)
     {
-        var uriString = source.IsEmpty ? string.Empty : new(source);
-
-        return Uri.TryCreate(uriString, UriKind.RelativeOrAbsolute, out value);
+        return Uri.TryCreate(_stringFactory.Create(source), UriKind.RelativeOrAbsolute, out value);
     }
 }
