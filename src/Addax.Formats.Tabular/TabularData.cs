@@ -413,21 +413,21 @@ public static class TabularData
             .OrderByDescending(static x => x.Value)
             .ThenByDescending(static x => x.Key.Length);
 
-        foreach (var tokenT in choicesT)
+        foreach (var (tokenT, _) in choicesT)
         {
             var choicesD = countersD
-                .Where(x => !tokenT.Key.Contains(x.Key, StringComparison.Ordinal))
+                .Where(x => !tokenT.Contains(x.Key, StringComparison.Ordinal))
                 .OrderByDescending(static x => x.Value);
 
-            foreach (var tokenD in choicesD)
+            foreach (var (tokenD, _) in choicesD)
             {
                 var choicesQ = countersQ
-                    .Where(x => !tokenT.Key.Contains(x.Key, StringComparison.Ordinal) && (x.Key != tokenD.Key))
+                    .Where(x => !tokenT.Contains(x.Key, StringComparison.Ordinal) && (x.Key != tokenD))
                     .OrderByDescending(static x => x.Value);
 
-                foreach (var tokenQ in choicesQ)
+                foreach (var (tokenQ, _) in choicesQ)
                 {
-                    return new(tokenT.Key, tokenD.Key, tokenQ.Key);
+                    return new(tokenT, tokenD, tokenQ);
                 }
             }
         }

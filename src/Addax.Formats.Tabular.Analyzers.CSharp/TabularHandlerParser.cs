@@ -246,7 +246,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                     var fieldMapping = new TabularFieldMapping(
                         recordMember.Name,
                         recordMemberAccess,
-                        valueTypeInfo.AsNullableT,
+                        valueTypeInfo.IsNullableT,
                         valueTypeInfo.Name,
                         converterTypeName,
                         fieldNameLiteral);
@@ -288,7 +288,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             return membersBuilder.ToImmutable();
         }
 
-        private static (ITypeSymbol Type, string Name, bool IsSupported, bool AsNullableT) GetValueTypeInfo(ISymbol member)
+        private static (ITypeSymbol Type, string Name, bool IsSupported, bool IsNullableT) GetValueTypeInfo(ISymbol member)
         {
             var valueType = default(ITypeSymbol);
 
@@ -492,9 +492,9 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                 (attribute.AttributeClass != null) &&
                 (attribute.AttributeClass.IsGenericType) &&
                 (attribute.AttributeClass.TypeArguments.Length == 1) &&
-                (attribute.AttributeClass.TypeArguments[0] is INamedTypeSymbol))
+                (attribute.AttributeClass.TypeArguments[0] is INamedTypeSymbol converterType1))
             {
-                converterType = (INamedTypeSymbol)attribute.AttributeClass.TypeArguments[0];
+                converterType = converterType1;
 
                 return true;
             }
@@ -502,9 +502,9 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             if ((attribute != null) &&
                 (attribute.ConstructorArguments.Length == 1) &&
                 (attribute.ConstructorArguments[0].Kind == TypedConstantKind.Type) &&
-                (attribute.ConstructorArguments[0].Value is INamedTypeSymbol))
+                (attribute.ConstructorArguments[0].Value is INamedTypeSymbol converterType2))
             {
-                converterType = (INamedTypeSymbol)attribute.ConstructorArguments[0].Value;
+                converterType = converterType2;
 
                 return true;
             }
