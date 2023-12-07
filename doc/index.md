@@ -74,10 +74,10 @@ internal struct Book
 {
     [TabularFieldOrder(0)]
     public string? Author;
-    
+
     [TabularFieldOrder(1)]
     public string? Title;
-    
+
     [TabularFieldOrder(2)]
     public DateOnly? Published;
 }
@@ -240,11 +240,11 @@ internal struct Book
     [TabularFieldName("author")]
     [TabularFieldOrder(0)]
     public string? Author;
-    
+
     [TabularFieldName("title")]
     [TabularFieldOrder(1)]
     public string? Title;
-    
+
     [TabularFieldName("published")]
     [TabularFieldOrder(2)]
     public DateOnly? Published;
@@ -416,10 +416,10 @@ internal struct Book
 {
     [TabularFieldOrder(0)]
     public string? Author;
-    
+
     [TabularFieldOrder(1)]
     public string? Title;
-    
+
     [TabularFieldOrder(2)]
     public DateOnly? Published;
 }

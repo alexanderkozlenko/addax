@@ -52,12 +52,12 @@ type internal UnixDateTimeConverter() =
 
         override this.TryFormat(value, destination, provider, charsWritten) =
             let seconds = int64 (value.ToUniversalTime () - DateTime.UnixEpoch).TotalSeconds
-            
+
             seconds.TryFormat(destination, &charsWritten, "g", provider)
 
         override this.TryParse(source, provider, value) =
             let mutable seconds = Unchecked.defaultof<int64>
-            
+
             if Int64.TryParse(source, NumberStyles.Integer, provider, &seconds) then
                 value <- DateTime.UnixEpoch.AddSeconds (float seconds)
                 true
@@ -111,10 +111,10 @@ internal struct Book
 {
     [TabularFieldOrder(0)]
     public string? Author;
-    
+
     [TabularFieldOrder(1)]
     public string? Title;
-    
+
     [TabularConverter<UnixDateTimeConverter>]
     [TabularFieldOrder(2)]
     public DateTime? Published;
