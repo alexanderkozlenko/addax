@@ -12,9 +12,14 @@ public class TabularDateOnlyConverter : TabularConverter<DateOnly>
 
     private readonly string? _format;
 
+    /// <summary>Initializes a new instance of the <see cref="TabularDateOnlyConverter" /> class.</summary>
+    public TabularDateOnlyConverter()
+    {
+    }
+
     /// <summary>Initializes a new instance of the <see cref="TabularDateOnlyConverter" /> class with the specified format.</summary>
     /// <param name="format">A standard or custom date format string.</param>
-    public TabularDateOnlyConverter([StringSyntax(StringSyntaxAttribute.DateOnlyFormat)] string? format = null)
+    protected TabularDateOnlyConverter([StringSyntax(StringSyntaxAttribute.DateOnlyFormat)] string? format)
     {
         _format = format;
     }

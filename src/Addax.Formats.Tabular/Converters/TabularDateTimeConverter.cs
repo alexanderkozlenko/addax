@@ -12,9 +12,14 @@ public class TabularDateTimeConverter : TabularConverter<DateTime>
 
     private readonly string? _format;
 
+    /// <summary>Initializes a new instance of the <see cref="TabularDateTimeConverter" /> class.</summary>
+    public TabularDateTimeConverter()
+    {
+    }
+
     /// <summary>Initializes a new instance of the <see cref="TabularDateTimeConverter" /> class with the specified format.</summary>
     /// <param name="format">A standard or custom date and time format string.</param>
-    public TabularDateTimeConverter([StringSyntax(StringSyntaxAttribute.DateTimeFormat)] string? format = null)
+    protected TabularDateTimeConverter([StringSyntax(StringSyntaxAttribute.DateTimeFormat)] string? format)
     {
         _format = format;
     }

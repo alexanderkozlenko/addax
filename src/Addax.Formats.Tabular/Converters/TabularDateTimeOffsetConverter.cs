@@ -12,9 +12,14 @@ public class TabularDateTimeOffsetConverter : TabularConverter<DateTimeOffset>
 
     private readonly string? _format;
 
+    /// <summary>Initializes a new instance of the <see cref="TabularDateTimeOffsetConverter" /> class.</summary>
+    public TabularDateTimeOffsetConverter()
+    {
+    }
+
     /// <summary>Initializes a new instance of the <see cref="TabularDateTimeOffsetConverter" /> class with the specified format.</summary>
     /// <param name="format">A standard or custom date and time format string.</param>
-    public TabularDateTimeOffsetConverter([StringSyntax(StringSyntaxAttribute.DateTimeFormat)] string? format = null)
+    protected TabularDateTimeOffsetConverter([StringSyntax(StringSyntaxAttribute.DateTimeFormat)] string? format)
     {
         _format = format;
     }

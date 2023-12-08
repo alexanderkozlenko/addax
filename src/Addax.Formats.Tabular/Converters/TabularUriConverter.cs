@@ -11,9 +11,15 @@ public class TabularUriConverter : TabularConverter<Uri?>
 
     private readonly TabularStringFactory _stringFactory;
 
+    /// <summary>Initializes a new instance of the <see cref="TabularUriConverter" /> class.</summary>
+    public TabularUriConverter()
+    {
+        _stringFactory = TabularStringFactory.Default;
+    }
+
     /// <summary>Initializes a new instance of the <see cref="TabularUriConverter" /> class with the specified string factory.</summary>
     /// <param name="stringFactory">The factory that creates <see cref="string" /> instances from character sequences.</param>
-    public TabularUriConverter(TabularStringFactory? stringFactory = null)
+    protected TabularUriConverter(TabularStringFactory? stringFactory)
     {
         _stringFactory = stringFactory ?? TabularStringFactory.Default;
     }

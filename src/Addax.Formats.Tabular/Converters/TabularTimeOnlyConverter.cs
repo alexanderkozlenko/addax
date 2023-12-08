@@ -12,9 +12,14 @@ public class TabularTimeOnlyConverter : TabularConverter<TimeOnly>
 
     private readonly string? _format;
 
+    /// <summary>Initializes a new instance of the <see cref="TabularTimeOnlyConverter" /> class.</summary>
+    public TabularTimeOnlyConverter()
+    {
+    }
+
     /// <summary>Initializes a new instance of the <see cref="TabularTimeOnlyConverter" /> class with the specified format.</summary>
     /// <param name="format">A standard or custom time format string.</param>
-    public TabularTimeOnlyConverter([StringSyntax(StringSyntaxAttribute.TimeOnlyFormat)] string? format = null)
+    protected TabularTimeOnlyConverter([StringSyntax(StringSyntaxAttribute.TimeOnlyFormat)] string? format)
     {
         _format = format;
     }

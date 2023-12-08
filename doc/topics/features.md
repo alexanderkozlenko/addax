@@ -45,7 +45,7 @@ The framework has built-in support for interpreting tabular fields as values of 
 
 <p />
 
-Each date and time value converter can be instantiated or derived using a custom format string:
+The default behavior of the built-in date and time value converters can be modified by using a custom format string:
 
 <p />
 
