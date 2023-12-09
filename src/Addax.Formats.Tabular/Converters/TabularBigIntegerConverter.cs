@@ -26,6 +26,6 @@ public class TabularBigIntegerConverter : TabularConverter<BigInteger>
     {
         const NumberStyles styles = NumberStyles.Integer | NumberStyles.AllowThousands;
 
-        return BigInteger.TryParse(source, styles, provider, out value) || TabularNumber<BigInteger>.TryParseAsPartsPer(source, styles, provider, out value);
+        return BigInteger.TryParse(source, styles, provider, out value);
     }
 }

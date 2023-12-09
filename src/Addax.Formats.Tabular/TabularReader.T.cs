@@ -124,7 +124,7 @@ public partial class TabularReader
     /// <summary>Tries to parse the current field as <see cref="BigInteger" /> and returns a value that indicates whether the operation succeeded.</summary>
     /// <param name="value">When this method returns, contains a <see cref="BigInteger" /> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</param>
     /// <returns><see langword="true" /> if the field was successfully parsed; otherwise, <see langword="false" />.</returns>
-    /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
+    /// <remarks>Leading and trailing white-space characters, group separators are allowed.</remarks>
     public bool TryGetBigInteger(out BigInteger value)
     {
         return TryGet(_currentField.AsSpan(), TabularBigIntegerConverter.Instance, out value);
@@ -423,7 +423,7 @@ public partial class TabularReader
     /// <summary>Parses the current field as <see cref="BigInteger" />.</summary>
     /// <returns>A <see cref="BigInteger" /> value.</returns>
     /// <exception cref="FormatException">The current field cannot be parsed as a <see cref="BigInteger" /> value.</exception>
-    /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
+    /// <remarks>Leading and trailing white-space characters, group separators are allowed.</remarks>
     public BigInteger GetBigInteger()
     {
         if (!TryGetBigInteger(out var result))
