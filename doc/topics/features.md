@@ -14,34 +14,79 @@ The framework has built-in support for interpreting tabular fields as values of 
 
 <p />
 
-|Type|String Format|Standard|
-|:-|:-|:-|
-|`System.Boolean`|Lexical space: `"true" | "false" | "1" | "0"`|W3C XSD 1.1 P2|
-|`System.Byte`|Format specifier: `"g"`||
-|`System.Char`|One UTF-16 code unit||
-|`System.DateOnly`|Format: `"yyyy'-'MM'-'dd"`|RFC 3339 / ISO 8601-1:2019|
-|`System.DateTime`|Format: `"yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK"`|RFC 3339 / ISO 8601-1:2019|
-|`System.DateTimeOffset`|Format: `"yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK"`|RFC 3339 / ISO 8601-1:2019|
-|`System.Decimal`|Format specifier: `"g"`||
-|`System.Double`|Format specifier: `"g"`||
-|`System.Guid`|Format: `"00000000-0000-0000-0000-000000000000"`|RFC 4122|
-|`System.Half`|Format specifier: `"g"`||
-|`System.Int16`|Format specifier: `"g"`||
-|`System.Int32`|Format specifier: `"g"`||
-|`System.Int64`|Format specifier: `"g"`||
-|`System.Int128`|Format specifier: `"g"`||
-|`System.SByte`|Format specifier: `"g"`||
-|`System.Single`|Format specifier: `"g"`||
-|`System.String`|Up to 2,147,483,591 UTF-16 code units||
-|`System.TimeOnly`|Format: `"HH':'mm':'ss.FFFFFFF"`|RFC 3339 / ISO 8601-1:2019|
-|`System.TimeSpan`|Format: `"[-]'P'd'DT'h'H'm'M's.FFFFFFF'S'"`|RFC 3339 / ISO 8601-1:2019|
-|`System.UInt16`|Format specifier: `"g"`||
-|`System.UInt32`|Format specifier: `"g"`||
-|`System.UInt64`|Format specifier: `"g"`||
-|`System.UInt128`|Format specifier: `"g"`||
-|`System.Uri`|See Appx. A "Collected ABNF for URI"|RFC 3986|
-|`System.Numerics.BigInteger`|Format specifier: `"g"`||
-|`System.Byte[]`|Encoding: "base16" ("hex") or "base64"|RFC 4648|
+|Type|Format (Read)|Format (Write)|Standard|
+|:-|:-|:-|:-|
+|`System.Boolean`|`"true" | "false" | "1" | "0"` |`"true" | "false"`|W3C CSVW|
+|`System.Byte`|`g | g%`|`g`|W3C CSVW|
+|`System.Char`||||
+|`System.DateOnly`|`yyyy'-'MM'-'dd`|`o`|ISO 8601-1:2019, RFC 3339|
+|`System.DateTime`|`yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK`|`o`|ISO 8601-1:2019, RFC 3339|
+|`System.DateTimeOffset`|`yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK`|`o`|ISO 8601-1:2019, RFC 3339|
+|`System.Decimal`|`g | g% | g‰`|`g`|W3C CSVW|
+|`System.Double`|`g | g% | g‰`|`g`|W3C CSVW|
+|`System.Guid`|`d`|`d`|RFC 4122|
+|`System.Half`|`g | g% | g‰`|`g`|W3C CSVW|
+|`System.Int16`|`g | g% | g‰`|`g`|W3C CSVW|
+|`System.Int32`|`g | g% | g‰`|`g`|W3C CSVW|
+|`System.Int64`|`g | g% | g‰`|`g`|W3C CSVW|
+|`System.Int128`|`g | g% | g‰`|`g`|W3C CSVW|
+|`System.SByte`|`g | g% | g‰`|`g`|W3C CSVW|
+|`System.Single`|`g | g% | g‰`|`g`|W3C CSVW|
+|`System.String`||||
+|`System.TimeOnly`|`HH':'mm':'ss.FFFFFFF`|`o`|ISO 8601-1:2019, RFC 3339|
+|`System.TimeSpan`|`[-]'P'd'DT'h'H'm'M's.FFFFFFF'S'` __\*__|`[-]'P'd'DT'h'H'm'M's.fffffff'S'`|ISO 8601-1:2019, RFC 3339|
+|`System.UInt16`|`g | g% | g‰`|`g`|W3C CSVW|
+|`System.UInt32`|`g | g% | g‰`|`g`|W3C CSVW|
+|`System.UInt64`|`g | g% | g‰`|`g`|W3C CSVW|
+|`System.UInt128`|`g | g% | g‰`|`g`|W3C CSVW|
+|`System.Uri`||||
+|`System.Numerics.BigInteger`|`g | g% | g‰`|`g`|W3C CSVW|
+|`System.Byte[]`|`base16 | base64` __\*\*__|`base16 | base64` __\*\*__|RFC 4648|
+
+<p />
+
+__\*__ - The complete list of formats supported for reading `System.TimeSpan` values is the following:
+
+<p />
+
+- `'P'd'DT'h'H'm'M's'.'FFFFFFF'S'`
+- `'P'd'DT'h'H'm'M's'S'`
+- `'P'd'DT'h'H'm'M'`
+- `'P'd'DT'h'H's'.'FFFFFFF'S'`
+- `'P'd'DT'h'H's'S'`
+- `'P'd'DT'h'H'`
+- `'P'd'DT'm'M's'.'FFFFFFF'S'`
+- `'P'd'DT'm'M's'S'`
+- `'P'd'DT'm'M'`
+- `'P'd'DT's'.'FFFFFFF'S'`
+- `'P'd'DT's'S'`
+- `'P'd'D'`
+- `'PT'h'H'm'M's'.'FFFFFFF'S'`
+- `'PT'h'H'm'M's'S'`
+- `'PT'h'H'm'M'`
+- `'PT'h'H's'.'FFFFFFF'S'`
+- `'PT'h'H's'S'`
+- `'PT'h'H'`
+- `'PT'm'M's'.'FFFFFFF'S'`
+- `'PT'm'M's'S'`
+- `'PT'm'M'`
+- `'PT's'.'FFFFFFF'S'`
+- `'PT's'S'`
+
+<p />
+
+__\*\*__ - The binary data values require the encoding specified explicitly by the corresponding API or converter:
+
+<p />
+
+|Type|Encoding|Low-Level API|High-Level API|Converter|
+|:-|:-:|:-:|:-:|:-|
+|`System.Byte[]`|base16|Supported|Converter|[TabularBase16ArrayConverter](xref:Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter)|
+|`System.Byte[]`|base64|Supported|Converter|[TabularBase64ArrayConverter](xref:Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter)|
+|`System.Memory<System.Byte>`|base16|Converter|Converter|[TabularBase16MemoryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase16MemoryConverter)|
+|`System.Memory<System.Byte>`|base64|Converter|Converter|[TabularBase64MemoryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase64MemoryConverter)|
+|`System.ReadOnlyMemory<System.Byte>`|base16|Converter|Converter|[TabularBase16ReadOnlyMemoryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase16ReadOnlyMemoryConverter)|
+|`System.ReadOnlyMemory<System.Byte>`|base64|Converter|Converter|[TabularBase64ReadOnlyMemoryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase64ReadOnlyMemoryConverter)|
 
 <p />
 
@@ -49,23 +94,16 @@ The default behavior of the built-in date and time value converters can be modif
 
 <p />
 
-- [TabularDateOnlyConverter](xref:Addax.Formats.Tabular.Converters.TabularDateOnlyConverter)
-- [TabularDateTimeConverter](xref:Addax.Formats.Tabular.Converters.TabularDateTimeConverter)
-- [TabularDateTimeOffsetConverter](xref:Addax.Formats.Tabular.Converters.TabularDateTimeOffsetConverter)
-- [TabularTimeOnlyConverter](xref:Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter)
+|Type|Converter|
+|:-|:-|
+|`System.DateOnly`|[TabularDateOnlyConverter](xref:Addax.Formats.Tabular.Converters.TabularDateOnlyConverter)|
+|`System.DateTime`|[TabularDateTimeConverter](xref:Addax.Formats.Tabular.Converters.TabularDateTimeConverter)|
+|`System.DateTimeOffset`|[TabularDateTimeOffsetConverter](xref:Addax.Formats.Tabular.Converters.TabularDateTimeOffsetConverter)|
+|`System.TimeOnly`|[TabularTimeOnlyConverter](xref:Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter)|
 
 <p />
 
-A generated record handler implicitly supports type members of the `Nullable<T>` type with any supported value type as the underlying type. However, a generated record handler requires an explicitly specified value converter for every base16 or base64 binary field mapped:
-
-<p />
-
-- [TabularBase16ArrayConverter](xref:Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter)
-- [TabularBase64ArrayConverter](xref:Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter)
-- [TabularBase16MemoryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase16MemoryConverter)
-- [TabularBase64MemoryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase64MemoryConverter)
-- [TabularBase16ReadOnlyMemoryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase16ReadOnlyMemoryConverter)
-- [TabularBase64ReadOnlyMemoryConverter](xref:Addax.Formats.Tabular.Converters.TabularBase64ReadOnlyMemoryConverter)
+A generated record handler implicitly supports type members of the `System.Nullable<T>` type with any supported value type as the underlying type.
 
 <p />
 
@@ -73,7 +111,7 @@ A generated record handler implicitly supports type members of the `Nullable<T>`
 
 <p />
 
-The framework has built-in support for interpreting tabular records as single-dimensional arrays `T[]` or `Nullable<T>[]` of any supported type (except binary data). For example, tabular records of any file can be interpreted as string arrays, even if the number of fields is not fixed:
+The framework has built-in support for interpreting tabular records as single-dimensional arrays `T[]` or `System.Nullable<T>[]` of any supported type (except binary data). For example, tabular records of any file can be interpreted as string arrays, even if the number of fields is not fixed:
 
 <p />
 
@@ -110,8 +148,10 @@ The framework also provides generic record handlers for working with tabular rec
 
 <p />
 
-- [TabularArrayHandler\<T\>](xref:Addax.Formats.Tabular.Handlers.TabularArrayHandler`1)
-- [TabularSparseArrayHandler\<T\>](xref:Addax.Formats.Tabular.Handlers.TabularSparseArrayHandler`1)
+|Type|Handler|
+|:-|:-|
+|`T`|[TabularArrayHandler\<T\>](xref:Addax.Formats.Tabular.Handlers.TabularArrayHandler`1)|
+|`System.Nullable<T>`|[TabularSparseArrayHandler\<T\>](xref:Addax.Formats.Tabular.Handlers.TabularSparseArrayHandler`1)|
 
 <p />
 

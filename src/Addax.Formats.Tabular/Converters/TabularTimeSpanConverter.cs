@@ -12,6 +12,8 @@ public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
 
     private static readonly string[] s_formats =
     [
+        "'P'd'DT'h'H'm'M's'.'FFFFFFF'S'",
+
         "'PT's'S'",
         "'PT'm'M's'S'",
         "'PT'h'H'm'M's'S'",
@@ -20,7 +22,6 @@ public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
         "'PT's'.'FFFFFFF'S'",
         "'PT'm'M's'.'FFFFFFF'S'",
         "'PT'h'H'm'M's'.'FFFFFFF'S'",
-        "'P'd'DT'h'H'm'M's'.'FFFFFFF'S'",
 
         "'PT'm'M'",
         "'PT'h'H'",
@@ -70,74 +71,55 @@ public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
             return false;
         }
 
-        if (value.Days > 0)
+        if (!value.Days.TryFormat(writer.FreeRegion, out var charsWrittenD, "d", provider))
         {
-            if (!value.Days.TryFormat(writer.FreeRegion, out var charsWrittenD, "g", provider))
-            {
-                return false;
-            }
-
-            charsWritten += charsWrittenD;
-
-            if (!writer.TryWrite('D'))
-            {
-                return false;
-            }
+            return false;
         }
 
-        var seconds = value.Seconds + (value.Milliseconds / 1e+3) + (value.Microseconds / 1e+6) + (value.Nanoseconds / 1e+9);
+        charsWritten += charsWrittenD;
 
-        if ((value.Hours != 0) || (value.Minutes != 0) || (seconds != 0) || (value == TimeSpan.Zero))
+        if (!writer.TryWrite('D') ||
+            !writer.TryWrite('T'))
         {
-            if (!writer.TryWrite('T'))
-            {
-                return false;
-            }
+            return false;
         }
 
-        if ((value.Hours != 0) || (value == TimeSpan.Zero))
+        if (!value.Hours.TryFormat(writer.FreeRegion, out var charsWrittenH, "d", provider))
         {
-            if (!value.Hours.TryFormat(writer.FreeRegion, out var charsWrittenH, "g", provider))
-            {
-                return false;
-            }
-
-            charsWritten += charsWrittenH;
-
-            if (!writer.TryWrite('H'))
-            {
-                return false;
-            }
+            return false;
         }
 
-        if (value.Minutes != 0)
+        charsWritten += charsWrittenH;
+
+        if (!writer.TryWrite('H'))
         {
-            if (!value.Minutes.TryFormat(writer.FreeRegion, out var charsWrittenM, "g", provider))
-            {
-                return false;
-            }
-
-            charsWritten += charsWrittenM;
-
-            if (!writer.TryWrite('M'))
-            {
-                return false;
-            }
+            return false;
         }
 
-        if (seconds != 0)
+        if (!value.Minutes.TryFormat(writer.FreeRegion, out var charsWrittenM, "d", provider))
         {
-            if (!seconds.TryFormat(writer.FreeRegion, out var charsWrittenS, "0.#######", provider))
-            {
-                return false;
-            }
+            return false;
+        }
 
-            charsWritten += charsWrittenS;
+        charsWritten += charsWrittenM;
 
-            if (!writer.TryWrite('S'))
-            {
-                return false;
-            }
+        if (!writer.TryWrite('M'))
+        {
+            return false;
+        }
+
+        var seconds = value.Seconds + (value.Milliseconds * 1e-3) + (value.Microseconds * 1e-6) + (value.Nanoseconds * 1e-9);
+
+        if (!seconds.TryFormat(writer.FreeRegion, out var charsWrittenS, "f7", provider))
+        {
+            return false;
+        }
+
+        charsWritten += charsWrittenS;
+
+        if (!writer.TryWrite('S'))
+        {
+            return false;
         }
 
         return true;

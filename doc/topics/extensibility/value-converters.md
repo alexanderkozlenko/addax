@@ -17,7 +17,7 @@ A complete example of a custom value converter that handles `System.DateTime` va
 # [C#](#tab/cs)
 
 ```cs
-internal class UnixDateTimeConverter : TabularConverter<DateTime>
+internal class UnixEpochDateTimeConverter : TabularConverter<DateTime>
 {
     public override bool TryFormat(DateTime value, Span<char> destination, IFormatProvider? provider, out int charsWritten)
     {
@@ -47,7 +47,7 @@ internal class UnixDateTimeConverter : TabularConverter<DateTime>
 # [F#](#tab/fs)
 
 ```fs
-type internal UnixDateTimeConverter() =
+type internal UnixEpochDateTimeConverter() =
     inherit TabularConverter<DateTime>()
 
         override this.TryFormat(value, destination, provider, charsWritten) =
@@ -115,7 +115,7 @@ internal struct Book
     [TabularFieldOrder(1)]
     public string? Title;
 
-    [TabularConverter<UnixDateTimeConverter>]
+    [TabularConverter<UnixEpochDateTimeConverter>]
     [TabularFieldOrder(2)]
     public DateTime? Published;
 }
@@ -126,7 +126,7 @@ internal struct Book
 ```cs
 using Addax.Formats.Tabular;
 
-var converter = new UnixDateTimeConverter();
+var converter = new UnixEpochDateTimeConverter();
 var dialect = new TabularDialect("\r\n", ',', '\"');
 
 using (var writer = new TabularWriter(File.Create("books.csv"), dialect))
@@ -166,7 +166,7 @@ Consider adding extension methods for using a custom value converter with the lo
 ```cs
 internal static class TabularUnixDateTimeExtensions
 {
-    private static readonly UnixDateTimeConverter s_converter = new();
+    private static readonly UnixEpochDateTimeConverter s_converter = new();
 
     public static bool TryGetUnixDateTime(this TabularReader reader, out DateTime value)
     {
@@ -198,7 +198,7 @@ internal static class TabularUnixDateTimeExtensions
 # [Low-level API (F#)](#tab/api-ll/fs)
 
 ```fs
-let private converter = new UnixDateTimeConverter()
+let private converter = new UnixEpochDateTimeConverter()
 let dialect = new TabularDialect("\r\n", ',', '\"')
 
 using (new TabularWriter(File.Create "books.csv", dialect)) (fun writer ->
