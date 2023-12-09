@@ -95,160 +95,291 @@
 <thead>
 <tr>
 <th style="text-align: left;">Type</th>
-<th style="text-align: left;">String Format</th>
+<th style="text-align: left;">Format (Read)</th>
+<th style="text-align: left;">Format (Write)</th>
 <th style="text-align: left;">Standard</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;"><code>System.Boolean</code></td>
-<td style="text-align: left;">Lexical space: <code>&quot;true&quot; | &quot;false&quot; | &quot;1&quot; | &quot;0&quot;</code></td>
-<td style="text-align: left;">W3C XSD 1.1 P2</td>
+<td style="text-align: left;"><code>&quot;true&quot; | &quot;false&quot; | &quot;1&quot; | &quot;0&quot;</code></td>
+<td style="text-align: left;"><code>&quot;true&quot; | &quot;false&quot;</code></td>
+<td style="text-align: left;">W3C CSVW</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.Byte</code></td>
-<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>g | g%</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.Char</code></td>
-<td style="text-align: left;">One UTF-16 code unit</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.DateOnly</code></td>
-<td style="text-align: left;">Format: <code>&quot;yyyy'-'MM'-'dd&quot;</code></td>
-<td style="text-align: left;">RFC 3339 / ISO 8601-1:2019</td>
+<td style="text-align: left;"><code>yyyy'-'MM'-'dd</code></td>
+<td style="text-align: left;"><code>o</code></td>
+<td style="text-align: left;">ISO 8601-1:2019, RFC 3339</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.DateTime</code></td>
-<td style="text-align: left;">Format: <code>&quot;yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK&quot;</code></td>
-<td style="text-align: left;">RFC 3339 / ISO 8601-1:2019</td>
+<td style="text-align: left;"><code>yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK</code></td>
+<td style="text-align: left;"><code>o</code></td>
+<td style="text-align: left;">ISO 8601-1:2019, RFC 3339</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.DateTimeOffset</code></td>
-<td style="text-align: left;">Format: <code>&quot;yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK&quot;</code></td>
-<td style="text-align: left;">RFC 3339 / ISO 8601-1:2019</td>
+<td style="text-align: left;"><code>yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK</code></td>
+<td style="text-align: left;"><code>o</code></td>
+<td style="text-align: left;">ISO 8601-1:2019, RFC 3339</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.Decimal</code></td>
-<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>g | g% | g‰</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.Double</code></td>
-<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>g | g% | g‰</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.Guid</code></td>
-<td style="text-align: left;">Format: <code>&quot;00000000-0000-0000-0000-000000000000&quot;</code></td>
+<td style="text-align: left;"><code>d</code></td>
+<td style="text-align: left;"><code>d</code></td>
 <td style="text-align: left;">RFC 4122</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.Half</code></td>
-<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>g | g% | g‰</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.Int16</code></td>
-<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>g | g% | g‰</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.Int32</code></td>
-<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>g | g% | g‰</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.Int64</code></td>
-<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>g | g% | g‰</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.Int128</code></td>
-<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>g | g% | g‰</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.SByte</code></td>
-<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>g | g% | g‰</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.Single</code></td>
-<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>g | g% | g‰</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.String</code></td>
-<td style="text-align: left;">Up to 2,147,483,591 UTF-16 code units</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.TimeOnly</code></td>
-<td style="text-align: left;">Format: <code>&quot;HH':'mm':'ss.FFFFFFF&quot;</code></td>
-<td style="text-align: left;">RFC 3339 / ISO 8601-1:2019</td>
+<td style="text-align: left;"><code>HH':'mm':'ss.FFFFFFF</code></td>
+<td style="text-align: left;"><code>o</code></td>
+<td style="text-align: left;">ISO 8601-1:2019, RFC 3339</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.TimeSpan</code></td>
-<td style="text-align: left;">Format: <code>&quot;[-]'P'd'DT'h'H'm'M's.FFFFFFF'S'&quot;</code></td>
-<td style="text-align: left;">RFC 3339 / ISO 8601-1:2019</td>
+<td style="text-align: left;"><code>[-]'P'd'DT'h'H'm'M's.FFFFFFF'S'</code> <strong>*</strong></td>
+<td style="text-align: left;"><code>[-]'P'd'DT'h'H'm'M's.fffffff'S'</code></td>
+<td style="text-align: left;">ISO 8601-1:2019, RFC 3339</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.UInt16</code></td>
-<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>g | g% | g‰</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.UInt32</code></td>
-<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>g | g% | g‰</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.UInt64</code></td>
-<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>g | g% | g‰</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.UInt128</code></td>
-<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>g | g% | g‰</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>System.Uri</code></td>
-<td style="text-align: left;">See Appx. A &quot;Collected ABNF for URI&quot;</td>
-<td style="text-align: left;">RFC 3986</td>
-</tr>
-<tr>
-<td style="text-align: left;"><code>System.Numerics.BigInteger</code></td>
-<td style="text-align: left;">Format specifier: <code>&quot;g&quot;</code></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
 <td style="text-align: left;"></td>
 </tr>
 <tr>
+<td style="text-align: left;"><code>System.Numerics.BigInteger</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
 <td style="text-align: left;"><code>System.Byte[]</code></td>
-<td style="text-align: left;">Encoding: &quot;base16&quot; (&quot;hex&quot;) or &quot;base64&quot;</td>
+<td style="text-align: left;"><code>base16 | base64</code> <strong>**</strong></td>
+<td style="text-align: left;"><code>base16 | base64</code> <strong>**</strong></td>
 <td style="text-align: left;">RFC 4648</td>
 </tr>
 </tbody>
 </table>
 <p></p>
-<p>To work with binary data fields, the corresponding value converter must be specified explicitly:</p>
+<p><strong>*</strong> - The complete list of formats supported for reading <code>System.TimeSpan</code> values is the following:</p>
 <p></p>
 <ul>
-<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.html">TabularBase16ArrayConverter</a></li>
-<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter.html">TabularBase64ArrayConverter</a></li>
-<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase16MemoryConverter.html">TabularBase16MemoryConverter</a></li>
-<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase64MemoryConverter.html">TabularBase64MemoryConverter</a></li>
-<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase16ReadOnlyMemoryConverter.html">TabularBase16ReadOnlyMemoryConverter</a></li>
-<li><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase64ReadOnlyMemoryConverter.html">TabularBase64ReadOnlyMemoryConverter</a></li>
+<li><code>'P'd'DT'h'H'm'M's'.'FFFFFFF'S'</code></li>
+<li><code>'P'd'DT'h'H'm'M's'S'</code></li>
+<li><code>'P'd'DT'h'H'm'M'</code></li>
+<li><code>'P'd'DT'h'H's'.'FFFFFFF'S'</code></li>
+<li><code>'P'd'DT'h'H's'S'</code></li>
+<li><code>'P'd'DT'h'H'</code></li>
+<li><code>'P'd'DT'm'M's'.'FFFFFFF'S'</code></li>
+<li><code>'P'd'DT'm'M's'S'</code></li>
+<li><code>'P'd'DT'm'M'</code></li>
+<li><code>'P'd'DT's'.'FFFFFFF'S'</code></li>
+<li><code>'P'd'DT's'S'</code></li>
+<li><code>'P'd'D'</code></li>
+<li><code>'PT'h'H'm'M's'.'FFFFFFF'S'</code></li>
+<li><code>'PT'h'H'm'M's'S'</code></li>
+<li><code>'PT'h'H'm'M'</code></li>
+<li><code>'PT'h'H's'.'FFFFFFF'S'</code></li>
+<li><code>'PT'h'H's'S'</code></li>
+<li><code>'PT'h'H'</code></li>
+<li><code>'PT'm'M's'.'FFFFFFF'S'</code></li>
+<li><code>'PT'm'M's'S'</code></li>
+<li><code>'PT'm'M'</code></li>
+<li><code>'PT's'.'FFFFFFF'S'</code></li>
+<li><code>'PT's'S'</code></li>
 </ul>
 <p></p>
-<p>Any generated record handler also supports type members of the <code>Nullable&lt;T&gt;</code> type with any supported value type as the underlying type.</p>
+<p><strong>**</strong> - The binary data values require the encoding specified explicitly by the corresponding API or converter:</p>
+<p></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Type</th>
+<th style="text-align: center;">Encoding</th>
+<th style="text-align: center;">Low-Level API</th>
+<th style="text-align: center;">High-Level API</th>
+<th style="text-align: left;">Converter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>System.Byte[]</code></td>
+<td style="text-align: center;">base16</td>
+<td style="text-align: center;">Supported</td>
+<td style="text-align: center;">Converter</td>
+<td style="text-align: left;"><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.html">TabularBase16ArrayConverter</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Byte[]</code></td>
+<td style="text-align: center;">base64</td>
+<td style="text-align: center;">Supported</td>
+<td style="text-align: center;">Converter</td>
+<td style="text-align: left;"><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter.html">TabularBase64ArrayConverter</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Memory&lt;System.Byte&gt;</code></td>
+<td style="text-align: center;">base16</td>
+<td style="text-align: center;">Converter</td>
+<td style="text-align: center;">Converter</td>
+<td style="text-align: left;"><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase16MemoryConverter.html">TabularBase16MemoryConverter</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Memory&lt;System.Byte&gt;</code></td>
+<td style="text-align: center;">base64</td>
+<td style="text-align: center;">Converter</td>
+<td style="text-align: center;">Converter</td>
+<td style="text-align: left;"><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase64MemoryConverter.html">TabularBase64MemoryConverter</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.ReadOnlyMemory&lt;System.Byte&gt;</code></td>
+<td style="text-align: center;">base16</td>
+<td style="text-align: center;">Converter</td>
+<td style="text-align: center;">Converter</td>
+<td style="text-align: left;"><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase16ReadOnlyMemoryConverter.html">TabularBase16ReadOnlyMemoryConverter</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.ReadOnlyMemory&lt;System.Byte&gt;</code></td>
+<td style="text-align: center;">base64</td>
+<td style="text-align: center;">Converter</td>
+<td style="text-align: center;">Converter</td>
+<td style="text-align: left;"><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularBase64ReadOnlyMemoryConverter.html">TabularBase64ReadOnlyMemoryConverter</a></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>The default behavior of the built-in date and time value converters can be modified by using a custom format string:</p>
+<p></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Converter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>System.DateOnly</code></td>
+<td style="text-align: left;"><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularDateOnlyConverter.html">TabularDateOnlyConverter</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.DateTime</code></td>
+<td style="text-align: left;"><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularDateTimeConverter.html">TabularDateTimeConverter</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.DateTimeOffset</code></td>
+<td style="text-align: left;"><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularDateTimeOffsetConverter.html">TabularDateTimeOffsetConverter</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.TimeOnly</code></td>
+<td style="text-align: left;"><a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter.html">TabularTimeOnlyConverter</a></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p>A generated record handler implicitly supports type members of the <code>System.Nullable&lt;T&gt;</code> type with any supported value type as the underlying type.</p>
 <p></p>
 <h3 id="tabular-records">Tabular Records</h3>
 <p></p>
-<p>The framework has built-in support for interpreting tabular records as single-dimensional arrays <code>T[]</code> or <code>Nullable&lt;T&gt;[]</code> of any supported type (except binary data). For example, tabular records of any file can be interpreted as string arrays, even if the number of fields is not fixed:</p>
+<p>The framework has built-in support for interpreting tabular records as single-dimensional arrays <code>T[]</code> or <code>System.Nullable&lt;T&gt;[]</code> of any supported type (except binary data). For example, tabular records of any file can be interpreted as string arrays, even if the number of fields is not fixed:</p>
 <p></p>
 <div class="tabGroup" id="tabgroup_1">
 <ul role="tablist">
@@ -286,10 +417,24 @@ using (new TabularReader&lt;array&lt;string&gt;&gt;(File.OpenRead &quot;books.cs
 <p></p>
 <p>The framework also provides generic record handlers for working with tabular records as single-dimensional arrays of any type:</p>
 <p></p>
-<ul>
-<li><a class="xref" href="../api/Addax.Formats.Tabular.Handlers.TabularArrayHandler-1.html">TabularArrayHandler&lt;T&gt;</a></li>
-<li><a class="xref" href="../api/Addax.Formats.Tabular.Handlers.TabularSparseArrayHandler-1.html">TabularSparseArrayHandler&lt;T&gt;</a></li>
-</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Handler</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>T</code></td>
+<td style="text-align: left;"><a class="xref" href="../api/Addax.Formats.Tabular.Handlers.TabularArrayHandler-1.html">TabularArrayHandler&lt;T&gt;</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Nullable&lt;T&gt;</code></td>
+<td style="text-align: left;"><a class="xref" href="../api/Addax.Formats.Tabular.Handlers.TabularSparseArrayHandler-1.html">TabularSparseArrayHandler&lt;T&gt;</a></td>
+</tr>
+</tbody>
+</table>
 <p></p>
 <h3 id="dialect-inferrence">Dialect Inferrence</h3>
 <p></p>

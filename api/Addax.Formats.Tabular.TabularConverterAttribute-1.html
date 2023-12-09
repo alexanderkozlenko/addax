@@ -2,10 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Struct TabularRecord&lt;T&gt;
+      <title>Class TabularConverterAttribute&lt;T&gt;
  </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Struct TabularRecord&lt;T&gt;
+      <meta name="title" content="Class TabularConverterAttribute&lt;T&gt;
  ">
       
       <link rel="icon" href="../images/app-32.png">
@@ -85,13 +85,13 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="Addax.Formats.Tabular.TabularRecord`1">
+        <article data-uid="Addax.Formats.Tabular.TabularConverterAttribute`1">
 
 
 
-  <h1 id="Addax_Formats_Tabular_TabularRecord_1" data-uid="Addax.Formats.Tabular.TabularRecord`1" class="text-break">
-    Struct TabularRecord&lt;T&gt;
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularRecord%601.cs"><i class="bi bi-code-slash"></i></a>
+  <h1 id="Addax_Formats_Tabular_TabularConverterAttribute_1" data-uid="Addax.Formats.Tabular.TabularConverterAttribute`1" class="text-break">
+    Class TabularConverterAttribute&lt;T&gt;
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularConverterAttribute%601.cs"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -99,12 +99,13 @@
   <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Represents a container that may or may not have a stored object.</p>
+  <div class="markdown summary"><p>Specifies the type of a tabular value converter. This class cannot be inherited.</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public readonly struct TabularRecord&lt;T&gt; where T : notnull</code></pre>
+    <pre><code class="lang-csharp hljs">[AttributeUsage(AttributeTargets.Property|AttributeTargets.Field)]
+public sealed class TabularConverterAttribute&lt;T&gt; : Attribute where T : class</code></pre>
   </div>
 
 
@@ -112,10 +113,18 @@
   <h4 class="section">Type Parameters</h4>
   <dl class="parameters">
     <dt><code>T</code></dt>
-    <dd><p>The type of object stored in the container.</p>
+    <dd><p>The type of the converter. Must be derived from the <a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html">TabularConverter&lt;T&gt;</a> class and have an accessible parameterless constructor.</p>
 </dd>
   </dl>
 
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.attribute">Attribute</a></div>
+      <div><span class="xref">TabularConverterAttribute&lt;T&gt;</span></div>
+    </dd>
+  </dl>
 
 
 
@@ -129,27 +138,21 @@
 </h2>
 
 
-  <a id="Addax_Formats_Tabular_TabularRecord_1__ctor_" data-uid="Addax.Formats.Tabular.TabularRecord`1.#ctor*"></a>
+  <a id="Addax_Formats_Tabular_TabularConverterAttribute_1__ctor_" data-uid="Addax.Formats.Tabular.TabularConverterAttribute`1.#ctor*"></a>
 
-  <h3 id="Addax_Formats_Tabular_TabularRecord_1__ctor__0_" data-uid="Addax.Formats.Tabular.TabularRecord`1.#ctor(`0)">
-  TabularRecord(T)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularRecord%601.cs"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Addax_Formats_Tabular_TabularConverterAttribute_1__ctor" data-uid="Addax.Formats.Tabular.TabularConverterAttribute`1.#ctor">
+  TabularConverterAttribute()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularConverterAttribute%601.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularRecord-1.html">TabularRecord&lt;T&gt;</a> struct with the specified object.</p>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularConverterAttribute-1.html">TabularConverterAttribute&lt;T&gt;</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TabularRecord(T value)</code></pre>
+    <pre><code class="lang-csharp hljs">public TabularConverterAttribute()</code></pre>
   </div>
 
-  <h4 class="section">Parameters</h4>
-  <dl class="parameters">
-    <dt><code>value</code> <span class="xref">T</span></dt>
-    <dd><p>The object to initialize the container with.</p>
-</dd>
-  </dl>
 
 
 
@@ -159,12 +162,6 @@
 
 
 
-  <h4 class="section">Exceptions</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
-    <dd><p><code class="paramref">value</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
-</dd>
-  </dl>
 
 
 

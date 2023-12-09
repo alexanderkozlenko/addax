@@ -102,7 +102,7 @@
 </ul>
 <section id="tabpanel_1_cs" role="tabpanel" data-tab="cs">
 
-<pre><code class="lang-cs">internal class UnixDateTimeConverter : TabularConverter&lt;DateTime&gt;
+<pre><code class="lang-cs">internal class UnixEpochDateTimeConverter : TabularConverter&lt;DateTime&gt;
 {
     public override bool TryFormat(DateTime value, Span&lt;char&gt; destination, IFormatProvider? provider, out int charsWritten)
     {
@@ -131,17 +131,17 @@
 </section>
 <section id="tabpanel_1_fs" role="tabpanel" data-tab="fs" aria-hidden="true" hidden="hidden">
 
-<pre><code class="lang-fs">type internal UnixDateTimeConverter() =
+<pre><code class="lang-fs">type internal UnixEpochDateTimeConverter() =
     inherit TabularConverter&lt;DateTime&gt;()
 
         override this.TryFormat(value, destination, provider, charsWritten) =
             let seconds = int64 (value.ToUniversalTime () - DateTime.UnixEpoch).TotalSeconds
-            
+
             seconds.TryFormat(destination, &amp;charsWritten, &quot;g&quot;, provider)
 
         override this.TryParse(source, provider, value) =
             let mutable seconds = Unchecked.defaultof&lt;int64&gt;
-            
+
             if Int64.TryParse(source, NumberStyles.Integer, provider, &amp;seconds) then
                 value &lt;- DateTime.UnixEpoch.AddSeconds (float seconds)
                 true
@@ -207,11 +207,11 @@ internal struct Book
 {
     [TabularFieldOrder(0)]
     public string? Author;
-    
+
     [TabularFieldOrder(1)]
     public string? Title;
-    
-    [TabularConverter(typeof(UnixDateTimeConverter))]
+
+    [TabularConverter&lt;UnixEpochDateTimeConverter&gt;]
     [TabularFieldOrder(2)]
     public DateTime? Published;
 }
@@ -221,7 +221,7 @@ internal struct Book
 
 <pre><code class="lang-cs">using Addax.Formats.Tabular;
 
-var converter = new UnixDateTimeConverter();
+var converter = new UnixEpochDateTimeConverter();
 var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '\&quot;');
 
 using (var writer = new TabularWriter(File.Create(&quot;books.csv&quot;), dialect))
@@ -256,7 +256,7 @@ using (var reader = new TabularReader(File.OpenRead(&quot;books.csv&quot;), dial
 <p></p>
 <pre><code class="lang-cs">internal static class TabularUnixDateTimeExtensions
 {
-    private static readonly UnixDateTimeConverter s_converter = new();
+    private static readonly UnixEpochDateTimeConverter s_converter = new();
 
     public static bool TryGetUnixDateTime(this TabularReader reader, out DateTime value)
     {
@@ -289,7 +289,7 @@ using (var reader = new TabularReader(File.OpenRead(&quot;books.csv&quot;), dial
 </section>
 <section id="tabpanel_2_api-ll_fs" role="tabpanel" data-tab="api-ll" data-condition="fs" aria-hidden="true" hidden="hidden">
 
-<pre><code class="lang-fs">let private converter = new UnixDateTimeConverter()
+<pre><code class="lang-fs">let private converter = new UnixEpochDateTimeConverter()
 let dialect = new TabularDialect(&quot;\r\n&quot;, ',', '\&quot;')
 
 using (new TabularWriter(File.Create &quot;books.csv&quot;, dialect)) (fun writer -&gt;
