@@ -101,6 +101,8 @@ public sealed class TabularDialect
 
     internal static bool IsSupportedLineTerminator(string value)
     {
+        Debug.Assert(value is not null);
+
         return value.Length switch
         {
             1 => true,

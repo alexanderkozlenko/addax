@@ -5,18 +5,33 @@ using System.Diagnostics;
 
 namespace Addax.Formats.Tabular;
 
-internal sealed class TabularFormatter(TabularDialect dialect)
+internal sealed class TabularFormatter
 {
-    private readonly TabularSearchValues _searchValues = dialect.SearchValues;
+    private readonly string _tokenT;
+    private readonly char _tokenD;
+    private readonly char _tokenQ;
+    private readonly char _tokenE;
+    private readonly char? _tokenA;
 
-    private readonly string _tokenT = dialect.LineTerminator;
-    private readonly char _tokenD = dialect.Delimiter;
-    private readonly char _tokenQ = dialect.QuoteSymbol;
-    private readonly char _tokenE = dialect.EscapeSymbol;
-    private readonly char? _tokenA = dialect.AnnotationPrefix;
+    private readonly TabularSearchValues _searchValues;
+
+    public TabularFormatter(TabularDialect dialect)
+    {
+        Debug.Assert(dialect is not null);
+
+        _tokenT = dialect.LineTerminator;
+        _tokenD = dialect.Delimiter;
+        _tokenQ = dialect.QuoteSymbol;
+        _tokenE = dialect.EscapeSymbol;
+        _tokenA = dialect.AnnotationPrefix;
+
+        _searchValues = dialect.SearchValues;
+    }
 
     public void WriteDelimiter(IBufferWriter<char> writer)
     {
+        Debug.Assert(writer is not null);
+
         var target = writer.GetSpan(1);
 
         target[0] = _tokenD;
@@ -25,6 +40,8 @@ internal sealed class TabularFormatter(TabularDialect dialect)
 
     public void WriteLineTerminator(IBufferWriter<char> writer)
     {
+        Debug.Assert(writer is not null);
+
         var tokenT = _tokenT.AsSpan();
         var target = writer.GetSpan(_tokenT.Length);
 
@@ -34,6 +51,8 @@ internal sealed class TabularFormatter(TabularDialect dialect)
 
     public void WriteValue(ReadOnlySpan<char> source, IBufferWriter<char> writer, TabularTextInfo textInfo)
     {
+        Debug.Assert(writer is not null);
+
         if (source.IsEmpty)
         {
             return;
@@ -80,6 +99,7 @@ internal sealed class TabularFormatter(TabularDialect dialect)
 
     public void WriteAnnotation(ReadOnlySpan<char> source, IBufferWriter<char> writer)
     {
+        Debug.Assert(writer is not null);
         Debug.Assert(_tokenA.HasValue);
 
         var targetSize = source.Length + 1;

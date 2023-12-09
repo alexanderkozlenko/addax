@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -70,6 +71,8 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
         public ImmutableArray<TabularRecordMapping> GetRecordMappings(CSharpCompilation compilation, SourceProductionContext context, ImmutableArray<INamedTypeSymbol> recordTypes)
         {
+            Debug.Assert(compilation != null);
+
             if (recordTypes.IsDefaultOrEmpty)
             {
                 return ImmutableArray<TabularRecordMapping>.Empty;

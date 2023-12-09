@@ -7,18 +7,34 @@ using Addax.Formats.Tabular.Collections;
 
 namespace Addax.Formats.Tabular;
 
-internal sealed class TabularParser(TabularDialect dialect)
+internal sealed class TabularParser
 {
-    private readonly TabularSearchValues _searchValues = dialect.SearchValues;
+    private readonly string _tokenT;
+    private readonly char _tokenD;
+    private readonly char _tokenQ;
+    private readonly char _tokenE;
+    private readonly char? _tokenA;
 
-    private readonly string _tokenT = dialect.LineTerminator;
-    private readonly char _tokenD = dialect.Delimiter;
-    private readonly char _tokenQ = dialect.QuoteSymbol;
-    private readonly char _tokenE = dialect.EscapeSymbol;
-    private readonly char? _tokenA = dialect.AnnotationPrefix;
+    private readonly TabularSearchValues _searchValues;
+
+    public TabularParser(TabularDialect dialect)
+    {
+        Debug.Assert(dialect is not null);
+
+        _tokenT = dialect.LineTerminator;
+        _tokenD = dialect.Delimiter;
+        _tokenQ = dialect.QuoteSymbol;
+        _tokenE = dialect.EscapeSymbol;
+        _tokenA = dialect.AnnotationPrefix;
+
+        _searchValues = dialect.SearchValues;
+    }
 
     public bool TryParse(ReadOnlySpan<char> source, TabularParsingMode mode, ref TabularParserState state, LiteQueue<TabularFieldInfo> fields, ref int consumed)
     {
+        Debug.Assert(fields is not null);
+        Debug.Assert(consumed >= 0);
+
         var length = source.Length;
 
         while (!source.IsEmpty)

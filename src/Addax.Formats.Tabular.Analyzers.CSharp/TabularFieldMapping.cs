@@ -1,5 +1,6 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 
 namespace Addax.Formats.Tabular.Analyzers.CSharp
@@ -21,6 +22,9 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             string converterTypeName,
             SyntaxToken? fieldNameLiteral)
         {
+            Debug.Assert(memberName != null);
+            Debug.Assert(valueTypeName != null);
+
             MemberName = memberName;
             MemberAccess = memberAccess;
             AsNullableT = asNullableT;

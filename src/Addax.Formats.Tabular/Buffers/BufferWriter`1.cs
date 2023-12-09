@@ -66,8 +66,7 @@ internal sealed class BufferWriter<T> : IBufferWriter<T>, IDisposable
     public void Advance(int count)
     {
         Debug.Assert(count >= 0);
-        Debug.Assert(count <= Array.MaxLength);
-        Debug.Assert(_offset + _length + count <= _array.Length);
+        Debug.Assert(count <= _array.Length - _offset - _length);
 
         _length += count;
     }
@@ -75,7 +74,6 @@ internal sealed class BufferWriter<T> : IBufferWriter<T>, IDisposable
     public void Truncate(int count)
     {
         Debug.Assert(count >= 0);
-        Debug.Assert(count <= Array.MaxLength);
         Debug.Assert(count <= _length);
 
         if (count != _length)

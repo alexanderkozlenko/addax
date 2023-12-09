@@ -53,7 +53,7 @@ internal readonly struct ArrayBuffer<T> : IDisposable
     public Memory<T> AsMemory(int length)
     {
         Debug.Assert(length >= 0);
-        Debug.Assert(length <= Array.MaxLength);
+        Debug.Assert(length <= _length);
 
         return new(_array, _offset, length);
     }
@@ -68,7 +68,7 @@ internal readonly struct ArrayBuffer<T> : IDisposable
     public Span<T> AsSpan(int length)
     {
         Debug.Assert(length >= 0);
-        Debug.Assert(length <= Array.MaxLength);
+        Debug.Assert(length <= _length);
 
         return new(_array, _offset, length);
     }

@@ -139,7 +139,6 @@ internal sealed class LiteTextReader : IDisposable, IAsyncDisposable
     public void Advance(int consumed)
     {
         Debug.Assert(consumed >= 0);
-        Debug.Assert(consumed <= Array.MaxLength);
         Debug.Assert(consumed <= _charBufferWriter.WrittenCount);
 
         _charBufferWriter.Truncate(consumed);

@@ -1,6 +1,7 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using Microsoft.CodeAnalysis.Text;
@@ -19,6 +20,9 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
         public SourceTextBuilder(char indentChar, int indentSize, Encoding encoding)
         {
+            Debug.Assert(indentSize >= 0);
+            Debug.Assert(encoding != null);
+
             _indentChar = indentChar;
             _indentSize = indentSize;
             _encoding = encoding;
