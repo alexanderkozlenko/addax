@@ -15,21 +15,21 @@ The following benchmarks reflect the approximate time and memory required to pro
 
 | Method                         | Mean      | Median    | Min       | Max       | Op/s   | Allocated |
 |------------------------------- |----------:|----------:|----------:|----------:|-------:|----------:|
-| 'read field: empty'            |  7.320 ms |  7.358 ms |  7.107 ms |  7.404 ms | 136.62 |     389 B |
-| 'read field: regular'          | 18.033 ms | 18.030 ms | 17.958 ms | 18.134 ms |  55.46 |     386 B |
-| 'read field: escaped'          | 49.936 ms | 49.929 ms | 49.797 ms | 50.194 ms |  20.03 |     453 B |
-| 'read field: empty (async)'    |  7.505 ms |  7.502 ms |  7.471 ms |  7.550 ms | 133.24 |     389 B |
-| 'read field: regular (async)'  | 19.129 ms | 19.116 ms | 18.922 ms | 19.385 ms |  52.28 |     406 B |
-| 'read field: escaped (async)'  | 50.724 ms | 50.681 ms | 50.500 ms | 51.067 ms |  19.71 |     390 B |
+| 'read field: empty'            |  6.620 ms |  6.618 ms |  6.531 ms |  6.743 ms | 151.06 |     389 B |
+| 'read field: regular'          | 14.482 ms | 14.378 ms | 14.325 ms | 14.805 ms |  69.05 |     395 B |
+| 'read field: escaped'          | 40.464 ms | 40.431 ms | 40.155 ms | 40.854 ms |  24.71 |     389 B |
+| 'read field: empty (async)'    |  7.059 ms |  7.049 ms |  6.994 ms |  7.157 ms | 141.66 |     389 B |
+| 'read field: regular (async)'  | 15.484 ms | 15.482 ms | 15.427 ms | 15.564 ms |  64.58 |     395 B |
+| 'read field: escaped (async)'  | 40.815 ms | 40.822 ms | 40.695 ms | 40.909 ms |  24.50 |     437 B |
 
 | Method                         | Mean      | Median    | Min       | Max       | Op/s   | Allocated |
 |------------------------------- |----------:|----------:|----------:|----------:|-------:|----------:|
-| 'write field: empty'           |  5.329 ms |  5.325 ms |  5.287 ms |  5.363 ms | 187.66 |     384 B |
-| 'write field: regular'         |  9.968 ms |  9.969 ms |  9.952 ms |  9.978 ms | 100.32 |     395 B |
-| 'write field: escaped'         | 14.955 ms | 14.954 ms | 14.914 ms | 15.006 ms |  66.87 |     395 B |
-| 'write field: empty (async)'   | 10.193 ms | 10.202 ms | 10.157 ms | 10.224 ms |  98.11 |     395 B |
-| 'write field: regular (async)' | 15.032 ms | 15.033 ms | 14.997 ms | 15.068 ms |  66.52 |     395 B |
-| 'write field: escaped (async)' | 20.378 ms | 20.381 ms | 20.319 ms | 20.464 ms |  49.07 |     406 B |
+| 'write field: empty'           |  5.367 ms |  5.366 ms |  5.343 ms |  5.398 ms | 186.34 |     389 B |
+| 'write field: regular'         |  9.966 ms |  9.960 ms |  9.928 ms | 10.005 ms | 100.34 |     395 B |
+| 'write field: escaped'         | 15.120 ms | 15.124 ms | 15.006 ms | 15.285 ms |  66.14 |     395 B |
+| 'write field: empty (async)'   | 10.133 ms | 10.126 ms | 10.045 ms | 10.212 ms |  98.69 |     395 B |
+| 'write field: regular (async)' | 15.075 ms | 15.087 ms | 15.004 ms | 15.152 ms |  66.33 |     395 B |
+| 'write field: escaped (async)' | 20.655 ms | 20.655 ms | 20.567 ms | 20.754 ms |  48.41 |     406 B |
 
 Mean      : Arithmetic mean of all measurements
 Median    : Value separating the higher half of all measurements (50th percentile)
