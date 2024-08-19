@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: "CLA Assistant"
         if: (github.event.comment.body == 'recheck' || github.event.comment.body == 'I hereby agree with the Contributor License Agreement') || github.event_name == 'pull_request_target'
-        uses: contributor-assistant/github-action@v2.5.0
+        uses: contributor-assistant/github-action@v2.5.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
