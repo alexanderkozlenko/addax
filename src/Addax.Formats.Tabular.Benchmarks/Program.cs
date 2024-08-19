@@ -10,6 +10,7 @@ using BenchmarkDotNet.Reports;
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Toolchains.InProcess.Emit;
 using Perfolizer.Horology;
+using Perfolizer.Metrology;
 
 var config = ManualConfig
     .CreateEmpty()
