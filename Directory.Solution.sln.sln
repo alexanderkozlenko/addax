@@ -5,11 +5,9 @@ VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A699582F-219D-47CC-A0A7-E1F7FFCB32E5}"
 	ProjectSection(SolutionItems) = preProject
-		src\.globalconfig = src\.globalconfig
-		src\Directory.Build.props = src\Directory.Build.props
-		src\Directory.Build.targets = src\Directory.Build.targets
-		src\Directory.Package.props = src\Directory.Package.props
-		src\Directory.Packages.props = src\Directory.Packages.props
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Addax.Formats.Tabular", "src\Addax.Formats.Tabular\Addax.Formats.Tabular.csproj", "{0E00C13E-13C2-4F58-AD0E-BFAC6A6FDD4B}"

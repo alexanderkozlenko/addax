@@ -1,15 +1,13 @@
 ﻿<Project>
-  <PropertyGroup Condition="'$(IsPackable)' == 'true'">
+  <PropertyGroup Condition="'$(IsPackable)' != 'false'">
     <BeforePack>$(BeforePack);IncludeAnalyzersInPackage;</BeforePack>
-    <PackageIcon Condition="Exists('$(MSBuildProjectDirectory)\Properties\Package\Icon.png')">Icon.png</PackageIcon>
-    <PackageReadmeFile Condition="Exists('$(MSBuildProjectDirectory)\Properties\Package\PACKAGE.md')">PACKAGE.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\ILLink.*.xml"
                       LogicalName="%(Filename)%(Extension)" />
-    <None Include="Properties\Package\**\*"
+    <None Include="Properties\Directory.Package\**\*"
           Pack="true"
-          PackagePath="\%(RecursiveDir)%(Filename)%(Extension)" />
+          PackagePath="%(RecursiveDir)%(Filename)%(Extension)" />
   </ItemGroup>
   <Target Name="GetAnalyzerPackFiles"
           DependsOnTargets="$(GenerateNuspecDependsOn)"

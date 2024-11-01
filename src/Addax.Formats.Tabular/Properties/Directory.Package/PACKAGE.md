@@ -11,6 +11,6 @@ Provides high-performance and low-allocating types that work with tabular data r
 
 ## Documentation
 
-- [Addax - Overview, examples, and API documentation](https://alexanderkozlenko.github.io/addax)
+- [Addax - Documentation](https://alexanderkozlenko.github.io/addax)
 - [W3C - Model for Tabular Data and Metadata on the Web](https://w3.org/TR/2015/REC-tabular-data-model-20151217)
 - [RFC 4180 - Common Format and MIME Type for Comma-Separated Values (CSV) Files](https://datatracker.ietf.org/doc/html/rfc4180)

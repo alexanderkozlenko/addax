@@ -4,3 +4,4 @@ syntax: glob
 .vscode/
 artifacts/
 *.user
+launchSettings.json
