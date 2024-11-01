@@ -2,12 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Class TabularReader&lt;T&gt;
- </title>
+      <title>Class TabularReader&lt;T&gt; </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class TabularReader&lt;T&gt;
- ">
+      <meta name="title" content="Class TabularReader&lt;T&gt; ">
       
+      <meta name="description" content="Provides forward-only, read-only access to tabular data records. This class cannot be inherited.">
       <link rel="icon" href="../images/app-32.png">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -30,15 +29,15 @@
       <meta name="loc:changeTheme" content="Change theme">
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
   </head>
-
-  <script type="module" src="./../public/docfx.min.js"></script>
-
-  <script>
-    const theme = localStorage.getItem('theme') || 'auto'
-    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
-  </script>
-
 
   <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
     <header class="bg-body border-bottom">
@@ -90,8 +89,7 @@
 
 
   <h1 id="Addax_Formats_Tabular_TabularReader_1" data-uid="Addax.Formats.Tabular.TabularReader`1" class="text-break">
-    Class TabularReader&lt;T&gt;
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -147,7 +145,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1__ctor_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_Addax_Formats_Tabular_TabularHandler__0__" data-uid="Addax.Formats.Tabular.TabularReader`1.#ctor(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions,Addax.Formats.Tabular.TabularHandler{`0})">
   TabularReader(Stream, TabularDialect, TabularOptions?, TabularHandler&lt;T&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularReader-1.html">TabularReader&lt;T&gt;</a> class for the specified stream using the provided dialect, options, and record handler.</p>
@@ -205,7 +203,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_BytesConsumed" data-uid="Addax.Formats.Tabular.TabularReader`1.BytesConsumed">
   BytesConsumed
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the number of bytes consumed so far.</p>
@@ -241,7 +239,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_CurrentRecord" data-uid="Addax.Formats.Tabular.TabularReader`1.CurrentRecord">
   CurrentRecord
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the last read record that is represented as <code class="typeparamref">T</code>.</p>
@@ -280,7 +278,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_CurrentRecordRef" data-uid="Addax.Formats.Tabular.TabularReader`1.CurrentRecordRef">
   CurrentRecordRef
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets a reference to the last read record that is represented as <code class="typeparamref">T</code>.</p>
@@ -319,7 +317,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_RecordsRead" data-uid="Addax.Formats.Tabular.TabularReader`1.RecordsRead">
   RecordsRead
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the number of records read so far.</p>
@@ -356,7 +354,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_Dispose" data-uid="Addax.Formats.Tabular.TabularReader`1.Dispose">
   Dispose()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Releases the resources used by the current instance of the <a class="xref" href="Addax.Formats.Tabular.TabularReader-1.html">TabularReader&lt;T&gt;</a> class.</p>
@@ -383,7 +381,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_DisposeAsync" data-uid="Addax.Formats.Tabular.TabularReader`1.DisposeAsync">
   DisposeAsync()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously releases the resources used by the current instance of the <a class="xref" href="Addax.Formats.Tabular.TabularReader-1.html">TabularReader&lt;T&gt;</a> class.</p>
@@ -416,7 +414,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_TryReadRecord" data-uid="Addax.Formats.Tabular.TabularReader`1.TryReadRecord">
   TryReadRecord()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Tries to read the next record that can be represented as <code class="typeparamref">T</code>.</p>
@@ -458,7 +456,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_TryReadRecordAsync_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularReader`1.TryReadRecordAsync(System.Threading.CancellationToken)">
   TryReadRecordAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously reads the next record that can be represented as <code class="typeparamref">T</code>.</p>
@@ -509,7 +507,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_TrySkipRecord" data-uid="Addax.Formats.Tabular.TabularReader`1.TrySkipRecord">
   TrySkipRecord()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Tries to advance the reader to the next record.</p>
@@ -548,7 +546,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_TrySkipRecordAsync_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularReader`1.TrySkipRecordAsync(System.Threading.CancellationToken)">
   TrySkipRecordAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously tries to advance the reader to the next record.</p>

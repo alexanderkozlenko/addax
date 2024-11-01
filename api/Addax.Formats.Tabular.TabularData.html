@@ -2,12 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Class TabularData
- </title>
+      <title>Class TabularData </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class TabularData
- ">
+      <meta name="title" content="Class TabularData ">
       
+      <meta name="description" content="Provides static methods for working with collections of tabular data records and inferring dialects. This class cannot be inherited.">
       <link rel="icon" href="../images/app-32.png">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -30,15 +29,15 @@
       <meta name="loc:changeTheme" content="Change theme">
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
   </head>
-
-  <script type="module" src="./../public/docfx.min.js"></script>
-
-  <script>
-    const theme = localStorage.getItem('theme') || 'auto'
-    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
-  </script>
-
 
   <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
     <header class="bg-body border-bottom">
@@ -90,8 +89,7 @@
 
 
   <h1 id="Addax_Formats_Tabular_TabularData" data-uid="Addax.Formats.Tabular.TabularData" class="text-break">
-    Class TabularData
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+Class TabularData  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -134,7 +132,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_InferDialect_System_IO_Stream_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_Char__System_Collections_Generic_IEnumerable_System_Char__" data-uid="Addax.Formats.Tabular.TabularData.InferDialect(System.IO.Stream,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.Char},System.Collections.Generic.IEnumerable{System.Char})">
   InferDialect(Stream, IEnumerable&lt;string&gt;, IEnumerable&lt;char&gt;, IEnumerable&lt;char&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Attempts to infer a dialect from the stream based on frequency of the eligible token values.</p>
@@ -194,7 +192,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_InferDialect_System_IO_Stream_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_Char__System_Collections_Generic_IEnumerable_System_Char__System_Int32_System_Text_Encoding_" data-uid="Addax.Formats.Tabular.TabularData.InferDialect(System.IO.Stream,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.Char},System.Collections.Generic.IEnumerable{System.Char},System.Int32,System.Text.Encoding)">
   InferDialect(Stream, IEnumerable&lt;string&gt;, IEnumerable&lt;char&gt;, IEnumerable&lt;char&gt;, int, Encoding?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Attempts to infer a dialect from the stream based on frequency of the eligible token values.</p>
@@ -257,7 +255,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_InferDialectAsync_System_IO_Stream_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_Char__System_Collections_Generic_IEnumerable_System_Char__System_Int32_System_Text_Encoding_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.InferDialectAsync(System.IO.Stream,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.Char},System.Collections.Generic.IEnumerable{System.Char},System.Int32,System.Text.Encoding,System.Threading.CancellationToken)">
   InferDialectAsync(Stream, IEnumerable&lt;string&gt;, IEnumerable&lt;char&gt;, IEnumerable&lt;char&gt;, int, Encoding?, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously attempts to infer a dialect from the stream based on frequency of the eligible token values.</p>
@@ -323,7 +321,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_InferDialectAsync_System_IO_Stream_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_Char__System_Collections_Generic_IEnumerable_System_Char__System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.InferDialectAsync(System.IO.Stream,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.Char},System.Collections.Generic.IEnumerable{System.Char},System.Threading.CancellationToken)">
   InferDialectAsync(Stream, IEnumerable&lt;string&gt;, IEnumerable&lt;char&gt;, IEnumerable&lt;char&gt;, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously attempts to infer a dialect from the stream based on frequency of the eligible token values.</p>
@@ -386,7 +384,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_ReadRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_Addax_Formats_Tabular_TabularHandler___0__System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions,Addax.Formats.Tabular.TabularHandler{``0},System.Threading.CancellationToken)">
   ReadRecordsAsync&lt;T&gt;(Stream, TabularDialect, TabularOptions?, TabularHandler&lt;T&gt;?, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously reads all records from the stream that can be represented as <code class="typeparamref">T</code>.</p>
@@ -461,7 +459,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_ReadRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions,System.Threading.CancellationToken)">
   ReadRecordsAsync&lt;T&gt;(Stream, TabularDialect, TabularOptions?, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously reads all records from the stream that can be represented as <code class="typeparamref">T</code>.</p>
@@ -533,7 +531,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_ReadRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Threading.CancellationToken)">
   ReadRecordsAsync&lt;T&gt;(Stream, TabularDialect, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously reads all records from the stream that can be represented as <code class="typeparamref">T</code>.</p>
@@ -602,7 +600,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_ReadRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect)">
   ReadRecords&lt;T&gt;(Stream, TabularDialect)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Reads all records from the stream that can be represented as <code class="typeparamref">T</code>.</p>
@@ -665,7 +663,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_ReadRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_" data-uid="Addax.Formats.Tabular.TabularData.ReadRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions)">
   ReadRecords&lt;T&gt;(Stream, TabularDialect, TabularOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Reads all records that can be represented as <code class="typeparamref">T</code> from the stream.</p>
@@ -731,7 +729,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_ReadRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_Addax_Formats_Tabular_TabularHandler___0__" data-uid="Addax.Formats.Tabular.TabularData.ReadRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions,Addax.Formats.Tabular.TabularHandler{``0})">
   ReadRecords&lt;T&gt;(Stream, TabularDialect, TabularOptions?, TabularHandler&lt;T&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Reads all records that can be represented as <code class="typeparamref">T</code> from the stream.</p>
@@ -800,7 +798,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_WriteRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__Addax_Formats_Tabular_TabularOptions_Addax_Formats_Tabular_TabularHandler___0__System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0},Addax.Formats.Tabular.TabularOptions,Addax.Formats.Tabular.TabularHandler{``0},System.Threading.CancellationToken)">
   WriteRecordsAsync&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;, TabularOptions?, TabularHandler&lt;T&gt;?, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously writes a collection of records to the stream.</p>
@@ -875,7 +873,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_WriteRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__Addax_Formats_Tabular_TabularOptions_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0},Addax.Formats.Tabular.TabularOptions,System.Threading.CancellationToken)">
   WriteRecordsAsync&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;, TabularOptions?, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously writes a collection of records to the stream.</p>
@@ -947,7 +945,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_WriteRecordsAsync__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecordsAsync``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0},System.Threading.CancellationToken)">
   WriteRecordsAsync&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Asynchronously writes a collection of records to the stream.</p>
@@ -1016,7 +1014,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_WriteRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__" data-uid="Addax.Formats.Tabular.TabularData.WriteRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0})">
   WriteRecords&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Writes a collection of records to the stream.</p>
@@ -1073,7 +1071,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_WriteRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__Addax_Formats_Tabular_TabularOptions_" data-uid="Addax.Formats.Tabular.TabularData.WriteRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0},Addax.Formats.Tabular.TabularOptions)">
   WriteRecords&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;, TabularOptions?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Writes a collection of records to the stream.</p>
@@ -1133,7 +1131,7 @@
 
   <h3 id="Addax_Formats_Tabular_TabularData_WriteRecords__1_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_System_Collections_Generic_IEnumerable___0__Addax_Formats_Tabular_TabularOptions_Addax_Formats_Tabular_TabularHandler___0__" data-uid="Addax.Formats.Tabular.TabularData.WriteRecords``1(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,System.Collections.Generic.IEnumerable{``0},Addax.Formats.Tabular.TabularOptions,Addax.Formats.Tabular.TabularHandler{``0})">
   WriteRecords&lt;T&gt;(Stream, TabularDialect, IEnumerable&lt;T&gt;, TabularOptions?, TabularHandler&lt;T&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/fe37e31b6da73adbdb0c9c61679230f2f955cf34/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularData.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Writes a collection of records to the stream.</p>
