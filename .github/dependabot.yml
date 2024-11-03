@@ -15,4 +15,4 @@ updates:
        Microsoft:
           patterns:
             - "Microsoft.*"
-            - "MSTest.*"
+            - "MSTest"

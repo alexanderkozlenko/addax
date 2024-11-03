@@ -8,9 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="MSTest.TestAdapter" />
-    <PackageReference Include="MSTest.TestFramework" />
+    <PackageReference Include="MSTest" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Addax.Formats.Tabular.Analyzers.CSharp\Addax.Formats.Tabular.Analyzers.CSharp.csproj" />
