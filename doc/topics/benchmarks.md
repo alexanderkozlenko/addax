@@ -2,7 +2,7 @@
 uid: urn:topics:benchmarks
 ---
 
-## Addax - Benchmarks
+# Addax - Benchmarks
 
 <p />
 
@@ -42,7 +42,7 @@ Allocated : Allocated memory per single operation (managed only, inclusive, 1KB 
 
 <p />
 
-### References
+## References
 
 <p />
 

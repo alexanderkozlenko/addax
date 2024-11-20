@@ -1,8 +1,8 @@
-## Addax - Overview
+# Addax - Overview
 
 <p />
 
-### Introduction
+## Introduction
 
 <p />
 
@@ -25,7 +25,7 @@ The value converter abstraction provides an ability to work with tabular data fi
 
 <p />
 
-### How to Use
+## How to Use
 
 <p />
 

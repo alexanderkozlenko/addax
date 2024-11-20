@@ -2,11 +2,11 @@
 uid: urn:topics:guidelines
 ---
 
-## Addax - Guidelines
+# Addax - Guidelines
 
 <p />
 
-### Guidelines
+## Guidelines
 
 <p />
 

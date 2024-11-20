@@ -2,11 +2,11 @@
 uid: urn:topics:limitations
 ---
 
-## Addax - Limitations
+# Addax - Limitations
 
 <p />
 
-### Limitations
+## Limitations
 
 <p />
 

@@ -2,11 +2,7 @@
 uid: urn:topics:extensibility:value-converters
 ---
 
-## Addax - Value Converters
-
-<p />
-
-### A custom converter
+# Addax - Field Extensions
 
 <p />
 

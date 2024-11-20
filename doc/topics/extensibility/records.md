@@ -2,11 +2,7 @@
 uid: urn:topics:extensibility:record-handlers
 ---
 
-## Addax - Record Handlers
-
-<p />
-
-### A custom handler
+# Addax - Record Extensions
 
 <p />
 

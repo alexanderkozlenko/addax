@@ -2,11 +2,11 @@
 uid: urn:topics:features
 ---
 
-## Addax - Features
+# Addax - Features
 
 <p />
 
-### Tabular Fields
+## Tabular Fields
 
 <p />
 
@@ -107,7 +107,7 @@ A generated record handler implicitly supports type members of the `System.Nulla
 
 <p />
 
-### Tabular Records
+## Tabular Records
 
 <p />
 
@@ -155,7 +155,7 @@ The framework also provides generic record handlers for working with tabular rec
 
 <p />
 
-### Dialect Inferrence
+## Dialect Inferrence
 
 <p />
 
@@ -179,7 +179,7 @@ let dialect = TabularData.InferDialect(File.OpenRead "books.csv", [ "\n"; "\r\n"
 
 <p />
 
-### Performance
+## Performance
 
 <p />
 
