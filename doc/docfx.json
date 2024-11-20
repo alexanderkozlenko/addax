@@ -40,7 +40,10 @@
       "_appFaviconPath": "images/app-32.png",
       "_appFooter": "&copy; Oleksandr Kozlenko",
       "_enableSearch": true,
-      "_disableContribution": true
+      "_disableBreadcrumb": true,
+      "_disableContribution": true,
+      "_disableNextArticle": true,
+      "_disableTocFilter": true
     },
     "output": ".",
     "template": [
