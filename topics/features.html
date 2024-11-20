@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title> </title>
+      <title>Addax - Features </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content=" ">
+      <meta name="title" content="Addax - Features ">
       
       
       <link rel="icon" href="../images/app-32.png">
@@ -85,10 +85,10 @@
         </div>
 
         <article data-uid="urn:topics:features">
+<h1 id="addax---features">Addax - Features</h1>
 
-<h2 id="addax---features">Addax - Features</h2>
 <p></p>
-<h3 id="tabular-fields">Tabular Fields</h3>
+<h2 id="tabular-fields">Tabular Fields</h2>
 <p></p>
 <p>The framework has built-in support for interpreting tabular fields as values of the following types:</p>
 <p></p>
@@ -378,7 +378,7 @@
 <p></p>
 <p>A generated record handler implicitly supports type members of the <code>System.Nullable&lt;T&gt;</code> type with any supported value type as the underlying type.</p>
 <p></p>
-<h3 id="tabular-records">Tabular Records</h3>
+<h2 id="tabular-records">Tabular Records</h2>
 <p></p>
 <p>The framework has built-in support for interpreting tabular records as single-dimensional arrays <code>T[]</code> or <code>System.Nullable&lt;T&gt;[]</code> of any supported type (except binary data). For example, tabular records of any file can be interpreted as string arrays, even if the number of fields is not fixed:</p>
 <p></p>
@@ -437,7 +437,7 @@ using (new TabularReader&lt;array&lt;string&gt;&gt;(File.OpenRead &quot;books.cs
 </tbody>
 </table>
 <p></p>
-<h3 id="dialect-inferrence">Dialect Inferrence</h3>
+<h2 id="dialect-inferrence">Dialect Inferrence</h2>
 <p></p>
 <p>A tabular dialect can be inferred from a stream based on frequency of the eligible token values:</p>
 <p></p>
@@ -462,7 +462,7 @@ using (new TabularReader&lt;array&lt;string&gt;&gt;(File.OpenRead &quot;books.cs
 </section>
 </div>
 <p></p>
-<h3 id="performance">Performance</h3>
+<h2 id="performance">Performance</h2>
 <p></p>
 <p>The field and record readers can advance through tabular data without reading it completely, potentially decreasing overall processing time:</p>
 <p></p>
