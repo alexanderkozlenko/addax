@@ -1,7 +1,7 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
+using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using Addax.Formats.Tabular.Buffers;
 
 namespace Addax.Formats.Tabular;
@@ -10,31 +10,14 @@ internal static class TabularBinary
 {
     public static bool TryFormatBase16(ReadOnlySpan<byte> value, Span<char> destination, out int charsWritten)
     {
-        if (value.IsEmpty)
+        if (destination.Length > value.Length * 2)
         {
-            charsWritten = 0;
+            // BUG: .NET 9.0.0 requires 'destination.Length == value.Length * 2'
 
-            return true;
+            destination = destination.Slice(0, value.Length * 2);
         }
 
-        if (destination.Length >= value.Length * 2)
-        {
-            var provider = CultureInfo.InvariantCulture;
-
-            for (var i = 0; i < value.Length; i++)
-            {
-                value[i].TryFormat(destination, out _, "x2", provider);
-                destination = destination.Slice(2);
-            }
-
-            charsWritten = value.Length * 2;
-
-            return true;
-        }
-
-        charsWritten = 0;
-
-        return false;
+        return Convert.TryToHexStringLower(value, destination, out charsWritten);
     }
 
     public static bool TryFormatBase64(ReadOnlySpan<byte> value, Span<char> destination, out int charsWritten)
@@ -48,14 +31,35 @@ internal static class TabularBinary
 
         if (source.Length % 2 == 0)
         {
-            try
-            {
-                value = Convert.FromHexString(source);
+            var bufferSize = source.Length / 2;
 
-                return true;
-            }
-            catch (FormatException)
+            if ((uint)bufferSize <= 256)
             {
+                var buffer = (Span<byte>)stackalloc byte[256];
+
+                if (Convert.FromHexString(source, buffer, out _, out var bytesWritten) == OperationStatus.Done)
+                {
+                    var bufferUsed = buffer.Slice(0, bytesWritten);
+
+                    value = GC.AllocateUninitializedArray<byte>(bytesWritten);
+                    bufferUsed.CopyTo(value);
+
+                    return true;
+                }
+            }
+            else
+            {
+                using var buffer = new ArrayBuffer<byte>(bufferSize);
+
+                if (Convert.FromHexString(source, buffer.AsSpan(), out _, out var bytesWritten) == OperationStatus.Done)
+                {
+                    var bufferUsed = buffer.AsSpan(bytesWritten);
+
+                    value = GC.AllocateUninitializedArray<byte>(bytesWritten);
+                    bufferUsed.CopyTo(value);
+
+                    return true;
+                }
             }
         }
 
