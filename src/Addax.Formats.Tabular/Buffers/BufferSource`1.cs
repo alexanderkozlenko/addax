@@ -4,7 +4,7 @@ using System.Buffers;
 
 namespace Addax.Formats.Tabular.Buffers;
 
-internal static class ArraySource<T>
+internal static class BufferSource<T>
 {
     public static readonly ArrayPool<T> ArrayPool = ArrayPool<T>.Create(Array.MaxLength, 32);
 }

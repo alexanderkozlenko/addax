@@ -34,7 +34,7 @@ public static class TabularData
                 builder.Add(reader.CurrentRecord);
             }
 
-            return builder.ToArray();
+            return builder.Build();
         }
     }
 
@@ -96,7 +96,7 @@ public static class TabularData
                 builder.Add(reader.CurrentRecord);
             }
 
-            return builder.ToArray();
+            return builder.Build();
         }
     }
 

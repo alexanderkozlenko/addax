@@ -11,7 +11,7 @@ namespace Addax.Formats.Tabular;
 /// <summary>Provides forward-only, write-only access to tabular data fields. This class cannot be inherited.</summary>
 public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
 {
-    private readonly LiteTextWriter _textWriter;
+    private readonly BufferedTextWriter _textWriter;
     private readonly TabularFormatter _tabularFormatter;
     private readonly IFormatProvider _formatProvider;
     private readonly bool _trimWhitespace;

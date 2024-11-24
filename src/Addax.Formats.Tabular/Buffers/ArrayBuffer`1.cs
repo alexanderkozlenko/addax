@@ -10,7 +10,7 @@ internal readonly struct ArrayBuffer<T> : IDisposable
     private readonly T[]? _array;
     private readonly int _offset;
     private readonly int _length;
-    private readonly bool _isUntracked;
+    private readonly bool _isSegment;
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public ArrayBuffer(int length)
@@ -18,34 +18,25 @@ internal readonly struct ArrayBuffer<T> : IDisposable
         Debug.Assert(length >= 0);
         Debug.Assert(length <= Array.MaxLength);
 
-        _array = ArraySource<T>.ArrayPool.Rent(length);
-        _offset = 0;
+        _array = BufferSource<T>.ArrayPool.Rent(length);
         _length = length;
-        _isUntracked = false;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ArrayBuffer(T[] array, int offset, int length)
+    public ArrayBuffer(ArraySegment<T> segment)
     {
-        Debug.Assert(array is not null);
-        Debug.Assert(offset >= 0);
-        Debug.Assert(offset <= Array.MaxLength);
-        Debug.Assert(length >= 0);
-        Debug.Assert(length <= Array.MaxLength);
-        Debug.Assert(offset + length <= array.Length);
-
-        _array = array;
-        _offset = offset;
-        _length = length;
-        _isUntracked = true;
+        _array = segment.Array;
+        _offset = segment.Offset;
+        _length = segment.Count;
+        _isSegment = true;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Dispose()
     {
-        if (!IsUntracked && (_array is not null))
+        if (!_isSegment && (_array is not null))
         {
-            ArraySource<T>.ArrayPool.Return(_array);
+            BufferSource<T>.ArrayPool.Return(_array);
         }
     }
 
@@ -79,12 +70,12 @@ internal readonly struct ArrayBuffer<T> : IDisposable
         return new(_array, _offset, _length);
     }
 
-    public bool IsUntracked
+    public bool IsPooled
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         get
         {
-            return _isUntracked;
+            return !_isSegment;
         }
     }
 }

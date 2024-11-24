@@ -40,7 +40,7 @@ public sealed class TabularArrayHandler<T> : TabularHandler<T?[]>
             builder.Add(field);
         }
 
-        return new(builder.ToArray());
+        return new(builder.Build());
     }
 
     /// <inheritdoc />
@@ -63,7 +63,7 @@ public sealed class TabularArrayHandler<T> : TabularHandler<T?[]>
             builder.Add(field);
         }
 
-        return new(builder.ToArray());
+        return new(builder.Build());
     }
 
     /// <inheritdoc />

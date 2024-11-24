@@ -7,7 +7,7 @@ using Addax.Formats.Tabular.Buffers;
 
 namespace Addax.Formats.Tabular.IO;
 
-internal sealed class LiteTextReader : IDisposable, IAsyncDisposable
+internal sealed class BufferedTextReader : IDisposable, IAsyncDisposable
 {
     private readonly Stream _stream;
     private readonly Encoding _encoding;
@@ -21,7 +21,7 @@ internal sealed class LiteTextReader : IDisposable, IAsyncDisposable
     private bool _isPreambleConsumed;
     private bool _isEndOfStream;
 
-    public LiteTextReader(Stream stream, Encoding encoding, int bufferSize, bool leaveOpen)
+    public BufferedTextReader(Stream stream, Encoding encoding, int bufferSize, bool leaveOpen)
     {
         Debug.Assert(stream is not null);
         Debug.Assert(encoding is not null);
@@ -75,25 +75,24 @@ internal sealed class LiteTextReader : IDisposable, IAsyncDisposable
             byteBufferSize = Math.Max(byteBufferSize, _encoding.Preamble.Length);
         }
 
-        using (var byteBuffer = new ArrayBuffer<byte>(byteBufferSize))
+        using var byteBuffer = new ArrayBuffer<byte>(byteBufferSize);
+
+        var byteBufferUsedSize = _stream.ReadAtLeast(byteBuffer.AsSpan(), byteBufferSize, false);
+        var byteBufferUsed = byteBuffer.AsSpan(byteBufferUsedSize);
+
+        _isEndOfStream = byteBufferUsedSize < byteBufferSize;
+
+        if (!_isPreambleConsumed)
         {
-            var byteBufferUsedSize = _stream.ReadAtLeast(byteBuffer.AsSpan(), byteBufferSize, false);
-            var byteBufferUsed = byteBuffer.AsSpan(byteBufferUsedSize);
-
-            _isEndOfStream = byteBufferUsedSize < byteBufferSize;
-
-            if (!_isPreambleConsumed)
+            if (byteBufferUsed.StartsWith(_encoding.Preamble))
             {
-                if (byteBufferUsed.StartsWith(_encoding.Preamble))
-                {
-                    byteBufferUsed = byteBufferUsed.Slice(_encoding.Preamble.Length);
-                }
-
-                _isPreambleConsumed = true;
+                byteBufferUsed = byteBufferUsed.Slice(_encoding.Preamble.Length);
             }
 
-            Decode(byteBufferUsed, _charBufferWriter, _decoder, _isEndOfStream, ref _bytesDecoded);
+            _isPreambleConsumed = true;
         }
+
+        Decode(byteBufferUsed, _charBufferWriter, _decoder, _isEndOfStream, ref _bytesDecoded);
 
         return true;
     }
@@ -113,25 +112,24 @@ internal sealed class LiteTextReader : IDisposable, IAsyncDisposable
             byteBufferSize = Math.Max(byteBufferSize, _encoding.Preamble.Length);
         }
 
-        using (var byteBuffer = new ArrayBuffer<byte>(byteBufferSize))
+        using var byteBuffer = new ArrayBuffer<byte>(byteBufferSize);
+
+        var byteBufferUsedSize = await _stream.ReadAtLeastAsync(byteBuffer.AsMemory(), byteBufferSize, false, cancellationToken).ConfigureAwait(false);
+        var byteBufferUsed = byteBuffer.AsMemory(byteBufferUsedSize);
+
+        _isEndOfStream = byteBufferUsedSize < byteBufferSize;
+
+        if (!_isPreambleConsumed)
         {
-            var byteBufferUsedSize = await _stream.ReadAtLeastAsync(byteBuffer.AsMemory(), byteBufferSize, false, cancellationToken).ConfigureAwait(false);
-            var byteBufferUsed = byteBuffer.AsMemory(byteBufferUsedSize);
-
-            _isEndOfStream = byteBufferUsedSize < byteBufferSize;
-
-            if (!_isPreambleConsumed)
+            if (byteBufferUsed.Span.StartsWith(_encoding.Preamble))
             {
-                if (byteBufferUsed.Span.StartsWith(_encoding.Preamble))
-                {
-                    byteBufferUsed = byteBufferUsed.Slice(_encoding.Preamble.Length);
-                }
-
-                _isPreambleConsumed = true;
+                byteBufferUsed = byteBufferUsed.Slice(_encoding.Preamble.Length);
             }
 
-            Decode(byteBufferUsed.Span, _charBufferWriter, _decoder, _isEndOfStream, ref _bytesDecoded);
+            _isPreambleConsumed = true;
         }
+
+        Decode(byteBufferUsed.Span, _charBufferWriter, _decoder, _isEndOfStream, ref _bytesDecoded);
 
         return true;
     }

@@ -19,12 +19,12 @@ internal sealed class BufferWriter<T> : IBufferWriter<T>, IDisposable
         Debug.Assert(minimumSize <= Array.MaxLength);
 
         _minimumSize = minimumSize;
-        _array = ArraySource<T>.ArrayPool.Rent(minimumSize);
+        _array = BufferSource<T>.ArrayPool.Rent(minimumSize);
     }
 
     public void Dispose()
     {
-        ArraySource<T>.ArrayPool.Return(_array);
+        BufferSource<T>.ArrayPool.Return(_array);
     }
 
     public Memory<T> GetMemory(int sizeHint = 0)
@@ -91,14 +91,14 @@ internal sealed class BufferWriter<T> : IBufferWriter<T>, IDisposable
     private void Resize(int count)
     {
         var arrayLength = (int)Math.Max(Math.Min(2 * (uint)_length, (uint)Array.MaxLength), (uint)_length + (uint)count);
-        var array = ArraySource<T>.ArrayPool.Rent(arrayLength);
+        var array = BufferSource<T>.ArrayPool.Rent(arrayLength);
 
         if (_length != 0)
         {
             Array.Copy(_array, _offset, array, 0, _length);
         }
 
-        ArraySource<T>.ArrayPool.Return(_array);
+        BufferSource<T>.ArrayPool.Return(_array);
 
         _array = array;
         _offset = 0;

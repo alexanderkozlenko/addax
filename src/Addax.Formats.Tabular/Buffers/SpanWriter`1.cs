@@ -4,12 +4,12 @@ using System.Diagnostics;
 
 namespace Addax.Formats.Tabular.Buffers;
 
-internal readonly ref struct RegionWriter<T>
+internal readonly ref struct SpanWriter<T>
 {
     private readonly Span<T> _target;
     private readonly ref int _offset;
 
-    public RegionWriter(Span<T> target, ref int offset)
+    public SpanWriter(Span<T> target, ref int offset)
     {
         _target = target;
         _offset = ref offset;
@@ -29,7 +29,7 @@ internal readonly ref struct RegionWriter<T>
         return false;
     }
 
-    public Span<T> FreeRegion
+    public Span<T> AvailableSpan
     {
         get
         {

@@ -51,13 +51,13 @@ public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
     {
         charsWritten = 0;
 
-        var writer = new RegionWriter<char>(destination, ref charsWritten);
+        var writer = new SpanWriter<char>(destination, ref charsWritten);
 
         if (value < TimeSpan.Zero)
         {
             var formatInfo = NumberFormatInfo.GetInstance(provider);
 
-            if (!formatInfo.NegativeSign.TryCopyTo(writer.FreeRegion))
+            if (!formatInfo.NegativeSign.TryCopyTo(writer.AvailableSpan))
             {
                 return false;
             }
@@ -71,7 +71,7 @@ public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
             return false;
         }
 
-        if (!value.Days.TryFormat(writer.FreeRegion, out var charsWrittenD, "d", provider))
+        if (!value.Days.TryFormat(writer.AvailableSpan, out var charsWrittenD, "d", provider))
         {
             return false;
         }
@@ -84,7 +84,7 @@ public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
             return false;
         }
 
-        if (!value.Hours.TryFormat(writer.FreeRegion, out var charsWrittenH, "d", provider))
+        if (!value.Hours.TryFormat(writer.AvailableSpan, out var charsWrittenH, "d", provider))
         {
             return false;
         }
@@ -96,7 +96,7 @@ public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
             return false;
         }
 
-        if (!value.Minutes.TryFormat(writer.FreeRegion, out var charsWrittenM, "d", provider))
+        if (!value.Minutes.TryFormat(writer.AvailableSpan, out var charsWrittenM, "d", provider))
         {
             return false;
         }
@@ -110,7 +110,7 @@ public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
 
         var seconds = value.Seconds + (value.Milliseconds * 1e-3) + (value.Microseconds * 1e-6) + (value.Nanoseconds * 1e-9);
 
-        if (!seconds.TryFormat(writer.FreeRegion, out var charsWrittenS, "f7", provider))
+        if (!seconds.TryFormat(writer.AvailableSpan, out var charsWrittenS, "f7", provider))
         {
             return false;
         }

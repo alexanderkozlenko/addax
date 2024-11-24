@@ -14,12 +14,12 @@ internal struct ArrayBuilder<T> : IDisposable
         Debug.Assert(capacity >= 0);
         Debug.Assert(capacity <= Array.MaxLength);
 
-        _array = ArraySource<T>.ArrayPool.Rent(capacity);
+        _array = BufferSource<T>.ArrayPool.Rent(capacity);
     }
 
     public readonly void Dispose()
     {
-        ArraySource<T>.ArrayPool.Return(_array);
+        BufferSource<T>.ArrayPool.Return(_array);
     }
 
     public void Add(T item)
@@ -32,7 +32,7 @@ internal struct ArrayBuilder<T> : IDisposable
         _array[_length++] = item;
     }
 
-    public readonly T[] ToArray()
+    public readonly T[] Build()
     {
         var array = GC.AllocateUninitializedArray<T>(_length);
 
@@ -44,10 +44,10 @@ internal struct ArrayBuilder<T> : IDisposable
     private void Resize()
     {
         var arrayLength = (int)Math.Max(Math.Min(2 * (uint)_array.Length, (uint)Array.MaxLength), (uint)_array.Length + 1);
-        var array = ArraySource<T>.ArrayPool.Rent(arrayLength);
+        var array = BufferSource<T>.ArrayPool.Rent(arrayLength);
 
         Array.Copy(_array, array, _length);
-        ArraySource<T>.ArrayPool.Return(_array);
+        BufferSource<T>.ArrayPool.Return(_array);
 
         _array = array;
     }

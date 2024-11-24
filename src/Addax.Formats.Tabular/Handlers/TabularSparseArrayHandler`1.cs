@@ -47,7 +47,7 @@ public sealed class TabularSparseArrayHandler<T> : TabularHandler<T?[]>
             }
         }
 
-        return new(builder.ToArray());
+        return new(builder.Build());
     }
 
     /// <inheritdoc />
@@ -76,7 +76,7 @@ public sealed class TabularSparseArrayHandler<T> : TabularHandler<T?[]>
             }
         }
 
-        return new(builder.ToArray());
+        return new(builder.Build());
     }
 
     /// <inheritdoc />

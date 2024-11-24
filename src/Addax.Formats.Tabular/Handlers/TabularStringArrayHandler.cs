@@ -25,7 +25,7 @@ internal sealed class TabularStringArrayHandler : TabularHandler<string?[]>
             builder.Add(field);
         }
 
-        return new(builder.ToArray());
+        return new(builder.Build());
     }
 
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
@@ -46,7 +46,7 @@ internal sealed class TabularStringArrayHandler : TabularHandler<string?[]>
             builder.Add(field);
         }
 
-        return new(builder.ToArray());
+        return new(builder.Build());
     }
 
     public override void Write(TabularWriter writer, string?[] record)

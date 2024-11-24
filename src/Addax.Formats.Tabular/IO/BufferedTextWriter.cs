@@ -8,7 +8,7 @@ using Addax.Formats.Tabular.Buffers;
 
 namespace Addax.Formats.Tabular.IO;
 
-internal sealed class LiteTextWriter : IDisposable, IAsyncDisposable
+internal sealed class BufferedTextWriter : IDisposable, IAsyncDisposable
 {
     private readonly Stream _stream;
     private readonly Encoding _encoding;
@@ -22,7 +22,7 @@ internal sealed class LiteTextWriter : IDisposable, IAsyncDisposable
     private long _bytesEncoded;
     private bool _isPreambleCommitted;
 
-    public LiteTextWriter(Stream stream, Encoding encoding, int bufferSize, bool leaveOpen)
+    public BufferedTextWriter(Stream stream, Encoding encoding, int bufferSize, bool leaveOpen)
     {
         Debug.Assert(stream is not null);
         Debug.Assert(encoding is not null);
@@ -97,17 +97,16 @@ internal sealed class LiteTextWriter : IDisposable, IAsyncDisposable
             var byteBufferSize = Math.Min(_byteBufferSize, _encoding.GetMaxByteCount(charBufferSlice.Length));
             var flush = charBufferSlice.Length == charBuffer.Length;
 
-            using (var byteBuffer = new ArrayBuffer<byte>(byteBufferSize))
-            {
-                _encoder.Convert(charBufferSlice, byteBuffer.AsSpan(), flush, out var charsUsed, out var bytesUsed, out completed);
+            using var byteBuffer = new ArrayBuffer<byte>(byteBufferSize);
 
-                var byteBufferUsed = byteBuffer.AsSpan(bytesUsed);
+            _encoder.Convert(charBufferSlice, byteBuffer.AsSpan(), flush, out var charsUsed, out var bytesUsed, out completed);
 
-                _stream.Write(byteBufferUsed);
-                _charBufferWriter.Truncate(charsUsed);
-                charBuffer = charBuffer.Slice(charsUsed);
-                _bytesEncoded += bytesUsed;
-            }
+            var byteBufferUsed = byteBuffer.AsSpan(bytesUsed);
+
+            _stream.Write(byteBufferUsed);
+            _charBufferWriter.Truncate(charsUsed);
+            charBuffer = charBuffer.Slice(charsUsed);
+            _bytesEncoded += bytesUsed;
         }
 
         _stream.Flush();
@@ -146,18 +145,17 @@ internal sealed class LiteTextWriter : IDisposable, IAsyncDisposable
                 var byteBufferSize = Math.Min(_byteBufferSize, _encoding.GetMaxByteCount(charBufferSlice.Length));
                 var flushSlice = charBufferSlice.Length == charBuffer.Length;
 
-                using (var byteBuffer = new ArrayBuffer<byte>(byteBufferSize))
-                {
-                    _encoder.Convert(charBufferSlice.Span, byteBuffer.AsSpan(), flushSlice, out var charsUsed, out var bytesUsed, out isCompleted);
+                using var byteBuffer = new ArrayBuffer<byte>(byteBufferSize);
 
-                    var byteBufferUsed = byteBuffer.AsMemory(bytesUsed);
+                _encoder.Convert(charBufferSlice.Span, byteBuffer.AsSpan(), flushSlice, out var charsUsed, out var bytesUsed, out isCompleted);
 
-                    await _stream.WriteAsync(byteBufferUsed, cancellationToken).ConfigureAwait(false);
+                var byteBufferUsed = byteBuffer.AsMemory(bytesUsed);
 
-                    _charBufferWriter.Truncate(charsUsed);
-                    charBuffer = charBuffer.Slice(charsUsed);
-                    _bytesEncoded += bytesUsed;
-                }
+                await _stream.WriteAsync(byteBufferUsed, cancellationToken).ConfigureAwait(false);
+
+                _charBufferWriter.Truncate(charsUsed);
+                charBuffer = charBuffer.Slice(charsUsed);
+                _bytesEncoded += bytesUsed;
             }
 
             await _stream.FlushAsync(cancellationToken).ConfigureAwait(false);

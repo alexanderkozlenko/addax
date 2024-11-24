@@ -12,9 +12,9 @@ namespace Addax.Formats.Tabular;
 /// <summary>Provides forward-only, read-only access to tabular data fields. This class cannot be inherited.</summary>
 public sealed partial class TabularReader : IDisposable, IAsyncDisposable
 {
-    private readonly LiteTextReader _textReader;
+    private readonly BufferedTextReader _textReader;
     private readonly TabularParser _tabularParser;
-    private readonly LiteQueue<TabularFieldInfo> _fieldsQueue = new(32);
+    private readonly PooledQueue<TabularFieldInfo> _fieldsQueue = new(32);
     private readonly TabularStringFactory _stringFactory;
     private readonly IFormatProvider _formatProvider;
     private readonly bool _trimWhitespace;
@@ -407,13 +407,13 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
 
         _tabularParser.ReadField(_textReader.BufferMemory, in fieldInfo, ref _currentField);
 
-        if (_currentField.IsUntracked)
+        if (_currentField.IsPooled)
         {
-            _currentFieldCharsUsed = fieldInfo.CharsUsed;
+            _textReader.Advance(fieldInfo.CharsUsed);
         }
         else
         {
-            _textReader.Advance(fieldInfo.CharsUsed);
+            _currentFieldCharsUsed = fieldInfo.CharsUsed;
         }
 
         _currentPositionType = fieldInfo.Separator switch

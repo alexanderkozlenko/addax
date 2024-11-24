@@ -5,24 +5,24 @@ using Addax.Formats.Tabular.Buffers;
 
 namespace Addax.Formats.Tabular.Collections;
 
-internal sealed class LiteQueue<T> : IDisposable
+internal sealed class PooledQueue<T> : IDisposable
 {
     private T[] _array;
     private int _length;
     private int _head;
     private int _tail;
 
-    public LiteQueue(int capacity)
+    public PooledQueue(int capacity)
     {
         Debug.Assert(capacity >= 0);
         Debug.Assert(capacity <= Array.MaxLength);
 
-        _array = ArraySource<T>.ArrayPool.Rent(capacity);
+        _array = BufferSource<T>.ArrayPool.Rent(capacity);
     }
 
     public void Dispose()
     {
-        ArraySource<T>.ArrayPool.Return(_array);
+        BufferSource<T>.ArrayPool.Return(_array);
     }
 
     public void Enqueue(in T item)
@@ -54,7 +54,7 @@ internal sealed class LiteQueue<T> : IDisposable
     private void Resize()
     {
         var arrayLength = (int)Math.Max(Math.Min(2 * (uint)_array.Length, (uint)Array.MaxLength), (uint)_array.Length + 1);
-        var array = ArraySource<T>.ArrayPool.Rent(arrayLength);
+        var array = BufferSource<T>.ArrayPool.Rent(arrayLength);
 
         if (_length != 0)
         {
@@ -69,7 +69,7 @@ internal sealed class LiteQueue<T> : IDisposable
             }
         }
 
-        ArraySource<T>.ArrayPool.Return(_array);
+        BufferSource<T>.ArrayPool.Return(_array);
 
         _array = array;
         _head = 0;

@@ -30,7 +30,7 @@ internal sealed class TabularParser
         _searchValues = dialect.SearchValues;
     }
 
-    public bool TryParse(ReadOnlySpan<char> source, TabularParsingMode mode, ref TabularParserState state, LiteQueue<TabularFieldInfo> fields, ref int consumed)
+    public bool TryParse(ReadOnlySpan<char> source, TabularParsingMode mode, ref TabularParserState state, PooledQueue<TabularFieldInfo> fields, ref int consumed)
     {
         Debug.Assert(fields is not null);
         Debug.Assert(consumed >= 0);
@@ -359,10 +359,9 @@ internal sealed class TabularParser
 
                 if (fieldInfo.CharsEscaped == 0)
                 {
-                    MemoryMarshal.TryGetArray(source, out var array);
-                    Debug.Assert(array.Array is not null);
+                    MemoryMarshal.TryGetArray(source, out var segment);
 
-                    field = new(array.Array, array.Offset, array.Count);
+                    field = new(segment);
 
                     return;
                 }
@@ -414,7 +413,7 @@ internal sealed class TabularParser
         }
     }
 
-    private static void StoreField(LiteQueue<TabularFieldInfo> fields, ref TabularParserState state, TabularSeparator separator)
+    private static void StoreField(PooledQueue<TabularFieldInfo> fields, ref TabularParserState state, TabularSeparator separator)
     {
         var fieldInfo = new TabularFieldInfo(
             state.CharsParsed,

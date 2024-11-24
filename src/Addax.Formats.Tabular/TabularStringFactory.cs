@@ -56,7 +56,7 @@ public class TabularStringFactory : IDisposable
     {
         Debug.Assert(_stringTable is not null);
 
-        var hashCode = string.GetHashCode(source, StringComparison.Ordinal);
+        var hashCode = string.GetHashCode(source);
 
         if (!_stringTable.TryGetValue(hashCode, out var value))
         {
