@@ -27,6 +27,16 @@ public class TabularStringFactory : IDisposable
         _stringTable = new();
     }
 
+    /// <summary>Initializes a new instance of the <see cref="TabularStringFactory" /> class with the specified maximum string length.</summary>
+    /// <param name="maxLength">The maximum length of a string to participate in pooling. Must be greater than zero and less than or equal to <see cref="Array.MaxLength" />.</param>
+    /// <param name="poolCapacity">The initial number of elements that the string pool can contain. Must be greater than or equal to zero.</param>
+    /// <remarks>This constructor enables a thread-safe string pool based on hash code and length.</remarks>
+    public TabularStringFactory(int maxLength, int poolCapacity)
+    {
+        _maxLength = Math.Max(1, Math.Min(maxLength, Array.MaxLength));
+        _stringTable = new(-1, Math.Max(0, poolCapacity));
+    }
+
     /// <summary>Releases the resources used by the current instance of the <see cref="TabularStringFactory" /> class.</summary>
     public void Dispose()
     {
