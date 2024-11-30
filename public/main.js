@@ -1,7 +1,7 @@
 export default {
   iconLinks: [
     {
-      icon: 'box',
+      icon: 'cloud-download',
       href: 'https://nuget.org/packages/Addax.Formats.Tabular',
       title: 'NuGet'
     },
