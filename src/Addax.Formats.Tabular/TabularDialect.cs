@@ -2,6 +2,7 @@
 
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Addax.Formats.Tabular.Primitives;
 
 namespace Addax.Formats.Tabular;
 

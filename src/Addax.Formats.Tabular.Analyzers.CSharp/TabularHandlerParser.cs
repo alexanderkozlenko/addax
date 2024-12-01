@@ -97,7 +97,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (compilation.LanguageVersion < LanguageVersion.CSharp12)
+                if (compilation.LanguageVersion < LanguageVersion.CSharp13)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0000, recordType.Locations.FirstOrDefault()));
 
@@ -224,16 +224,17 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                         continue;
                     }
 
-                    var recordMemberAccess = GetTypeMemberAccess(recordMember);
+                    var recordMemberSupportsReading = TypeMemberSupportsReading(recordMember);
+                    var recordMemberSupportsWriting = TypeMemberSupportsWriting(recordMember);
 
                     if (!recordTypeHasSuitableConstructor || !compilation.IsSymbolAccessibleWithin(recordConstructor, compilation.Assembly))
                     {
-                        recordMemberAccess &= ~TypeMemberAccess.Write;
+                        recordMemberSupportsWriting = false;
+                    }
 
-                        if (recordMemberAccess == TypeMemberAccess.None)
-                        {
-                            continue;
-                        }
+                    if (!recordMemberSupportsReading && !recordMemberSupportsWriting)
+                    {
+                        continue;
                     }
 
                     var fieldNameLiteral = default(SyntaxToken?);
@@ -248,7 +249,8 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
                     var fieldMapping = new TabularFieldMapping(
                         recordMember.Name,
-                        recordMemberAccess,
+                        recordMemberSupportsReading,
+                        recordMemberSupportsWriting,
                         valueTypeInfo.IsNullableT,
                         valueTypeInfo.Name,
                         converterTypeName,
@@ -421,37 +423,35 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             return (valueType, valueTypeName, valueTypeIsSupported, memberTypeIsNullableT);
         }
 
-        private static TypeMemberAccess GetTypeMemberAccess(ISymbol member)
+        private static bool TypeMemberSupportsReading(ISymbol member)
         {
             if (member is IFieldSymbol field)
             {
-                var memberAccess = TypeMemberAccess.Read;
-
-                if (!field.IsReadOnly && !field.IsConst)
-                {
-                    memberAccess |= TypeMemberAccess.Write;
-                }
-
-                return memberAccess;
+                return true;
             }
             else if (member is IPropertySymbol property)
             {
-                var memberAccess = TypeMemberAccess.None;
-
-                if (property.GetMethod != null)
-                {
-                    memberAccess |= TypeMemberAccess.Read;
-                }
-                if (property.SetMethod != null)
-                {
-                    memberAccess |= TypeMemberAccess.Write;
-                }
-
-                return memberAccess;
+                return property.GetMethod != null;
             }
             else
             {
-                return TypeMemberAccess.None;
+                return false;
+            }
+        }
+
+        private static bool TypeMemberSupportsWriting(ISymbol member)
+        {
+            if (member is IFieldSymbol field)
+            {
+                return !field.IsReadOnly && !field.IsConst;
+            }
+            else if (member is IPropertySymbol property)
+            {
+                return property.SetMethod != null;
+            }
+            else
+            {
+                return false;
             }
         }
 

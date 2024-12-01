@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Addax.Formats.Tabular.Converters;
 
 /// <summary>Converts binary data encoded with "base16" ("hex") encoding from or to a character sequence.</summary>
-public class TabularBase16ArrayConverter : TabularConverter<byte[]?>
+public class TabularBase16ArrayConverter : TabularConverter<byte[]>
 {
     internal static readonly TabularBase16ArrayConverter Instance = new();
 

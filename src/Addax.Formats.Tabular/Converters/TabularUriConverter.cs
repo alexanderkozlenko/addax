@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Addax.Formats.Tabular.Converters;
 
 /// <summary>Converts a <see cref="Uri" /> instance from or to a character sequence.</summary>
-public class TabularUriConverter : TabularConverter<Uri?>
+public class TabularUriConverter : TabularConverter<Uri>
 {
     internal static readonly TabularUriConverter Instance = new();
 

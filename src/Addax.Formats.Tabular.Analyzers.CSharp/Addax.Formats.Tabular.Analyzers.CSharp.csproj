@@ -7,9 +7,6 @@
     <AnalyzerLanguage>cs</AnalyzerLanguage>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

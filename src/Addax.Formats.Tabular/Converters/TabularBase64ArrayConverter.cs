@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Addax.Formats.Tabular.Converters;
 
 /// <summary>Converts binary data encoded with "base64" encoding from or to a character sequence.</summary>
-public class TabularBase64ArrayConverter : TabularConverter<byte[]?>
+public class TabularBase64ArrayConverter : TabularConverter<byte[]>
 {
     internal static readonly TabularBase64ArrayConverter Instance = new();
 

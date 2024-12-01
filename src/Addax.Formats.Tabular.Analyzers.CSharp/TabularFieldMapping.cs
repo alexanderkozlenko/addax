@@ -11,13 +11,15 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
         public readonly string MemberName;
         public readonly string ValueTypeName;
         public readonly string ConverterTypeName;
-        public readonly TypeMemberAccess MemberAccess;
-        public readonly bool AsNullableT;
+        public readonly bool SupportsWriting;
+        public readonly bool SupportsReading;
+        public readonly bool IsNullableT;
 
         public TabularFieldMapping(
             string memberName,
-            TypeMemberAccess memberAccess,
-            bool asNullableT,
+            bool supportsReading,
+            bool supportsWriting,
+            bool isNullableT,
             string valueTypeName,
             string converterTypeName,
             SyntaxToken? fieldNameLiteral)
@@ -26,8 +28,9 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             Debug.Assert(valueTypeName != null);
 
             MemberName = memberName;
-            MemberAccess = memberAccess;
-            AsNullableT = asNullableT;
+            SupportsReading = supportsReading;
+            SupportsWriting = supportsWriting;
+            IsNullableT = isNullableT;
             ValueTypeName = valueTypeName;
             ConverterTypeName = converterTypeName;
             FieldNameLiteral = fieldNameLiteral;

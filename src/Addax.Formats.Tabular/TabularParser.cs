@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Addax.Formats.Tabular.Buffers;
 using Addax.Formats.Tabular.Collections;
+using Addax.Formats.Tabular.Primitives;
 
 namespace Addax.Formats.Tabular;
 

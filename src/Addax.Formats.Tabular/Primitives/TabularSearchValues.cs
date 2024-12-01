@@ -3,7 +3,7 @@
 using System.Buffers;
 using System.Diagnostics;
 
-namespace Addax.Formats.Tabular;
+namespace Addax.Formats.Tabular.Primitives;
 
 internal sealed class TabularSearchValues
 {

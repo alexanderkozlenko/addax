@@ -2,6 +2,7 @@
 
 using System.Buffers;
 using System.Diagnostics;
+using Addax.Formats.Tabular.Primitives;
 
 namespace Addax.Formats.Tabular;
 

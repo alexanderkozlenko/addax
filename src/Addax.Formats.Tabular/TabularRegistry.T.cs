@@ -60,7 +60,7 @@ public partial class TabularRegistry
             [typeof(uint?[])] = new TabularSparseArrayHandler<uint>(TabularUInt32Converter.Instance),
             [typeof(ulong[])] = new TabularArrayHandler<ulong>(TabularUInt64Converter.Instance),
             [typeof(ulong?[])] = new TabularSparseArrayHandler<ulong>(TabularUInt64Converter.Instance),
-            [typeof(Uri?[])] = new TabularArrayHandler<Uri?>(TabularUriConverter.Instance),
+            [typeof(Uri?[])] = new TabularArrayHandler<Uri>(TabularUriConverter.Instance),
         };
     }
 }

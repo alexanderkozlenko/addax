@@ -9,12 +9,12 @@ namespace Addax.Formats.Tabular.Handlers;
 /// <typeparam name="T">The type of field value handled by the record handler.</typeparam>
 public sealed class TabularArrayHandler<T> : TabularHandler<T?[]>
 {
-    private readonly TabularConverter<T?> _converter;
+    private readonly TabularConverter<T> _converter;
 
     /// <summary>Initializes a new instance of the <see cref="TabularArrayHandler{T}" /> class with the specified converter.</summary>
     /// <param name="converter">The converter to parse and format values with.</param>
     /// <exception cref="ArgumentNullException"><paramref name="converter" /> is <see langword="null" />.</exception>
-    public TabularArrayHandler(TabularConverter<T?> converter)
+    public TabularArrayHandler(TabularConverter<T> converter)
     {
         ArgumentNullException.ThrowIfNull(converter);
 

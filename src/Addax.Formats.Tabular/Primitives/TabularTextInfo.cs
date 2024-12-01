@@ -2,7 +2,7 @@
 
 using System.Diagnostics;
 
-namespace Addax.Formats.Tabular;
+namespace Addax.Formats.Tabular.Primitives;
 
 internal readonly struct TabularTextInfo
 {

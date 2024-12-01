@@ -21,27 +21,28 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
             var cancellationToken = context.CancellationToken;
 
-            for (var i = 0; i < recordMappings.Length; i++)
+            using (var writer = new SourceTextWriter(Encoding.UTF8, ' ', 4))
             {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                using (var sourceTextBuilder = new SourceTextBuilder(' ', 4, Encoding.UTF8))
+                for (var i = 0; i < recordMappings.Length; i++)
                 {
-                    BuildHandlerSource(sourceTextBuilder, $"Handler{i}", recordMappings[i]);
+                    cancellationToken.ThrowIfCancellationRequested();
+                    writer.Reset();
 
-                    context.AddSource($"Handler{i}.g.cs", sourceTextBuilder.ToSourceText());
+                    BuildHandlerSource(writer, $"Handler{i}", recordMappings[i]);
+
+                    context.AddSource($"Handler{i}.g.cs", writer.ToSourceText());
                 }
-            }
 
-            using (var sourceTextBuilder = new SourceTextBuilder(' ', 4, Encoding.UTF8))
-            {
-                BuildHandlerRegistratorSource(sourceTextBuilder, "HandlerRegistrator", recordMappings.Length);
+                cancellationToken.ThrowIfCancellationRequested();
+                writer.Reset();
 
-                context.AddSource("HandlerRegistrator.g.cs", sourceTextBuilder.ToSourceText());
+                BuildRegistryInitializerSource(writer, "RegistryInitializer", recordMappings.Length);
+
+                context.AddSource("RegistryInitializer.g.cs", writer.ToSourceText());
             }
         }
 
-        private static bool RecordTypeHasConverters(in TabularRecordMapping mapping)
+        private static bool MappingHasConverters(in TabularRecordMapping mapping)
         {
             foreach (var kvp in mapping.FieldMappings)
             {
@@ -54,7 +55,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             return false;
         }
 
-        private static bool RecordTypeHasHeader(in TabularRecordMapping mapping)
+        private static bool MappingSupportsHeader(in TabularRecordMapping mapping)
         {
             foreach (var kvp in mapping.FieldMappings)
             {
@@ -67,45 +68,33 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             return false;
         }
 
-        private static int GetFieldCountForReading(in TabularRecordMapping mapping)
+        private static bool MappingSupportsReading(in TabularRecordMapping mapping)
         {
-            var count = 0;
-
             foreach (var kvp in mapping.FieldMappings)
             {
-                if ((kvp.Value.MemberAccess & TypeMemberAccess.Write) != 0)
+                if (kvp.Value.SupportsWriting)
                 {
-                    count += 1;
+                    return true;
                 }
             }
 
-            return count;
+            return false;
         }
 
-        private static int GetFieldCountForWriting(in TabularRecordMapping mapping)
+        private static bool MappingSupportsWriting(in TabularRecordMapping mapping)
         {
-            for (var i = 0; i < mapping.FieldMappings.Count; i++)
-            {
-                if (!mapping.FieldMappings.ContainsKey(i))
-                {
-                    return 0;
-                }
-            }
-
-            var count = 0;
-
             foreach (var kvp in mapping.FieldMappings)
             {
-                if ((kvp.Value.MemberAccess & TypeMemberAccess.Read) != 0)
+                if (kvp.Value.SupportsReading)
                 {
-                    count += 1;
+                    return true;
                 }
             }
 
-            return count;
+            return false;
         }
 
-        private static TKey[] SortDictionaryKeys<TKey, TValue>(ImmutableDictionary<TKey, TValue> dictionary)
+        private static TKey[] GetDictionaryKeysOrdered<TKey, TValue>(ImmutableDictionary<TKey, TValue> dictionary)
         {
             var keys = new TKey[dictionary.Count];
             var index = 0;
@@ -122,12 +111,12 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
         private static (string Name, string Version) GetAssemblyInfo()
         {
-            var assembly = typeof(TabularHandlerEmitter).Assembly;
+            var assembly = typeof(TabularHandlerGenerator).Assembly;
 
-            var assemblyName = assembly.GetName().Name;
-            var assemblyVersion = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+            var assemblyName = assembly.GetName();
+            var assemblyVersionAttribute = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
 
-            return (assemblyName, assemblyVersion);
+            return (assemblyName.Name, assemblyVersionAttribute.InformationalVersion);
         }
 
         private static string GetValueTypeCode(string valueTypeName)

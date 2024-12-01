@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using Addax.Formats.Tabular.Buffers;
 using Addax.Formats.Tabular.Collections;
 using Addax.Formats.Tabular.IO;
+using Addax.Formats.Tabular.Primitives;
 
 namespace Addax.Formats.Tabular;
 
@@ -256,7 +257,7 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
     /// <param name="value">When this method returns, contains a <typeparamref name="T" /> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</param>
     /// <returns><see langword="true" /> if the field was successfully parsed; otherwise, <see langword="false" />.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="converter" /> is <see langword="null" />.</exception>
-    public bool TryGet<T>(TabularConverter<T?> converter, out T? value)
+    public bool TryGet<T>(TabularConverter<T> converter, out T? value)
     {
         ArgumentNullException.ThrowIfNull(converter);
 
@@ -282,7 +283,7 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
     /// <returns>A <typeparamref name="T" /> value.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="converter" /> is <see langword="null" />.</exception>
     /// <exception cref="FormatException">The current field cannot be parsed as <typeparamref name="T" />.</exception>
-    public T? Get<T>(TabularConverter<T?> converter)
+    public T? Get<T>(TabularConverter<T> converter)
     {
         ArgumentNullException.ThrowIfNull(converter);
 
@@ -452,7 +453,7 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
         _currentFieldCharsUsed = 0;
     }
 
-    private bool TryGet<T>(ReadOnlySpan<char> source, TabularConverter<T?> converter, out T? result)
+    private bool TryGet<T>(ReadOnlySpan<char> source, TabularConverter<T> converter, out T? result)
     {
         return converter.TryParse(source, _formatProvider, out result);
     }
