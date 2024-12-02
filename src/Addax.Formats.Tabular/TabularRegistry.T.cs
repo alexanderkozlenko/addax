@@ -2,6 +2,7 @@
 
 using System.Collections.Concurrent;
 using System.Numerics;
+using System.Text;
 using Addax.Formats.Tabular.Converters;
 using Addax.Formats.Tabular.Handlers;
 
@@ -61,6 +62,8 @@ public partial class TabularRegistry
             [typeof(ulong[])] = new TabularArrayHandler<ulong>(TabularUInt64Converter.Instance),
             [typeof(ulong?[])] = new TabularSparseArrayHandler<ulong>(TabularUInt64Converter.Instance),
             [typeof(Uri?[])] = new TabularArrayHandler<Uri>(TabularUriConverter.Instance),
+            [typeof(Rune[])] = new TabularArrayHandler<Rune>(TabularRuneConverter.Instance),
+            [typeof(Rune?[])] = new TabularSparseArrayHandler<Rune>(TabularRuneConverter.Instance),
         };
     }
 }

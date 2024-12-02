@@ -223,6 +223,10 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                     {
                         return "BigInteger";
                     }
+                case "global::System.Text.Rune":
+                    {
+                        return "Rune";
+                    }
                 default:
                     {
                         throw new NotSupportedException();

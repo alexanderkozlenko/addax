@@ -1,6 +1,7 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
 using System.Numerics;
+using System.Text;
 using Addax.Formats.Tabular.Converters;
 
 namespace Addax.Formats.Tabular;
@@ -257,6 +258,15 @@ public partial class TabularWriter
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
         WriteValueCore(value, TabularBase64ArrayConverter.Instance);
+    }
+
+    /// <summary>Writes a <see cref="Rune" /> value as the next value field of the current record.</summary>
+    /// <param name="value">A <see cref="Rune" /> value to write.</param>
+    public void WriteRune(Rune value)
+    {
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        WriteValueCore(value, TabularRuneConverter.Instance);
     }
 
     /// <summary>Asynchronously writes a <see cref="char" /> value as the next value field of the current record.</summary>
@@ -587,5 +597,17 @@ public partial class TabularWriter
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
         return WriteValueCoreAsync(value, TabularBase64ArrayConverter.Instance, cancellationToken);
+    }
+
+    /// <summary>Asynchronously writes a <see cref="Rune" /> value as the next value field of the current record.</summary>
+    /// <param name="value">A <see cref="Rune" /> value to write.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns>A task object.</returns>
+    /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
+    public ValueTask WriteRuneAsync(Rune value, CancellationToken cancellationToken = default)
+    {
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        return WriteValueCoreAsync(value, TabularRuneConverter.Instance, cancellationToken);
     }
 }

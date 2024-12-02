@@ -2,6 +2,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using System.Text;
 using Addax.Formats.Tabular.Converters;
 
 namespace Addax.Formats.Tabular;
@@ -245,6 +246,15 @@ public partial class TabularReader
     public bool TryGetBase64Binary([NotNullWhen(true)] out byte[]? value)
     {
         return TryGet(_currentField.AsSpan(), TabularBase64ArrayConverter.Instance, out value);
+    }
+
+    /// <summary>Tries to parse the current field as <see cref="Rune" /> and returns a value that indicates whether the operation succeeded.</summary>
+    /// <param name="value">When this method returns, contains a <see cref="Rune" /> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</param>
+    /// <returns><see langword="true" /> if the field was successfully parsed; otherwise, <see langword="false" />.</returns>
+    /// <remarks>The value should be represented as one UTF-16 code unit.</remarks>
+    public bool TryGetRune(out Rune value)
+    {
+        return TryGet(_currentField.AsSpan(), TabularRuneConverter.Instance, out value);
     }
 
     /// <summary>Parses the current field as <see cref="char" />.</summary>
@@ -611,6 +621,20 @@ public partial class TabularReader
         if (!TryGetBase64Binary(out var result))
         {
             ThrowFieldFormatException<byte[]>();
+        }
+
+        return result;
+    }
+
+    /// <summary>Parses the current field as <see cref="Rune" />.</summary>
+    /// <returns>A <see cref="Rune" /> value.</returns>
+    /// <exception cref="FormatException">The current field cannot be parsed as a <see cref="Rune" /> value.</exception>
+    /// <remarks>The field must be represented as one UTF-16 code unit.</remarks>
+    public Rune GetRune()
+    {
+        if (!TryGetRune(out var result))
+        {
+            ThrowFieldFormatException<Rune>();
         }
 
         return result;

@@ -1,5 +1,6 @@
 using System;
 using System.Numerics;
+using System.Text;
 using Addax.Formats.Tabular;
 
 namespace MyNamespace;
@@ -81,4 +82,7 @@ public struct MyType
 
     [TabularFieldOrder(24)]
     public Uri? MyValue24;
+
+    [TabularFieldOrder(25)]
+    public Rune? MyValue25;
 }

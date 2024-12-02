@@ -12,17 +12,16 @@ public partial class TabularWriterTests
     private static void Write<T>(Func<TabularWriter, WriteValue<T>> selector, T value, string expected)
     {
         var dialect = new TabularDialect("\u000a", '\u000b', '\u000c', '\u000d');
-        var options = new TabularOptions { Encoding = Encoding.ASCII };
 
         using var stream = new MemoryStream();
-        using var writer = new TabularWriter(stream, dialect, options);
+        using var writer = new TabularWriter(stream, dialect);
 
         var method = selector.Invoke(writer);
 
         method.Invoke(value);
         writer.Flush();
 
-        Assert.AreEqual(expected, Encoding.ASCII.GetString(stream.ToArray()));
+        Assert.AreEqual(expected, Encoding.UTF8.GetString(stream.ToArray()));
     }
 
     [TestMethod]
@@ -266,6 +265,14 @@ public partial class TabularWriterTests
     }
 
     [TestMethod]
+    [DataRow("urn:com.example", "urn:com.example")]
+    [DataRow("https://example.com/", "https://example.com/")]
+    public void WriteUri(string value, string expected)
+    {
+        Write(x => x.WriteUri, new Uri(value, UriKind.RelativeOrAbsolute), expected);
+    }
+
+    [TestMethod]
     [DataRow("", "")]
     [DataRow("123e4567e89b12d3a456426614174000", "123e4567e89b12d3a456426614174000")]
     public void WriteBase16Binary(string value, string expected)
@@ -282,10 +289,10 @@ public partial class TabularWriterTests
     }
 
     [TestMethod]
-    [DataRow("urn:com.example", "urn:com.example")]
-    [DataRow("https://example.com/", "https://example.com/")]
-    public void WriteUri(string value, string expected)
+    [DataRow("v", "v")]
+    [DataRow("\ud83d\udd2e", "\ud83d\udd2e")]
+    public void WriteRune(string value, string expected)
     {
-        Write(x => x.WriteUri, new Uri(value, UriKind.RelativeOrAbsolute), expected);
+        Write(x => x.WriteRune, Rune.GetRuneAt(value, 0), expected);
     }
 }

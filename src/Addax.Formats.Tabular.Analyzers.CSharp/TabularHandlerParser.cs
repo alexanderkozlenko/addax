@@ -415,7 +415,8 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                             (valueTypeName == "global::System.TimeSpan") ||
                             (valueTypeName == "global::System.UInt128") ||
                             (valueTypeName == "global::System.Uri") ||
-                            (valueTypeName == "global::System.Numerics.BigInteger");
+                            (valueTypeName == "global::System.Numerics.BigInteger") ||
+                            (valueTypeName == "global::System.Text.Rune");
                     }
                     break;
             }

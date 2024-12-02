@@ -126,9 +126,9 @@ public sealed partial class TabularReaderTests
     public void ConsumePositive(string dialectScript, string content, string structureScript)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         var structureBuilder = new StringBuilder();
@@ -227,9 +227,9 @@ public sealed partial class TabularReaderTests
     public void ConsumeNegative(string dialectScript, string content)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         Assert.ThrowsException<TabularContentException>(() => ReadStream(reader));
@@ -253,9 +253,9 @@ public sealed partial class TabularReaderTests
     public void TryPickRecordIfStreamStart(string dialectScript, string content, bool expected)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         Assert.AreEqual(expected, reader.TryPickRecord());
@@ -269,9 +269,9 @@ public sealed partial class TabularReaderTests
     public void TryPickRecordIfRecordStart(string dialectScript, string content, bool expected)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         reader.TryPickRecord();
@@ -287,9 +287,9 @@ public sealed partial class TabularReaderTests
     public void TryPickRecordIfDelimiter(string dialectScript, string content, bool expected)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         reader.TryReadField();
@@ -305,9 +305,9 @@ public sealed partial class TabularReaderTests
     public void TryPickRecordIfRecordEnd(string dialectScript, string content, bool expected)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         reader.TryReadField();
@@ -323,9 +323,9 @@ public sealed partial class TabularReaderTests
     public void TryPickRecordIfStreamEnd(string dialectScript, string content, bool expected)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         reader.TryReadField();
@@ -341,9 +341,9 @@ public sealed partial class TabularReaderTests
     public void TryReadFieldIfStreamStart(string dialectScript, string content, bool expected)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         Assert.AreEqual(expected, reader.TryReadField());
@@ -357,9 +357,9 @@ public sealed partial class TabularReaderTests
     public void TryReadFieldIfRecordStart(string dialectScript, string content, bool expected)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         reader.TryPickRecord();
@@ -375,9 +375,9 @@ public sealed partial class TabularReaderTests
     public void TryReadFieldIfDelimiter(string dialectScript, string content, bool expected)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         reader.TryReadField();
@@ -393,9 +393,9 @@ public sealed partial class TabularReaderTests
     public void TryReadFieldIfRecordEnd(string dialectScript, string content, bool expected)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         reader.TryReadField();
@@ -411,9 +411,9 @@ public sealed partial class TabularReaderTests
     public void TryReadFieldIfStreamEnd(string dialectScript, string content, bool expected)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         reader.TryReadField();
@@ -429,9 +429,9 @@ public sealed partial class TabularReaderTests
     public void TrySkipFieldIfStreamStart(string dialectScript, string content, bool expected)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         Assert.AreEqual(expected, reader.TrySkipField());
@@ -445,9 +445,9 @@ public sealed partial class TabularReaderTests
     public void TrySkipFieldIfRecordStart(string dialectScript, string content, bool expected)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         reader.TryPickRecord();
@@ -463,9 +463,9 @@ public sealed partial class TabularReaderTests
     public void TrySkipFieldIfDelimiter(string dialectScript, string content, bool expected)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         reader.TryReadField();
@@ -481,9 +481,9 @@ public sealed partial class TabularReaderTests
     public void TrySkipFieldIfRecordEnd(string dialectScript, string content, bool expected)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         reader.TryReadField();
@@ -499,9 +499,9 @@ public sealed partial class TabularReaderTests
     public void TrySkipFieldIfStreamEnd(string dialectScript, string content, bool expected)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
         reader.TryReadField();
@@ -521,9 +521,9 @@ public sealed partial class TabularReaderTests
     public void TryReadRecord(string dialectScript, string content)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader<string?[]>(stream, dialect, options);
 
         Assert.IsTrue(reader.TrySkipRecord());

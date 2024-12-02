@@ -142,7 +142,7 @@ public sealed partial class TabularWriterTests
     public void CommitStringPositive(string dialectScript, string structureScript, string content)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
         using var stream = new MemoryStream();
         using var writer = new TabularWriter(stream, dialect, options);
@@ -159,7 +159,7 @@ public sealed partial class TabularWriterTests
 
         writer.Flush();
 
-        Assert.AreEqual(content, Encoding.ASCII.GetString(stream.ToArray()));
+        Assert.AreEqual(content, Encoding.UTF8.GetString(stream.ToArray()));
     }
 
     [TestMethod]
@@ -186,7 +186,7 @@ public sealed partial class TabularWriterTests
     public void CommitAnnotationPositive(string dialectScript, string structureScript, string content)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
         using var stream = new MemoryStream();
         using var writer = new TabularWriter(stream, dialect, options);
@@ -210,7 +210,7 @@ public sealed partial class TabularWriterTests
 
         writer.Flush();
 
-        Assert.AreEqual(content, Encoding.ASCII.GetString(stream.ToArray()));
+        Assert.AreEqual(content, Encoding.UTF8.GetString(stream.ToArray()));
     }
 
     [TestMethod]
@@ -225,7 +225,7 @@ public sealed partial class TabularWriterTests
     public void CommitAnnotationNegative(string dialectScript, string structureScript)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
         using var stream = new MemoryStream();
         using var writer = new TabularWriter(stream, dialect, options);
@@ -270,7 +270,7 @@ public sealed partial class TabularWriterTests
     public void WriteEmpty(string dialectScript, string content)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
         using var stream = new MemoryStream();
         using var writer = new TabularWriter(stream, dialect, options);
@@ -278,7 +278,7 @@ public sealed partial class TabularWriterTests
         writer.WriteEmpty();
         writer.Flush();
 
-        Assert.AreEqual(content, Encoding.ASCII.GetString(stream.ToArray()));
+        Assert.AreEqual(content, Encoding.UTF8.GetString(stream.ToArray()));
     }
 
     [TestMethod]
@@ -293,7 +293,7 @@ public sealed partial class TabularWriterTests
     public void WriteRecord(string dialectScript, string structureScript, string content)
     {
         var dialect = CreateDialect(dialectScript);
-        var options = new TabularOptions { Encoding = Encoding.ASCII, BufferSize = 1 };
+        var options = new TabularOptions { BufferSize = 1 };
 
         using var stream = new MemoryStream();
         using var writer = new TabularWriter<string?[]>(stream, dialect, options);
@@ -305,7 +305,7 @@ public sealed partial class TabularWriterTests
 
         writer.Flush();
 
-        Assert.AreEqual(content, Encoding.ASCII.GetString(stream.ToArray()));
+        Assert.AreEqual(content, Encoding.UTF8.GetString(stream.ToArray()));
     }
 
     private static TabularDialect CreateDialect(string script)

@@ -13,10 +13,9 @@ public partial class TabularReaderTests
     private static void TryGet<T>(Func<TabularReader, TryGetFunc<T>> selector, string content, T? expected)
     {
         var dialect = new TabularDialect("\u000a", '\u000b', '\u000c', '\u000d');
-        var options = new TabularOptions { Encoding = Encoding.ASCII };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
-        using var reader = new TabularReader(stream, dialect, options);
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
+        using var reader = new TabularReader(stream, dialect);
 
         var method = selector.Invoke(reader);
 
@@ -37,10 +36,9 @@ public partial class TabularReaderTests
     private static void Get<T>(Func<TabularReader, Func<T?>> selector, string content, T? expected)
     {
         var dialect = new TabularDialect("\u000a", '\u000b', '\u000c', '\u000d');
-        var options = new TabularOptions { Encoding = Encoding.ASCII };
 
-        using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
-        using var reader = new TabularReader(stream, dialect, options);
+        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
+        using var reader = new TabularReader(stream, dialect);
 
         var method = selector.Invoke(reader);
 
@@ -337,6 +335,14 @@ public partial class TabularReaderTests
     }
 
     [TestMethod]
+    [DataRow("v", "v")]
+    [DataRow("\ud83d\udd2e", "\ud83d\udd2e")]
+    public void TryGetRune(string content, string expected)
+    {
+        TryGet(x => x.TryGetRune, content, Rune.GetRuneAt(expected, 0));
+    }
+
+    [TestMethod]
     [DataRow("", "")]
     [DataRow(" v ", " v ")]
     public void GetString(string content, string expected)
@@ -612,5 +618,13 @@ public partial class TabularReaderTests
     public void GetBase64Binary(string content, string expected)
     {
         Get(x => x.GetBase64Binary, content, Convert.FromBase64String(expected));
+    }
+
+    [TestMethod]
+    [DataRow("v", "v")]
+    [DataRow("\ud83d\udd2e", "\ud83d\udd2e")]
+    public void GetRune(string content, string expected)
+    {
+        Get(x => x.GetRune, content, Rune.GetRuneAt(expected, 0));
     }
 }
