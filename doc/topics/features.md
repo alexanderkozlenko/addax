@@ -42,6 +42,7 @@ The framework has built-in support for interpreting tabular fields as values of 
 |`System.Uri`||||
 |`System.Numerics.BigInteger`|`g`|`g`|W3C CSVW|
 |`System.Byte[]`|`base16 | base64` __\*\*__|`base16 | base64` __\*\*__|RFC 4648|
+|`System.Text.Rune`||||
 
 <p />
 
