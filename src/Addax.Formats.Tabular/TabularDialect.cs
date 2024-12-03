@@ -15,7 +15,7 @@ public sealed class TabularDialect
     {
         ArgumentNullException.ThrowIfNull(lineTerminator);
 
-        if (!IsSupportedLineTerminator(lineTerminator))
+        if (!TabularFormatInfo.IsSupportedLineTerminator(lineTerminator))
         {
             ThrowTokenException(nameof(lineTerminator));
         }
@@ -98,18 +98,6 @@ public sealed class TabularDialect
     public TabularDialect(string lineTerminator, char delimiter, char quoteSymbol)
         : this(lineTerminator, delimiter, quoteSymbol, quoteSymbol, null)
     {
-    }
-
-    internal static bool IsSupportedLineTerminator(string value)
-    {
-        Debug.Assert(value is not null);
-
-        return value.Length switch
-        {
-            1 => true,
-            2 => value[0] != value[1],
-            _ => false,
-        };
     }
 
     /// <summary>Gets the character sequence that is used to separate records.</summary>

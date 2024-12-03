@@ -17,56 +17,46 @@ public static class TabularData
     /// <param name="dialect">The dialect to use for reading.</param>
     /// <param name="options">The options to control the behavior during reading.</param>
     /// <param name="handler">The handler to read a <typeparamref name="T" /> instance from a record.</param>
+    /// <param name="skip">The number of records to skip before returning the remaining records.</param>
+    /// <param name="take">The number of records to return.</param>
     /// <returns>An array of records.</returns>
     /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     /// <exception cref="TabularContentException">An unexpected character or end of stream was encountered.</exception>
-    public static T[] ReadRecords<T>(Stream stream, TabularDialect dialect, TabularOptions? options, TabularHandler<T>? handler)
+    public static T[] ReadRecords<T>(Stream stream, TabularDialect dialect, TabularOptions? options = null, TabularHandler<T>? handler = null, int skip = 0, int take = int.MaxValue)
         where T : notnull
     {
+        ArgumentNullException.ThrowIfNull(stream);
+        ArgumentNullException.ThrowIfNull(dialect);
+
+        skip = Math.Max(0, skip);
+        take = Math.Max(0, take);
+
         using (var reader = new TabularReader<T>(stream, dialect, options, handler))
         {
+            for (var i = 0; i < skip; i++)
+            {
+                if (!reader.TrySkipRecord())
+                {
+                    return [];
+                }
+            }
+
             using var builder = new ArrayBuilder<T>(32);
 
-            while (reader.TryReadRecord())
+            for (var i = 0; i < take; i++)
             {
+                if (!reader.TryReadRecord())
+                {
+                    break;
+                }
+
                 builder.Add(reader.CurrentRecord);
             }
 
             return builder.Build();
         }
-    }
-
-    /// <summary>Reads all records that can be represented as <typeparamref name="T" /> from the stream.</summary>
-    /// <typeparam name="T">The type of an object that represents a record.</typeparam>
-    /// <param name="stream">The stream to read from.</param>
-    /// <param name="dialect">The dialect to use for reading.</param>
-    /// <param name="options">The options to control the behavior during reading.</param>
-    /// <returns>An array of records.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
-    /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
-    /// <exception cref="TabularContentException">An unexpected character or end of stream was encountered.</exception>
-    public static T[] ReadRecords<T>(Stream stream, TabularDialect dialect, TabularOptions? options)
-        where T : notnull
-    {
-        return ReadRecords<T>(stream, dialect, options, null);
-    }
-
-    /// <summary>Reads all records from the stream that can be represented as <typeparamref name="T" />.</summary>
-    /// <typeparam name="T">The type of an object that represents a record.</typeparam>
-    /// <param name="stream">The stream to read from.</param>
-    /// <param name="dialect">The dialect to use for reading.</param>
-    /// <returns>An array of records.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
-    /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
-    /// <exception cref="TabularContentException">An unexpected character or end of stream was encountered.</exception>
-    public static T[] ReadRecords<T>(Stream stream, TabularDialect dialect)
-        where T : notnull
-    {
-        return ReadRecords<T>(stream, dialect, null, null);
     }
 
     /// <summary>Asynchronously reads all records from the stream that can be represented as <typeparamref name="T" />.</summary>
@@ -75,6 +65,8 @@ public static class TabularData
     /// <param name="dialect">The dialect to use for reading.</param>
     /// <param name="options">The options to control the behavior during reading.</param>
     /// <param name="handler">The handler to read a <typeparamref name="T" /> instance from a record.</param>
+    /// <param name="skip">The number of records to skip before returning the remaining records.</param>
+    /// <param name="take">The number of records to return.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
     /// <returns>A task object that, when awaited, produces an array of records.</returns>
     /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
@@ -82,57 +74,41 @@ public static class TabularData
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
     /// <exception cref="TabularContentException">An unexpected character or end of stream was encountered.</exception>
-    public static async ValueTask<T[]> ReadRecordsAsync<T>(Stream stream, TabularDialect dialect, TabularOptions? options, TabularHandler<T>? handler, CancellationToken cancellationToken = default)
+    public static async ValueTask<T[]> ReadRecordsAsync<T>(Stream stream, TabularDialect dialect, TabularOptions? options = null, TabularHandler<T>? handler = null, int skip = 0, int take = int.MaxValue, CancellationToken cancellationToken = default)
         where T : notnull
     {
+        ArgumentNullException.ThrowIfNull(stream);
+        ArgumentNullException.ThrowIfNull(dialect);
+
+        skip = Math.Max(0, skip);
+        take = Math.Max(0, take);
+
         var reader = new TabularReader<T>(stream, dialect, options, handler);
 
         await using (reader.ConfigureAwait(false))
         {
+            for (var i = 0; i < skip; i++)
+            {
+                if (!await reader.TrySkipRecordAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    return [];
+                }
+            }
+
             using var builder = new ArrayBuilder<T>(32);
 
-            while (await reader.TryReadRecordAsync(cancellationToken).ConfigureAwait(false))
+            for (var i = 0; i < take; i++)
             {
+                if (!await reader.TryReadRecordAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    break;
+                }
+
                 builder.Add(reader.CurrentRecord);
             }
 
             return builder.Build();
         }
-    }
-
-    /// <summary>Asynchronously reads all records from the stream that can be represented as <typeparamref name="T" />.</summary>
-    /// <typeparam name="T">The type of an object that represents a record.</typeparam>
-    /// <param name="stream">The stream to read from.</param>
-    /// <param name="dialect">The dialect to use for reading.</param>
-    /// <param name="options">The options to control the behavior during reading.</param>
-    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>A task object that, when awaited, produces an array of records.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
-    /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
-    /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
-    /// <exception cref="TabularContentException">An unexpected character or end of stream was encountered.</exception>
-    public static ValueTask<T[]> ReadRecordsAsync<T>(Stream stream, TabularDialect dialect, TabularOptions? options, CancellationToken cancellationToken = default)
-        where T : notnull
-    {
-        return ReadRecordsAsync<T>(stream, dialect, options, null, cancellationToken);
-    }
-
-    /// <summary>Asynchronously reads all records from the stream that can be represented as <typeparamref name="T" />.</summary>
-    /// <typeparam name="T">The type of an object that represents a record.</typeparam>
-    /// <param name="stream">The stream to read from.</param>
-    /// <param name="dialect">The dialect to use for reading.</param>
-    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>A task object that, when awaited, produces an array of records.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="stream" /> or <paramref name="dialect" /> is <see langword="null" />.</exception>
-    /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
-    /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
-    /// <exception cref="TabularContentException">An unexpected character or end of stream was encountered.</exception>
-    public static ValueTask<T[]> ReadRecordsAsync<T>(Stream stream, TabularDialect dialect, CancellationToken cancellationToken = default)
-        where T : notnull
-    {
-        return ReadRecordsAsync<T>(stream, dialect, null, null, cancellationToken);
     }
 
     /// <summary>Writes a collection of records to the stream.</summary>
@@ -145,9 +121,11 @@ public static class TabularData
     /// <exception cref="ArgumentException"><paramref name="stream" /> does not support writing.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="dialect" />, or <paramref name="records" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
-    public static void WriteRecords<T>(Stream stream, TabularDialect dialect, IEnumerable<T> records, TabularOptions? options, TabularHandler<T>? handler)
+    public static void WriteRecords<T>(Stream stream, TabularDialect dialect, IEnumerable<T> records, TabularOptions? options = null, TabularHandler<T>? handler = null)
         where T : notnull
     {
+        ArgumentNullException.ThrowIfNull(stream);
+        ArgumentNullException.ThrowIfNull(dialect);
         ArgumentNullException.ThrowIfNull(records);
 
         using (var writer = new TabularWriter<T>(stream, dialect, options, handler))
@@ -160,35 +138,6 @@ public static class TabularData
                 }
             }
         }
-    }
-
-    /// <summary>Writes a collection of records to the stream.</summary>
-    /// <typeparam name="T">The type of an object that represents a record.</typeparam>
-    /// <param name="stream">The stream to write to.</param>
-    /// <param name="dialect">The dialect to use for writing.</param>
-    /// <param name="records">The records to write to the stream.</param>
-    /// <param name="options">The options to control the behavior during writing.</param>
-    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support writing.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="dialect" />, or <paramref name="records" /> is <see langword="null" />.</exception>
-    /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
-    public static void WriteRecords<T>(Stream stream, TabularDialect dialect, IEnumerable<T> records, TabularOptions? options)
-        where T : notnull
-    {
-        WriteRecords(stream, dialect, records, options, null);
-    }
-
-    /// <summary>Writes a collection of records to the stream.</summary>
-    /// <typeparam name="T">The type of an object that represents a record.</typeparam>
-    /// <param name="stream">The stream to write to.</param>
-    /// <param name="dialect">The dialect to use for writing.</param>
-    /// <param name="records">The records to write to the stream.</param>
-    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support writing.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="dialect" />, or <paramref name="records" /> is <see langword="null" />.</exception>
-    /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
-    public static void WriteRecords<T>(Stream stream, TabularDialect dialect, IEnumerable<T> records)
-        where T : notnull
-    {
-        WriteRecords(stream, dialect, records, null, null);
     }
 
     /// <summary>Asynchronously writes a collection of records to the stream.</summary>
@@ -204,9 +153,11 @@ public static class TabularData
     /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="dialect" />, or <paramref name="records" /> is <see langword="null" />.</exception>
     /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
-    public static async ValueTask WriteRecordsAsync<T>(Stream stream, TabularDialect dialect, IEnumerable<T> records, TabularOptions? options, TabularHandler<T>? handler, CancellationToken cancellationToken = default)
+    public static async ValueTask WriteRecordsAsync<T>(Stream stream, TabularDialect dialect, IEnumerable<T> records, TabularOptions? options = null, TabularHandler<T>? handler = null, CancellationToken cancellationToken = default)
         where T : notnull
     {
+        ArgumentNullException.ThrowIfNull(stream);
+        ArgumentNullException.ThrowIfNull(dialect);
         ArgumentNullException.ThrowIfNull(records);
 
         var writer = new TabularWriter<T>(stream, dialect, options, handler);
@@ -223,41 +174,6 @@ public static class TabularData
         }
     }
 
-    /// <summary>Asynchronously writes a collection of records to the stream.</summary>
-    /// <typeparam name="T">The type of an object that represents a record.</typeparam>
-    /// <param name="stream">The stream to write to.</param>
-    /// <param name="dialect">The dialect to use for writing.</param>
-    /// <param name="records">The records to write to the stream.</param>
-    /// <param name="options">The options to control the behavior during writing.</param>
-    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>A task object.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support writing.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="dialect" />, or <paramref name="records" /> is <see langword="null" />.</exception>
-    /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
-    /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
-    public static ValueTask WriteRecordsAsync<T>(Stream stream, TabularDialect dialect, IEnumerable<T> records, TabularOptions? options, CancellationToken cancellationToken = default)
-        where T : notnull
-    {
-        return WriteRecordsAsync(stream, dialect, records, options, null, cancellationToken);
-    }
-
-    /// <summary>Asynchronously writes a collection of records to the stream.</summary>
-    /// <typeparam name="T">The type of an object that represents a record.</typeparam>
-    /// <param name="stream">The stream to write to.</param>
-    /// <param name="dialect">The dialect to use for writing.</param>
-    /// <param name="records">The records to write to the stream.</param>
-    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>A task object.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support writing.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="dialect" />, or <paramref name="records" /> is <see langword="null" />.</exception>
-    /// <exception cref="InvalidOperationException">The record handler is not specified and cannot be found in the registry.</exception>
-    /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
-    public static ValueTask WriteRecordsAsync<T>(Stream stream, TabularDialect dialect, IEnumerable<T> records, CancellationToken cancellationToken = default)
-        where T : notnull
-    {
-        return WriteRecordsAsync(stream, dialect, records, null, null, cancellationToken);
-    }
-
     /// <summary>Attempts to infer a dialect from the stream based on frequency of the eligible token values.</summary>
     /// <param name="stream">The stream to infer from.</param>
     /// <param name="lineTerminators">The eligible values for a line terminator.</param>
@@ -268,7 +184,7 @@ public static class TabularData
     /// <returns>A successfully inferred dialect or <see langword="null" />.</returns>
     /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="lineTerminators" />, <paramref name="delimiters" />, or <paramref name="quoteSymbols" /> is <see langword="null" />.</exception>
-    public static TabularDialect? InferDialect(Stream stream, IEnumerable<string> lineTerminators, IEnumerable<char> delimiters, IEnumerable<char> quoteSymbols, int sampleLength, Encoding? encoding)
+    public static TabularDialect? InferDialect(Stream stream, IEnumerable<string> lineTerminators, IEnumerable<char> delimiters, IEnumerable<char> quoteSymbols, int sampleLength = 65536, Encoding? encoding = null)
     {
         ArgumentNullException.ThrowIfNull(stream);
         ArgumentNullException.ThrowIfNull(lineTerminators);
@@ -308,20 +224,6 @@ public static class TabularData
         }
     }
 
-    /// <summary>Attempts to infer a dialect from the stream based on frequency of the eligible token values.</summary>
-    /// <param name="stream">The stream to infer from.</param>
-    /// <param name="lineTerminators">The eligible values for a line terminator.</param>
-    /// <param name="delimiters">The eligible values for a delimiter.</param>
-    /// <param name="quoteSymbols">The eligible values for a quote symbol.</param>
-    /// <returns>A successfully inferred dialect or <see langword="null" />.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="lineTerminators" />, <paramref name="delimiters" />, or <paramref name="quoteSymbols" /> is <see langword="null" />.</exception>
-    /// <remarks>The operation consumes the first 65536 bytes as a sample and uses a UTF-8 encoding without byte order mark (BOM).</remarks>
-    public static TabularDialect? InferDialect(Stream stream, IEnumerable<string> lineTerminators, IEnumerable<char> delimiters, IEnumerable<char> quoteSymbols)
-    {
-        return InferDialect(stream, lineTerminators, delimiters, quoteSymbols, 65536, TabularFormatInfo.DefaultEncoding);
-    }
-
     /// <summary>Asynchronously attempts to infer a dialect from the stream based on frequency of the eligible token values.</summary>
     /// <param name="stream">The stream to infer from.</param>
     /// <param name="lineTerminators">The eligible values for a line terminator.</param>
@@ -333,7 +235,7 @@ public static class TabularData
     /// <returns>A task object that, when awaited, produces a successfully inferred dialect or <see langword="null" />.</returns>
     /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="lineTerminators" />, <paramref name="delimiters" />, or <paramref name="quoteSymbols" /> is <see langword="null" />.</exception>
-    public static async ValueTask<TabularDialect?> InferDialectAsync(Stream stream, IEnumerable<string> lineTerminators, IEnumerable<char> delimiters, IEnumerable<char> quoteSymbols, int sampleLength, Encoding? encoding, CancellationToken cancellationToken = default)
+    public static async ValueTask<TabularDialect?> InferDialectAsync(Stream stream, IEnumerable<string> lineTerminators, IEnumerable<char> delimiters, IEnumerable<char> quoteSymbols, int sampleLength = 65536, Encoding? encoding = null, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(stream);
         ArgumentNullException.ThrowIfNull(lineTerminators);
@@ -373,28 +275,13 @@ public static class TabularData
         }
     }
 
-    /// <summary>Asynchronously attempts to infer a dialect from the stream based on frequency of the eligible token values.</summary>
-    /// <param name="stream">The stream to infer from.</param>
-    /// <param name="lineTerminators">The eligible values for a line terminator.</param>
-    /// <param name="delimiters">The eligible values for a delimiter.</param>
-    /// <param name="quoteSymbols">The eligible values for a quote symbol.</param>
-    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
-    /// <returns>A task object that, when awaited, produces a successfully inferred dialect or <see langword="null" />.</returns>
-    /// <exception cref="ArgumentException"><paramref name="stream" /> does not support reading.</exception>
-    /// <exception cref="ArgumentNullException"><paramref name="stream" />, <paramref name="lineTerminators" />, <paramref name="delimiters" />, or <paramref name="quoteSymbols" /> is <see langword="null" />.</exception>
-    /// <remarks>The operation consumes the first 65536 bytes as a sample and uses a UTF-8 encoding without byte order mark (BOM).</remarks>
-    public static ValueTask<TabularDialect?> InferDialectAsync(Stream stream, IEnumerable<string> lineTerminators, IEnumerable<char> delimiters, IEnumerable<char> quoteSymbols, CancellationToken cancellationToken = default)
-    {
-        return InferDialectAsync(stream, lineTerminators, delimiters, quoteSymbols, 65536, TabularFormatInfo.DefaultEncoding, cancellationToken);
-    }
-
     private static TabularDialect? InferDialect(ReadOnlySpan<char> source, FrozenSet<string> tokensT, FrozenSet<char> tokensD, FrozenSet<char> tokensQ)
     {
         var countersT = new Dictionary<string, int>(tokensT.Count, tokensT.Comparer);
         var countersD = new Dictionary<char, int>(tokensD.Count);
         var countersQ = new Dictionary<char, int>(tokensQ.Count);
 
-        foreach (var token in tokensT.Where(static x => (x is not null) && TabularDialect.IsSupportedLineTerminator(x)))
+        foreach (var token in tokensT.Where(static x => (x is not null) && TabularFormatInfo.IsSupportedLineTerminator(x)))
         {
             countersT[token] = source.Count(token);
         }
@@ -422,7 +309,7 @@ public static class TabularData
             foreach (var (tokenD, _) in choicesD)
             {
                 var choicesQ = countersQ
-                    .Where(x => !tokenT.Contains(x.Key, StringComparison.Ordinal) && (x.Key != tokenD))
+                    .Where(x => (x.Key != tokenD) && !tokenT.Contains(x.Key, StringComparison.Ordinal))
                     .OrderByDescending(static x => x.Value);
 
                 foreach (var (tokenQ, _) in choicesQ)
