@@ -2,7 +2,7 @@
 
 <p />
 
-## Introduction
+## About
 
 <p />
 
