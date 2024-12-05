@@ -89,7 +89,7 @@
 
 
   <h1 id="Addax_Formats_Tabular_TabularStringFactory" data-uid="Addax.Formats.Tabular.TabularStringFactory" class="text-break">
-Class TabularStringFactory  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularStringFactory.cs"><i class="bi bi-code-slash"></i></a>
+Class TabularStringFactory  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/d28e9556c303586ba65b1d4a609bd4832fcd4906/src/Addax.Formats.Tabular/TabularStringFactory.cs"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -138,7 +138,7 @@ Class TabularStringFactory  <a class="header-action link-secondary" title="View 
 
   <h3 id="Addax_Formats_Tabular_TabularStringFactory__ctor" data-uid="Addax.Formats.Tabular.TabularStringFactory.#ctor">
   TabularStringFactory()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularStringFactory.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/d28e9556c303586ba65b1d4a609bd4832fcd4906/src/Addax.Formats.Tabular/TabularStringFactory.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularStringFactory.html">TabularStringFactory</a> class.</p>
@@ -165,7 +165,7 @@ Class TabularStringFactory  <a class="header-action link-secondary" title="View 
 
   <h3 id="Addax_Formats_Tabular_TabularStringFactory__ctor_System_Int32_" data-uid="Addax.Formats.Tabular.TabularStringFactory.#ctor(System.Int32)">
   TabularStringFactory(int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularStringFactory.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/d28e9556c303586ba65b1d4a609bd4832fcd4906/src/Addax.Formats.Tabular/TabularStringFactory.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularStringFactory.html">TabularStringFactory</a> class with the specified maximum string length.</p>
@@ -197,6 +197,45 @@ Class TabularStringFactory  <a class="header-action link-secondary" title="View 
 
 
 
+  <a id="Addax_Formats_Tabular_TabularStringFactory__ctor_" data-uid="Addax.Formats.Tabular.TabularStringFactory.#ctor*"></a>
+
+  <h3 id="Addax_Formats_Tabular_TabularStringFactory__ctor_System_Int32_System_Int32_" data-uid="Addax.Formats.Tabular.TabularStringFactory.#ctor(System.Int32,System.Int32)">
+  TabularStringFactory(int, int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/d28e9556c303586ba65b1d4a609bd4832fcd4906/src/Addax.Formats.Tabular/TabularStringFactory.cs"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularStringFactory.html">TabularStringFactory</a> class with the specified maximum string length.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TabularStringFactory(int maxLength, int poolCapacity)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>maxLength</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The maximum length of a string to participate in pooling. Must be greater than zero and less than or equal to <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.array.maxlength">MaxLength</a>.</p>
+</dd>
+    <dt><code>poolCapacity</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>The initial number of elements that the string pool can contain. Must be greater than or equal to zero.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h4 class="section" id="Addax_Formats_Tabular_TabularStringFactory__ctor_System_Int32_System_Int32__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This constructor enables a thread-safe string pool based on hash code and length.</p>
+</div>
+
+
+
+
   <h2 class="section" id="methods">Methods
 </h2>
 
@@ -205,7 +244,7 @@ Class TabularStringFactory  <a class="header-action link-secondary" title="View 
 
   <h3 id="Addax_Formats_Tabular_TabularStringFactory_Create_System_ReadOnlySpan_System_Char__" data-uid="Addax.Formats.Tabular.TabularStringFactory.Create(System.ReadOnlySpan{System.Char})">
   Create(ReadOnlySpan&lt;char&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularStringFactory.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/d28e9556c303586ba65b1d4a609bd4832fcd4906/src/Addax.Formats.Tabular/TabularStringFactory.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Create a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> instance from a character sequence.</p>
@@ -244,7 +283,7 @@ Class TabularStringFactory  <a class="header-action link-secondary" title="View 
 
   <h3 id="Addax_Formats_Tabular_TabularStringFactory_Dispose" data-uid="Addax.Formats.Tabular.TabularStringFactory.Dispose">
   Dispose()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularStringFactory.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/d28e9556c303586ba65b1d4a609bd4832fcd4906/src/Addax.Formats.Tabular/TabularStringFactory.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Releases the resources used by the current instance of the <a class="xref" href="Addax.Formats.Tabular.TabularStringFactory.html">TabularStringFactory</a> class.</p>
@@ -271,7 +310,7 @@ Class TabularStringFactory  <a class="header-action link-secondary" title="View 
 
   <h3 id="Addax_Formats_Tabular_TabularStringFactory_Dispose_System_Boolean_" data-uid="Addax.Formats.Tabular.TabularStringFactory.Dispose(System.Boolean)">
   Dispose(bool)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/875d5579704ce569aa996158ce0607de2920aa0f/src/Addax.Formats.Tabular/TabularStringFactory.cs"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/d28e9556c303586ba65b1d4a609bd4832fcd4906/src/Addax.Formats.Tabular/TabularStringFactory.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Releases the managed and unmanaged resources used by the current instance of the <a class="xref" href="Addax.Formats.Tabular.TabularStringFactory.html">TabularStringFactory</a> class.</p>

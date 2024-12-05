@@ -2,11 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Class TabularBase16ArrayConverter </title>
+      <title>Class TabularRuneConverter </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class TabularBase16ArrayConverter ">
+      <meta name="title" content="Class TabularRuneConverter ">
       
-      <meta name="description" content="Converts binary data encoded with &amp;quot;base16&amp;quot; (&amp;quot;hex&amp;quot;) encoding from or to a character sequence.">
+      <meta name="description" content="Converts a  value from or to a character sequence.">
       <link rel="icon" href="../images/app-32.png">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -84,12 +84,12 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter">
+        <article data-uid="Addax.Formats.Tabular.Converters.TabularRuneConverter">
 
 
 
-  <h1 id="Addax_Formats_Tabular_Converters_TabularBase16ArrayConverter" data-uid="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter" class="text-break">
-Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/d28e9556c303586ba65b1d4a609bd4832fcd4906/src/Addax.Formats.Tabular/Converters/TabularBase16ArrayConverter.cs"><i class="bi bi-code-slash"></i></a>
+  <h1 id="Addax_Formats_Tabular_Converters_TabularRuneConverter" data-uid="Addax.Formats.Tabular.Converters.TabularRuneConverter" class="text-break">
+Class TabularRuneConverter  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/d28e9556c303586ba65b1d4a609bd4832fcd4906/src/Addax.Formats.Tabular/Converters/TabularRuneConverter.cs"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,12 +97,12 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
   <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Converts binary data encoded with &quot;base16&quot; (&quot;hex&quot;) encoding from or to a character sequence.</p>
+  <div class="markdown summary"><p>Converts a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.rune">Rune</a> value from or to a character sequence.</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TabularBase16ArrayConverter : TabularConverter&lt;byte[]&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public class TabularRuneConverter : TabularConverter&lt;Rune&gt;</code></pre>
   </div>
 
 
@@ -112,23 +112,13 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html">TabularConverter</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]&gt;</div>
-      <div><span class="xref">TabularBase16ArrayConverter</span></div>
+      <div><a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html">TabularConverter</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.rune">Rune</a>&gt;</div>
+      <div><span class="xref">TabularRuneConverter</span></div>
     </dd>
   </dl>
 
 
 
-  <dl class="typelist inheritedMembers">
-    <dt>Inherited Members</dt>
-    <dd>
-    <div>
-      <a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html#Addax_Formats_Tabular_TabularConverter_1_TryFormat__0_System_Span_System_Char__System_IFormatProvider_System_Int32__">TabularConverter&lt;byte[]&gt;.TryFormat(byte[], Span&lt;char&gt;, IFormatProvider, out int)</a>
-    </div>
-    <div>
-      <a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html#Addax_Formats_Tabular_TabularConverter_1_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider__0__">TabularConverter&lt;byte[]&gt;.TryParse(ReadOnlySpan&lt;char&gt;, IFormatProvider, out byte[])</a>
-    </div>
-  </dd></dl>
 
 
 
@@ -139,19 +129,19 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
 </h2>
 
 
-  <a id="Addax_Formats_Tabular_Converters_TabularBase16ArrayConverter__ctor_" data-uid="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.#ctor*"></a>
+  <a id="Addax_Formats_Tabular_Converters_TabularRuneConverter__ctor_" data-uid="Addax.Formats.Tabular.Converters.TabularRuneConverter.#ctor*"></a>
 
-  <h3 id="Addax_Formats_Tabular_Converters_TabularBase16ArrayConverter__ctor" data-uid="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.#ctor">
-  TabularBase16ArrayConverter()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/d28e9556c303586ba65b1d4a609bd4832fcd4906/src/Addax.Formats.Tabular/Converters/TabularBase16ArrayConverter.cs"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Addax_Formats_Tabular_Converters_TabularRuneConverter__ctor" data-uid="Addax.Formats.Tabular.Converters.TabularRuneConverter.#ctor">
+  TabularRuneConverter()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/d28e9556c303586ba65b1d4a609bd4832fcd4906/src/Addax.Formats.Tabular/Converters/TabularRuneConverter.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.html">TabularBase16ArrayConverter</a> class.</p>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.Converters.TabularRuneConverter.html">TabularRuneConverter</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TabularBase16ArrayConverter()</code></pre>
+    <pre><code class="lang-csharp hljs">public TabularRuneConverter()</code></pre>
   </div>
 
 
@@ -170,11 +160,11 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
 </h2>
 
 
-  <a id="Addax_Formats_Tabular_Converters_TabularBase16ArrayConverter_TryFormat_" data-uid="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.TryFormat*"></a>
+  <a id="Addax_Formats_Tabular_Converters_TabularRuneConverter_TryFormat_" data-uid="Addax.Formats.Tabular.Converters.TabularRuneConverter.TryFormat*"></a>
 
-  <h3 id="Addax_Formats_Tabular_Converters_TabularBase16ArrayConverter_TryFormat_System_Byte___System_Span_System_Char__System_IFormatProvider_System_Int32__" data-uid="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.TryFormat(System.Byte[],System.Span{System.Char},System.IFormatProvider,System.Int32@)">
-  TryFormat(byte[]?, Span&lt;char&gt;, IFormatProvider?, out int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/d28e9556c303586ba65b1d4a609bd4832fcd4906/src/Addax.Formats.Tabular/Converters/TabularBase16ArrayConverter.cs"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Addax_Formats_Tabular_Converters_TabularRuneConverter_TryFormat_System_Text_Rune_System_Span_System_Char__System_IFormatProvider_System_Int32__" data-uid="Addax.Formats.Tabular.Converters.TabularRuneConverter.TryFormat(System.Text.Rune,System.Span{System.Char},System.IFormatProvider,System.Int32@)">
+  TryFormat(Rune, Span&lt;char&gt;, IFormatProvider?, out int)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/d28e9556c303586ba65b1d4a609bd4832fcd4906/src/Addax.Formats.Tabular/Converters/TabularRuneConverter.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>When overridden in a derived class, tries to format the value into a character sequence.</p>
@@ -182,12 +172,12 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool TryFormat(byte[]? value, Span&lt;char&gt; destination, IFormatProvider? provider, out int charsWritten)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool TryFormat(Rune value, Span&lt;char&gt; destination, IFormatProvider? provider, out int charsWritten)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.rune">Rune</a></dt>
     <dd><p>The value to format.</p>
 </dd>
     <dt><code>destination</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.span-1">Span</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
@@ -214,18 +204,18 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
 
 
 
-  <h4 class="section" id="Addax_Formats_Tabular_Converters_TabularBase16ArrayConverter_TryFormat_System_Byte___System_Span_System_Char__System_IFormatProvider_System_Int32___remarks">Remarks</h4>
+  <h4 class="section" id="Addax_Formats_Tabular_Converters_TabularRuneConverter_TryFormat_System_Text_Rune_System_Span_System_Char__System_IFormatProvider_System_Int32___remarks">Remarks</h4>
   <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
 </div>
 
 
 
 
-  <a id="Addax_Formats_Tabular_Converters_TabularBase16ArrayConverter_TryParse_" data-uid="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.TryParse*"></a>
+  <a id="Addax_Formats_Tabular_Converters_TabularRuneConverter_TryParse_" data-uid="Addax.Formats.Tabular.Converters.TabularRuneConverter.TryParse*"></a>
 
-  <h3 id="Addax_Formats_Tabular_Converters_TabularBase16ArrayConverter_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider_System_Byte____" data-uid="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,System.Byte[]@)">
-  TryParse(ReadOnlySpan&lt;char&gt;, IFormatProvider?, out byte[]?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/d28e9556c303586ba65b1d4a609bd4832fcd4906/src/Addax.Formats.Tabular/Converters/TabularBase16ArrayConverter.cs"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Addax_Formats_Tabular_Converters_TabularRuneConverter_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider_System_Text_Rune__" data-uid="Addax.Formats.Tabular.Converters.TabularRuneConverter.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,System.Text.Rune@)">
+  TryParse(ReadOnlySpan&lt;char&gt;, IFormatProvider?, out Rune)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/d28e9556c303586ba65b1d4a609bd4832fcd4906/src/Addax.Formats.Tabular/Converters/TabularRuneConverter.cs"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>When overridden in a derived class, tries to parse the character sequence into a value.</p>
@@ -233,7 +223,7 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool TryParse(ReadOnlySpan&lt;char&gt; source, IFormatProvider? provider, out byte[]? value)</code></pre>
+    <pre><code class="lang-csharp hljs">public override bool TryParse(ReadOnlySpan&lt;char&gt; source, IFormatProvider? provider, out Rune value)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -244,7 +234,7 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
     <dt><code>provider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
     <dd><p>An object that supplies culture-specific formatting information.</p>
 </dd>
-    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.rune">Rune</a></dt>
     <dd><p>When this method returns, contains a value that is the result of successfully parsing <code class="paramref">source</code>, or an undefined value on failure. This parameter is treated as uninitialized.</p>
 </dd>
   </dl>
@@ -262,7 +252,7 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
 
 
 
-  <h4 class="section" id="Addax_Formats_Tabular_Converters_TabularBase16ArrayConverter_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider_System_Byte_____remarks">Remarks</h4>
+  <h4 class="section" id="Addax_Formats_Tabular_Converters_TabularRuneConverter_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider_System_Text_Rune___remarks">Remarks</h4>
   <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
 </div>
 
