@@ -155,7 +155,7 @@ using (new TabularReader<Book>(File.OpenRead "books.csv", dialect)) (fun reader 
 ```
 
 > [!NOTE]
-> Using the high-level API with F# in this example requires a [custom](xref:urn:topics:extensibility:record-handlers) record handler.
+> Using the high-level API with F# in this example requires a [custom](xref:urn:topics:extensibility) record handler.
 
 # [Low-level API (F#)](#tab/api-ll-fs)
 
@@ -331,7 +331,7 @@ using (new TabularReader<Book>(File.OpenRead "books.csv", dialect)) (fun reader 
 ```
 
 > [!NOTE]
-> Using the high-level API with F# in this example requires a [custom](xref:urn:topics:extensibility:record-handlers) record handler.
+> Using the high-level API with F# in this example requires a [custom](xref:urn:topics:extensibility) record handler.
 
 # [Low-level API (F#)](#tab/api-ll-fs)
 
@@ -464,7 +464,7 @@ for book in books do
 ```
 
 > [!NOTE]
-> Using the high-level API with F# in this example requires a [custom](xref:urn:topics:extensibility:record-handlers) record handler.
+> Using the high-level API with F# in this example requires a [custom](xref:urn:topics:extensibility) record handler.
 
 # [Low-level API (F#)](#tab/api-ll-fs)
 

@@ -3,11 +3,7 @@
 - name: Features
   href: features.md
 - name: Extensibility
-  href: extensibility/toc.yml
-- name: Guidelines
-  href: guidelines.md
-- name: Limitations
-  href: limitations.md
+  href: extensibility.md
 - name: Grammar
   href: grammar.md
 - name: Benchmarks
