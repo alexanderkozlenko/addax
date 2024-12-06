@@ -2,21 +2,21 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Addax - Field Extensions </title>
+      <title>Addax - Extensibility </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Addax - Field Extensions ">
+      <meta name="title" content="Addax - Extensibility ">
       
       
-      <link rel="icon" href="../../images/app-32.png">
-      <link rel="stylesheet" href="../../public/docfx.min.css">
-      <link rel="stylesheet" href="../../public/main.css">
-      <meta name="docfx:navrel" content="../../toc.html">
-      <meta name="docfx:tocrel" content="../toc.html">
+      <link rel="icon" href="../images/app-32.png">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
       
-      <meta name="docfx:rel" content="../../">
+      <meta name="docfx:rel" content="../">
       
       <meta name="docfx:disabletocfilter" content="true">
-      <meta name="docfx:docurl" content="https://github.com/alexanderkozlenko/addax/blob/gh-pages/topics/extensibility/fields.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/alexanderkozlenko/addax/blob/gh-pages/topics/extensibility.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -30,7 +30,7 @@
       <meta name="loc:copy" content="Copy">
       <meta name="loc:downloadPdf" content="Download PDF">
 
-      <script type="module" src="./../../public/docfx.min.js"></script>
+      <script type="module" src="./../public/docfx.min.js"></script>
 
       <script>
         const theme = localStorage.getItem('theme') || 'auto'
@@ -43,8 +43,8 @@
     <header class="bg-body border-bottom">
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
-          <a class="navbar-brand" href="../../index.html">
-            <img id="logo" class="svg" src="../../images/app-32.png" alt="Addax">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/app-32.png" alt="Addax">
             Addax
           </a>
           <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,9 +84,11 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="urn:topics:extensibility:value-converters">
-<h1 id="addax---field-extensions">Addax - Field Extensions</h1>
+        <article data-uid="urn:topics:extensibility">
+<h1 id="addax---extensibility">Addax - Extensibility</h1>
 
+<p></p>
+<h2 id="fields">Fields</h2>
 <p></p>
 <p>A complete example of a custom value converter that handles <code>System.DateTime</code> values represented as Unix timestamps:</p>
 <p></p>
@@ -318,6 +320,183 @@ using (new TabularReader(File.OpenRead &quot;books.csv&quot;, dialect)) (fun rea
         printfn $&quot;{field0} '{field1}' ({field2})&quot;
 )
 </code></pre>
+</section>
+</div>
+<p></p>
+<h2 id="records">Records</h2>
+<p></p>
+<p>A simple example of a custom record handler that interprets a record as a tuple with point coordinates:</p>
+<p></p>
+<div class="tabGroup" id="tabgroup_3">
+<ul role="tablist">
+<li role="presentation">
+<a href="#tabpanel_3_cs" role="tab" aria-controls="tabpanel_3_cs" data-tab="cs" tabindex="0" aria-selected="true">C#</a>
+</li>
+<li role="presentation">
+<a href="#tabpanel_3_fs" role="tab" aria-controls="tabpanel_3_fs" data-tab="fs" tabindex="-1">F#</a>
+</li>
+</ul>
+<section id="tabpanel_3_cs" role="tabpanel" data-tab="cs">
+
+<pre><code class="lang-cs">internal class PointHandler : TabularHandler&lt;(double, double)&gt;
+{
+    public override TabularRecord&lt;(double, double)&gt; Read(TabularReader reader)
+    {
+        reader.TryReadField();
+        reader.TryGetDouble(out var item0);
+        reader.TryReadField();
+        reader.TryGetDouble(out var item1);
+
+        return new((item0, item1));
+    }
+
+    public override void Write(TabularWriter writer, (double, double) record)
+    {
+        writer.WriteDouble(record.Item1);
+        writer.WriteDouble(record.Item2);
+    }
+}
+</code></pre>
+</section>
+<section id="tabpanel_3_fs" role="tabpanel" data-tab="fs" aria-hidden="true" hidden="hidden">
+
+<pre><code class="lang-fs">type internal PointHandler() =
+    inherit TabularHandler&lt;(double * double)&gt;()
+
+        override this.Read(reader) =
+            let mutable item1 = Unchecked.defaultof&lt;double&gt;
+            let mutable item2 = Unchecked.defaultof&lt;double&gt;
+
+            reader.TryReadField () |&gt; ignore
+            reader.TryGetDouble &amp;item1 |&gt; ignore
+            reader.TryReadField () |&gt; ignore
+            reader.TryGetDouble &amp;item2 |&gt; ignore
+
+            new TabularRecord&lt;(double * double)&gt;((item1, item2))
+
+        override this.Write(writer, record) =
+            let (item1, item2) = record
+
+            writer.WriteDouble item1
+            writer.WriteDouble item2
+</code></pre>
+</section>
+</div>
+<p></p>
+<div class="tabGroup" id="tabgroup_4">
+<ul role="tablist">
+<li role="presentation">
+<a href="#tabpanel_4_api-hl_cs" role="tab" aria-controls="tabpanel_4_api-hl_cs" data-tab="api-hl" data-condition="cs" tabindex="0" aria-selected="true">High-level API (C#)</a>
+</li>
+<li role="presentation">
+<a href="#tabpanel_4_api-ll_cs" role="tab" aria-controls="tabpanel_4_api-ll_cs" data-tab="api-ll" data-condition="cs" tabindex="-1">Low-level API (C#)</a>
+</li>
+<li role="presentation" aria-hidden="true" hidden="hidden">
+<a href="#tabpanel_4_api-hl_fs" role="tab" aria-controls="tabpanel_4_api-hl_fs" data-tab="api-hl" data-condition="fs" tabindex="-1">High-level API (F#)</a>
+</li>
+<li role="presentation" aria-hidden="true" hidden="hidden">
+<a href="#tabpanel_4_api-ll_fs" role="tab" aria-controls="tabpanel_4_api-ll_fs" data-tab="api-ll" data-condition="fs" tabindex="-1">Low-level API (F#)</a>
+</li>
+</ul>
+<section id="tabpanel_4_api-hl_cs" role="tabpanel" data-tab="api-hl" data-condition="cs">
+
+<p>The primary approach is to specify the record handler for reader or writer explicitly:</p>
+<p></p>
+<pre><code class="lang-cs">var handler = new PointHandler();
+var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '\&quot;');
+
+using (var writer = new TabularWriter&lt;(double, double)&gt;(File.Create(&quot;points.csv&quot;), dialect, handler: handler))
+{
+    writer.WriteRecord((50.4501, 30.5234));
+    writer.WriteRecord((45.4215, 75.6972));
+}
+
+using (var reader = new TabularReader&lt;(double, double)&gt;(File.OpenRead(&quot;points.csv&quot;), dialect, handler: handler))
+{
+    while (reader.TryReadRecord())
+    {
+        var (lat, lon) = reader.CurrentRecord;
+
+        Console.WriteLine($&quot;{lat} N, {lon} W&quot;);
+    }
+}
+</code></pre>
+<p></p>
+<p>Additionally, it can be added to the <a class="xref" href="../api/Addax.Formats.Tabular.TabularRegistry.html#Addax_Formats_Tabular_TabularRegistry_Handlers">TabularRegistry.Handlers</a> collection with generated record handlers:</p>
+<p></p>
+<pre><code class="lang-cs">TabularRegistry.Handlers[typeof((double, double))] = new PointHandler();
+
+var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '\&quot;');
+
+using (var writer = new TabularWriter&lt;(double, double)&gt;(File.Create(&quot;points.csv&quot;), dialect))
+{
+    writer.WriteRecord((50.4501, 30.5234));
+    writer.WriteRecord((45.4215, 75.6972));
+}
+
+using (var reader = new TabularReader&lt;(double, double)&gt;(File.OpenRead(&quot;points.csv&quot;), dialect))
+{
+    while (reader.TryReadRecord())
+    {
+        var (lat, lon) = reader.CurrentRecord;
+
+        Console.WriteLine($&quot;{lat} N, {lon} W&quot;);
+    }
+}
+</code></pre>
+</section>
+<section id="tabpanel_4_api-ll_cs" role="tabpanel" data-tab="api-ll" data-condition="cs" aria-hidden="true" hidden="hidden">
+
+<p>N/A</p>
+</section>
+<section id="tabpanel_4_api-hl_fs" role="tabpanel" data-tab="api-hl" data-condition="fs" aria-hidden="true" hidden="hidden">
+
+<p>The primary approach is to specify the record handler for reader or writer explicitly:</p>
+<p></p>
+<pre><code class="lang-fs">let private handler = new PointHandler()
+let dialect = new TabularDialect(&quot;\r\n&quot;, ',', '\&quot;')
+
+using (new TabularWriter&lt;(double * double)&gt;(File.Create &quot;points.csv&quot;, dialect, handler = handler)) (fun writer -&gt;
+    let point1 = (double 50.4501, double 30.5234)
+    let point2 = (double 45.4215, double 75.6972)
+
+    writer.WriteRecord &amp;point1
+    writer.WriteRecord &amp;point2
+)
+
+using (new TabularReader&lt;(double * double)&gt;(File.OpenRead &quot;points.csv&quot;, dialect, handler = handler)) (fun reader -&gt;
+    while reader.TryReadRecord () do
+        let (lat, lon) = reader.CurrentRecord
+
+        printfn $&quot;{lat} N, {lon} W&quot;
+)
+</code></pre>
+<p></p>
+<p>Additionally, it can be added to the <a class="xref" href="../api/Addax.Formats.Tabular.TabularRegistry.html#Addax_Formats_Tabular_TabularRegistry_Handlers">TabularRegistry.Handlers</a> collection with generated record handlers:</p>
+<p></p>
+<pre><code class="lang-fs">TabularRegistry.Handlers.Add(typeof&lt;(double * double)&gt;, new PointHandler())
+
+let dialect = new TabularDialect(&quot;\r\n&quot;, ',', '\&quot;')
+
+using (new TabularWriter&lt;(double * double)&gt;(File.Create &quot;points.csv&quot;, dialect)) (fun writer -&gt;
+    let point1 = (double 50.4501, double 30.5234)
+    let point2 = (double 45.4215, double 75.6972)
+
+    writer.WriteRecord &amp;point1
+    writer.WriteRecord &amp;point2
+)
+
+using (new TabularReader&lt;(double * double)&gt;(File.OpenRead &quot;points.csv&quot;, dialect)) (fun reader -&gt;
+    while reader.TryReadRecord () do
+        let (lat, lon) = reader.CurrentRecord
+
+        printfn $&quot;{lat} N, {lon} W&quot;
+)
+</code></pre>
+</section>
+<section id="tabpanel_4_api-ll_fs" role="tabpanel" data-tab="api-ll" data-condition="fs" aria-hidden="true" hidden="hidden">
+
+<p>N/A</p>
 </section>
 </div>
 
