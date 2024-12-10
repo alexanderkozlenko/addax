@@ -252,7 +252,7 @@ using (new TabularReader&lt;Book&gt;(File.OpenRead &quot;books.csv&quot;, dialec
 </code></pre>
 <div class="NOTE">
 <h5>Note</h5>
-<p>Using the high-level API with F# in this example requires a <a class="xref" href="topics/extensibility.html">custom</a> record handler.</p>
+<p>Usage of the high-level API in F# requires an <a class="xref" href="topics/extensibility.html">explicitly defined</a> record handler.</p>
 </div>
 </section>
 <section id="tabpanel_1_api-ll-fs" role="tabpanel" data-tab="api-ll-fs" aria-hidden="true" hidden="hidden">
@@ -436,7 +436,7 @@ using (new TabularReader&lt;Book&gt;(File.OpenRead &quot;books.csv&quot;, dialec
 </code></pre>
 <div class="NOTE">
 <h5>Note</h5>
-<p>Using the high-level API with F# in this example requires a <a class="xref" href="topics/extensibility.html">custom</a> record handler.</p>
+<p>Usage of the high-level API in F# requires an <a class="xref" href="topics/extensibility.html">explicitly defined</a> record handler.</p>
 </div>
 </section>
 <section id="tabpanel_2_api-ll-fs" role="tabpanel" data-tab="api-ll-fs" aria-hidden="true" hidden="hidden">
@@ -580,7 +580,7 @@ for book in books do
 </code></pre>
 <div class="NOTE">
 <h5>Note</h5>
-<p>Using the high-level API with F# in this example requires a <a class="xref" href="topics/extensibility.html">custom</a> record handler.</p>
+<p>Usage of the high-level API in F# requires an <a class="xref" href="topics/extensibility.html">explicitly defined</a> record handler.</p>
 </div>
 </section>
 <section id="tabpanel_3_api-ll-fs" role="tabpanel" data-tab="api-ll-fs" aria-hidden="true" hidden="hidden">
@@ -592,6 +592,15 @@ for book in books do
 </section>
 </div>
 <p></p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Usage of implicitly generated record handlers with Razor SDK requires the following configuration:</p>
+<pre><code class="lang-xml">&lt;PropertyGroup&gt;
+  &lt;UseRazorSourceGenerator&gt;false&lt;/UseRazorSourceGenerator&gt;
+&lt;/PropertyGroup&gt;
+</code></pre>
+<p>See <a href="https://learn.microsoft.com/en-us/aspnet/core/razor-pages/sdk">Microsoft ASP.NET Core Razor SDK</a> for more information.</p>
+</div>
 
 </article>
 
