@@ -2,18 +2,17 @@
 
 Provides high-performance and low-allocating types that work with tabular data represented as delimiter-separated values (DSV). The implementation is based on W3C recommendation "Model for Tabular Data and Metadata on the Web" and can process any conventional tabular data dialect, such as comma-separated values (CSV).
 
-## Packages
-
-|ID|Stable|Preview|
-|:-|:-|:-|
-|Addax.Formats.Tabular|[![NuGet](https://img.shields.io/nuget/v/Addax.Formats.Tabular?style=flat-square)](https://nuget.org/packages/Addax.Formats.Tabular)|[![NuGet](https://img.shields.io/nuget/vpre/Addax.Formats.Tabular?style=flat-square)](https://nuget.org/packages/Addax.Formats.Tabular)|
-
 ## Key Features
 
 - A general-purpose framework that supports different tabular data dialects and character encodings.
 - Provides an extensible record mapping model based on source-generated and custom contracts.
 - Includes several extensible field converters for a wide range of commonly used built-in types.
 - Compatible with ASP.NET Core Blazor WebAssembly (WASM) and ahead-of-time (AOT) compilation.
+
+## Packages Status
+
+[![NuGet Status (Stable)](https://img.shields.io/nuget/v/Addax.Formats.Tabular.svg?label=nuget%3A%20stable&style=flat-square)](https://www.nuget.org/packages/Addax.Formats.Tabular)
+[![NuGet Status (Latest)](https://img.shields.io/nuget/vpre/Addax.Formats.Tabular.svg?label=nuget%3A%20latest&style=flat-square)](https://www.nuget.org/packages/Addax.Formats.Tabular/absoluteLatest)
 
 ## Documentation
 
