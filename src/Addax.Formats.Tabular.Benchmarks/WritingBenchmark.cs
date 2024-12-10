@@ -5,7 +5,7 @@ using BenchmarkDotNet.Attributes;
 
 namespace Addax.Formats.Tabular.Benchmarks;
 
-public class WriteBenchmark
+public class WritingBenchmark
 {
     private const int s_count = 1024;
 
@@ -18,7 +18,7 @@ public class WriteBenchmark
 
     private readonly MemoryStream _stream = new();
 
-    [Benchmark(Description = "write field: empty")]
+    [Benchmark(Description = "writing field: sync, empty")]
     public void Write0()
     {
         _stream.Seek(0, SeekOrigin.Begin);
@@ -38,7 +38,7 @@ public class WriteBenchmark
         }
     }
 
-    [Benchmark(Description = "write field: regular")]
+    [Benchmark(Description = "writing field: sync, regular")]
     public void Write1()
     {
         _stream.Seek(0, SeekOrigin.Begin);
@@ -58,7 +58,7 @@ public class WriteBenchmark
         }
     }
 
-    [Benchmark(Description = "write field: escaped")]
+    [Benchmark(Description = "writing field: sync, escaped")]
     public void Write2()
     {
         _stream.Seek(0, SeekOrigin.Begin);
@@ -78,7 +78,7 @@ public class WriteBenchmark
         }
     }
 
-    [Benchmark(Description = "write field: empty (async)")]
+    [Benchmark(Description = "writing field: async, empty")]
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Write0Async()
     {
@@ -99,7 +99,7 @@ public class WriteBenchmark
         }
     }
 
-    [Benchmark(Description = "write field: regular (async)")]
+    [Benchmark(Description = "writing field: async, regular")]
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Write1Async()
     {
@@ -120,7 +120,7 @@ public class WriteBenchmark
         }
     }
 
-    [Benchmark(Description = "write field: escaped (async)")]
+    [Benchmark(Description = "writing field: async, escaped")]
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Write2Async()
     {

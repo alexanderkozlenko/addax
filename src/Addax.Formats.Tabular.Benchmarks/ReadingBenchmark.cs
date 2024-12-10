@@ -3,7 +3,7 @@ using BenchmarkDotNet.Attributes;
 
 namespace Addax.Formats.Tabular.Benchmarks;
 
-public class ReadBenchmark
+public class ReadingBenchmark
 {
     private const int s_count = 1024;
 
@@ -14,7 +14,7 @@ public class ReadBenchmark
     private readonly MemoryStream _stream1 = CreateStream("vvvv");
     private readonly MemoryStream _stream2 = CreateStream("qddd");
 
-    [Benchmark(Description = "read field: empty")]
+    [Benchmark(Description = "reading field: sync, empty")]
     public void Read0()
     {
         _stream0.Seek(0, SeekOrigin.Begin);
@@ -29,7 +29,7 @@ public class ReadBenchmark
         }
     }
 
-    [Benchmark(Description = "read field: regular")]
+    [Benchmark(Description = "reading field: sync, regular")]
     public void Read1()
     {
         _stream1.Seek(0, SeekOrigin.Begin);
@@ -44,7 +44,7 @@ public class ReadBenchmark
         }
     }
 
-    [Benchmark(Description = "read field: escaped")]
+    [Benchmark(Description = "reading field: sync, escaped")]
     public void Read2()
     {
         _stream2.Seek(0, SeekOrigin.Begin);
@@ -59,7 +59,7 @@ public class ReadBenchmark
         }
     }
 
-    [Benchmark(Description = "read field: empty (async)")]
+    [Benchmark(Description = "reading field: async, empty")]
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Read0Async()
     {
@@ -75,7 +75,7 @@ public class ReadBenchmark
         }
     }
 
-    [Benchmark(Description = "read field: regular (async)")]
+    [Benchmark(Description = "reading field: async, regular")]
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Read1Async()
     {
@@ -91,7 +91,7 @@ public class ReadBenchmark
         }
     }
 
-    [Benchmark(Description = "read field: escaped (async)")]
+    [Benchmark(Description = "reading field: async, escaped")]
     [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Read2Async()
     {

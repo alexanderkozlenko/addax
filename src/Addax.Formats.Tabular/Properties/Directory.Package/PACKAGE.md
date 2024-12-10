@@ -7,7 +7,7 @@ Provides high-performance and low-allocating types that work with tabular data r
 - A general-purpose framework that supports different tabular data dialects and character encodings.
 - Provides an extensible record mapping model based on source-generated and custom contracts.
 - Includes several extensible field converters for a wide range of commonly used built-in types.
-- Fully compatible with applications that are published using the Native AOT deployment model.
+- Compatible with ASP.NET Core Blazor WebAssembly (WASM) and ahead-of-time (AOT) compilation.
 
 ## Documentation
 

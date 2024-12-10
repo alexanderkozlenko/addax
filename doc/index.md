@@ -155,7 +155,7 @@ using (new TabularReader<Book>(File.OpenRead "books.csv", dialect)) (fun reader 
 ```
 
 > [!NOTE]
-> Using the high-level API with F# in this example requires a [custom](xref:urn:topics:extensibility) record handler.
+> Usage of the high-level API in F# requires an [explicitly defined](xref:urn:topics:extensibility) record handler.
 
 # [Low-level API (F#)](#tab/api-ll-fs)
 
@@ -331,7 +331,7 @@ using (new TabularReader<Book>(File.OpenRead "books.csv", dialect)) (fun reader 
 ```
 
 > [!NOTE]
-> Using the high-level API with F# in this example requires a [custom](xref:urn:topics:extensibility) record handler.
+> Usage of the high-level API in F# requires an [explicitly defined](xref:urn:topics:extensibility) record handler.
 
 # [Low-level API (F#)](#tab/api-ll-fs)
 
@@ -464,7 +464,7 @@ for book in books do
 ```
 
 > [!NOTE]
-> Using the high-level API with F# in this example requires a [custom](xref:urn:topics:extensibility) record handler.
+> Usage of the high-level API in F# requires an [explicitly defined](xref:urn:topics:extensibility) record handler.
 
 # [Low-level API (F#)](#tab/api-ll-fs)
 
@@ -474,3 +474,14 @@ for book in books do
 ---
 
 <p />
+
+> [!NOTE]
+> Usage of implicitly generated record handlers with Razor SDK requires the following configuration:
+> 
+> ```xml
+> <PropertyGroup>
+>   <UseRazorSourceGenerator>false</UseRazorSourceGenerator>
+> </PropertyGroup>
+> ```
+> 
+> See [Microsoft ASP.NET Core Razor SDK](https://learn.microsoft.com/en-us/aspnet/core/razor-pages/sdk) for more information.
