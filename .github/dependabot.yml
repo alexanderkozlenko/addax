@@ -16,4 +16,6 @@ updates:
        Microsoft:
           patterns:
             - "Microsoft.*"
-            - "MS*"
+       System:
+          patterns:
+            - "System.*"
