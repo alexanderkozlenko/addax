@@ -232,7 +232,7 @@ public sealed partial class TabularReaderTests
         using var stream = new MemoryStream(Encoding.UTF8.GetBytes(content));
         using var reader = new TabularReader(stream, dialect, options);
 
-        Assert.ThrowsException<TabularContentException>(() => ReadStream(reader));
+        Assert.ThrowsExactly<TabularContentException>(() => ReadStream(reader));
 
         static void ReadStream(TabularReader reader)
         {

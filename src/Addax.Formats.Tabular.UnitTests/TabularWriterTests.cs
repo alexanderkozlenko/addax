@@ -232,11 +232,11 @@ public sealed partial class TabularWriterTests
 
         if (!dialect.AnnotationPrefix.HasValue)
         {
-            Assert.ThrowsException<InvalidOperationException>(() => WriteStream(writer, structureScript));
+            Assert.ThrowsExactly<InvalidOperationException>(() => WriteStream(writer, structureScript));
         }
         else
         {
-            Assert.ThrowsException<FormatException>(() => WriteStream(writer, structureScript));
+            Assert.ThrowsExactly<FormatException>(() => WriteStream(writer, structureScript));
         }
 
         static void WriteStream(TabularWriter writer, string structureScript)
