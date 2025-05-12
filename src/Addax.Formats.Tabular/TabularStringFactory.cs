@@ -1,8 +1,5 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
-using System.Collections.Concurrent;
-using System.Diagnostics;
-
 namespace Addax.Formats.Tabular;
 
 /// <summary>Provides a creation method for creating <see cref="string" /> instances from character sequences.</summary>
@@ -10,31 +7,35 @@ public class TabularStringFactory : IDisposable
 {
     internal static readonly TabularStringFactory Default = new();
 
-    private readonly ConcurrentDictionary<int, string>? _stringTable;
+    private readonly HashSet<string> _stringTable;
+    private readonly HashSet<string>.AlternateLookup<ReadOnlySpan<char>> _stringLookup;
     private readonly int _maxLength;
+
+    private SpinLock _lock;
 
     /// <summary>Initializes a new instance of the <see cref="TabularStringFactory" /> class.</summary>
     public TabularStringFactory()
+        : this(0)
     {
     }
 
     /// <summary>Initializes a new instance of the <see cref="TabularStringFactory" /> class with the specified maximum string length.</summary>
-    /// <param name="maxLength">The maximum length of a string to participate in pooling. Must be greater than zero and less than or equal to <see cref="Array.MaxLength" />.</param>
+    /// <param name="maxLength">The maximum length of a string to participate in pooling. Must be greater than or equal to zero and less than or equal to <see cref="Array.MaxLength" />.</param>
     /// <remarks>This constructor enables a thread-safe string pool based on hash code and length.</remarks>
     public TabularStringFactory(int maxLength)
+        : this(maxLength, 0)
     {
-        _maxLength = Math.Max(1, Math.Min(maxLength, Array.MaxLength));
-        _stringTable = new();
     }
 
     /// <summary>Initializes a new instance of the <see cref="TabularStringFactory" /> class with the specified maximum string length.</summary>
-    /// <param name="maxLength">The maximum length of a string to participate in pooling. Must be greater than zero and less than or equal to <see cref="Array.MaxLength" />.</param>
+    /// <param name="maxLength">The maximum length of a string to participate in pooling. Must be greater than or equal to zero and less than or equal to <see cref="Array.MaxLength" />.</param>
     /// <param name="poolCapacity">The initial number of elements that the string pool can contain. Must be greater than or equal to zero.</param>
     /// <remarks>This constructor enables a thread-safe string pool based on hash code and length.</remarks>
     public TabularStringFactory(int maxLength, int poolCapacity)
     {
-        _maxLength = Math.Max(1, Math.Min(maxLength, Array.MaxLength));
-        _stringTable = new(-1, Math.Max(0, poolCapacity));
+        _maxLength = Math.Max(0, Math.Min(maxLength, Array.MaxLength));
+        _stringTable = new(Math.Max(0, poolCapacity), StringComparer.Ordinal);
+        _stringLookup = _stringTable.GetAlternateLookup<ReadOnlySpan<char>>();
     }
 
     /// <summary>Releases the resources used by the current instance of the <see cref="TabularStringFactory" /> class.</summary>
@@ -50,7 +51,20 @@ public class TabularStringFactory : IDisposable
     {
         if (disposing)
         {
-            _stringTable?.Clear();
+            var locked = false;
+
+            try
+            {
+                _lock.Enter(ref locked);
+                _stringTable.Clear();
+            }
+            finally
+            {
+                if (locked)
+                {
+                    _lock.Exit();
+                }
+            }
         }
     }
 
@@ -59,29 +73,32 @@ public class TabularStringFactory : IDisposable
     /// <returns>A new or an existing <see cref="string" /> instance.</returns>
     public virtual string Create(ReadOnlySpan<char> source)
     {
-        return source.IsEmpty ? string.Empty : (source.Length > _maxLength ? new(source) : GetOrAdd(source));
+        return source.IsEmpty ? string.Empty : (source.Length > _maxLength ? new(source) : Lookup(source));
     }
 
-    private string GetOrAdd(ReadOnlySpan<char> source)
+    private string Lookup(ReadOnlySpan<char> source)
     {
-        Debug.Assert(_stringTable is not null);
+        var locked = false;
 
-        var hashCode = string.GetHashCode(source);
-
-        if (!_stringTable.TryGetValue(hashCode, out var value))
+        try
         {
-            value = new(source);
+            _lock.Enter(ref locked);
 
-            try
+            if (!_stringLookup.TryGetValue(source, out var value))
             {
-                _stringTable.TryAdd(hashCode, value);
+                value = new(source);
+
+                _stringTable.Add(value);
             }
-            catch (OverflowException)
+
+            return value;
+        }
+        finally
+        {
+            if (locked)
             {
-                _stringTable.Clear();
+                _lock.Exit();
             }
         }
-
-        return value;
     }
 }
