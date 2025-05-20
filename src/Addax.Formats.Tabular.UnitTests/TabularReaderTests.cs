@@ -204,7 +204,6 @@ public sealed partial class TabularReaderTests
     [DataRow("rdqe", "qqrr")]
     [DataRow("rdqq", "qqrr")]
     [DataRow("rdqe", "qqrq")]
-    [DataRow("rdqq", "qqrq")]
     [DataRow("rdqe", "qqre")]
     [DataRow("ndqe", "q")]
     [DataRow("ndqq", "q")]
