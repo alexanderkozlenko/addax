@@ -35,7 +35,7 @@ internal static class TabularBinary
 
             if ((uint)bufferSize <= 256)
             {
-                var buffer = (Span<byte>)stackalloc byte[256];
+                var buffer = (stackalloc byte[256]);
 
                 if (Convert.FromHexString(source, buffer, out _, out var bytesWritten) == OperationStatus.Done)
                 {
@@ -74,7 +74,7 @@ internal static class TabularBinary
 
         if ((uint)bufferSize <= 256)
         {
-            var buffer = (Span<byte>)stackalloc byte[256];
+            var buffer = (stackalloc byte[256]);
 
             if (Convert.TryFromBase64Chars(source, buffer, out var bytesWritten))
             {

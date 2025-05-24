@@ -351,7 +351,7 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
         var bufferLength = 128;
 
         {
-            var buffer = (Span<char>)stackalloc char[bufferLength];
+            var buffer = (stackalloc char[bufferLength]);
 
             if (converter.TryFormat(value, buffer, _formatProvider, out var charsWritten))
             {
