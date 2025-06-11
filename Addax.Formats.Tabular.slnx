@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Build.targets" />
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Project Path="src/Addax.Formats.Tabular.Analyzers.CSharp.UnitTests/Addax.Formats.Tabular.Analyzers.CSharp.UnitTests.csproj" />
+  <Project Path="src/Addax.Formats.Tabular.Analyzers.CSharp/Addax.Formats.Tabular.Analyzers.CSharp.csproj" />
+  <Project Path="src/Addax.Formats.Tabular.Benchmarks/Addax.Formats.Tabular.Benchmarks.csproj" />
+  <Project Path="src/Addax.Formats.Tabular.UnitTests/Addax.Formats.Tabular.UnitTests.csproj" />
+  <Project Path="src/Addax.Formats.Tabular/Addax.Formats.Tabular.csproj" />
+</Solution>
