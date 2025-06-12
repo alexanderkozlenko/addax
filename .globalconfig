@@ -150,6 +150,8 @@ dotnet_diagnostic.IDE0100.severity = suggestion
 dotnet_diagnostic.IDE0110.severity = suggestion
 # IDE0120: Simplify LINQ expression
 dotnet_diagnostic.IDE0120.severity = suggestion
+# IDE0121: Simplify LINQ type check and cast
+dotnet_diagnostic.IDE0121.severity = suggestion
 # IDE0130: Namespace does not match folder structure
 dotnet_diagnostic.IDE0130.severity = suggestion
 # IDE0150: Prefer 'null' check over type check
@@ -200,12 +202,24 @@ dotnet_diagnostic.IDE0303.severity = suggestion
 dotnet_diagnostic.IDE0304.severity = suggestion
 # IDE0305: Use collection expression for fluent
 dotnet_diagnostic.IDE0305.severity = suggestion
+# IDE0306: Use collection expression for new
+dotnet_diagnostic.IDE0306.severity = suggestion
+# IDE0320: Make anonymous function static
+dotnet_diagnostic.IDE0320.severity = suggestion
+# IDE0330: Prefer 'System.Threading.Lock'
+dotnet_diagnostic.IDE0330.severity = suggestion
+# IDE0340: Use unbound generic type
+dotnet_diagnostic.IDE0340.severity = suggestion
+# IDE0350: Use implicitly typed lambda
+dotnet_diagnostic.IDE0350.severity = suggestion
 # IDE1005: Use conditional delegate call
 dotnet_diagnostic.IDE1005.severity = suggestion
 # IDE1006: Naming rule violation
 dotnet_diagnostic.IDE1006.severity = warning
 # IDE2000: Avoid multiple blank lines (experimental)
 dotnet_diagnostic.IDE2000.severity = warning
+# IDE3000: Implement with Copilot
+dotnet_diagnostic.IDE2000.severity = none
 
 dotnet_code_quality_unused_parameters = all
 dotnet_naming_symbols.any.applicable_kinds = *
@@ -304,7 +318,9 @@ csharp_new_line_between_query_expression_clauses = true
 csharp_prefer_braces = true
 csharp_prefer_simple_default_expression = true
 csharp_prefer_simple_using_statement = true
+csharp_prefer_static_anonymous_function = true
 csharp_prefer_static_local_function = true
+csharp_prefer_system_threading_lock = true
 csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = false
 csharp_space_after_cast = false
@@ -345,6 +361,7 @@ csharp_style_namespace_declarations = file_scoped
 csharp_style_pattern_matching_over_as_with_null_check = true
 csharp_style_pattern_matching_over_is_with_cast_check = true
 csharp_style_prefer_extended_property_pattern = true
+csharp_style_prefer_implicitly_typed_lambda_expression = true
 csharp_style_prefer_index_operator = true
 csharp_style_prefer_local_over_anonymous_function = true
 csharp_style_prefer_method_group_conversion = true
@@ -358,6 +375,7 @@ csharp_style_prefer_readonly_struct_member = true
 csharp_style_prefer_switch_expression = true
 csharp_style_prefer_top_level_statements = true
 csharp_style_prefer_tuple_swap = true
+csharp_style_prefer_unbound_generic_type_in_nameof = true
 csharp_style_prefer_utf8_string_literals = true
 csharp_style_throw_expression = false
 csharp_style_var_elsewhere = true
