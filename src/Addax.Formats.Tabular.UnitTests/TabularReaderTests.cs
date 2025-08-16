@@ -1,7 +1,6 @@
 ﻿#pragma warning disable MSTEST0032
 
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Addax.Formats.Tabular.UnitTests;
 

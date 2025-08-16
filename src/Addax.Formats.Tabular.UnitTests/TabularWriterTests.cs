@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Addax.Formats.Tabular.UnitTests;
 

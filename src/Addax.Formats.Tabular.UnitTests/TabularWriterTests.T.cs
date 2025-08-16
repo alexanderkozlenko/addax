@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using System.Numerics;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Addax.Formats.Tabular.UnitTests;
 
