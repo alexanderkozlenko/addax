@@ -33,9 +33,9 @@ public sealed class TabularHandlerGeneratorTests
         var generatedSources = generatorDriver.GetRunResult().Results.First().GeneratedSources;
         var compilationDiagnostics = compilation.GetDiagnostics();
 
-        Assert.AreEqual(0, generatorDiagnostics.Length);
-        Assert.AreEqual(generatedFileCount, generatedSources.Length);
-        Assert.AreEqual(0, compilationDiagnostics.Length);
+        Assert.IsEmpty(generatorDiagnostics);
+        Assert.HasCount(generatedFileCount, generatedSources);
+        Assert.IsEmpty(compilationDiagnostics);
     }
 
     [TestMethod]
@@ -56,9 +56,9 @@ public sealed class TabularHandlerGeneratorTests
 
         var compilationDiagnostics = compilation.GetDiagnostics();
 
-        Assert.AreEqual(1, generatorDiagnostics.Length);
+        Assert.HasCount(1, generatorDiagnostics);
         Assert.AreEqual(diagnosticId, generatorDiagnostics.Single().Id);
-        Assert.AreEqual(0, compilationDiagnostics.Length);
+        Assert.IsEmpty(compilationDiagnostics);
     }
 
     private static CSharpCompilation CreateCompilation()

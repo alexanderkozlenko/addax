@@ -529,7 +529,7 @@ public sealed partial class TabularReaderTests
         Assert.IsTrue(reader.TryReadRecord());
 
         Assert.IsNotNull(reader.CurrentRecord);
-        Assert.AreEqual(2, reader.CurrentRecord.Length);
+        Assert.HasCount(2, reader.CurrentRecord);
         Assert.AreEqual("v21", reader.CurrentRecord[0]);
         Assert.AreEqual("v22", reader.CurrentRecord[1]);
     }
