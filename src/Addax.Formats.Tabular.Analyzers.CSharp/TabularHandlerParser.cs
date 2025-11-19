@@ -97,7 +97,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (compilation.LanguageVersion < LanguageVersion.CSharp13)
+                if (compilation.LanguageVersion < LanguageVersion.CSharp14)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(s_diagnostic0000, recordType.Locations.FirstOrDefault()));
 
