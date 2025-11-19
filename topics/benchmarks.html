@@ -88,30 +88,29 @@
 <h1 id="addax---benchmarks">Addax - Benchmarks</h1>
 
 <p></p>
-<p>The following benchmarks reflect the approximate time and memory required to process 1,048,576 fields:</p>
+<p>The following benchmarks reflect the approximate time and memory required to process <code>1,048,576</code> fields:</p>
 <p></p>
-<pre><code class="lang-txt">.NET 9.0.0 (9.0.24.52809)
+<pre><code class="lang-txt">.NET 10.0.0 (10.0.0, 10.0.25.52411)
 
-| Method                         | Mean      | Median    | Op/s   | Allocated |
-|------------------------------- |----------:|----------:|-------:|----------:|
-| 'read field: empty'            |  6.628 ms |  6.618 ms | 150.88 |     387 B |
-| 'read field: regular'          | 15.305 ms | 15.286 ms |  65.34 |     479 B |
-| 'read field: escaped'          | 45.170 ms | 45.105 ms |  22.14 |     661 B |
-| 'read field: empty (async)'    |  7.087 ms |  7.107 ms | 141.11 |     408 B |
-| 'read field: regular (async)'  | 15.772 ms | 15.728 ms |  63.40 |     479 B |
-| 'read field: escaped (async)'  | 45.744 ms | 45.856 ms |  21.86 |     637 B |
-
-| Method                         | Mean      | Median    | Op/s   | Allocated |
-|------------------------------- |----------:|----------:|-------:|----------:|
-| 'write field: empty'           |  4.959 ms |  4.949 ms | 201.67 |     400 B |
-| 'write field: regular'         |  9.324 ms |  9.325 ms | 107.25 |     432 B |
-| 'write field: escaped'         | 13.783 ms | 13.775 ms |  72.55 |     432 B |
-| 'write field: empty (async)'   |  9.529 ms |  9.530 ms | 104.95 |     432 B |
-| 'write field: regular (async)' | 14.466 ms | 14.483 ms |  69.13 |     427 B |
-| 'write field: escaped (async)' | 19.326 ms | 19.342 ms |  51.74 |     386 B |
+| Method                          | Mean      | Median    | Min       | Max       | Op/s   | Allocated |
+|-------------------------------- |----------:|----------:|----------:|----------:|-------:|----------:|
+| 'reading field: sync, empty'    |  5.096 ms |  5.073 ms |  5.038 ms |  5.241 ms | 196.24 |     384 B |
+| 'reading field: sync, regular'  | 13.220 ms | 13.222 ms | 13.211 ms | 13.230 ms |  75.64 |     425 B |
+| 'reading field: sync, escaped'  | 38.709 ms | 38.674 ms | 38.623 ms | 38.866 ms |  25.83 |     591 B |
+| 'reading field: async, empty'   |  5.851 ms |  5.818 ms |  5.806 ms |  6.008 ms | 170.92 |     405 B |
+| 'reading field: async, regular' | 14.405 ms | 14.388 ms | 14.371 ms | 14.521 ms |  69.42 |     426 B |
+| 'reading field: async, escaped' | 39.258 ms | 39.263 ms | 38.920 ms | 39.629 ms |  25.47 |     613 B |
+| 'writing field: sync, empty'    |  3.187 ms |  3.193 ms |  3.140 ms |  3.199 ms | 313.80 |     384 B |
+| 'writing field: sync, regular'  |  7.318 ms |  7.319 ms |  7.306 ms |  7.324 ms | 136.64 |     407 B |
+| 'writing field: sync, escaped'  | 12.327 ms | 12.329 ms | 12.270 ms | 12.365 ms |  81.12 |     425 B |
+| 'writing field: async, empty'   |  8.274 ms |  8.274 ms |  8.214 ms |  8.315 ms | 120.87 |     426 B |
+| 'writing field: async, regular' | 12.584 ms | 12.579 ms | 12.567 ms | 12.608 ms |  79.47 |     430 B |
+| 'writing field: async, escaped' | 17.664 ms | 17.611 ms | 17.479 ms | 17.938 ms |  56.61 |     468 B |
 
 Mean      : Arithmetic mean of all measurements
 Median    : Value separating the higher half of all measurements (50th percentile)
+Min       : Minimum
+Max       : Maximum
 Op/s      : Operation per second
 Allocated : Allocated memory per single operation (managed only, inclusive, 1KB = 1024B)
 1 ms      : 1 Millisecond (0.001 sec)
