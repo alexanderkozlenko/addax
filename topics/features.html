@@ -415,7 +415,7 @@ using (var reader = new TabularReader&lt;string?[]&gt;(File.OpenRead(&quot;data.
 <pre><code class="lang-fs">let dialect = new TabularDialect(&quot;\r\n&quot;, ',', '\&quot;')
 
 using (new TabularReader&lt;array&lt;string&gt;&gt;(File.OpenRead &quot;books.csv&quot;, dialect)) (fun reader -&gt;
-    while reader.TryReadRecord ()) do
+    while reader.TryReadRecord () do
         printfn &quot;%s&quot; (String.concat &quot;|&quot; reader.CurrentRecord)
 )
 </code></pre>
@@ -443,7 +443,7 @@ using (new TabularReader&lt;array&lt;string&gt;&gt;(File.OpenRead &quot;books.cs
 </tbody>
 </table>
 <p></p>
-<h2 id="dialect-inferrence">Dialect Inferrence</h2>
+<h2 id="dialect-inference">Dialect Inference</h2>
 <p></p>
 <p>A tabular dialect can be inferred from a stream based on frequency of the eligible token values:</p>
 <p></p>
