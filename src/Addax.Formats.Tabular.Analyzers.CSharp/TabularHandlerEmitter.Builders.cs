@@ -108,6 +108,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                 writer.Indent++;
 
                 var fieldTypeCheckEmitted = false;
+                var lastProcessedFieldOrder = -1;
 
                 for (var i = 0; i < fieldOrders.Length; i++)
                 {
@@ -119,7 +120,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                         continue;
                     }
 
-                    var fieldsToSkip = i > 0 ? fieldOrder - fieldOrders[i - 1] - 1 : fieldOrder;
+                    var fieldsToSkip = fieldOrder - lastProcessedFieldOrder - 1;
 
                     if (fieldsToSkip > 0)
                     {
@@ -177,6 +178,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                     }
 
                     writer.WriteLine();
+                    lastProcessedFieldOrder = fieldOrder;
                 }
 
                 writer.WriteLine($"var r = new {recordMapping.TypeName}");
@@ -207,6 +209,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                 writer.Indent++;
 
                 fieldTypeCheckEmitted = false;
+                lastProcessedFieldOrder = -1;
 
                 for (var i = 0; i < fieldOrders.Length; i++)
                 {
@@ -218,7 +221,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                         continue;
                     }
 
-                    var fieldsToSkip = i > 0 ? fieldOrder - fieldOrders[i - 1] - 1 : fieldOrder;
+                    var fieldsToSkip = fieldOrder - lastProcessedFieldOrder - 1;
 
                     if (fieldsToSkip > 0)
                     {
@@ -276,6 +279,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                     }
 
                     writer.WriteLine();
+                    lastProcessedFieldOrder = fieldOrder;
                 }
 
                 writer.WriteLine($"var r = new {recordMapping.TypeName}");
@@ -312,6 +316,8 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                 writer.WriteLine("{");
                 writer.Indent++;
 
+                var lastWrittenFieldOrder = -1;
+
                 for (var i = 0; i < fieldOrders.Length; i++)
                 {
                     var fieldOrder = fieldOrders[i];
@@ -322,7 +328,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                         continue;
                     }
 
-                    var fieldsToSkip = i > 0 ? fieldOrder - fieldOrders[i - 1] - 1 : fieldOrder;
+                    var fieldsToSkip = fieldOrder - lastWrittenFieldOrder - 1;
 
                     if (fieldsToSkip > 0)
                     {
@@ -380,6 +386,8 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                         }
                     }
 
+                    lastWrittenFieldOrder = fieldOrder;
+
                     if (i < recordMapping.FieldMappings.Count - 1)
                     {
                         writer.WriteLine();
@@ -394,6 +402,8 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                 writer.WriteLine("{");
                 writer.Indent++;
 
+                lastWrittenFieldOrder = -1;
+
                 for (var i = 0; i < fieldOrders.Length; i++)
                 {
                     var fieldOrder = fieldOrders[i];
@@ -404,7 +414,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                         continue;
                     }
 
-                    var fieldsToSkip = i > 0 ? fieldOrder - fieldOrders[i - 1] - 1 : fieldOrder;
+                    var fieldsToSkip = fieldOrder - lastWrittenFieldOrder - 1;
 
                     if (fieldsToSkip > 0)
                     {
@@ -461,6 +471,8 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                             writer.WriteLine($"await writer.WriteAsync(record.{fieldMapping.MemberName}, _c{fieldOrder}, cancellationToken).ConfigureAwait(false);");
                         }
                     }
+
+                    lastWrittenFieldOrder = fieldOrder;
 
                     if (i < recordMapping.FieldMappings.Count - 1)
                     {
