@@ -136,7 +136,7 @@ using (var reader = new TabularReader<string?[]>(File.OpenRead("data.csv"), dial
 let dialect = new TabularDialect("\r\n", ',', '\"')
 
 using (new TabularReader<array<string>>(File.OpenRead "books.csv", dialect)) (fun reader ->
-    while reader.TryReadRecord ()) do
+    while reader.TryReadRecord () do
         printfn "%s" (String.concat "|" reader.CurrentRecord)
 )
 ```
@@ -156,7 +156,7 @@ The framework also provides generic record handlers for working with tabular rec
 
 <p />
 
-## Dialect Inferrence
+## Dialect Inference
 
 <p />
 
