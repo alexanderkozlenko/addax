@@ -52,7 +52,7 @@ public abstract class TabularHandler<T>
     }
 
     /// <summary>Gets the names of the record fields.</summary>
-    /// <value>An collection of strings or <see langword="null" />.</value>
+    /// <value>A collection of strings or <see langword="null" />.</value>
     public virtual IEnumerable<string?>? Header
     {
         get

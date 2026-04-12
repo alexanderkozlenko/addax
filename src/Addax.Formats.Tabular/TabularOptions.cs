@@ -39,7 +39,7 @@ public sealed class TabularOptions
         set;
     }
 
-    /// <summary>Gets or set the factory that creates <see cref="string" /> instances from character sequences when reading fields as strings.</summary>
+    /// <summary>Gets or sets the factory that creates <see cref="string" /> instances from character sequences when reading fields as strings.</summary>
     /// <value>A <see cref="TabularStringFactory" /> instance or <see langword="null" /> to use the default factory, which returns <see cref="string.Empty" /> or creates a new <see cref="string" /> instance. The default is <see langword="null" />.</value>
     public TabularStringFactory? StringFactory
     {

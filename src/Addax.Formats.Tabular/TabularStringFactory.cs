@@ -68,7 +68,7 @@ public class TabularStringFactory : IDisposable
         }
     }
 
-    /// <summary>Create a <see cref="string" /> instance from a character sequence.</summary>
+    /// <summary>Creates a <see cref="string" /> instance from a character sequence.</summary>
     /// <param name="source">The read-only character sequence to create from.</param>
     /// <returns>A new or an existing <see cref="string" /> instance.</returns>
     public virtual string Create(ReadOnlySpan<char> source)

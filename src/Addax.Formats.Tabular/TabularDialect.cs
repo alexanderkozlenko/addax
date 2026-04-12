@@ -101,7 +101,7 @@ public sealed class TabularDialect
     }
 
     /// <summary>Gets the character sequence that is used to separate records.</summary>
-    /// <value>A strings that has one or two UTF-16 code units.</value>
+    /// <value>A string that has one or two UTF-16 code units.</value>
     public string LineTerminator
     {
         get;
