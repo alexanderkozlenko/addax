@@ -83,15 +83,23 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
         private static bool MappingSupportsWriting(in TabularRecordMapping mapping)
         {
+            var fieldCount = 0;
+            var maxFieldOrder = -1;
+
             foreach (var kvp in mapping.FieldMappings)
             {
                 if (kvp.Value.SupportsReading)
                 {
-                    return true;
+                    fieldCount++;
+
+                    if (kvp.Key > maxFieldOrder)
+                    {
+                        maxFieldOrder = kvp.Key;
+                    }
                 }
             }
 
-            return false;
+            return (fieldCount != 0) && (maxFieldOrder == fieldCount - 1);
         }
 
         private static TKey[] GetDictionaryKeysOrdered<TKey, TValue>(ImmutableDictionary<TKey, TValue> dictionary)
