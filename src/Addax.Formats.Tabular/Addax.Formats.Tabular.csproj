@@ -11,6 +11,11 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Sbom.Targets">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Addax.Formats.Tabular.Analyzers.CSharp\Addax.Formats.Tabular.Analyzers.CSharp.csproj">
       <PackAsAnalyzer>true</PackAsAnalyzer>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
