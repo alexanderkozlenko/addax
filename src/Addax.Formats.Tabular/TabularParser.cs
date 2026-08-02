@@ -252,6 +252,12 @@ internal sealed class TabularParser
 
                             mode |= TabularParsingMode.StartOfRecord;
                         }
+                        else if (state.FoundAnnotation)
+                        {
+                            state.CurrentArea = symbol == _tokenT[0] ?
+                                TabularParsingArea.LineTerminator :
+                                TabularParsingArea.Annotation;
+                        }
                         else if (!state.FoundQuoting)
                         {
                             if (symbol == _tokenD)

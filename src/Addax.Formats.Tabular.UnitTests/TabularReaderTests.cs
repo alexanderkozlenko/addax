@@ -122,6 +122,14 @@ public sealed partial class TabularReaderTests
     [DataRow("rdqqa", "ar", "r")]
     [DataRow("rdqea", "an", "n")]
     [DataRow("rdqqa", "an", "n")]
+    [DataRow("rdqea", "arrn", "r:")]
+    [DataRow("rdqqa", "arrn", "r:")]
+    [DataRow("rdqea", "ardrn", "rd:")]
+    [DataRow("rdqqa", "ardrn", "rd:")]
+    [DataRow("rdqea", "ardvrn", "rdv:")]
+    [DataRow("rdqqa", "ardvrn", "rdv:")]
+    [DataRow("rdqea", "arqvrn", "rqv:")]
+    [DataRow("rdqqa", "arqvrn", "rqv:")]
     public void ConsumePositive(string dialectScript, string content, string structureScript)
     {
         var dialect = CreateDialect(dialectScript);

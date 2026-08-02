@@ -1,0 +1,37 @@
+(* Addax - the grammar of a tabular data stream, in the notation of ISO/IEC
+   14977:1996, derived from section 8 of "Model for Tabular Data and Metadata
+   on the Web" (W3C Recommendation, 17 December 2015). *)
+
+(* A dialect fixes each character below for a whole stream, and each exception
+   lists the characters it cannot be. A character of a dialect is a UTF-16 code
+   unit, U+0000 to U+FFFF. *)
+
+terminator_char_1 = char;
+terminator_char_2 = char - terminator_char_1;
+delimiter         = char - (terminator_char_1 | terminator_char_2);
+quote_symbol      = char - (terminator_char_1 | terminator_char_2 | delimiter);
+escape_symbol     = char - (terminator_char_1 | terminator_char_2 | delimiter);
+annotation_prefix = char - (terminator_char_1 | terminator_char_2 | delimiter
+                          | quote_symbol | escape_symbol);
+
+line_terminator   = terminator_char_1, [terminator_char_2];
+
+(* A record that begins with annotation_prefix is an annotation_record, which
+   resolves the ambiguity with a value_record whose first field begins with
+   that character. A dialect need not fix an annotation_prefix, in which case
+   the first alternative does not apply. *)
+
+stream            = record, {line_terminator, record};
+record            = annotation_record | value_record;
+annotation_record = annotation_prefix, line;
+value_record      = field, {delimiter, field};
+
+field             = unescaped_field | escaped_field;
+unescaped_field   = line - (text, (delimiter | quote_symbol), text);
+escaped_field     = quote_symbol, {escaped_char}, quote_symbol;
+escaped_char      = char - (quote_symbol | escape_symbol)
+                  | escape_symbol, (quote_symbol | escape_symbol);
+
+line              = text - (text, line_terminator, text);
+text              = {char};
+char              = ? U+0000-U+10FFFF ? - ? U+D800-U+DFFF ?;
