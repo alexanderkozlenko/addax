@@ -2,7 +2,7 @@
   <ItemGroup>
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.8" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
-    <PackageVersion Include="Microsoft.Sbom.Targets" Version="4.1.5" />
+    <PackageVersion Include="Microsoft.Sbom.Targets" Version="4.1.12" />
     <PackageVersion Include="MSTest" Version="4.4.1" />
   </ItemGroup>
 </Project>
