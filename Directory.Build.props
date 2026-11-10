@@ -1,12 +1,12 @@
 ﻿<Project>
   <PropertyGroup>
-    <VersionPrefix>3.1.1</VersionPrefix>
+    <VersionPrefix>4.0.0</VersionPrefix>
   </PropertyGroup>
   <PropertyGroup>
     <AnalysisMode>Recommended</AnalysisMode>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <Features>$(Features);nullablePublicOnly;</Features>
+    <Features>$(Features);nullablePublicOnly;runtime-async=on;</Features>
     <IncludeSymbols>true</IncludeSymbols>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <NoWarn>$(NoWarn);EnableGenerateDocumentationFile;</NoWarn>

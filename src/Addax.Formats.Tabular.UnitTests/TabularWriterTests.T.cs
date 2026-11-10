@@ -142,6 +142,17 @@ public partial class TabularWriterTests
     [TestMethod]
     [DataRow("NaN", "NaN")]
     [DataRow("-Infinity", "-INF")]
+    [DataRow("-3.39E+38", "-3.39e+38")]
+    [DataRow("+3.39E+38", "3.39e+38")]
+    [DataRow("+Infinity", "INF")]
+    public void WriteBFloat16(string value, string expected)
+    {
+        Write(x => x.WriteBFloat16, BFloat16.Parse(value, CultureInfo.InvariantCulture), expected);
+    }
+
+    [TestMethod]
+    [DataRow("NaN", "NaN")]
+    [DataRow("-Infinity", "-INF")]
     [DataRow("-3.402823E+38", "-3.402823e+38")]
     [DataRow("+3.402823E+38", "3.402823e+38")]
     [DataRow("+Infinity", "INF")]
@@ -167,6 +178,42 @@ public partial class TabularWriterTests
     public void WriteDecimal(string value, string expected)
     {
         Write(x => x.WriteDecimal, decimal.Parse(value, CultureInfo.InvariantCulture), expected);
+    }
+
+    [TestMethod]
+    [DataRow("NaN", "NaN")]
+    [DataRow("-Infinity", "-INF")]
+    [DataRow("-9.999999E+96", "-9.999999e+96")]
+    [DataRow("-1.50", "-1.50")]
+    [DataRow("+9.999999E+96", "9.999999e+96")]
+    [DataRow("+Infinity", "INF")]
+    public void WriteDecimal32(string value, string expected)
+    {
+        Write(x => x.WriteDecimal32, Decimal32.Parse(value, CultureInfo.InvariantCulture), expected);
+    }
+
+    [TestMethod]
+    [DataRow("NaN", "NaN")]
+    [DataRow("-Infinity", "-INF")]
+    [DataRow("-9.999999999999999E+384", "-9.999999999999999e+384")]
+    [DataRow("-1.50", "-1.50")]
+    [DataRow("+9.999999999999999E+384", "9.999999999999999e+384")]
+    [DataRow("+Infinity", "INF")]
+    public void WriteDecimal64(string value, string expected)
+    {
+        Write(x => x.WriteDecimal64, Decimal64.Parse(value, CultureInfo.InvariantCulture), expected);
+    }
+
+    [TestMethod]
+    [DataRow("NaN", "NaN")]
+    [DataRow("-Infinity", "-INF")]
+    [DataRow("-9.999999999999999999999999999999999E+6144", "-9.999999999999999999999999999999999e+6144")]
+    [DataRow("-1.50", "-1.50")]
+    [DataRow("+9.999999999999999999999999999999999E+6144", "9.999999999999999999999999999999999e+6144")]
+    [DataRow("+Infinity", "INF")]
+    public void WriteDecimal128(string value, string expected)
+    {
+        Write(x => x.WriteDecimal128, Decimal128.Parse(value, CultureInfo.InvariantCulture), expected);
     }
 
     [TestMethod]

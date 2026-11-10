@@ -2,7 +2,6 @@
 
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using Addax.Formats.Tabular.Buffers;
 using Addax.Formats.Tabular.IO;
 
@@ -296,7 +295,6 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
         _fieldsWritten++;
     }
 
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     private async ValueTask WriteValueCoreAsync(ReadOnlyMemory<char> value, CancellationToken cancellationToken)
     {
         if (_trimWhitespace)
@@ -378,7 +376,6 @@ public sealed partial class TabularWriter : IDisposable, IAsyncDisposable
         ThrowFieldFormatException();
     }
 
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     private async ValueTask WriteValueCoreAsync<T>(T? value, TabularConverter<T> converter, CancellationToken cancellationToken)
     {
         var bufferLength = 128;

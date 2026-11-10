@@ -1,6 +1,5 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
-using System.Runtime.CompilerServices;
 using Addax.Formats.Tabular.Buffers;
 
 namespace Addax.Formats.Tabular.Handlers;
@@ -45,7 +44,6 @@ public sealed class TabularArrayHandler<T> : TabularHandler<T?[]>
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException"><paramref name="reader" /> is <see langword="null" />.</exception>
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
     public override async ValueTask<TabularRecord<T?[]>> ReadAsync(TabularReader reader, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(reader);
@@ -81,7 +79,6 @@ public sealed class TabularArrayHandler<T> : TabularHandler<T?[]>
 
     /// <inheritdoc />
     /// <exception cref="ArgumentNullException"><paramref name="writer" /> or <paramref name="record" /> is <see langword="null" />.</exception>
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public override async ValueTask WriteAsync(TabularWriter writer, T?[] record, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(writer);

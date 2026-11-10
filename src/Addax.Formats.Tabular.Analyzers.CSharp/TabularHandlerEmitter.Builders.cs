@@ -203,7 +203,6 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                 writer.Indent--;
                 writer.WriteLine("}");
                 writer.WriteLine();
-                writer.WriteLine("[global::System.Runtime.CompilerServices.AsyncMethodBuilder(typeof(global::System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder<>))]");
                 writer.WriteLine($"public override async global::System.Threading.Tasks.ValueTask<global::Addax.Formats.Tabular.TabularRecord<{recordMapping.TypeName}>> ReadAsync(global::Addax.Formats.Tabular.TabularReader reader, global::System.Threading.CancellationToken cancellationToken)");
                 writer.WriteLine("{");
                 writer.Indent++;
@@ -397,7 +396,6 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                 writer.Indent--;
                 writer.WriteLine("}");
                 writer.WriteLine();
-                writer.WriteLine("[global::System.Runtime.CompilerServices.AsyncMethodBuilder(typeof(global::System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder))]");
                 writer.WriteLine($"public override async global::System.Threading.Tasks.ValueTask WriteAsync(global::Addax.Formats.Tabular.TabularWriter writer, {recordMapping.TypeName} record, global::System.Threading.CancellationToken cancellationToken)");
                 writer.WriteLine("{");
                 writer.Indent++;

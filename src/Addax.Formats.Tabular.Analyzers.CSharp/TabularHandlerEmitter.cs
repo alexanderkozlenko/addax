@@ -227,9 +227,25 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                     {
                         return "Uri";
                     }
+                case "global::System.Numerics.BFloat16":
+                    {
+                        return "BFloat16";
+                    }
                 case "global::System.Numerics.BigInteger":
                     {
                         return "BigInteger";
+                    }
+                case "global::System.Numerics.Decimal32":
+                    {
+                        return "Decimal32";
+                    }
+                case "global::System.Numerics.Decimal64":
+                    {
+                        return "Decimal64";
+                    }
+                case "global::System.Numerics.Decimal128":
+                    {
+                        return "Decimal128";
                     }
                 case "global::System.Text.Rune":
                     {

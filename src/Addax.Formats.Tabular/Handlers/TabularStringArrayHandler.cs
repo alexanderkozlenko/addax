@@ -1,7 +1,6 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using Addax.Formats.Tabular.Buffers;
 
 namespace Addax.Formats.Tabular.Handlers;
@@ -28,7 +27,6 @@ internal sealed class TabularStringArrayHandler : TabularHandler<string?[]>
         return new(builder.Build());
     }
 
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
     public override async ValueTask<TabularRecord<string?[]>> ReadAsync(TabularReader reader, CancellationToken cancellationToken)
     {
         Debug.Assert(reader is not null);
@@ -60,7 +58,6 @@ internal sealed class TabularStringArrayHandler : TabularHandler<string?[]>
         }
     }
 
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public override async ValueTask WriteAsync(TabularWriter writer, string?[] record, CancellationToken cancellationToken)
     {
         Debug.Assert(writer is not null);

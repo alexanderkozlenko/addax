@@ -85,4 +85,16 @@ public struct MyType
 
     [TabularFieldOrder(25)]
     public Rune MyValue25;
+
+    [TabularFieldOrder(26)]
+    public BFloat16 MyValue26;
+
+    [TabularFieldOrder(27)]
+    public Decimal32 MyValue27;
+
+    [TabularFieldOrder(28)]
+    public Decimal64 MyValue28;
+
+    [TabularFieldOrder(29)]
+    public Decimal128 MyValue29;
 }

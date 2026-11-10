@@ -182,6 +182,19 @@ public partial class TabularReaderTests
     [TestMethod]
     [DataRow(" NaN ", "NaN")]
     [DataRow(" -INF ", "-Infinity")]
+    [DataRow(" -3.39e+38 ", "-3.39E+38")]
+    [DataRow(" +1,234.5 ", "+1234.5")]
+    [DataRow(" 50% ", "0.5")]
+    [DataRow(" +3.39e+38 ", "+3.39E+38")]
+    [DataRow(" +INF ", "+Infinity")]
+    public void TryGetBFloat16(string content, string expected)
+    {
+        TryGet(x => x.TryGetBFloat16, content, BFloat16.Parse(expected, CultureInfo.InvariantCulture));
+    }
+
+    [TestMethod]
+    [DataRow(" NaN ", "NaN")]
+    [DataRow(" -INF ", "-Infinity")]
     [DataRow(" -3.402823e+38 ", "-3.402823E+38")]
     [DataRow(" +3.402823e+38 ", "+3.402823E+38")]
     [DataRow(" +INF ", "+Infinity")]
@@ -207,6 +220,45 @@ public partial class TabularReaderTests
     public void TryGetDecimal(string content, string expected)
     {
         TryGet(x => x.TryGetDecimal, content, decimal.Parse(expected, CultureInfo.InvariantCulture));
+    }
+
+    [TestMethod]
+    [DataRow(" NaN ", "NaN")]
+    [DataRow(" -INF ", "-Infinity")]
+    [DataRow(" -9.999999e+96 ", "-9.999999E+96")]
+    [DataRow(" +1,234.5 ", "+1234.5")]
+    [DataRow(" 50% ", "0.5")]
+    [DataRow(" +9.999999e+96 ", "+9.999999E+96")]
+    [DataRow(" +INF ", "+Infinity")]
+    public void TryGetDecimal32(string content, string expected)
+    {
+        TryGet(x => x.TryGetDecimal32, content, Decimal32.Parse(expected, CultureInfo.InvariantCulture));
+    }
+
+    [TestMethod]
+    [DataRow(" NaN ", "NaN")]
+    [DataRow(" -INF ", "-Infinity")]
+    [DataRow(" -9.999999999999999e+384 ", "-9.999999999999999E+384")]
+    [DataRow(" +1,234.5 ", "+1234.5")]
+    [DataRow(" 50% ", "0.5")]
+    [DataRow(" +9.999999999999999e+384 ", "+9.999999999999999E+384")]
+    [DataRow(" +INF ", "+Infinity")]
+    public void TryGetDecimal64(string content, string expected)
+    {
+        TryGet(x => x.TryGetDecimal64, content, Decimal64.Parse(expected, CultureInfo.InvariantCulture));
+    }
+
+    [TestMethod]
+    [DataRow(" NaN ", "NaN")]
+    [DataRow(" -INF ", "-Infinity")]
+    [DataRow(" -9.999999999999999999999999999999999e+6144 ", "-9.999999999999999999999999999999999E+6144")]
+    [DataRow(" +1,234.5 ", "+1234.5")]
+    [DataRow(" 50% ", "0.5")]
+    [DataRow(" +9.999999999999999999999999999999999e+6144 ", "+9.999999999999999999999999999999999E+6144")]
+    [DataRow(" +INF ", "+Infinity")]
+    public void TryGetDecimal128(string content, string expected)
+    {
+        TryGet(x => x.TryGetDecimal128, content, Decimal128.Parse(expected, CultureInfo.InvariantCulture));
     }
 
     [TestMethod]
@@ -468,6 +520,17 @@ public partial class TabularReaderTests
     [TestMethod]
     [DataRow(" NaN ", "NaN")]
     [DataRow(" -INF ", "-Infinity")]
+    [DataRow(" -3.39e+38 ", "-3.39E+38")]
+    [DataRow(" +3.39e+38 ", "+3.39E+38")]
+    [DataRow(" +INF ", "+Infinity")]
+    public void GetBFloat16(string content, string expected)
+    {
+        Get(x => x.GetBFloat16, content, BFloat16.Parse(expected, CultureInfo.InvariantCulture));
+    }
+
+    [TestMethod]
+    [DataRow(" NaN ", "NaN")]
+    [DataRow(" -INF ", "-Infinity")]
     [DataRow(" -3.402823e+38 ", "-3.402823E+38")]
     [DataRow(" +3.402823e+38 ", "+3.402823E+38")]
     [DataRow(" +INF ", "+Infinity")]
@@ -493,6 +556,39 @@ public partial class TabularReaderTests
     public void GetDecimal(string content, string expected)
     {
         Get(x => x.GetDecimal, content, decimal.Parse(expected, CultureInfo.InvariantCulture));
+    }
+
+    [TestMethod]
+    [DataRow(" NaN ", "NaN")]
+    [DataRow(" -INF ", "-Infinity")]
+    [DataRow(" -9.999999e+96 ", "-9.999999E+96")]
+    [DataRow(" +9.999999e+96 ", "+9.999999E+96")]
+    [DataRow(" +INF ", "+Infinity")]
+    public void GetDecimal32(string content, string expected)
+    {
+        Get(x => x.GetDecimal32, content, Decimal32.Parse(expected, CultureInfo.InvariantCulture));
+    }
+
+    [TestMethod]
+    [DataRow(" NaN ", "NaN")]
+    [DataRow(" -INF ", "-Infinity")]
+    [DataRow(" -9.999999999999999e+384 ", "-9.999999999999999E+384")]
+    [DataRow(" +9.999999999999999e+384 ", "+9.999999999999999E+384")]
+    [DataRow(" +INF ", "+Infinity")]
+    public void GetDecimal64(string content, string expected)
+    {
+        Get(x => x.GetDecimal64, content, Decimal64.Parse(expected, CultureInfo.InvariantCulture));
+    }
+
+    [TestMethod]
+    [DataRow(" NaN ", "NaN")]
+    [DataRow(" -INF ", "-Infinity")]
+    [DataRow(" -9.999999999999999999999999999999999e+6144 ", "-9.999999999999999999999999999999999E+6144")]
+    [DataRow(" +9.999999999999999999999999999999999e+6144 ", "+9.999999999999999999999999999999999E+6144")]
+    [DataRow(" +INF ", "+Infinity")]
+    public void GetDecimal128(string content, string expected)
+    {
+        Get(x => x.GetDecimal128, content, Decimal128.Parse(expected, CultureInfo.InvariantCulture));
     }
 
     [TestMethod]

@@ -2,7 +2,6 @@
 
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 
 namespace Addax.Formats.Tabular;
 
@@ -73,7 +72,6 @@ public sealed class TabularReader<T> : IDisposable, IAsyncDisposable
     /// <returns>A task object that, when awaited, produces <see langword="true" /> if the reader was successfully advanced; otherwise, <see langword="false" />.</returns>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
     /// <exception cref="TabularContentException">An unexpected character or end of stream was encountered. This exception is stored into the returned task.</exception>
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
     public async ValueTask<bool> TrySkipRecordAsync(CancellationToken cancellationToken = default)
     {
         if (_fieldReader.TryPickRecord())
@@ -136,7 +134,6 @@ public sealed class TabularReader<T> : IDisposable, IAsyncDisposable
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
     /// <exception cref="TabularContentException">An unexpected character or end of stream was encountered. This exception is stored into the returned task.</exception>
     /// <remarks>If the record handler defines a header, the first record will be automatically skipped.</remarks>
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
     public async ValueTask<bool> TryReadRecordAsync(CancellationToken cancellationToken = default)
     {
         while (true)

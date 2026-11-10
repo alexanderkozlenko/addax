@@ -15,6 +15,8 @@ public partial class TabularRegistry
         return new()
         {
             [typeof(string?[])] = new TabularStringArrayHandler(),
+            [typeof(BFloat16[])] = new TabularArrayHandler<BFloat16>(TabularBFloat16Converter.Instance),
+            [typeof(BFloat16?[])] = new TabularSparseArrayHandler<BFloat16>(TabularBFloat16Converter.Instance),
             [typeof(BigInteger[])] = new TabularArrayHandler<BigInteger>(TabularBigIntegerConverter.Instance),
             [typeof(BigInteger?[])] = new TabularSparseArrayHandler<BigInteger>(TabularBigIntegerConverter.Instance),
             [typeof(bool[])] = new TabularArrayHandler<bool>(TabularBooleanConverter.Instance),
@@ -31,6 +33,12 @@ public partial class TabularRegistry
             [typeof(DateTimeOffset?[])] = new TabularSparseArrayHandler<DateTimeOffset>(TabularDateTimeOffsetConverter.Instance),
             [typeof(decimal[])] = new TabularArrayHandler<decimal>(TabularDecimalConverter.Instance),
             [typeof(decimal?[])] = new TabularSparseArrayHandler<decimal>(TabularDecimalConverter.Instance),
+            [typeof(Decimal128[])] = new TabularArrayHandler<Decimal128>(TabularDecimal128Converter.Instance),
+            [typeof(Decimal128?[])] = new TabularSparseArrayHandler<Decimal128>(TabularDecimal128Converter.Instance),
+            [typeof(Decimal32[])] = new TabularArrayHandler<Decimal32>(TabularDecimal32Converter.Instance),
+            [typeof(Decimal32?[])] = new TabularSparseArrayHandler<Decimal32>(TabularDecimal32Converter.Instance),
+            [typeof(Decimal64[])] = new TabularArrayHandler<Decimal64>(TabularDecimal64Converter.Instance),
+            [typeof(Decimal64?[])] = new TabularSparseArrayHandler<Decimal64>(TabularDecimal64Converter.Instance),
             [typeof(double[])] = new TabularArrayHandler<double>(TabularDoubleConverter.Instance),
             [typeof(double?[])] = new TabularSparseArrayHandler<double>(TabularDoubleConverter.Instance),
             [typeof(Guid[])] = new TabularArrayHandler<Guid>(TabularGuidConverter.Instance),

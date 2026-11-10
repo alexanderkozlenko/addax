@@ -141,6 +141,15 @@ public partial class TabularWriter
         WriteValueCore(value, TabularHalfConverter.Instance);
     }
 
+    /// <summary>Writes a <see cref="BFloat16" /> value as the next value field of the current record.</summary>
+    /// <param name="value">A <see cref="BFloat16" /> value to write.</param>
+    public void WriteBFloat16(BFloat16 value)
+    {
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        WriteValueCore(value, TabularBFloat16Converter.Instance);
+    }
+
     /// <summary>Writes a <see cref="float" /> value as the next value field of the current record.</summary>
     /// <param name="value">A <see cref="float" /> value to write.</param>
     public void WriteSingle(float value)
@@ -166,6 +175,33 @@ public partial class TabularWriter
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
         WriteValueCore(value, TabularDecimalConverter.Instance);
+    }
+
+    /// <summary>Writes a <see cref="Decimal32" /> value as the next value field of the current record.</summary>
+    /// <param name="value">A <see cref="Decimal32" /> value to write.</param>
+    public void WriteDecimal32(Decimal32 value)
+    {
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        WriteValueCore(value, TabularDecimal32Converter.Instance);
+    }
+
+    /// <summary>Writes a <see cref="Decimal64" /> value as the next value field of the current record.</summary>
+    /// <param name="value">A <see cref="Decimal64" /> value to write.</param>
+    public void WriteDecimal64(Decimal64 value)
+    {
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        WriteValueCore(value, TabularDecimal64Converter.Instance);
+    }
+
+    /// <summary>Writes a <see cref="Decimal128" /> value as the next value field of the current record.</summary>
+    /// <param name="value">A <see cref="Decimal128" /> value to write.</param>
+    public void WriteDecimal128(Decimal128 value)
+    {
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        WriteValueCore(value, TabularDecimal128Converter.Instance);
     }
 
     /// <summary>Writes a <see cref="TimeSpan" /> value as the next value field of the current record.</summary>
@@ -444,6 +480,18 @@ public partial class TabularWriter
         return WriteValueCoreAsync(value, TabularHalfConverter.Instance, cancellationToken);
     }
 
+    /// <summary>Asynchronously writes a <see cref="BFloat16" /> value as the next value field of the current record.</summary>
+    /// <param name="value">A <see cref="BFloat16" /> value to write.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns>A task object.</returns>
+    /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
+    public ValueTask WriteBFloat16Async(BFloat16 value, CancellationToken cancellationToken = default)
+    {
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        return WriteValueCoreAsync(value, TabularBFloat16Converter.Instance, cancellationToken);
+    }
+
     /// <summary>Asynchronously writes a <see cref="float" /> value as the next value field of the current record.</summary>
     /// <param name="value">A <see cref="float" /> value to write.</param>
     /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
@@ -478,6 +526,42 @@ public partial class TabularWriter
         ObjectDisposedException.ThrowIf(_isDisposed, this);
 
         return WriteValueCoreAsync(value, TabularDecimalConverter.Instance, cancellationToken);
+    }
+
+    /// <summary>Asynchronously writes a <see cref="Decimal32" /> value as the next value field of the current record.</summary>
+    /// <param name="value">A <see cref="Decimal32" /> value to write.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns>A task object.</returns>
+    /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
+    public ValueTask WriteDecimal32Async(Decimal32 value, CancellationToken cancellationToken = default)
+    {
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        return WriteValueCoreAsync(value, TabularDecimal32Converter.Instance, cancellationToken);
+    }
+
+    /// <summary>Asynchronously writes a <see cref="Decimal64" /> value as the next value field of the current record.</summary>
+    /// <param name="value">A <see cref="Decimal64" /> value to write.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns>A task object.</returns>
+    /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
+    public ValueTask WriteDecimal64Async(Decimal64 value, CancellationToken cancellationToken = default)
+    {
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        return WriteValueCoreAsync(value, TabularDecimal64Converter.Instance, cancellationToken);
+    }
+
+    /// <summary>Asynchronously writes a <see cref="Decimal128" /> value as the next value field of the current record.</summary>
+    /// <param name="value">A <see cref="Decimal128" /> value to write.</param>
+    /// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
+    /// <returns>A task object.</returns>
+    /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
+    public ValueTask WriteDecimal128Async(Decimal128 value, CancellationToken cancellationToken = default)
+    {
+        ObjectDisposedException.ThrowIf(_isDisposed, this);
+
+        return WriteValueCoreAsync(value, TabularDecimal128Converter.Instance, cancellationToken);
     }
 
     /// <summary>Asynchronously writes a <see cref="TimeSpan" /> value as the next value field of the current record.</summary>

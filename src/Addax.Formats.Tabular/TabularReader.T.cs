@@ -140,6 +140,15 @@ public partial class TabularReader
         return TryGet(_currentField.AsSpan(), TabularHalfConverter.Instance, out value);
     }
 
+    /// <summary>Tries to parse the current field as <see cref="BFloat16" /> and returns a value that indicates whether the operation succeeded.</summary>
+    /// <param name="value">When this method returns, contains a <see cref="BFloat16" /> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</param>
+    /// <returns><see langword="true" /> if the field was successfully parsed; otherwise, <see langword="false" />.</returns>
+    /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
+    public bool TryGetBFloat16(out BFloat16 value)
+    {
+        return TryGet(_currentField.AsSpan(), TabularBFloat16Converter.Instance, out value);
+    }
+
     /// <summary>Tries to parse the current field as <see cref="float" /> and returns a value that indicates whether the operation succeeded.</summary>
     /// <param name="value">When this method returns, contains a <see cref="float" /> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</param>
     /// <returns><see langword="true" /> if the field was successfully parsed; otherwise, <see langword="false" />.</returns>
@@ -165,6 +174,33 @@ public partial class TabularReader
     public bool TryGetDecimal(out decimal value)
     {
         return TryGet(_currentField.AsSpan(), TabularDecimalConverter.Instance, out value);
+    }
+
+    /// <summary>Tries to parse the current field as <see cref="Decimal32" /> and returns a value that indicates whether the operation succeeded.</summary>
+    /// <param name="value">When this method returns, contains a <see cref="Decimal32" /> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</param>
+    /// <returns><see langword="true" /> if the field was successfully parsed; otherwise, <see langword="false" />.</returns>
+    /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
+    public bool TryGetDecimal32(out Decimal32 value)
+    {
+        return TryGet(_currentField.AsSpan(), TabularDecimal32Converter.Instance, out value);
+    }
+
+    /// <summary>Tries to parse the current field as <see cref="Decimal64" /> and returns a value that indicates whether the operation succeeded.</summary>
+    /// <param name="value">When this method returns, contains a <see cref="Decimal64" /> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</param>
+    /// <returns><see langword="true" /> if the field was successfully parsed; otherwise, <see langword="false" />.</returns>
+    /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
+    public bool TryGetDecimal64(out Decimal64 value)
+    {
+        return TryGet(_currentField.AsSpan(), TabularDecimal64Converter.Instance, out value);
+    }
+
+    /// <summary>Tries to parse the current field as <see cref="Decimal128" /> and returns a value that indicates whether the operation succeeded.</summary>
+    /// <param name="value">When this method returns, contains a <see cref="Decimal128" /> value that represents the current field, or an undefined value on failure. This parameter is treated as uninitialized.</param>
+    /// <returns><see langword="true" /> if the field was successfully parsed; otherwise, <see langword="false" />.</returns>
+    /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
+    public bool TryGetDecimal128(out Decimal128 value)
+    {
+        return TryGet(_currentField.AsSpan(), TabularDecimal128Converter.Instance, out value);
     }
 
     /// <summary>Tries to parse the current field as <see cref="TimeSpan" /> and returns a value that indicates whether the operation succeeded.</summary>
@@ -458,6 +494,20 @@ public partial class TabularReader
         return result;
     }
 
+    /// <summary>Parses the current field as <see cref="BFloat16" />.</summary>
+    /// <returns>A <see cref="BFloat16" /> value.</returns>
+    /// <exception cref="FormatException">The current field cannot be parsed as a <see cref="BFloat16" /> value.</exception>
+    /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
+    public BFloat16 GetBFloat16()
+    {
+        if (!TryGetBFloat16(out var result))
+        {
+            ThrowFieldFormatException<BFloat16>();
+        }
+
+        return result;
+    }
+
     /// <summary>Parses the current field as <see cref="float" />.</summary>
     /// <returns>A <see cref="float" /> value.</returns>
     /// <exception cref="FormatException">The current field cannot be parsed as a <see cref="float" /> value.</exception>
@@ -495,6 +545,48 @@ public partial class TabularReader
         if (!TryGetDecimal(out var result))
         {
             ThrowFieldFormatException<decimal>();
+        }
+
+        return result;
+    }
+
+    /// <summary>Parses the current field as <see cref="Decimal32" />.</summary>
+    /// <returns>A <see cref="Decimal32" /> value.</returns>
+    /// <exception cref="FormatException">The current field cannot be parsed as a <see cref="Decimal32" /> value.</exception>
+    /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
+    public Decimal32 GetDecimal32()
+    {
+        if (!TryGetDecimal32(out var result))
+        {
+            ThrowFieldFormatException<Decimal32>();
+        }
+
+        return result;
+    }
+
+    /// <summary>Parses the current field as <see cref="Decimal64" />.</summary>
+    /// <returns>A <see cref="Decimal64" /> value.</returns>
+    /// <exception cref="FormatException">The current field cannot be parsed as a <see cref="Decimal64" /> value.</exception>
+    /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
+    public Decimal64 GetDecimal64()
+    {
+        if (!TryGetDecimal64(out var result))
+        {
+            ThrowFieldFormatException<Decimal64>();
+        }
+
+        return result;
+    }
+
+    /// <summary>Parses the current field as <see cref="Decimal128" />.</summary>
+    /// <returns>A <see cref="Decimal128" /> value.</returns>
+    /// <exception cref="FormatException">The current field cannot be parsed as a <see cref="Decimal128" /> value.</exception>
+    /// <remarks>Leading and trailing white-space characters, group separators, percent and per mille signs are allowed.</remarks>
+    public Decimal128 GetDecimal128()
+    {
+        if (!TryGetDecimal128(out var result))
+        {
+            ThrowFieldFormatException<Decimal128>();
         }
 
         return result;

@@ -1,7 +1,5 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
-using System.Runtime.CompilerServices;
-
 namespace Addax.Formats.Tabular;
 
 /// <summary>Provides forward-only, write-only access to tabular data records. This class cannot be inherited.</summary>
@@ -78,7 +76,6 @@ public sealed class TabularWriter<T> : IDisposable, IAsyncDisposable
     /// <exception cref="ArgumentNullException"><paramref name="record" /> is <see langword="null" />.</exception>
     /// <exception cref="OperationCanceledException">The cancellation token was canceled. This exception is stored into the returned task.</exception>
     /// <remarks>If the record handler defines a header, it will be automatically written.</remarks>
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask WriteRecordAsync(T record, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(record);

@@ -10,13 +10,6 @@ internal static class TabularBinary
 {
     public static bool TryFormatBase16(ReadOnlySpan<byte> value, Span<char> destination, out int charsWritten)
     {
-        if (destination.Length > value.Length * 2)
-        {
-            // BUG: .NET 9.0.0 requires 'destination.Length == value.Length * 2'
-
-            destination = destination.Slice(0, value.Length * 2);
-        }
-
         return Convert.TryToHexStringLower(value, destination, out charsWritten);
     }
 

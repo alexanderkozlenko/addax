@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using BenchmarkDotNet.Attributes;
+﻿using BenchmarkDotNet.Attributes;
 
 namespace Addax.Formats.Tabular.Benchmarks;
 
@@ -15,7 +14,6 @@ public class ReadingFieldsAsync
     private readonly MemoryStream _stream2 = CreateStream("qddd");
 
     [Benchmark(Description = "reading field: async, empty")]
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Read0Async()
     {
         _stream0.Seek(0, SeekOrigin.Begin);
@@ -31,7 +29,6 @@ public class ReadingFieldsAsync
     }
 
     [Benchmark(Description = "reading field: async, regular")]
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Read1Async()
     {
         _stream1.Seek(0, SeekOrigin.Begin);
@@ -47,7 +44,6 @@ public class ReadingFieldsAsync
     }
 
     [Benchmark(Description = "reading field: async, escaped")]
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     public async ValueTask Read2Async()
     {
         _stream2.Seek(0, SeekOrigin.Begin);

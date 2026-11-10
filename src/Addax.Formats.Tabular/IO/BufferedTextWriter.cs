@@ -2,7 +2,6 @@
 
 using System.Buffers;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Text;
 using Addax.Formats.Tabular.Buffers;
 
@@ -121,7 +120,6 @@ internal sealed class BufferedTextWriter : IDisposable, IAsyncDisposable
 
         return FlushCoreAsync(cancellationToken);
 
-        [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
         async ValueTask FlushCoreAsync(CancellationToken cancellationToken)
         {
             if (!_isPreambleCommitted)

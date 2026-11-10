@@ -2,7 +2,6 @@
 
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using Addax.Formats.Tabular.Buffers;
 using Addax.Formats.Tabular.Collections;
 using Addax.Formats.Tabular.IO;
@@ -159,7 +158,6 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
 
         return new(false);
 
-        [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
         async ValueTask<bool> ParseAndSkipFieldAsync(CancellationToken cancellationToken)
         {
             await ParseStreamAsync(cancellationToken).ConfigureAwait(false);
@@ -223,7 +221,6 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
 
         return new(false);
 
-        [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
         async ValueTask<bool> ParseAndReadFieldAsync(CancellationToken cancellationToken)
         {
             await ParseStreamAsync(cancellationToken).ConfigureAwait(false);
@@ -335,7 +332,6 @@ public sealed partial class TabularReader : IDisposable, IAsyncDisposable
         }
     }
 
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder))]
     private async ValueTask ParseStreamAsync(CancellationToken cancellationToken)
     {
         var parsingMode = TabularParsingMode.None;

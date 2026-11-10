@@ -1,7 +1,6 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Text;
 using Addax.Formats.Tabular.Buffers;
 
@@ -97,7 +96,6 @@ internal sealed class BufferedTextReader : IDisposable, IAsyncDisposable
         return true;
     }
 
-    [AsyncMethodBuilder(typeof(PoolingAsyncValueTaskMethodBuilder<>))]
     public async ValueTask<bool> TryReadAsync(CancellationToken cancellationToken)
     {
         if (!_charBufferWriter.HasCapacity)
