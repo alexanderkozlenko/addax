@@ -3,7 +3,6 @@
     <TargetFramework>net11.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <IsPackable>false</IsPackable>
     <UseCurrentRuntimeIdentifier>true</UseCurrentRuntimeIdentifier>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>

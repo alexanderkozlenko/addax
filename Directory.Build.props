@@ -4,7 +4,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <AnalysisMode>Recommended</AnalysisMode>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <Features>$(Features);nullablePublicOnly;runtime-async=on;</Features>
     <IncludeSymbols>true</IncludeSymbols>
@@ -20,5 +19,6 @@
   <PropertyGroup Condition="'$(ContinuousIntegrationBuild)' == 'true'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
-  <Import Project="$(MSBuildProjectDirectory)\**\Properties\Directory.Package.props" />
+  <Import Project="$(MSBuildProjectDirectory)\Properties\Directory.Package.props"
+          Condition="Exists('$(MSBuildProjectDirectory)\Properties\Directory.Package.props')" />
 </Project>

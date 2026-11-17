@@ -1,5 +1,5 @@
 ﻿<Project>
-  <PropertyGroup Condition="'$(IsPackable)' != 'false'">
+  <PropertyGroup>
     <BeforePack>$(BeforePack);IncludeAnalyzersInPackage;</BeforePack>
   </PropertyGroup>
   <ItemGroup>
@@ -20,7 +20,8 @@
                         IsSymbol="true" />
     </ItemGroup>
   </Target>
-  <Target Name="IncludeAnalyzersInPackage">
+  <Target Name="IncludeAnalyzersInPackage"
+          Condition="'$(IsPackable)' == 'true'">
     <MSBuild Projects="@(ProjectReference->WithMetadataValue('PackAsAnalyzer', 'true'))"
              Targets="GetAnalyzerPackFiles"
              RemoveProperties="SetTargetFramework">
