@@ -3,9 +3,12 @@ using Addax.Formats.Tabular;
 namespace MyNamespace;
 
 [TabularRecord]
-public struct MyType
+public class MyRecord
 {
-    [TabularFieldName("my-value")]
     [TabularFieldOrder(0)]
-    public string MyValue;
+    private int MyValue0
+    {
+        get;
+        set;
+    }
 }

@@ -1,9 +1,9 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
 using System;
-using System.Collections.Immutable;
 using System.Reflection;
 using System.Text;
+using Addax.Formats.Tabular.Analyzers.CSharp.Primitives;
 using Microsoft.CodeAnalysis;
 
 namespace Addax.Formats.Tabular.Analyzers.CSharp
@@ -12,41 +12,32 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
     {
         private static readonly (string Name, string Version) s_assemblyInfo = GetAssemblyInfo();
 
-        public void EmitRecordMappings(SourceProductionContext context, ImmutableArray<TabularRecordMapping> recordMappings)
+        public void EmitRecordMappings(SourceProductionContext context, EquatableArray<TabularRecordMapping> recordMappings)
         {
-            if (recordMappings.IsDefaultOrEmpty)
+            if (recordMappings.IsEmpty)
             {
                 return;
             }
 
             var cancellationToken = context.CancellationToken;
+            var writer = new SourceTextWriter(Encoding.UTF8, ' ', 4);
 
-            using (var writer = new SourceTextWriter(Encoding.UTF8, ' ', 4))
+            for (var i = 0; i < recordMappings.Count; i++)
             {
-                for (var i = 0; i < recordMappings.Length; i++)
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-                    writer.Reset();
-
-                    BuildHandlerSource(writer, $"Handler{i}", recordMappings[i]);
-
-                    context.AddSource($"Handler{i}.g.cs", writer.ToSourceText());
-                }
-
                 cancellationToken.ThrowIfCancellationRequested();
                 writer.Reset();
 
-                BuildRegistryInitializerSource(writer, "RegistryInitializer", recordMappings.Length);
+                BuildHandlerSource(writer, $"Handler{i}", recordMappings[i]);
 
-                context.AddSource("RegistryInitializer.g.cs", writer.ToSourceText());
+                context.AddSource($"Handler{i}.g.cs", writer.ToSourceText());
             }
         }
 
         private static bool MappingHasConverters(in TabularRecordMapping mapping)
         {
-            foreach (var kvp in mapping.FieldMappings)
+            foreach (var fieldMapping in mapping.FieldMappings)
             {
-                if (kvp.Value.ConverterTypeName != null)
+                if (fieldMapping.ConverterTypeName != null)
                 {
                     return true;
                 }
@@ -57,9 +48,9 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
         private static bool MappingSupportsHeader(in TabularRecordMapping mapping)
         {
-            foreach (var kvp in mapping.FieldMappings)
+            foreach (var fieldMapping in mapping.FieldMappings)
             {
-                if (kvp.Value.FieldNameLiteral.HasValue)
+                if (fieldMapping.FieldNameLiteral != null)
                 {
                     return true;
                 }
@@ -70,9 +61,9 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
         private static bool MappingSupportsReading(in TabularRecordMapping mapping)
         {
-            foreach (var kvp in mapping.FieldMappings)
+            foreach (var fieldMapping in mapping.FieldMappings)
             {
-                if (kvp.Value.SupportsWriting)
+                if (fieldMapping.SupportsWriting)
                 {
                     return true;
                 }
@@ -86,15 +77,15 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             var fieldCount = 0;
             var maxFieldOrder = -1;
 
-            foreach (var kvp in mapping.FieldMappings)
+            foreach (var fieldMapping in mapping.FieldMappings)
             {
-                if (kvp.Value.SupportsReading)
+                if (fieldMapping.SupportsReading)
                 {
                     fieldCount++;
 
-                    if (kvp.Key > maxFieldOrder)
+                    if (fieldMapping.FieldOrder > maxFieldOrder)
                     {
-                        maxFieldOrder = kvp.Key;
+                        maxFieldOrder = fieldMapping.FieldOrder;
                     }
                 }
             }
@@ -102,19 +93,16 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             return (fieldCount != 0) && (maxFieldOrder == fieldCount - 1);
         }
 
-        private static TKey[] GetDictionaryKeysOrdered<TKey, TValue>(ImmutableDictionary<TKey, TValue> dictionary)
+        private static int[] GetFieldOrders(in TabularRecordMapping mapping)
         {
-            var keys = new TKey[dictionary.Count];
-            var index = 0;
+            var fieldOrders = new int[mapping.FieldMappings.Count];
 
-            foreach (var kvp in dictionary)
+            for (var i = 0; i < fieldOrders.Length; i++)
             {
-                keys[index++] = kvp.Key;
+                fieldOrders[i] = mapping.FieldMappings[i].FieldOrder;
             }
 
-            Array.Sort(keys);
-
-            return keys;
+            return fieldOrders;
         }
 
         private static (string Name, string Version) GetAssemblyInfo()

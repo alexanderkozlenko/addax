@@ -1,17 +1,15 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
-using System;
 using System.Diagnostics;
-using System.IO;
 using System.Text;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Addax.Formats.Tabular.Analyzers.CSharp
+namespace Addax.Formats.Tabular.Analyzers.CSharp.Primitives
 {
-    internal sealed class SourceTextWriter : IDisposable
+    internal sealed class SourceTextWriter
     {
-        private readonly MemoryStream _memoryStream = new MemoryStream();
-        private readonly StreamWriter _streamWriter;
+        private readonly StringBuilder _stringBuilder = new StringBuilder();
+        private readonly Encoding _encoding;
         private readonly char _indentChar;
         private readonly int _indentSize;
 
@@ -20,47 +18,34 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             Debug.Assert(encoding != null);
             Debug.Assert(indentSize >= 0);
 
-            _streamWriter = new StreamWriter(_memoryStream, encoding);
+            _encoding = encoding;
             _indentChar = indentChar;
             _indentSize = indentSize;
-        }
-
-        public void Dispose()
-        {
-            _streamWriter.Dispose();
         }
 
         public void WriteLine(string value)
         {
             Debug.Assert(value != null);
 
-            var indentation = Indent * _indentSize;
-
-            for (var i = 0; i < indentation; i++)
-            {
-                _streamWriter.Write(_indentChar);
-            }
-
-            _streamWriter.WriteLine(value);
+            _stringBuilder.Append(_indentChar, Indent * _indentSize);
+            _stringBuilder.AppendLine(value);
         }
 
         public void WriteLine()
         {
-            _streamWriter.WriteLine();
+            _stringBuilder.AppendLine();
         }
 
         public SourceText ToSourceText()
         {
-            _streamWriter.Flush();
-
-            return SourceText.From(_memoryStream, _streamWriter.Encoding, canBeEmbedded: true);
+            return SourceText.From(_stringBuilder.ToString(), _encoding);
         }
 
         public void Reset()
         {
             Indent = 0;
 
-            _memoryStream.SetLength(0);
+            _stringBuilder.Clear();
         }
 
         public int Indent
