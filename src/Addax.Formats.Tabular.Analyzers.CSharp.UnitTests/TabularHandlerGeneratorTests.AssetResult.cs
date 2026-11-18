@@ -54,7 +54,7 @@ public sealed partial class TabularHandlerGeneratorTests
                 }
             }
 
-            if (diagnostics.Length != 0)
+            if (diagnostics.Any(static x => x.Severity == DiagnosticSeverity.Error))
             {
                 Assert.IsEmpty(handlers);
 
@@ -84,14 +84,23 @@ public sealed partial class TabularHandlerGeneratorTests
                 capabilities.Add("Header");
             }
 
-            return (capabilities.Count != 0) ? string.Join(", ", capabilities) : "None";
+            var outcome = (capabilities.Count != 0) ? string.Join(", ", capabilities) : "None";
+
+            return (diagnostics.Length != 0) ? string.Join("; ", diagnostics.Select(FormatDiagnostic).Prepend(outcome)) : outcome;
         }
 
         private static string FormatDiagnostic(Diagnostic diagnostic)
         {
             var match = DiagnosticArgumentRegex.Match(diagnostic.GetMessage(CultureInfo.InvariantCulture));
 
-            return match.Success ? $"{diagnostic.Id} {match.Groups["argument"].Value}" : diagnostic.Id;
+            if (!match.Success)
+            {
+                return diagnostic.Id;
+            }
+
+            return match.Groups["issue"].Success ?
+                $"{diagnostic.Id} {match.Groups["argument"].Value}: {match.Groups["issue"].Value}" :
+                $"{diagnostic.Id} {match.Groups["argument"].Value}";
         }
 
         public IReadOnlyList<Diagnostic> CompilationDiagnostics

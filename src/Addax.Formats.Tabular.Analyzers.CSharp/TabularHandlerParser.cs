@@ -1,4 +1,4 @@
-﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
+// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
 using System;
 using System.Collections.Generic;
@@ -79,14 +79,14 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
             if (_compilation.LanguageVersion < s_minimumLanguageVersion)
             {
-                diagnostics.Add(Diagnostic.Create(s_diagnostic0000, recordType.Locations.FirstOrDefault()));
+                diagnostics.Add(Diagnostic.Create(s_diagnostic0000, Location.None, _compilation.LanguageVersion.ToDisplayString()));
 
                 return null;
             }
 
-            if (recordType.IsStatic || recordType.IsRefLikeType || !TypeIsUsableInGeneratedCode(recordType))
+            if (recordType.IsStatic || recordType.IsRefLikeType || !TypeIsUsableInGeneratedCode(recordType, out _))
             {
-                diagnostics.Add(Diagnostic.Create(s_diagnostic0001, recordType.Locations.FirstOrDefault()));
+                diagnostics.Add(Diagnostic.Create(s_diagnostic0001, recordType.Locations.FirstOrDefault(), recordType.ToDisplayString(), GetRecordTypeIssue(recordType)));
 
                 return null;
             }
@@ -123,11 +123,9 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                     }
                 }
 
-                var recordMemberIsIndexer = (recordMember as IPropertySymbol)?.IsIndexer == true;
-
-                if (recordMember.IsStatic || recordMemberIsIndexer || !_compilation.IsSymbolAccessibleWithin(recordMember, _compilation.Assembly) || TypeMemberIsHidden(recordType, recordMember))
+                if (!TypeMemberIsUsable(recordType, recordMember, out var recordMemberIssue))
                 {
-                    diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0002, recordType, recordMember));
+                    diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0002, recordType, recordMember, recordMemberIssue));
                     recordTypeHasErrors = true;
 
                     continue;
@@ -137,7 +135,11 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
                 if (valueTypeInfo.Type.IsStatic || valueTypeInfo.Type.IsRefLikeType)
                 {
-                    diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0002, recordType, recordMember));
+                    var valueTypeIssue = valueTypeInfo.Type.IsRefLikeType ?
+                        $"the member type '{valueTypeInfo.Type.ToDisplayString()}' is a ref struct" :
+                        $"the member type '{valueTypeInfo.Type.ToDisplayString()}' is a static class";
+
+                    diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0002, recordType, recordMember, valueTypeIssue));
                     recordTypeHasErrors = true;
 
                     continue;
@@ -152,7 +154,9 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                 {
                     if (!valueTypeInfo.IsSupported)
                     {
-                        diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0003, recordType, recordMember));
+                        var valueTypeIssue = $"the type '{valueTypeInfo.Type.ToDisplayString()}' has no built-in support";
+
+                        diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0003, recordType, recordMember, valueTypeIssue));
                         recordTypeHasErrors = true;
 
                         continue;
@@ -160,9 +164,9 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                 }
                 else
                 {
-                    if (!TryGetSupportedConverter(converterAttribute, converterBaseType, valueTypeInfo.Type, out var converterType, out converterConstructor))
+                    if (!TryGetSupportedConverter(converterAttribute, converterBaseType, valueTypeInfo.Type, out var converterType, out converterConstructor, out var converterIssue))
                     {
-                        diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0004, recordType, recordMember));
+                        diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0004, recordType, recordMember, converterIssue));
                         recordTypeHasErrors = true;
 
                         continue;
@@ -171,17 +175,25 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                     converterTypeName = converterType.ToDisplayString(s_displayFormat);
                 }
 
-                if (!TryGetConstructorArgument<int>(fieldOrderAttribute, out var fieldOrder) || (fieldOrder < 0))
+                if (!TryGetConstructorArgument<int>(fieldOrderAttribute, out var fieldOrder))
                 {
-                    diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0005, recordType, recordMember));
+                    diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0005, recordType, recordMember, "the field order is not a constant"));
                     recordTypeHasErrors = true;
 
                     continue;
                 }
 
-                if (fieldMappingsBuilder.ContainsKey(fieldOrder))
+                if (fieldOrder < 0)
                 {
-                    diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0005, recordType, recordMember));
+                    diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0005, recordType, recordMember, $"the field order {fieldOrder} is negative"));
+                    recordTypeHasErrors = true;
+
+                    continue;
+                }
+
+                if (fieldMembers.TryGetValue(fieldOrder, out var fieldOrderOwner))
+                {
+                    diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0005, recordType, recordMember, $"the field order {fieldOrder} is already used by '{fieldOrderOwner.ToDisplayString()}'"));
                     recordTypeHasErrors = true;
 
                     continue;
@@ -193,7 +205,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                 {
                     if (!TryGetConstructorArgument<string>(fieldNameAttribute, out var fieldName))
                     {
-                        diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0005, recordType, recordMember));
+                        diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0005, recordType, recordMember, "the field name is null or not a constant"));
                         recordTypeHasErrors = true;
 
                         continue;

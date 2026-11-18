@@ -1,6 +1,8 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Threading;
 using Addax.Formats.Tabular.Analyzers.CSharp.Primitives;
 using Microsoft.CodeAnalysis;
@@ -81,10 +83,17 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
         private static ImmutableArray<Diagnostic> GetDiagnostics(ImmutableArray<(TabularRecordMapping? RecordMapping, ImmutableArray<Diagnostic> Diagnostics)> parseResults, CancellationToken cancellationToken)
         {
             var diagnosticsBuilder = ImmutableArray.CreateBuilder<Diagnostic>();
+            var reportedDiagnostics = new HashSet<(string Id, Location Location, string Message)>();
 
             foreach (var parseResult in parseResults)
             {
-                diagnosticsBuilder.AddRange(parseResult.Diagnostics);
+                foreach (var diagnostic in parseResult.Diagnostics)
+                {
+                    if (reportedDiagnostics.Add((diagnostic.Id, diagnostic.Location, diagnostic.GetMessage(CultureInfo.InvariantCulture))))
+                    {
+                        diagnosticsBuilder.Add(diagnostic);
+                    }
+                }
             }
 
             return diagnosticsBuilder.ToImmutable();

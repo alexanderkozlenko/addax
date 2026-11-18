@@ -342,6 +342,46 @@ public class ArrayConverterRecord
 }
 
 [TabularRecord]
+public class NullConverterRecord
+{
+    [TabularFieldOrder(0)]
+    [TabularConverter(null!)]
+    public int MyValue0
+    {
+        get;
+        set;
+    }
+}
+
+[TabularRecord]
+public class OpenGenericConverterRecord
+{
+    [TabularFieldOrder(0)]
+    [TabularConverter(typeof(GenericConverter<>))]
+    public int MyValue0
+    {
+        get;
+        set;
+    }
+}
+
+[TabularRecord]
+public class PrivateConverterRecord
+{
+    [TabularFieldOrder(0)]
+    [TabularConverter<PrivateConverter>]
+    public int MyValue0
+    {
+        get;
+        set;
+    }
+
+    private sealed class PrivateConverter : TabularConverter<int>
+    {
+    }
+}
+
+[TabularRecord]
 public class PointerTypeArgumentRecord
 {
     [TabularFieldOrder(0)]

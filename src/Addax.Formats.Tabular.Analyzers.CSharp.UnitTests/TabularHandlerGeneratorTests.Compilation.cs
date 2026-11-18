@@ -241,7 +241,7 @@ public sealed partial class TabularHandlerGeneratorTests
         }
     }
 
-    [GeneratedRegex("'(?<argument>[^']+)'")]
+    [GeneratedRegex("'(?<argument>[^']+)'[^:']*(?:: (?<issue>.+))?$")]
     private static partial Regex DiagnosticArgumentRegex
     {
         get;

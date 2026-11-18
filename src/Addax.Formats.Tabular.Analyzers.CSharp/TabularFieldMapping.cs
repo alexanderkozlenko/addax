@@ -60,18 +60,18 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
         public override int GetHashCode()
         {
-            var hashCode = HashCodeBuilder.Create();
+            var builder = HashCodeBuilder.Create();
 
-            hashCode.Add(FieldOrder);
-            hashCode.Add(FieldNameLiteral);
-            hashCode.Add(MemberIdentifier);
-            hashCode.Add(ValueTypeName);
-            hashCode.Add(ConverterTypeName);
-            hashCode.Add(SupportsWriting);
-            hashCode.Add(SupportsReading);
-            hashCode.Add(IsNullableT);
+            builder.Add(FieldOrder);
+            builder.Add(FieldNameLiteral);
+            builder.Add(MemberIdentifier);
+            builder.Add(ValueTypeName);
+            builder.Add(ConverterTypeName);
+            builder.Add(SupportsWriting);
+            builder.Add(SupportsReading);
+            builder.Add(IsNullableT);
 
-            return hashCode.ToHashCode();
+            return builder.ToHashCode();
         }
     }
 }

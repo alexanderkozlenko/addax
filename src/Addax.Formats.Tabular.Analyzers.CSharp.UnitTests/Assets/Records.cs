@@ -88,6 +88,20 @@ namespace MyNamespace
             }
         }
 
+        private class PrivateOuterType
+        {
+            [TabularRecord]
+            public class NestedInPrivateRecord
+            {
+                [TabularFieldOrder(0)]
+                public int MyValue0
+                {
+                    get;
+                    set;
+                }
+            }
+        }
+
         [TabularRecord]
         protected class ProtectedNestedRecord
         {

@@ -46,14 +46,14 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp.Primitives
 
         public override int GetHashCode()
         {
-            var hashCode = HashCodeBuilder.Create();
+            var builder = HashCodeBuilder.Create();
 
             foreach (var item in _items.AsSpan())
             {
-                hashCode.Add(item);
+                builder.Add(item);
             }
 
-            return hashCode.ToHashCode();
+            return builder.ToHashCode();
         }
 
         public ImmutableArray<T>.Enumerator GetEnumerator()

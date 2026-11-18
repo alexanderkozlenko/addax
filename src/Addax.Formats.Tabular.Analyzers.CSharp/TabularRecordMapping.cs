@@ -39,14 +39,14 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
         public override int GetHashCode()
         {
-            var hashCode = HashCodeBuilder.Create();
+            var builder = HashCodeBuilder.Create();
 
-            hashCode.Add(TypeName);
-            hashCode.Add(FieldMappings);
-            hashCode.Add(ConstructorArguments);
-            hashCode.Add(ExperimentalDiagnosticIds);
+            builder.Add(TypeName);
+            builder.Add(FieldMappings);
+            builder.Add(ConstructorArguments);
+            builder.Add(ExperimentalDiagnosticIds);
 
-            return hashCode.ToHashCode();
+            return builder.ToHashCode();
         }
     }
 }
