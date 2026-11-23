@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Fundamentals </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Fundamentals ">
+      
+      
+      <link rel="icon" href="../images/app-32.png">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      <meta name="docfx:disabletocfilter" content="true">
+      <meta name="docfx:docurl" content="https://github.com/alexanderkozlenko/addax/blob/gh-pages/topics/fundamentals.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/app-32.png" alt="Addax">
+            Addax
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="urn:topics:fundamentals">
+<h1 id="fundamentals">Fundamentals</h1>
+
+<h2 id="data-types">Data types</h2>
+<p>The library has built-in support for the types in the table, each read and written in one fixed form, independent of the current culture.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Read Format</th>
+<th style="text-align: left;">Write Format</th>
+<th style="text-align: left;">Standard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>System.Boolean</code></td>
+<td style="text-align: left;"><code>true|false|1|0</code></td>
+<td style="text-align: left;"><code>true|false</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Byte</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Char</code></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.DateOnly</code></td>
+<td style="text-align: left;"><code>yyyy'-'MM'-'ddK</code></td>
+<td style="text-align: left;"><code>o</code></td>
+<td style="text-align: left;">ISO 8601-1:2019</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.DateTime</code></td>
+<td style="text-align: left;"><code>yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK</code></td>
+<td style="text-align: left;"><code>o</code></td>
+<td style="text-align: left;">ISO 8601-1:2019</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.DateTimeOffset</code></td>
+<td style="text-align: left;"><code>yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK</code></td>
+<td style="text-align: left;"><code>o</code></td>
+<td style="text-align: left;">ISO 8601-1:2019</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Decimal</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code>, <code>AllowDecimalPoint</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Double</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code>, <code>AllowDecimalPoint</code>, <code>AllowExponent</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Guid</code></td>
+<td style="text-align: left;"><code>d</code></td>
+<td style="text-align: left;"><code>d</code></td>
+<td style="text-align: left;">RFC 9562</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Half</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code>, <code>AllowDecimalPoint</code>, <code>AllowExponent</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Int128</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Int16</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Int32</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Int64</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Memory&lt;System.Byte&gt;</code></td>
+<td style="text-align: left;"><code>base16</code> / <code>base64</code></td>
+<td style="text-align: left;"><code>base16</code> / <code>base64</code></td>
+<td style="text-align: left;">RFC 4648</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.ReadOnlyMemory&lt;System.Byte&gt;</code></td>
+<td style="text-align: left;"><code>base16</code> / <code>base64</code></td>
+<td style="text-align: left;"><code>base16</code> / <code>base64</code></td>
+<td style="text-align: left;">RFC 4648</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.SByte</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Single</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code>, <code>AllowDecimalPoint</code>, <code>AllowExponent</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.String</code></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.TimeOnly</code></td>
+<td style="text-align: left;"><code>HH':'mm':'ss.FFFFFFFK</code></td>
+<td style="text-align: left;"><code>o</code></td>
+<td style="text-align: left;">ISO 8601-1:2019</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.TimeSpan</code></td>
+<td style="text-align: left;"><code>'P'd'DT'h'H'm'M's'.'FFFFFFF'S'</code></td>
+<td style="text-align: left;"><code>'P'd'DT'h'H'm'M's'.'fffffff'S'</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.UInt128</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.UInt16</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.UInt32</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.UInt64</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Uri</code></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">3987/3.1, 3987/5.3.2.3</td>
+<td style="text-align: left;">RFC 3987</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Numerics.BFloat16</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code>, <code>AllowDecimalPoint</code>, <code>AllowExponent</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Numerics.BigInteger</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Numerics.Decimal128</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code>, <code>AllowDecimalPoint</code>, <code>AllowExponent</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Numerics.Decimal32</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code>, <code>AllowDecimalPoint</code>, <code>AllowExponent</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Numerics.Decimal64</code></td>
+<td style="text-align: left;"><code>AllowLeadingSign</code>, <code>AllowDecimalPoint</code>, <code>AllowExponent</code></td>
+<td style="text-align: left;"><code>g</code></td>
+<td style="text-align: left;">W3C CSVW</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Text.Rune</code></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>System.Byte[]</code></td>
+<td style="text-align: left;"><code>base16</code> / <code>base64</code></td>
+<td style="text-align: left;"><code>base16</code> / <code>base64</code></td>
+<td style="text-align: left;">RFC 4648</td>
+</tr>
+</tbody>
+</table>
+<p>A <code>System.Char</code> is one UTF-16 code unit, and a <code>System.Text.Rune</code> is one Unicode scalar value. Integers are read within the range of the type, and <code>System.Numerics.BigInteger</code> has no range limit.</p>
+<p>A <code>System.TimeSpan</code> is read with an optional leading &quot;<code>-</code>&quot;, and any of its components may be omitted as long as one remains, together with <code>T</code> when no time component remains, and a component may exceed its carry range, as in <code>PT36H</code>. A negative value is written with a leading &quot;<code>-</code>&quot;.</p>
+<p>A <code>System.DateTime</code> read with a zone is converted to UTC and has UTC kind, and one read without a zone has unspecified kind. A <code>System.DateTimeOffset</code> read without a zone has the offset <code>+00:00</code>. <code>System.DateOnly</code> and <code>System.TimeOnly</code> ignore the zone.</p>
+<p>A <code>System.Uri</code> is read as an absolute or relative URI reference, and is written in its escaped form when it is absolute and as its original string when it is relative.</p>
+<p>Hexadecimal digits are read in any case and written in lowercase. A Base64 value is read and written with padding, and white space inside it is ignored when it is read. An empty field reads as no bytes, and no bytes and <code>null</code> are written as an empty field. Binary data has no default form: the accessor, the write method or the converter names the encoding.</p>
+<h2 id="options">Options</h2>
+<p>Readers and writers of both APIs take a <a class="xref" href="../api/Addax.Formats.Tabular.TabularOptions.html">TabularOptions</a> instance, and three of its options change how field values are read and written.</p>
+<h3 id="trimwhitespace">TrimWhitespace</h3>
+<p>With <a class="xref" href="../api/Addax.Formats.Tabular.TabularOptions.html#Addax_Formats_Tabular_TabularOptions_TrimWhitespace">TabularOptions.TrimWhitespace</a> set to <code>true</code>, the reader trims every field after decoding, so the quoted field <code>&quot; Alice &quot;</code> reads as <code>&quot;Alice&quot;</code> and a field of only white space reads as an empty field, and the converters receive the trimmed field. The writer trims every value and comment before quoting it.</p>
+<h3 id="formatprovider">FormatProvider</h3>
+<p>Readers and writers pass the converters a format provider, which is the invariant culture unless <a class="xref" href="../api/Addax.Formats.Tabular.TabularOptions.html#Addax_Formats_Tabular_TabularOptions_FormatProvider">TabularOptions.FormatProvider</a> sets another one, and the format provider affects only:</p>
+<ul>
+<li>Numbers: the sign symbols, the decimal separator, and the symbols of infinity and <code>NaN</code>.</li>
+<li>Dates and times with a custom format: the names of months and days, the separators and the calendar.</li>
+</ul>
+<h3 id="stringfactory">StringFactory</h3>
+<p>Readers create the strings of fields through <a class="xref" href="../api/Addax.Formats.Tabular.TabularOptions.html#Addax_Formats_Tabular_TabularOptions_StringFactory">TabularOptions.StringFactory</a>. A <a class="xref" href="../api/Addax.Formats.Tabular.TabularStringFactory.html">TabularStringFactory</a> created with a maximum length pools strings: a field of at most that length returns the pooled string instance for the same characters. The pool holds a fixed number of strings, 4,096 by default, where a new string replaces the pooled string it collides with, so it suits fields with few distinct values that repeat, such as codes, categories or names:</p>
+<pre><code class="lang-csharp">using var factory = new TabularStringFactory(maxLength: 32);
+
+var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '&quot;');
+var options = new TabularOptions { StringFactory = factory };
+
+using var stream = File.OpenRead(&quot;books.csv&quot;);
+using var reader = new TabularReader(stream, dialect, options);
+</code></pre>
+<p>By default, the strings behind URIs are not pooled, because the built-in <code>Uri</code> converter does not use the option. A <code>TabularUriConverter</code> created with the factory pools them when it replaces the built-in converter, whether it is stored in the options or the registry, passed to <code>TryGet</code>, <code>Get</code> and <code>Write</code>, or named in a <code>[TabularConverter&lt;T&gt;]</code> attribute through a derived class.</p>
+<h2 id="standards">Standards</h2>
+<p>The BNF <a href="https://github.com/alexanderkozlenko/addax/blob/main/eng/grammar.bnf">grammar</a> follows section 8, &quot;Parsing Tabular Data&quot;, of the W3C recommendation &quot;Model for Tabular Data and Metadata on the Web&quot;.
+RFC 4180 corresponds to the dialect <code>{ &quot;\r\n&quot;, ',', '&quot;' }</code>. The reader also accepts any Unicode characters in fields, a lone <code>CR</code> or <code>LF</code> in an unquoted field, and records with different numbers of fields. The CSVW dialect description maps to the library as follows:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">CSVW</th>
+<th style="text-align: left;">Addax</th>
+<th style="text-align: left;">Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>commentPrefix</code></td>
+<td style="text-align: left;"><code>TabularDialect.CommentPrefix</code></td>
+<td style="text-align: left;">The character that starts a comment record, if the dialect has comment records.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>delimiter</code></td>
+<td style="text-align: left;"><code>TabularDialect.Delimiter</code></td>
+<td style="text-align: left;">The character that separates the fields of a value record.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>doubleQuote</code></td>
+<td style="text-align: left;"><code>TabularDialect.EscapeChar</code></td>
+<td style="text-align: left;">Whether a quote character is escaped by doubling it.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>encoding</code></td>
+<td style="text-align: left;"><code>TabularOptions.Encoding</code></td>
+<td style="text-align: left;">The encoding of the stream (UTF-8 by default).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>lineTerminators</code></td>
+<td style="text-align: left;"><code>TabularDialect.LineTerminator</code></td>
+<td style="text-align: left;">The single sequence of one or two characters that ends a record.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>quoteChar</code></td>
+<td style="text-align: left;"><code>TabularDialect.QuoteChar</code></td>
+<td style="text-align: left;">The character that encloses a quoted field, which every dialect requires.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>trim</code></td>
+<td style="text-align: left;"><code>TabularOptions.TrimWhitespace</code></td>
+<td style="text-align: left;">Whether field values are trimmed, at both ends, of the whitespace characters.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://iso.org/standard/70907.html">ISO 8601-1:2019, Date and time, Part 1: Basic rules</a></li>
+<li><a href="https://rfc-editor.org/rfc/rfc3987">RFC 3987, Internationalized Resource Identifiers (IRIs)</a></li>
+<li><a href="https://rfc-editor.org/rfc/rfc4180">RFC 4180, Common Format and MIME Type for Comma-Separated Values (CSV) Files</a></li>
+<li><a href="https://rfc-editor.org/rfc/rfc4648">RFC 4648, The Base16, Base32, and Base64 Data Encodings</a></li>
+<li><a href="https://rfc-editor.org/rfc/rfc9562">RFC 9562, Universally Unique IDentifiers (UUIDs)</a></li>
+<li><a href="https://w3.org/TR/2015/REC-tabular-data-model-20151217">W3C, Model for Tabular Data and Metadata on the Web</a></li>
+<li><a href="https://w3.org/TR/2015/REC-tabular-metadata-20151217">W3C, Metadata Vocabulary for Tabular Data</a></li>
+</ul>
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          &copy; Oleksandr Kozlenko
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

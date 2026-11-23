@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Low-level API </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Low-level API ">
+      
+      
+      <link rel="icon" href="../images/app-32.png">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      <meta name="docfx:disabletocfilter" content="true">
+      <meta name="docfx:docurl" content="https://github.com/alexanderkozlenko/addax/blob/gh-pages/topics/low-level-api.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/app-32.png" alt="Addax">
+            Addax
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="urn:topics:low-level-api">
+<h1 id="low-level-api">Low-level API</h1>
+
+<p><a class="xref" href="../api/Addax.Formats.Tabular.TabularReader.html">TabularReader</a> reads a stream one field at a time, and <a class="xref" href="../api/Addax.Formats.Tabular.TabularWriter.html">TabularWriter</a> writes a stream one field at a time. Every member that reads from or writes to the stream has an asynchronous counterpart with a cancellation token, for example <code>TryReadFieldAsync</code> for <code>TryReadField</code>.</p>
+<p>Invalid arguments and failed conversions throw without changing the state of a reader or writer, so the next call can continue. A failure of the stream itself faults the reader or writer for good: content outside the grammar, which the reader reports with a <a class="xref" href="../api/Addax.Formats.Tabular.TabularContentException.html">TabularContentException</a>, a stream or encoding exception, or cancellation. After that, every further operation throws an <code>InvalidOperationException</code>, and a faulted writer discards its buffered text on disposal.</p>
+<h2 id="reading-fields">Reading fields</h2>
+<p><a class="xref" href="../api/Addax.Formats.Tabular.TabularReader.html#Addax_Formats_Tabular_TabularReader_TryMoveToNextRecord">TryMoveToNextRecord</a> moves to the next record and skips the unread fields of the current one. <a class="xref" href="../api/Addax.Formats.Tabular.TabularReader.html#Addax_Formats_Tabular_TabularReader_TryReadField">TryReadField</a> reads the next field of the record and returns <code>false</code> at the end of the record. The samples read and write <code>observations.csv</code>:</p>
+<pre><code class="lang-text">city,lat,lon,date,temperature
+Kyiv,50.4501,30.5234,2024-02-03,-2.5
+Ottawa,45.4215,-75.6972,2024-02-03,-11.5
+</code></pre>
+<pre><code class="lang-cs">var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '&quot;');
+
+using var stream = File.OpenRead(&quot;observations.csv&quot;);
+using var reader = new TabularReader(stream, dialect);
+
+reader.TryMoveToNextRecord();
+
+while (reader.TryMoveToNextRecord())
+{
+    reader.TryReadField();
+    reader.TryGetString(out var observationCity);
+    reader.TryReadField();
+    reader.TryGetDouble(out var observationLatitude);
+    reader.TryReadField();
+    reader.TryGetDouble(out var observationLongitude);
+    reader.TryReadField();
+    reader.TryGetDateOnly(out var observationDate);
+    reader.TryReadField();
+    reader.TryGetDouble(out var observationTemperature);
+
+    Console.WriteLine($&quot;{observationCity}: {observationTemperature}&quot;);
+}
+</code></pre>
+<p><a class="xref" href="../api/Addax.Formats.Tabular.TabularReader.html#Addax_Formats_Tabular_TabularReader_CurrentField">CurrentField</a> holds the value of the last read field. It is a region of the reader's buffer, not a copy, and stays valid only until the next call that advances the reader. To keep a field, copy it, for example with <code>TryGetString</code> or <code>CurrentField.ToArray()</code>. <code>TryGetString</code> and the typed accessors (<code>TryGetInt32</code>, <code>TryGetDateTime</code>, …) convert the current field and return <code>false</code> when it does not have the form the type reads, while the <code>Get</code> forms (<code>GetInt32</code>, …) throw a <code>FormatException</code> instead. The typed accessors parse directly from the buffer, without creating a string. <a class="xref" href="../api/Addax.Formats.Tabular.TabularReader.html#Addax_Formats_Tabular_TabularReader_TryGet_">TryGet</a> and <a class="xref" href="../api/Addax.Formats.Tabular.TabularReader.html#Addax_Formats_Tabular_TabularReader_Get_">Get</a> convert with a given converter. The forms of every type are listed in <a class="xref" href="fundamentals.html#data-types">Data types</a>. <a class="xref" href="../api/Addax.Formats.Tabular.TabularReader.html#Addax_Formats_Tabular_TabularReader_TrySkipField">TrySkipField</a> moves past a field without decoding it, and <code>TryMoveToNextRecord</code> skips the rest of a record the same way, so a reader that needs some fields decodes only those. The sample reads only the cities and temperatures of <code>observations.csv</code>:</p>
+<pre><code class="lang-text">city,lat,lon,date,temperature
+Kyiv,50.4501,30.5234,2024-02-03,-2.5
+Ottawa,45.4215,-75.6972,2024-02-03,-11.5
+</code></pre>
+<pre><code class="lang-cs">var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '&quot;');
+
+using var stream = File.OpenRead(&quot;observations.csv&quot;);
+using var reader = new TabularReader(stream, dialect);
+
+reader.TryMoveToNextRecord();
+
+while (reader.TryMoveToNextRecord())
+{
+    reader.TryReadField();
+    reader.TryGetString(out var observationCity);
+    reader.TrySkipField();
+    reader.TrySkipField();
+    reader.TrySkipField();
+    reader.TryReadField();
+    reader.TryGetDouble(out var observationTemperature);
+
+    Console.WriteLine($&quot;{observationCity}: {observationTemperature}&quot;);
+}
+</code></pre>
+<h2 id="writing-fields">Writing fields</h2>
+<p>Each write method appends one field to the current record: <a class="xref" href="../api/Addax.Formats.Tabular.TabularWriter.html#Addax_Formats_Tabular_TabularWriter_WriteString_">WriteString</a>, <a class="xref" href="../api/Addax.Formats.Tabular.TabularWriter.html#Addax_Formats_Tabular_TabularWriter_WriteEmpty">WriteEmpty</a>, the typed methods (<code>WriteInt32</code>, <code>WriteDateTime</code>, …) and <a class="xref" href="../api/Addax.Formats.Tabular.TabularWriter.html#Addax_Formats_Tabular_TabularWriter_Write_">Write</a> with a converter. <a class="xref" href="../api/Addax.Formats.Tabular.TabularWriter.html#Addax_Formats_Tabular_TabularWriter_WriteEndOfRecord">WriteEndOfRecord</a> ends the record. The sample writes <code>observations.csv</code>:</p>
+<pre><code class="lang-cs">var observations = new (string City, double Latitude, double Longitude, DateOnly Date, double Temperature)[]
+{
+    new(&quot;Kyiv&quot;, 50.4501, 30.5234, new(2024, 2, 3), -2.5),
+    new(&quot;Ottawa&quot;, 45.4215, -75.6972, new(2024, 2, 3), -11.5)
+};
+
+var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '&quot;');
+
+using var stream = File.Create(&quot;observations.csv&quot;);
+using var writer = new TabularWriter(stream, dialect);
+
+writer.WriteString(&quot;city&quot;);
+writer.WriteString(&quot;lat&quot;);
+writer.WriteString(&quot;lon&quot;);
+writer.WriteString(&quot;date&quot;);
+writer.WriteString(&quot;temperature&quot;);
+writer.WriteEndOfRecord();
+
+foreach (var observation in observations)
+{
+    writer.WriteString(observation.City);
+    writer.WriteDouble(observation.Latitude);
+    writer.WriteDouble(observation.Longitude);
+    writer.WriteDateOnly(observation.Date);
+    writer.WriteDouble(observation.Temperature);
+    writer.WriteEndOfRecord();
+}
+</code></pre>
+<pre><code class="lang-text">city,lat,lon,date,temperature
+Kyiv,50.4501,30.5234,2024-02-03,-2.5
+Ottawa,45.4215,-75.6972,2024-02-03,-11.5
+</code></pre>
+<p>The writer collects text in its buffer and writes a full buffer to the stream without flushing the stream. Only <a class="xref" href="../api/Addax.Formats.Tabular.TabularWriter.html#Addax_Formats_Tabular_TabularWriter_Flush">Flush</a>, <a class="xref" href="../api/Addax.Formats.Tabular.TabularWriter.html#Addax_Formats_Tabular_TabularWriter_FlushAsync_">FlushAsync</a> and disposal flush the stream. Disposal also ends a record that has fields. Readers and writers never close or dispose the stream.</p>
+<h2 id="value-converters">Value converters</h2>
+<p>A value converter, a <a class="xref" href="../api/Addax.Formats.Tabular.TabularConverter-1.html">TabularConverter&lt;T&gt;</a>, parses the text of a field into a .NET value and formats a value into text. The typed accessors and write methods of the low-level API and the generated record handlers use the converter that the reader or writer resolves for the type. <a class="xref" href="../api/Addax.Formats.Tabular.TabularReader.html#Addax_Formats_Tabular_TabularReader_TryGet_">TabularReader.TryGet</a>, <a class="xref" href="../api/Addax.Formats.Tabular.TabularReader.html#Addax_Formats_Tabular_TabularReader_Get_">TabularReader.Get</a> and <a class="xref" href="../api/Addax.Formats.Tabular.TabularWriter.html#Addax_Formats_Tabular_TabularWriter_Write_">TabularWriter.Write</a> take any converter. A reader or writer resolves the converter for a type the first time it needs it, and keeps it for the rest of its lifetime:</p>
+<ol>
+<li>The entry for the type in <a class="xref" href="../api/Addax.Formats.Tabular.TabularOptions.html#Addax_Formats_Tabular_TabularOptions_Converters">TabularOptions.Converters</a> of the options the reader or writer was created with.</li>
+<li>Otherwise the entry for the type in <a class="xref" href="../api/Addax.Formats.Tabular.TabularRegistry.html#Addax_Formats_Tabular_TabularRegistry_Converters">TabularRegistry.Converters</a>.</li>
+<li>Otherwise the call that needs the converter throws an <code>InvalidOperationException</code>.</li>
+</ol>
+<p>The registry holds the built-in converters for every type in <a class="xref" href="fundamentals.html#data-types">Data types</a> except <code>string</code> and binary data, and is shared by the whole process. The sample stores a date converter with a custom format in the registry, so every reader and writer of the process reads and writes dates in that format, also through <code>TryGetDateOnly</code> and <code>WriteDateOnly</code>:</p>
+<pre><code class="lang-cs">TabularRegistry.Converters[typeof(DateOnly)] = new TabularDateOnlyConverter(&quot;dd'.'MM'.'yyyy&quot;);
+</code></pre>
+<p>The same converter stored in the options of one reader or writer applies to that reader or writer only. The converters for <code>DateOnly</code>, <code>TimeOnly</code>, <code>DateTime</code>, <code>DateTimeOffset</code> and <code>Guid</code> have a constructor that takes a .NET format string: <a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularDateOnlyConverter.html">TabularDateOnlyConverter</a>, <a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularTimeOnlyConverter.html">TabularTimeOnlyConverter</a>, <a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularDateTimeConverter.html">TabularDateTimeConverter</a>, <a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularDateTimeOffsetConverter.html">TabularDateTimeOffsetConverter</a>, <a class="xref" href="../api/Addax.Formats.Tabular.Converters.TabularGuidConverter.html">TabularGuidConverter</a>. Values are written with the format and read with an exact match of it. The sample reads the dates of <code>observations.csv</code> written as <code>03.02.2024</code>, passing the converter explicitly:</p>
+<pre><code class="lang-cs">var converter = new TabularDateOnlyConverter(&quot;dd'.'MM'.'yyyy&quot;);
+var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '&quot;');
+
+using var stream = File.OpenRead(&quot;observations.csv&quot;);
+using var reader = new TabularReader(stream, dialect);
+
+reader.TryMoveToNextRecord();
+
+while (reader.TryMoveToNextRecord())
+{
+    reader.TryReadField();
+    reader.TryGetString(out var observationCity);
+    reader.TrySkipField();
+    reader.TrySkipField();
+    reader.TryReadField();
+    reader.TryGet(converter, out var observationDate);
+    reader.TrySkipField();
+
+    Console.WriteLine($&quot;{observationCity}: {observationDate}&quot;);
+}
+</code></pre>
+<p>An attribute of the high-level API names a converter by type, so a custom format there needs a class derived from the converter that passes the format in its public parameterless constructor.</p>
+<p>A converter in the options or the registry serves every reader and writer that resolves it, and a converter named in a <code>[TabularConverter&lt;T&gt;]</code> attribute is shared by every reader and writer of the record type, on any thread, so a converter must be stateless or immutable.</p>
+<p>A type without a built-in converter, such as an enumeration, needs a converter of its own. The sample converts the <code>City</code> enumeration by the names of its values and reads the <code>city</code> column of <code>observations.csv</code> as a <code>City</code> value:</p>
+<pre><code class="lang-cs">var converter = new CityConverter();
+var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '&quot;');
+
+using var stream = File.OpenRead(&quot;observations.csv&quot;);
+using var reader = new TabularReader(stream, dialect);
+
+reader.TryMoveToNextRecord();
+
+while (reader.TryMoveToNextRecord())
+{
+    reader.TryReadField();
+    reader.TryGet(converter, out var observationCity);
+
+    Console.WriteLine(observationCity);
+}
+
+internal class CityConverter : TabularConverter&lt;City&gt;
+{
+    public override bool TryFormat(City value, Span&lt;char&gt; destination, IFormatProvider? provider, out int charsWritten)
+    {
+        return Enum.TryFormat(value, destination, out charsWritten);
+    }
+
+    public override bool TryParse(ReadOnlySpan&lt;char&gt; source, IFormatProvider? provider, out City value)
+    {
+        return Enum.TryParse(source, out value);
+    }
+}
+
+internal enum City
+{
+    Kyiv,
+    Ottawa,
+}
+</code></pre>
+<p>The level at which the converter is declared decides where it applies:</p>
+<ul>
+<li>One call: <code>reader.TryGet(converter, out var city)</code> and <code>writer.Write(city, converter)</code>.</li>
+<li>The readers and writers created with an options instance: <code>options.Converters[typeof(City)] = converter</code>.</li>
+<li>Every reader and writer of the process: <code>TabularRegistry.Converters[typeof(City)] = converter</code>.</li>
+<li>One member of a record type: <code>[TabularConverter&lt;CityConverter&gt;]</code>.</li>
+<li>Every <code>City</code> member of an assembly: <code>[assembly: TabularConverter&lt;CityConverter&gt;]</code>.</li>
+</ul>
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          &copy; Oleksandr Kozlenko
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

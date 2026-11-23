@@ -89,11 +89,11 @@
 
 
   <h1 id="Addax_Formats_Tabular_TabularHandler_1" data-uid="Addax.Formats.Tabular.TabularHandler`1" class="text-break">
-Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularHandler%601.cs"><i class="bi bi-code-slash"></i></a>
+Class TabularHandler&lt;T&gt;  
   </h1>
 
   <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="Addax.html">Addax</a>.<a class="xref" href="Addax.Formats.html">Formats</a>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a></dd></dl>
+    <dl><dt>Namespace</dt><dd><span class="xref">Addax</span>.<span class="xref">Formats</span>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a></dd></dl>
   <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
   </div>
 
@@ -102,7 +102,7 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class TabularHandler&lt;T&gt; where T : notnull</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class TabularHandler&lt;T&gt; : TabularHandler where T : notnull</code></pre>
   </div>
 
 
@@ -118,18 +118,12 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="Addax.Formats.Tabular.TabularHandler.html">TabularHandler</a></div>
       <div><span class="xref">TabularHandler&lt;T&gt;</span></div>
     </dd>
   </dl>
 
 
-  <dl class="typelist derived">
-    <dt>Derived</dt>
-    <dd>
-      <div><a class="xref" href="Addax.Formats.Tabular.Handlers.TabularArrayHandler-1.html">TabularArrayHandler&lt;T&gt;</a></div>
-      <div><a class="xref" href="Addax.Formats.Tabular.Handlers.TabularSparseArrayHandler-1.html">TabularSparseArrayHandler&lt;T&gt;</a></div>
-    </dd>
-  </dl>
 
 
 
@@ -145,7 +139,7 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
 
   <h3 id="Addax_Formats_Tabular_TabularHandler_1__ctor" data-uid="Addax.Formats.Tabular.TabularHandler`1.#ctor">
   TabularHandler()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularHandler%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularHandler-1.html">TabularHandler&lt;T&gt;</a> class.</p>
@@ -176,7 +170,7 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
 
   <h3 id="Addax_Formats_Tabular_TabularHandler_1_Header" data-uid="Addax.Formats.Tabular.TabularHandler`1.Header">
   Header
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularHandler%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the names of the record fields.</p>
@@ -194,7 +188,7 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
-    <dd><p>A collection of strings or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
+    <dd><p>A collection of field names, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if the records have no header.</p>
 </dd>
   </dl>
 
@@ -213,7 +207,7 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
 
   <h3 id="Addax_Formats_Tabular_TabularHandler_1_Read_Addax_Formats_Tabular_TabularReader_" data-uid="Addax.Formats.Tabular.TabularHandler`1.Read(Addax.Formats.Tabular.TabularReader)">
   Read(TabularReader)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularHandler%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
   <div class="markdown level1 summary"><p>When overridden in a derived class, reads the next record using the specified reader.</p>
@@ -221,7 +215,7 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual TabularRecord&lt;T&gt; Read(TabularReader reader)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual T Read(TabularReader reader)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -233,8 +227,8 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="Addax.Formats.Tabular.TabularRecord-1.html">TabularRecord</a>&lt;T&gt;</dt>
-    <dd><p>A container that may or may not have a record.</p>
+    <dt><span class="xref">T</span></dt>
+    <dd><p>The object read from the record.</p>
 </dd>
   </dl>
 
@@ -245,7 +239,7 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
 
 
   <h4 class="section" id="Addax_Formats_Tabular_TabularHandler_1_Read_Addax_Formats_Tabular_TabularReader__remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
+  <div class="markdown level1 remarks"><p>The default implementation throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a>.</p>
 </div>
 
 
@@ -255,7 +249,7 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
 
   <h3 id="Addax_Formats_Tabular_TabularHandler_1_ReadAsync_Addax_Formats_Tabular_TabularReader_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularHandler`1.ReadAsync(Addax.Formats.Tabular.TabularReader,System.Threading.CancellationToken)">
   ReadAsync(TabularReader, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularHandler%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
   <div class="markdown level1 summary"><p>When overridden in a derived class, asynchronously reads the next record using the specified reader.</p>
@@ -263,7 +257,7 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public virtual ValueTask&lt;TabularRecord&lt;T&gt;&gt; ReadAsync(TabularReader reader, CancellationToken cancellationToken)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual ValueTask&lt;T&gt; ReadAsync(TabularReader reader, CancellationToken cancellationToken)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -278,8 +272,8 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;<a class="xref" href="Addax.Formats.Tabular.TabularRecord-1.html">TabularRecord</a>&lt;T&gt;&gt;</dt>
-    <dd><p>A task object that, when awaited, produces a container that may or may not have a record.</p>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;T&gt;</dt>
+    <dd><p>A task that represents the asynchronous read operation. The value of its <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1.result">Result</a> property contains the object read from the record.</p>
 </dd>
   </dl>
 
@@ -290,7 +284,7 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
 
 
   <h4 class="section" id="Addax_Formats_Tabular_TabularHandler_1_ReadAsync_Addax_Formats_Tabular_TabularReader_System_Threading_CancellationToken__remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
+  <div class="markdown level1 remarks"><p>The default implementation throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a>.</p>
 </div>
 
 
@@ -300,7 +294,7 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
 
   <h3 id="Addax_Formats_Tabular_TabularHandler_1_Write_Addax_Formats_Tabular_TabularWriter__0_" data-uid="Addax.Formats.Tabular.TabularHandler`1.Write(Addax.Formats.Tabular.TabularWriter,`0)">
   Write(TabularWriter, T)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularHandler%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
   <div class="markdown level1 summary"><p>When overridden in a derived class, writes the next record using the specified writer.</p>
@@ -329,7 +323,7 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
 
 
   <h4 class="section" id="Addax_Formats_Tabular_TabularHandler_1_Write_Addax_Formats_Tabular_TabularWriter__0__remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
+  <div class="markdown level1 remarks"><p>The default implementation throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a>.</p>
 </div>
 
 
@@ -339,7 +333,7 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
 
   <h3 id="Addax_Formats_Tabular_TabularHandler_1_WriteAsync_Addax_Formats_Tabular_TabularWriter__0_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularHandler`1.WriteAsync(Addax.Formats.Tabular.TabularWriter,`0,System.Threading.CancellationToken)">
   WriteAsync(TabularWriter, T, CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularHandler%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
   <div class="markdown level1 summary"><p>When overridden in a derived class, asynchronously writes the next record using the specified writer.</p>
@@ -366,7 +360,7 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
-    <dd><p>A task object.</p>
+    <dd><p>A task that represents the asynchronous write operation.</p>
 </dd>
   </dl>
 
@@ -377,7 +371,7 @@ Class TabularHandler&lt;T&gt;  <a class="header-action link-secondary" title="Vi
 
 
   <h4 class="section" id="Addax_Formats_Tabular_TabularHandler_1_WriteAsync_Addax_Formats_Tabular_TabularWriter__0_System_Threading_CancellationToken__remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
+  <div class="markdown level1 remarks"><p>The default implementation throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a>.</p>
 </div>
 
 

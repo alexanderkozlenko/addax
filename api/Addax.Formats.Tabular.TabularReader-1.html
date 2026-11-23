@@ -89,11 +89,11 @@
 
 
   <h1 id="Addax_Formats_Tabular_TabularReader_1" data-uid="Addax.Formats.Tabular.TabularReader`1" class="text-break">
-Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+Class TabularReader&lt;T&gt;  
   </h1>
 
   <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="Addax.html">Addax</a>.<a class="xref" href="Addax.Formats.html">Formats</a>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a></dd></dl>
+    <dl><dt>Namespace</dt><dd><span class="xref">Addax</span>.<span class="xref">Formats</span>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a></dd></dl>
   <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
   </div>
 
@@ -143,17 +143,17 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
   <a id="Addax_Formats_Tabular_TabularReader_1__ctor_" data-uid="Addax.Formats.Tabular.TabularReader`1.#ctor*"></a>
 
-  <h3 id="Addax_Formats_Tabular_TabularReader_1__ctor_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_Addax_Formats_Tabular_TabularHandler__0__" data-uid="Addax.Formats.Tabular.TabularReader`1.#ctor(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions,Addax.Formats.Tabular.TabularHandler{`0})">
-  TabularReader(Stream, TabularDialect, TabularOptions?, TabularHandler&lt;T&gt;?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Addax_Formats_Tabular_TabularReader_1__ctor_System_IO_Stream_Addax_Formats_Tabular_TabularDialect_Addax_Formats_Tabular_TabularOptions_" data-uid="Addax.Formats.Tabular.TabularReader`1.#ctor(System.IO.Stream,Addax.Formats.Tabular.TabularDialect,Addax.Formats.Tabular.TabularOptions)">
+  TabularReader(Stream, TabularDialect, TabularOptions?)
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularReader-1.html">TabularReader&lt;T&gt;</a> class for the specified stream using the provided dialect, options, and record handler.</p>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularReader-1.html">TabularReader&lt;T&gt;</a> class for the specified stream using the provided dialect and options.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TabularReader(Stream stream, TabularDialect dialect, TabularOptions? options = null, TabularHandler&lt;T&gt;? handler = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public TabularReader(Stream stream, TabularDialect dialect, TabularOptions? options = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -166,9 +166,6 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 </dd>
     <dt><code>options</code> <a class="xref" href="Addax.Formats.Tabular.TabularOptions.html">TabularOptions</a></dt>
     <dd><p>The options to control the behavior during reading.</p>
-</dd>
-    <dt><code>handler</code> <a class="xref" href="Addax.Formats.Tabular.TabularHandler-1.html">TabularHandler</a>&lt;T&gt;</dt>
-    <dd><p>The handler to read a <code class="typeparamref">T</code> instance from a record.</p>
 </dd>
   </dl>
 
@@ -183,13 +180,13 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
   <h4 class="section">Exceptions</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentexception">ArgumentException</a></dt>
-    <dd><p><code class="paramref">stream</code> does not support reading.</p>
+    <dd><p><code class="paramref">stream</code> does not support reading, or <a class="xref" href="Addax.Formats.Tabular.TabularOptions.html#Addax_Formats_Tabular_TabularOptions_Converters">Converters</a> of <code class="paramref">options</code> contains a value that is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or is not a converter for its key, or the value for <code class="typeparamref">T</code> in <a class="xref" href="Addax.Formats.Tabular.TabularOptions.html#Addax_Formats_Tabular_TabularOptions_Handlers">Handlers</a> of <code class="paramref">options</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> or is not a record handler for <code class="typeparamref">T</code>.</p>
 </dd>
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.argumentnullexception">ArgumentNullException</a></dt>
     <dd><p><code class="paramref">stream</code> or <code class="paramref">dialect</code> is <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>.</p>
 </dd>
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
-    <dd><p>The record handler is not specified and cannot be found in the registry.</p>
+    <dd><p>Neither <a class="xref" href="Addax.Formats.Tabular.TabularOptions.html#Addax_Formats_Tabular_TabularOptions_Handlers">Handlers</a> of <code class="paramref">options</code> nor <a class="xref" href="Addax.Formats.Tabular.TabularRegistry.html#Addax_Formats_Tabular_TabularRegistry_Handlers">Handlers</a> contains a record handler for <code class="typeparamref">T</code>, or the registry entry for <code class="typeparamref">T</code> is not a record handler for that type.</p>
 </dd>
   </dl>
 
@@ -203,10 +200,10 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_BytesConsumed" data-uid="Addax.Formats.Tabular.TabularReader`1.BytesConsumed">
   BytesConsumed
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets the number of bytes consumed so far.</p>
+  <div class="markdown level1 summary"><p>Gets the number of bytes read from the underlying stream so far.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -228,9 +225,6 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
 
 
-  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_1_BytesConsumed_remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>Might be less than the number of bytes read from the underlying stream.</p>
-</div>
 
 
 
@@ -239,10 +233,10 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_CurrentRecord" data-uid="Addax.Formats.Tabular.TabularReader`1.CurrentRecord">
   CurrentRecord
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets the last read record that is represented as <code class="typeparamref">T</code>.</p>
+  <div class="markdown level1 summary"><p>Gets the current record that is represented as <code class="typeparamref">T</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -257,7 +251,7 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><span class="xref">T</span></dt>
-    <dd><p>A <code class="typeparamref">T</code> instance. An exception is thrown if the current record is not set.</p>
+    <dd><p>A <code class="typeparamref">T</code> instance.</p>
 </dd>
   </dl>
 
@@ -278,10 +272,10 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_CurrentRecordRef" data-uid="Addax.Formats.Tabular.TabularReader`1.CurrentRecordRef">
   CurrentRecordRef
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets a reference to the last read record that is represented as <code class="typeparamref">T</code>.</p>
+  <div class="markdown level1 summary"><p>Gets a reference to the current record that is represented as <code class="typeparamref">T</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -296,7 +290,7 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><span class="xref">T</span></dt>
-    <dd><p>A read-only reference to a <code class="typeparamref">T</code> instance. An exception is thrown if the current record is not set.</p>
+    <dd><p>A read-only reference to a <code class="typeparamref">T</code> instance.</p>
 </dd>
   </dl>
 
@@ -317,10 +311,10 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_RecordsRead" data-uid="Addax.Formats.Tabular.TabularReader`1.RecordsRead">
   RecordsRead
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets the number of records read so far.</p>
+  <div class="markdown level1 summary"><p>Gets the number of records read so far, excluding comment records.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -354,10 +348,10 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_Dispose" data-uid="Addax.Formats.Tabular.TabularReader`1.Dispose">
   Dispose()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>Releases the resources used by the current instance of the <a class="xref" href="Addax.Formats.Tabular.TabularReader-1.html">TabularReader&lt;T&gt;</a> class.</p>
+  <div class="markdown level1 summary"><p>Releases all resources used by the current instance of the <a class="xref" href="Addax.Formats.Tabular.TabularReader-1.html">TabularReader&lt;T&gt;</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -381,10 +375,10 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_DisposeAsync" data-uid="Addax.Formats.Tabular.TabularReader`1.DisposeAsync">
   DisposeAsync()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>Asynchronously releases the resources used by the current instance of the <a class="xref" href="Addax.Formats.Tabular.TabularReader-1.html">TabularReader&lt;T&gt;</a> class.</p>
+  <div class="markdown level1 summary"><p>Asynchronously releases all resources used by the current instance of the <a class="xref" href="Addax.Formats.Tabular.TabularReader-1.html">TabularReader&lt;T&gt;</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -396,7 +390,7 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask">ValueTask</a></dt>
-    <dd><p>A task object.</p>
+    <dd><p>A task that represents the asynchronous dispose operation.</p>
 </dd>
   </dl>
 
@@ -414,7 +408,7 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_TryReadRecord" data-uid="Addax.Formats.Tabular.TabularReader`1.TryReadRecord">
   TryReadRecord()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
   <div class="markdown level1 summary"><p>Tries to read the next record that can be represented as <code class="typeparamref">T</code>.</p>
@@ -429,7 +423,7 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the record was successfully read; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the record was successfully read; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> if there are no more records to read.</p>
 </dd>
   </dl>
 
@@ -440,13 +434,22 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
 
   <h4 class="section" id="Addax_Formats_Tabular_TabularReader_1_TryReadRecord_remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>If the record handler defines a header, the first record will be automatically skipped.</p>
+  <div class="markdown level1 remarks"><p>If the record handler defines a header, the first record is skipped as the header.</p>
 </div>
 
   <h4 class="section">Exceptions</h4>
   <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>A previous read operation failed.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></dt>
+    <dd><p>This instance has been disposed.</p>
+</dd>
     <dt><a class="xref" href="Addax.Formats.Tabular.TabularContentException.html">TabularContentException</a></dt>
     <dd><p>An unexpected character or end of stream was encountered.</p>
+</dd>
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularException.html">TabularException</a></dt>
+    <dd><p>A record does not match <code class="typeparamref">T</code>, or a field exceeds the supported field length.</p>
 </dd>
   </dl>
 
@@ -456,10 +459,10 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_TryReadRecordAsync_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularReader`1.TryReadRecordAsync(System.Threading.CancellationToken)">
   TryReadRecordAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>Asynchronously reads the next record that can be represented as <code class="typeparamref">T</code>.</p>
+  <div class="markdown level1 summary"><p>Asynchronously tries to read the next record that can be represented as <code class="typeparamref">T</code>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -477,7 +480,7 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
-    <dd><p>A task object that, when awaited, produces <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the record was successfully read; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+    <dd><p>A task that represents the asynchronous read operation. The value of its <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1.result">Result</a> property contains <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the record was successfully read; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> if there are no more records to read.</p>
 </dd>
   </dl>
 
@@ -488,16 +491,25 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
 
   <h4 class="section" id="Addax_Formats_Tabular_TabularReader_1_TryReadRecordAsync_System_Threading_CancellationToken__remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>If the record handler defines a header, the first record will be automatically skipped.</p>
+  <div class="markdown level1 remarks"><p>If the record handler defines a header, the first record is skipped as the header.</p>
 </div>
 
   <h4 class="section">Exceptions</h4>
   <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>A previous read operation failed. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></dt>
+    <dd><p>This instance has been disposed. This exception is stored into the returned task.</p>
+</dd>
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
     <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
 </dd>
     <dt><a class="xref" href="Addax.Formats.Tabular.TabularContentException.html">TabularContentException</a></dt>
     <dd><p>An unexpected character or end of stream was encountered. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularException.html">TabularException</a></dt>
+    <dd><p>A record does not match <code class="typeparamref">T</code>, or a field exceeds the supported field length. This exception is stored into the returned task.</p>
 </dd>
   </dl>
 
@@ -507,10 +519,10 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_TrySkipRecord" data-uid="Addax.Formats.Tabular.TabularReader`1.TrySkipRecord">
   TrySkipRecord()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>Tries to advance the reader to the next record.</p>
+  <div class="markdown level1 summary"><p>Tries to skip the next record.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -522,7 +534,7 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the reader was successfully advanced; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the record was successfully skipped; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> if there are no more records to skip.</p>
 </dd>
   </dl>
 
@@ -532,11 +544,23 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
 
 
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_1_TrySkipRecord_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>If the record handler defines a header, the first record is skipped as the header.</p>
+</div>
 
   <h4 class="section">Exceptions</h4>
   <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>A previous read operation failed.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></dt>
+    <dd><p>This instance has been disposed.</p>
+</dd>
     <dt><a class="xref" href="Addax.Formats.Tabular.TabularContentException.html">TabularContentException</a></dt>
     <dd><p>An unexpected character or end of stream was encountered.</p>
+</dd>
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularException.html">TabularException</a></dt>
+    <dd><p>A field exceeds the supported field length.</p>
 </dd>
   </dl>
 
@@ -546,10 +570,10 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
   <h3 id="Addax_Formats_Tabular_TabularReader_1_TrySkipRecordAsync_System_Threading_CancellationToken_" data-uid="Addax.Formats.Tabular.TabularReader`1.TrySkipRecordAsync(System.Threading.CancellationToken)">
   TrySkipRecordAsync(CancellationToken)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularReader%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>Asynchronously tries to advance the reader to the next record.</p>
+  <div class="markdown level1 summary"><p>Asynchronously tries to skip the next record.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -567,7 +591,7 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1">ValueTask</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
-    <dd><p>A task object that, when awaited, produces <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the reader was successfully advanced; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+    <dd><p>A task that represents the asynchronous skip operation. The value of its <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1.result">Result</a> property contains <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the record was successfully skipped; <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> if there are no more records to skip.</p>
 </dd>
   </dl>
 
@@ -577,14 +601,26 @@ Class TabularReader&lt;T&gt;  <a class="header-action link-secondary" title="Vie
 
 
 
+  <h4 class="section" id="Addax_Formats_Tabular_TabularReader_1_TrySkipRecordAsync_System_Threading_CancellationToken__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>If the record handler defines a header, the first record is skipped as the header.</p>
+</div>
 
   <h4 class="section">Exceptions</h4>
   <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.invalidoperationexception">InvalidOperationException</a></dt>
+    <dd><p>A previous read operation failed. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.objectdisposedexception">ObjectDisposedException</a></dt>
+    <dd><p>This instance has been disposed. This exception is stored into the returned task.</p>
+</dd>
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.operationcanceledexception">OperationCanceledException</a></dt>
     <dd><p>The cancellation token was canceled. This exception is stored into the returned task.</p>
 </dd>
     <dt><a class="xref" href="Addax.Formats.Tabular.TabularContentException.html">TabularContentException</a></dt>
     <dd><p>An unexpected character or end of stream was encountered. This exception is stored into the returned task.</p>
+</dd>
+    <dt><a class="xref" href="Addax.Formats.Tabular.TabularException.html">TabularException</a></dt>
+    <dd><p>A field exceeds the supported field length. This exception is stored into the returned task.</p>
 </dd>
   </dl>
 

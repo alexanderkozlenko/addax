@@ -89,11 +89,11 @@
 
 
   <h1 id="Addax_Formats_Tabular_TabularConverterAttribute_1" data-uid="Addax.Formats.Tabular.TabularConverterAttribute`1" class="text-break">
-Class TabularConverterAttribute&lt;T&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularConverterAttribute%601.cs"><i class="bi bi-code-slash"></i></a>
+Class TabularConverterAttribute&lt;T&gt;  
   </h1>
 
   <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="Addax.html">Addax</a>.<a class="xref" href="Addax.Formats.html">Formats</a>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a></dd></dl>
+    <dl><dt>Namespace</dt><dd><span class="xref">Addax</span>.<span class="xref">Formats</span>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a></dd></dl>
   <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
   </div>
 
@@ -102,8 +102,8 @@ Class TabularConverterAttribute&lt;T&gt;  <a class="header-action link-secondary
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[AttributeUsage(AttributeTargets.Property|AttributeTargets.Field)]
-public sealed class TabularConverterAttribute&lt;T&gt; : Attribute where T : class</code></pre>
+    <pre><code class="lang-csharp hljs">[AttributeUsage(AttributeTargets.Assembly|AttributeTargets.Property|AttributeTargets.Field, AllowMultiple = true)]
+public sealed class TabularConverterAttribute&lt;T&gt; : Attribute where T : TabularConverter, new()</code></pre>
   </div>
 
 
@@ -111,7 +111,7 @@ public sealed class TabularConverterAttribute&lt;T&gt; : Attribute where T : cla
   <h4 class="section">Type Parameters</h4>
   <dl class="parameters">
     <dt><code>T</code></dt>
-    <dd><p>The type of the converter. Must be derived from the <a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html">TabularConverter&lt;T&gt;</a> class and have an accessible parameterless constructor.</p>
+    <dd><p>The type of the converter. Must be derived from the <a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html">TabularConverter&lt;T&gt;</a> class, have a public parameterless constructor, and have no required members.</p>
 </dd>
   </dl>
 
@@ -140,7 +140,7 @@ public sealed class TabularConverterAttribute&lt;T&gt; : Attribute where T : cla
 
   <h3 id="Addax_Formats_Tabular_TabularConverterAttribute_1__ctor" data-uid="Addax.Formats.Tabular.TabularConverterAttribute`1.#ctor">
   TabularConverterAttribute()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularConverterAttribute%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularConverterAttribute-1.html">TabularConverterAttribute&lt;T&gt;</a> class.</p>

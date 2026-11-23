@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>High-level API </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="High-level API ">
+      
+      
+      <link rel="icon" href="../images/app-32.png">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      <meta name="docfx:disabletocfilter" content="true">
+      <meta name="docfx:docurl" content="https://github.com/alexanderkozlenko/addax/blob/gh-pages/topics/high-level-api.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/app-32.png" alt="Addax">
+            Addax
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="urn:topics:high-level-api">
+<h1 id="high-level-api">High-level API</h1>
+
+<p><a class="xref" href="../api/Addax.Formats.Tabular.TabularReader-1.html">TabularReader&lt;T&gt;</a> reads each value record of a stream as a <code>T</code>, and <a class="xref" href="../api/Addax.Formats.Tabular.TabularWriter-1.html">TabularWriter&lt;T&gt;</a> writes each <code>T</code> as a record, through a record handler. Both take the same stream, dialect and options as the low-level API, and every member that reads or writes has an asynchronous counterpart with a cancellation token, for example <code>TryReadRecordAsync</code> for <code>TryReadRecord</code>. A record handler, a <a class="xref" href="../api/Addax.Formats.Tabular.TabularHandler-1.html">TabularHandler&lt;T&gt;</a>, converts between one record and one <code>T</code>. The constructor of the reader or writer selects it once:</p>
+<ol>
+<li>The entry for <code>typeof(T)</code> in <a class="xref" href="../api/Addax.Formats.Tabular.TabularOptions.html#Addax_Formats_Tabular_TabularOptions_Handlers">TabularOptions.Handlers</a> of the options.</li>
+<li>Otherwise the entry for <code>typeof(T)</code> in <a class="xref" href="../api/Addax.Formats.Tabular.TabularRegistry.html#Addax_Formats_Tabular_TabularRegistry_Handlers">TabularRegistry.Handlers</a>.</li>
+<li>Otherwise the constructor throws an <code>InvalidOperationException</code>.</li>
+</ol>
+<p>The registry holds the built-in array handlers, the handlers generated for <code>[TabularRecord]</code> types, and any handler stored in it. A reader or writer keeps the handler it selected, so later changes to the registry do not affect it.</p>
+<h2 id="reading-records">Reading records</h2>
+<p><a class="xref" href="../api/Addax.Formats.Tabular.TabularReader-1.html#Addax_Formats_Tabular_TabularReader_1_TryReadRecord">TryReadRecord</a> reads the next value record into <a class="xref" href="../api/Addax.Formats.Tabular.TabularReader-1.html#Addax_Formats_Tabular_TabularReader_1_CurrentRecord">CurrentRecord</a>, and <a class="xref" href="../api/Addax.Formats.Tabular.TabularReader-1.html#Addax_Formats_Tabular_TabularReader_1_TrySkipRecord">TrySkipRecord</a> moves past it without calling the handler. Both skip comment records. <a class="xref" href="../api/Addax.Formats.Tabular.TabularReader-1.html#Addax_Formats_Tabular_TabularReader_1_CurrentRecordRef">CurrentRecordRef</a> returns a read-only reference to the record instead of a copy. The samples read and write <code>observations.csv</code>:</p>
+<pre><code class="lang-text">city,lat,lon,date,temperature
+Kyiv,50.4501,30.5234,2024-02-03,-2.5
+Ottawa,45.4215,-75.6972,2024-02-03,-11.5
+</code></pre>
+<pre><code class="lang-cs">var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '&quot;');
+
+using var stream = File.OpenRead(&quot;observations.csv&quot;);
+using var reader = new TabularReader&lt;Observation&gt;(stream, dialect);
+
+while (reader.TryReadRecord())
+{
+    var observation = reader.CurrentRecord;
+
+    Console.WriteLine($&quot;{observation.City}: {observation.Temperature}&quot;);
+}
+
+[TabularRecord]
+internal record Observation(
+    [property: TabularFieldOrder(0), TabularFieldName(&quot;city&quot;)] string City,
+    [property: TabularFieldOrder(1), TabularFieldName(&quot;lat&quot;)] double Latitude,
+    [property: TabularFieldOrder(2), TabularFieldName(&quot;lon&quot;)] double Longitude,
+    [property: TabularFieldOrder(3), TabularFieldName(&quot;date&quot;)] DateOnly Date,
+    [property: TabularFieldOrder(4), TabularFieldName(&quot;temperature&quot;)] double Temperature);
+</code></pre>
+<p>When the handler's <code>Header</code> is not <code>null</code>, the first value record of the stream is the header, and the first <code>TryReadRecord</code> or <code>TrySkipRecord</code> skips it. The header is identified by position only: its fields are not compared with the names in <code>Header</code>, and fields map to members by their order. An exception from the handler leaves the reader usable, and the next call continues with the next record. This includes the <code>TabularException</code> that the generated and array handlers throw for a missing field or a field that cannot be converted. A failure of the field reader underneath faults the reader.</p>
+<h2 id="writing-records">Writing records</h2>
+<p><a class="xref" href="../api/Addax.Formats.Tabular.TabularWriter-1.html#Addax_Formats_Tabular_TabularWriter_1_WriteRecord_">WriteRecord</a> writes one record. When the handler's <code>Header</code> is not <code>null</code>, the writer writes the header before the first record, or on disposal when no record was written. The writer buffers and flushes like the low-level writer. The sample writes <code>observations.csv</code> with the <code>Observation</code> type:</p>
+<pre><code class="lang-cs">var observations = new Observation[]
+{
+    new(&quot;Kyiv&quot;, 50.4501, 30.5234, new(2024, 2, 3), -2.5),
+    new(&quot;Ottawa&quot;, 45.4215, -75.6972, new(2024, 2, 3), -11.5)
+};
+
+var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '&quot;');
+
+using var stream = File.Create(&quot;observations.csv&quot;);
+using var writer = new TabularWriter&lt;Observation&gt;(stream, dialect);
+
+foreach (var observation in observations)
+{
+    writer.WriteRecord(observation);
+}
+
+[TabularRecord]
+internal record Observation(
+    [property: TabularFieldOrder(0), TabularFieldName(&quot;city&quot;)] string City,
+    [property: TabularFieldOrder(1), TabularFieldName(&quot;lat&quot;)] double Latitude,
+    [property: TabularFieldOrder(2), TabularFieldName(&quot;lon&quot;)] double Longitude,
+    [property: TabularFieldOrder(3), TabularFieldName(&quot;date&quot;)] DateOnly Date,
+    [property: TabularFieldOrder(4), TabularFieldName(&quot;temperature&quot;)] double Temperature);
+</code></pre>
+<pre><code class="lang-text">city,lat,lon,date,temperature
+Kyiv,50.4501,30.5234,2024-02-03,-2.5
+Ottawa,45.4215,-75.6972,2024-02-03,-11.5
+</code></pre>
+<p>Any exception from <code>WriteRecord</code> or <code>Flush</code> faults the writer: every further call throws an <code>InvalidOperationException</code>, and disposal writes no header. The fields that a failed handler had written stay in the output as a record.</p>
+<h2 id="generated-record-handlers">Generated record handlers</h2>
+<p>For every class, struct, record class and record struct marked with <a class="xref" href="../api/Addax.Formats.Tabular.TabularRecordAttribute.html">TabularRecordAttribute</a>, the source generator creates a record handler at compile time, with no reflection at run time. A module initializer of the assembly that declares the type stores the handler in <a class="xref" href="../api/Addax.Formats.Tabular.TabularRegistry.html#Addax_Formats_Tabular_TabularRegistry_Handlers">TabularRegistry.Handlers</a>, so every reader and writer for the type finds it. Types the generator cannot map are reported with generator diagnostics.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Attribute</th>
+<th style="text-align: left;">Target</th>
+<th style="text-align: left;">Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>[TabularRecord]</code></td>
+<td style="text-align: left;">class, struct</td>
+<td style="text-align: left;">Generates a record handler for the type.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>[TabularFieldOrder(n)]</code></td>
+<td style="text-align: left;">field, property</td>
+<td style="text-align: left;">Maps the member to the field at the zero-based position <code>n</code> of the record.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>[TabularFieldName(&quot;name&quot;)]</code></td>
+<td style="text-align: left;">field, property</td>
+<td style="text-align: left;">Gives the field a name, used in the header.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>[TabularConverter&lt;TConverter&gt;]</code></td>
+<td style="text-align: left;">field, property</td>
+<td style="text-align: left;">Converts the member's values with <code>TConverter</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>[assembly: TabularConverter&lt;TConverter&gt;]</code></td>
+<td style="text-align: left;">assembly</td>
+<td style="text-align: left;">Converts every value of the type that <code>TConverter</code> converts with <code>TConverter</code>, in every mapped member of the assembly without a converter attribute of its own.</td>
+</tr>
+</tbody>
+</table>
+<p>Only a member with <a class="xref" href="../api/Addax.Formats.Tabular.TabularFieldOrderAttribute.html">TabularFieldOrderAttribute</a> is mapped: a field or a property, declared or inherited, that is accessible from any code of the assembly that declares the record type. The handler reads a field into a member it can set, including through an <code>init</code> accessor, and writes a field from a member it can get. A generated handler supports reading when the type is not abstract, at least one mapped member can be set, and the handler can construct the type in one of two ways:</p>
+<ul>
+<li>With a parameterless constructor and an object initializer, so <code>init</code> accessors and <code>required</code> members are supported. Every <code>required</code> member must be a mapped member that can be set. The implicit parameterless constructor of a struct counts only when the struct declares no constructor with parameters.</li>
+<li>Otherwise, with the primary constructor of a positional record. Every parameter is mapped with <code>[property: TabularFieldOrder(n)]</code>, every mapped member that can be set is such a parameter, the parameters have no modifiers or default values, and the type declares no <code>required</code> members.</li>
+</ul>
+<p>It supports writing when at least one mapped member can be read and the orders of these members are 0, 1, …, n−1, without gaps. Otherwise <code>TryReadRecord</code> or <code>WriteRecord</code> throws a <code>NotSupportedException</code>. On read, the handler reads the fields of the members that can be set, in field order, and skips the other fields before the last of them. Fields after the last one are ignored. A missing field or a field that cannot be converted throws a <code>TabularException</code> that names the record, the field and the member. A generated handler has a header when at least one mapped member has <code>[TabularFieldName]</code>. The header has one name for every field order from 0 to the highest mapped order, with an empty name for an unnamed member and for an order without a member. For the <code>Observation</code> type with names only on <code>City</code> and <code>Temperature</code>, the header is <code>city,,,,temperature</code>:</p>
+<pre><code class="lang-cs">[TabularRecord]
+internal record Observation(
+    [property: TabularFieldOrder(0), TabularFieldName(&quot;city&quot;)] string City,
+    [property: TabularFieldOrder(1)] double Latitude,
+    [property: TabularFieldOrder(2)] double Longitude,
+    [property: TabularFieldOrder(3)] DateOnly Date,
+    [property: TabularFieldOrder(4), TabularFieldName(&quot;temperature&quot;)] double Temperature);
+</code></pre>
+<p>The values of a mapped member are converted with the first of:</p>
+<ol>
+<li>The converter named by the member's <code>[TabularConverter&lt;TConverter&gt;]</code> attribute.</li>
+<li>The converter named by an <code>[assembly: TabularConverter&lt;TConverter&gt;]</code> attribute for the member type, or for <code>T</code> of a <code>Nullable&lt;T&gt;</code> member.</li>
+<li>The converter that the reader or writer resolves for the type, as described in <a class="xref" href="low-level-api.html#value-converters">Value converters</a>.</li>
+</ol>
+<p>A converter named by an attribute is chosen at compile time, and the handler creates one instance of it per member. It must derive from <code>TabularConverter&lt;T&gt;</code> for the member type and have a public parameterless constructor. A member of a type without a built-in converter, including enumerations and <code>byte[]</code>, needs a converter from an attribute, the options or the registry. Empty fields and <code>null</code> depend on the member type:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Member type</th>
+<th style="text-align: left;">Empty field on read</th>
+<th style="text-align: left;"><code>null</code> on write</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>Nullable&lt;T&gt;</code>, for example <code>int?</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">empty field</td>
+</tr>
+<tr>
+<td style="text-align: left;">nullable reference type, for example <code>string?</code>, <code>Uri?</code>, <code>byte[]?</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">passed to the converter, and the built-in converters write an empty field</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">empty string</td>
+<td style="text-align: left;">empty field</td>
+</tr>
+<tr>
+<td style="text-align: left;">any other type</td>
+<td style="text-align: left;">passed to the converter, which rejects it for most value types with a <code>TabularException</code></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="custom-record-handlers">Custom record handlers</h2>
+<p>A custom handler derives from <code>TabularHandler&lt;T&gt;</code> and overrides the members it supports, since <code>Read</code>, <code>ReadAsync</code>, <code>Write</code> and <code>WriteAsync</code> throw a <code>NotSupportedException</code> by default. The synchronous methods of the record reader and writer call <code>Read</code> and <code>Write</code>, and the asynchronous methods call <code>ReadAsync</code> and <code>WriteAsync</code>.</p>
+<ul>
+<li><code>Read</code> is called with the field reader at the start of a value record. It may leave fields unread: the record reader skips the rest of the record.</li>
+<li><code>Write</code> writes the fields of one record. The record writer ends the record.</li>
+<li><code>Header</code> returns the names of the header, or <code>null</code> for no header.</li>
+</ul>
+<p>A handler is stored in <a class="xref" href="../api/Addax.Formats.Tabular.TabularOptions.html#Addax_Formats_Tabular_TabularOptions_Handlers">TabularOptions.Handlers</a> or <a class="xref" href="../api/Addax.Formats.Tabular.TabularRegistry.html#Addax_Formats_Tabular_TabularRegistry_Handlers">TabularRegistry.Handlers</a> with the record type as the key. One handler instance serves every reader and writer that selects it, on any thread, so a handler must be stateless or thread-safe. The sample writes <code>observations.csv</code> with a handler written by hand for the <code>Observation</code> type:</p>
+<pre><code class="lang-cs">var observations = new Observation[]
+{
+    new(&quot;Kyiv&quot;, 50.4501, 30.5234, new(2024, 2, 3), -2.5),
+    new(&quot;Ottawa&quot;, 45.4215, -75.6972, new(2024, 2, 3), -11.5)
+};
+
+TabularRegistry.Handlers[typeof(Observation)] = new ObservationHandler();
+
+var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '&quot;');
+
+using var stream = File.Create(&quot;observations.csv&quot;);
+using var writer = new TabularWriter&lt;Observation&gt;(stream, dialect);
+
+foreach (var observation in observations)
+{
+    writer.WriteRecord(observation);
+}
+
+internal class ObservationHandler : TabularHandler&lt;Observation&gt;
+{
+    public override void Write(TabularWriter writer, Observation record)
+    {
+        writer.WriteString(record.City);
+        writer.WriteDouble(record.Latitude);
+        writer.WriteDouble(record.Longitude);
+        writer.WriteDateOnly(record.Date);
+        writer.WriteDouble(record.Temperature);
+    }
+
+    public override IEnumerable&lt;string?&gt;? Header =&gt;
+        [&quot;city&quot;, &quot;lat&quot;, &quot;lon&quot;, &quot;date&quot;, &quot;temperature&quot;];
+}
+
+internal record Observation(
+    string City,
+    double Latitude,
+    double Longitude,
+    DateOnly Date,
+    double Temperature);
+</code></pre>
+<pre><code class="lang-text">city,lat,lon,date,temperature
+Kyiv,50.4501,30.5234,2024-02-03,-2.5
+Ottawa,45.4215,-75.6972,2024-02-03,-11.5
+</code></pre>
+<h2 id="arrays-as-record-types">Arrays as record types</h2>
+<p>An array type can be used as the record type without a handler of its own: the registry has built-in handlers that read a record into an array with one element per field and write an array as a record with one field per element. The length of the array follows the record, so records with different numbers of fields read as arrays of different lengths. These handlers have no header.</p>
+<p>The supported record types are <code>string?[]</code>, <code>Uri?[]</code>, and <code>T[]</code> and <code>T?[]</code> for every <code>T</code> of <code>bool</code>, <code>char</code>, <code>Rune</code>, <code>sbyte</code>, <code>byte</code>, <code>short</code>, <code>ushort</code>, <code>int</code>, <code>uint</code>, <code>long</code>, <code>ulong</code>, <code>Int128</code>, <code>UInt128</code>, <code>BigInteger</code>, <code>Half</code>, <code>BFloat16</code>, <code>float</code>, <code>double</code>, <code>decimal</code>, <code>Decimal32</code>, <code>Decimal64</code>, <code>Decimal128</code>, <code>TimeSpan</code>, <code>DateOnly</code>, <code>TimeOnly</code>, <code>DateTime</code>, <code>DateTimeOffset</code> and <code>Guid</code>. A <code>byte[]</code> record holds one number per field, not base16 or base64 binary data.</p>
+<p>The elements are read and written with the converter that the reader or writer resolves for the element type, so a converter stored in the options or the registry changes the form of the elements. In <code>string?[]</code>, <code>Uri?[]</code> and <code>T?[]</code>, an empty field reads as <code>null</code> and a <code>null</code> element is written as an empty field. In <code>T[]</code>, an empty field is passed to the converter, which rejects it for most types. A field that cannot be converted throws a <code>TabularException</code> that leaves the reader usable. The sample reads every record of <code>observations.csv</code>, the header included, as an array of five strings:</p>
+<pre><code class="lang-text">city,lat,lon,date,temperature
+Kyiv,50.4501,30.5234,2024-02-03,-2.5
+Ottawa,45.4215,-75.6972,2024-02-03,-11.5
+</code></pre>
+<pre><code class="lang-cs">var dialect = new TabularDialect(&quot;\r\n&quot;, ',', '&quot;');
+
+using var stream = File.OpenRead(&quot;observations.csv&quot;);
+using var reader = new TabularReader&lt;string?[]&gt;(stream, dialect);
+
+while (reader.TryReadRecord())
+{
+    var observation = reader.CurrentRecord;
+
+    Console.WriteLine($&quot;{observation[0]}: {observation[4]}&quot;);
+}
+</code></pre>
+
+</article>
+
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          &copy; Oleksandr Kozlenko
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

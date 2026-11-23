@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class TabularBase16ArrayConverter ">
       
-      <meta name="description" content="Converts binary data encoded with &amp;quot;base16&amp;quot; (&amp;quot;hex&amp;quot;) encoding from or to a character sequence.">
+      <meta name="description" content="Converts binary data encoded with &amp;quot;base16&amp;quot; encoding to or from a character sequence.">
       <link rel="icon" href="../images/app-32.png">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,15 +89,15 @@
 
 
   <h1 id="Addax_Formats_Tabular_Converters_TabularBase16ArrayConverter" data-uid="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter" class="text-break">
-Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/Converters/TabularBase16ArrayConverter.cs"><i class="bi bi-code-slash"></i></a>
+Class TabularBase16ArrayConverter  
   </h1>
 
   <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="Addax.html">Addax</a>.<a class="xref" href="Addax.Formats.html">Formats</a>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a>.<a class="xref" href="Addax.Formats.Tabular.Converters.html">Converters</a></dd></dl>
+    <dl><dt>Namespace</dt><dd><span class="xref">Addax</span>.<span class="xref">Formats</span>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a>.<a class="xref" href="Addax.Formats.Tabular.Converters.html">Converters</a></dd></dl>
   <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Converts binary data encoded with &quot;base16&quot; (&quot;hex&quot;) encoding from or to a character sequence.</p>
+  <div class="markdown summary"><p>Converts binary data encoded with &quot;base16&quot; encoding to or from a character sequence.</p>
 </div>
   <div class="markdown conceptual"></div>
 
@@ -112,6 +112,7 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="Addax.Formats.Tabular.TabularConverter.html">TabularConverter</a></div>
       <div><a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html">TabularConverter</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]&gt;</div>
       <div><span class="xref">TabularBase16ArrayConverter</span></div>
     </dd>
@@ -143,7 +144,7 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
 
   <h3 id="Addax_Formats_Tabular_Converters_TabularBase16ArrayConverter__ctor" data-uid="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.#ctor">
   TabularBase16ArrayConverter()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/Converters/TabularBase16ArrayConverter.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.html">TabularBase16ArrayConverter</a> class.</p>
@@ -174,10 +175,10 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
 
   <h3 id="Addax_Formats_Tabular_Converters_TabularBase16ArrayConverter_TryFormat_System_Byte___System_Span_System_Char__System_IFormatProvider_System_Int32__" data-uid="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.TryFormat(System.Byte[],System.Span{System.Char},System.IFormatProvider,System.Int32@)">
   TryFormat(byte[]?, Span&lt;char&gt;, IFormatProvider?, out int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/Converters/TabularBase16ArrayConverter.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to format the value into a character sequence.</p>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to format a value into the provided span of characters.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -191,20 +192,20 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
     <dd><p>The value to format.</p>
 </dd>
     <dt><code>destination</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.span-1">Span</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
-    <dd><p>The buffer to write the value to.</p>
+    <dd><p>The span in which to write the value formatted as a span of characters.</p>
 </dd>
     <dt><code>provider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
-    <dd><p>An object that supplies culture-specific formatting information.</p>
+    <dd><p>An optional object that supplies culture-specific formatting information for <code class="paramref">destination</code>.</p>
 </dd>
     <dt><code>charsWritten</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd><p>When this method returns, contains an integer that is the number of characters that were written in <code class="paramref">destination</code>. This parameter is treated as uninitialized.</p>
+    <dd><p>When this method returns, contains the number of characters that were written in <code class="paramref">destination</code>.</p>
 </dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">value</code> was successfully formatted; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the formatting was successful; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
 </dd>
   </dl>
 
@@ -215,7 +216,7 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
 
 
   <h4 class="section" id="Addax_Formats_Tabular_Converters_TabularBase16ArrayConverter_TryFormat_System_Byte___System_Span_System_Char__System_IFormatProvider_System_Int32___remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
+  <div class="markdown level1 remarks"><p>The method should return <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> only if there is not enough space in the destination buffer. Any other failures should throw an exception. The default implementation throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a>.</p>
 </div>
 
 
@@ -225,10 +226,10 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
 
   <h3 id="Addax_Formats_Tabular_Converters_TabularBase16ArrayConverter_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider_System_Byte____" data-uid="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,System.Byte[]@)">
   TryParse(ReadOnlySpan&lt;char&gt;, IFormatProvider?, out byte[]?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/Converters/TabularBase16ArrayConverter.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to parse the character sequence into a value.</p>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to parse a span of characters into a value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -239,13 +240,13 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
-    <dd><p>The buffer to read a value from.</p>
+    <dd><p>The span of characters to parse.</p>
 </dd>
     <dt><code>provider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
-    <dd><p>An object that supplies culture-specific formatting information.</p>
+    <dd><p>An object that provides culture-specific formatting information about <code class="paramref">source</code>.</p>
 </dd>
     <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.byte">byte</a>[]</dt>
-    <dd><p>When this method returns, contains a value that is the result of successfully parsing <code class="paramref">source</code>, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+    <dd><p>When this method returns, contains the result of successfully parsing <code class="paramref">source</code>, or an undefined value on failure.</p>
 </dd>
   </dl>
 
@@ -263,7 +264,7 @@ Class TabularBase16ArrayConverter  <a class="header-action link-secondary" title
 
 
   <h4 class="section" id="Addax_Formats_Tabular_Converters_TabularBase16ArrayConverter_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider_System_Byte_____remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
+  <div class="markdown level1 remarks"><p>The default implementation throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a>.</p>
 </div>
 
 

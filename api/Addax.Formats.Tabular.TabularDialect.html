@@ -89,11 +89,11 @@
 
 
   <h1 id="Addax_Formats_Tabular_TabularDialect" data-uid="Addax.Formats.Tabular.TabularDialect" class="text-break">
-Class TabularDialect  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularDialect.cs"><i class="bi bi-code-slash"></i></a>
+Class TabularDialect  
   </h1>
 
   <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="Addax.html">Addax</a>.<a class="xref" href="Addax.Formats.html">Formats</a>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a></dd></dl>
+    <dl><dt>Namespace</dt><dd><span class="xref">Addax</span>.<span class="xref">Formats</span>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a></dd></dl>
   <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
   </div>
 
@@ -122,6 +122,9 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
 
 
 
+  <h2 id="Addax_Formats_Tabular_TabularDialect_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>All public members of the type are thread-safe and may be used concurrently from multiple threads.</p>
+</div>
 
 
   <h2 class="section" id="constructors">Constructors
@@ -132,7 +135,7 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
 
   <h3 id="Addax_Formats_Tabular_TabularDialect__ctor_System_String_System_Char_System_Char_" data-uid="Addax.Formats.Tabular.TabularDialect.#ctor(System.String,System.Char,System.Char)">
   TabularDialect(string, char, char)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularDialect.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a> class with the specified tokens.</p>
@@ -140,7 +143,7 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TabularDialect(string lineTerminator, char delimiter, char quoteSymbol)</code></pre>
+    <pre><code class="lang-csharp hljs">public TabularDialect(string lineTerminator, char delimiter, char quoteChar)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -151,7 +154,7 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
     <dt><code>delimiter</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
     <dd><p>The character that is used to separate fields. Must differ from line terminator characters.</p>
 </dd>
-    <dt><code>quoteSymbol</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
+    <dt><code>quoteChar</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
     <dd><p>The character that is used to surround an escaped field and escape itself within an escaped field. Must differ from line terminator and delimiter characters.</p>
 </dd>
   </dl>
@@ -180,7 +183,7 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
 
   <h3 id="Addax_Formats_Tabular_TabularDialect__ctor_System_String_System_Char_System_Char_System_Char_" data-uid="Addax.Formats.Tabular.TabularDialect.#ctor(System.String,System.Char,System.Char,System.Char)">
   TabularDialect(string, char, char, char)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularDialect.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a> class with the specified tokens.</p>
@@ -188,7 +191,7 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TabularDialect(string lineTerminator, char delimiter, char quoteSymbol, char escapeSymbol)</code></pre>
+    <pre><code class="lang-csharp hljs">public TabularDialect(string lineTerminator, char delimiter, char quoteChar, char escapeChar)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -199,11 +202,11 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
     <dt><code>delimiter</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
     <dd><p>The character that is used to separate fields. Must differ from line terminator characters.</p>
 </dd>
-    <dt><code>quoteSymbol</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
+    <dt><code>quoteChar</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
     <dd><p>The character that is used to surround an escaped field. Must differ from line terminator and delimiter characters.</p>
 </dd>
-    <dt><code>escapeSymbol</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
-    <dd><p>The character that is used to escape the quote symbol and itself within an escaped field. Must differ from line terminator and delimiter characters.</p>
+    <dt><code>escapeChar</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
+    <dd><p>The character that is used to escape the quote character and itself within an escaped field. Must differ from line terminator and delimiter characters.</p>
 </dd>
   </dl>
 
@@ -231,7 +234,7 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
 
   <h3 id="Addax_Formats_Tabular_TabularDialect__ctor_System_String_System_Char_System_Char_System_Char_System_Char_" data-uid="Addax.Formats.Tabular.TabularDialect.#ctor(System.String,System.Char,System.Char,System.Char,System.Char)">
   TabularDialect(string, char, char, char, char)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularDialect.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a> class with the specified tokens.</p>
@@ -239,7 +242,7 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TabularDialect(string lineTerminator, char delimiter, char quoteSymbol, char escapeSymbol, char annotationPrefix)</code></pre>
+    <pre><code class="lang-csharp hljs">public TabularDialect(string lineTerminator, char delimiter, char quoteChar, char escapeChar, char commentPrefix)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -250,14 +253,14 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
     <dt><code>delimiter</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
     <dd><p>The character that is used to separate fields. Must differ from line terminator characters.</p>
 </dd>
-    <dt><code>quoteSymbol</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
+    <dt><code>quoteChar</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
     <dd><p>The character that is used to surround an escaped field. Must differ from line terminator and delimiter characters.</p>
 </dd>
-    <dt><code>escapeSymbol</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
-    <dd><p>The character that is used to escape the quote symbol and itself within an escaped field. Must differ from line terminator and delimiter characters.</p>
+    <dt><code>escapeChar</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
+    <dd><p>The character that is used to escape the quote character and itself within an escaped field. Must differ from line terminator and delimiter characters.</p>
 </dd>
-    <dt><code>annotationPrefix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
-    <dd><p>The character that is used at the beginning of a record to indicate that the record is an annotation. Must differ from line terminator, delimiter, quote, and escape characters.</p>
+    <dt><code>commentPrefix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
+    <dd><p>The character that is used at the beginning of a record to indicate that the record is a comment. Must differ from line terminator, delimiter, quote, and escape characters.</p>
 </dd>
   </dl>
 
@@ -285,19 +288,19 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
 </h2>
 
 
-  <a id="Addax_Formats_Tabular_TabularDialect_AnnotationPrefix_" data-uid="Addax.Formats.Tabular.TabularDialect.AnnotationPrefix*"></a>
+  <a id="Addax_Formats_Tabular_TabularDialect_CommentPrefix_" data-uid="Addax.Formats.Tabular.TabularDialect.CommentPrefix*"></a>
 
-  <h3 id="Addax_Formats_Tabular_TabularDialect_AnnotationPrefix" data-uid="Addax.Formats.Tabular.TabularDialect.AnnotationPrefix">
-  AnnotationPrefix
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularDialect.cs"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Addax_Formats_Tabular_TabularDialect_CommentPrefix" data-uid="Addax.Formats.Tabular.TabularDialect.CommentPrefix">
+  CommentPrefix
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets the character that is used at the beginning of a record to indicate that the record is an annotation.</p>
+  <div class="markdown level1 summary"><p>Gets the character that is used at the beginning of a record to indicate that the record is a comment.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public char? AnnotationPrefix { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public char? CommentPrefix { get; }</code></pre>
   </div>
 
 
@@ -307,7 +310,7 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>?</dt>
-    <dd><p>A UTF-16 code unit or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a>, if not set.</p>
+    <dd><p>A UTF-16 code unit, or <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/null">null</a> if the dialect has no comment prefix.</p>
 </dd>
   </dl>
 
@@ -322,7 +325,7 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
 
   <h3 id="Addax_Formats_Tabular_TabularDialect_Delimiter" data-uid="Addax.Formats.Tabular.TabularDialect.Delimiter">
   Delimiter
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularDialect.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the character that is used to separate fields.</p>
@@ -351,19 +354,19 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
 
 
 
-  <a id="Addax_Formats_Tabular_TabularDialect_EscapeSymbol_" data-uid="Addax.Formats.Tabular.TabularDialect.EscapeSymbol*"></a>
+  <a id="Addax_Formats_Tabular_TabularDialect_EscapeChar_" data-uid="Addax.Formats.Tabular.TabularDialect.EscapeChar*"></a>
 
-  <h3 id="Addax_Formats_Tabular_TabularDialect_EscapeSymbol" data-uid="Addax.Formats.Tabular.TabularDialect.EscapeSymbol">
-  EscapeSymbol
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularDialect.cs"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Addax_Formats_Tabular_TabularDialect_EscapeChar" data-uid="Addax.Formats.Tabular.TabularDialect.EscapeChar">
+  EscapeChar
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>Gets the character that is used to escape the quote symbol and itself within an escaped field.</p>
+  <div class="markdown level1 summary"><p>Gets the character that is used to escape the quote character and itself within an escaped field.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public char EscapeSymbol { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public char EscapeChar { get; }</code></pre>
   </div>
 
 
@@ -373,7 +376,7 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a></dt>
-    <dd><p>A UTF-16 code unit. Equals to <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html#Addax_Formats_Tabular_TabularDialect_QuoteSymbol">QuoteSymbol</a>, if not set.</p>
+    <dd><p>A UTF-16 code unit. The same as <a class="xref" href="Addax.Formats.Tabular.TabularDialect.html#Addax_Formats_Tabular_TabularDialect_QuoteChar">QuoteChar</a> if the dialect has no separate escape symbol.</p>
 </dd>
   </dl>
 
@@ -388,7 +391,7 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
 
   <h3 id="Addax_Formats_Tabular_TabularDialect_LineTerminator" data-uid="Addax.Formats.Tabular.TabularDialect.LineTerminator">
   LineTerminator
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularDialect.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the character sequence that is used to separate records.</p>
@@ -417,11 +420,11 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
 
 
 
-  <a id="Addax_Formats_Tabular_TabularDialect_QuoteSymbol_" data-uid="Addax.Formats.Tabular.TabularDialect.QuoteSymbol*"></a>
+  <a id="Addax_Formats_Tabular_TabularDialect_QuoteChar_" data-uid="Addax.Formats.Tabular.TabularDialect.QuoteChar*"></a>
 
-  <h3 id="Addax_Formats_Tabular_TabularDialect_QuoteSymbol" data-uid="Addax.Formats.Tabular.TabularDialect.QuoteSymbol">
-  QuoteSymbol
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularDialect.cs"><i class="bi bi-code-slash"></i></a>
+  <h3 id="Addax_Formats_Tabular_TabularDialect_QuoteChar" data-uid="Addax.Formats.Tabular.TabularDialect.QuoteChar">
+  QuoteChar
+  
   </h3>
 
   <div class="markdown level1 summary"><p>Gets the character that is used to surround an escaped field.</p>
@@ -429,7 +432,7 @@ Class TabularDialect  <a class="header-action link-secondary" title="View source
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public char QuoteSymbol { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public char QuoteChar { get; }</code></pre>
   </div>
 
 

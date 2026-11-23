@@ -98,10 +98,6 @@ Namespaces
       <dt><a class="xref" href="Addax.Formats.Tabular.Converters.html">Addax.Formats.Tabular.Converters</a></dt>
       <dd></dd>
     </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="Addax.Formats.Tabular.Handlers.html">Addax.Formats.Tabular.Handlers</a></dt>
-      <dd></dd>
-    </dl>
     <h3 id="classes">
 Classes
 </h3>
@@ -111,8 +107,8 @@ Classes
 </dd>
     </dl>
     <dl class="jumplist">
-      <dt><a class="xref" href="Addax.Formats.Tabular.TabularConverterAttribute.html">TabularConverterAttribute</a></dt>
-      <dd><p>Specifies the type of a tabular value converter. This class cannot be inherited.</p>
+      <dt><a class="xref" href="Addax.Formats.Tabular.TabularConverter.html">TabularConverter</a></dt>
+      <dd><p>Represents the base type of converters that convert values to or from character sequences.</p>
 </dd>
     </dl>
     <dl class="jumplist">
@@ -122,17 +118,17 @@ Classes
     </dl>
     <dl class="jumplist">
       <dt><a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html">TabularConverter&lt;T&gt;</a></dt>
-      <dd><p>Defines the core behavior of converting a value from or to a character sequence and provides a base for derived classes.</p>
-</dd>
-    </dl>
-    <dl class="jumplist">
-      <dt><a class="xref" href="Addax.Formats.Tabular.TabularData.html">TabularData</a></dt>
-      <dd><p>Provides static methods for working with collections of tabular data records and inferring dialects. This class cannot be inherited.</p>
+      <dd><p>Defines the core behavior of converting a value to or from a character sequence and provides a base for derived classes.</p>
 </dd>
     </dl>
     <dl class="jumplist">
       <dt><a class="xref" href="Addax.Formats.Tabular.TabularDialect.html">TabularDialect</a></dt>
       <dd><p>Specifies how to read and write tabular data. This class cannot be inherited.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Addax.Formats.Tabular.TabularException.html">TabularException</a></dt>
+      <dd><p>The exception that is thrown when an error occurs while processing tabular data.</p>
 </dd>
     </dl>
     <dl class="jumplist">
@@ -143,6 +139,11 @@ Classes
     <dl class="jumplist">
       <dt><a class="xref" href="Addax.Formats.Tabular.TabularFieldOrderAttribute.html">TabularFieldOrderAttribute</a></dt>
       <dd><p>Specifies the order of a tabular field. This class cannot be inherited.</p>
+</dd>
+    </dl>
+    <dl class="jumplist">
+      <dt><a class="xref" href="Addax.Formats.Tabular.TabularHandler.html">TabularHandler</a></dt>
+      <dd><p>Represents the base type of record handlers that read objects from or write objects to tabular records.</p>
 </dd>
     </dl>
     <dl class="jumplist">
@@ -172,12 +173,12 @@ Classes
     </dl>
     <dl class="jumplist">
       <dt><a class="xref" href="Addax.Formats.Tabular.TabularRegistry.html">TabularRegistry</a></dt>
-      <dd><p>Represents a registry of shared components for reading and writing tabular data. This class cannot be inherited.</p>
+      <dd><p>Represents a registry of shared components for reading and writing tabular data.</p>
 </dd>
     </dl>
     <dl class="jumplist">
       <dt><a class="xref" href="Addax.Formats.Tabular.TabularStringFactory.html">TabularStringFactory</a></dt>
-      <dd><p>Provides a creation method for creating <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> instances from character sequences.</p>
+      <dd><p>Provides a method for creating <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a> instances from character sequences.</p>
 </dd>
     </dl>
     <dl class="jumplist">
@@ -188,14 +189,6 @@ Classes
     <dl class="jumplist">
       <dt><a class="xref" href="Addax.Formats.Tabular.TabularWriter-1.html">TabularWriter&lt;T&gt;</a></dt>
       <dd><p>Provides forward-only, write-only access to tabular data records. This class cannot be inherited.</p>
-</dd>
-    </dl>
-    <h3 id="structs">
-Structs
-</h3>
-    <dl class="jumplist">
-      <dt><a class="xref" href="Addax.Formats.Tabular.TabularRecord-1.html">TabularRecord&lt;T&gt;</a></dt>
-      <dd><p>Represents a container that may or may not have a stored object.</p>
 </dd>
     </dl>
     <h3 id="enums">

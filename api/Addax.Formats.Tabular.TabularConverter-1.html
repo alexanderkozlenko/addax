@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class TabularConverter&lt;T&gt; ">
       
-      <meta name="description" content="Defines the core behavior of converting a value from or to a character sequence and provides a base for derived classes.">
+      <meta name="description" content="Defines the core behavior of converting a value to or from a character sequence and provides a base for derived classes.">
       <link rel="icon" href="../images/app-32.png">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,20 +89,20 @@
 
 
   <h1 id="Addax_Formats_Tabular_TabularConverter_1" data-uid="Addax.Formats.Tabular.TabularConverter`1" class="text-break">
-Class TabularConverter&lt;T&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularConverter%601.cs"><i class="bi bi-code-slash"></i></a>
+Class TabularConverter&lt;T&gt;  
   </h1>
 
   <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="Addax.html">Addax</a>.<a class="xref" href="Addax.Formats.html">Formats</a>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a></dd></dl>
+    <dl><dt>Namespace</dt><dd><span class="xref">Addax</span>.<span class="xref">Formats</span>.<a class="xref" href="Addax.Formats.Tabular.html">Tabular</a></dd></dl>
   <dl><dt>Assembly</dt><dd>Addax.Formats.Tabular.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"><p>Defines the core behavior of converting a value from or to a character sequence and provides a base for derived classes.</p>
+  <div class="markdown summary"><p>Defines the core behavior of converting a value to or from a character sequence and provides a base for derived classes.</p>
 </div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class TabularConverter&lt;T&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class TabularConverter&lt;T&gt; : TabularConverter</code></pre>
   </div>
 
 
@@ -118,6 +118,7 @@ Class TabularConverter&lt;T&gt;  <a class="header-action link-secondary" title="
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="Addax.Formats.Tabular.TabularConverter.html">TabularConverter</a></div>
       <div><span class="xref">TabularConverter&lt;T&gt;</span></div>
     </dd>
   </dl>
@@ -126,6 +127,7 @@ Class TabularConverter&lt;T&gt;  <a class="header-action link-secondary" title="
   <dl class="typelist derived">
     <dt>Derived</dt>
     <dd>
+      <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularBFloat16Converter.html">TabularBFloat16Converter</a></div>
       <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter.html">TabularBase16ArrayConverter</a></div>
       <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularBase16MemoryConverter.html">TabularBase16MemoryConverter</a></div>
       <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularBase16ReadOnlyMemoryConverter.html">TabularBase16ReadOnlyMemoryConverter</a></div>
@@ -139,6 +141,9 @@ Class TabularConverter&lt;T&gt;  <a class="header-action link-secondary" title="
       <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularDateOnlyConverter.html">TabularDateOnlyConverter</a></div>
       <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularDateTimeConverter.html">TabularDateTimeConverter</a></div>
       <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularDateTimeOffsetConverter.html">TabularDateTimeOffsetConverter</a></div>
+      <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularDecimal128Converter.html">TabularDecimal128Converter</a></div>
+      <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularDecimal32Converter.html">TabularDecimal32Converter</a></div>
+      <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularDecimal64Converter.html">TabularDecimal64Converter</a></div>
       <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularDecimalConverter.html">TabularDecimalConverter</a></div>
       <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularDoubleConverter.html">TabularDoubleConverter</a></div>
       <div><a class="xref" href="Addax.Formats.Tabular.Converters.TabularGuidConverter.html">TabularGuidConverter</a></div>
@@ -174,7 +179,7 @@ Class TabularConverter&lt;T&gt;  <a class="header-action link-secondary" title="
 
   <h3 id="Addax_Formats_Tabular_TabularConverter_1__ctor" data-uid="Addax.Formats.Tabular.TabularConverter`1.#ctor">
   TabularConverter()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularConverter%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Addax.Formats.Tabular.TabularConverter-1.html">TabularConverter&lt;T&gt;</a> class.</p>
@@ -205,10 +210,10 @@ Class TabularConverter&lt;T&gt;  <a class="header-action link-secondary" title="
 
   <h3 id="Addax_Formats_Tabular_TabularConverter_1_TryFormat__0_System_Span_System_Char__System_IFormatProvider_System_Int32__" data-uid="Addax.Formats.Tabular.TabularConverter`1.TryFormat(`0,System.Span{System.Char},System.IFormatProvider,System.Int32@)">
   TryFormat(T?, Span&lt;char&gt;, IFormatProvider?, out int)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularConverter%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to format the value into a character sequence.</p>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to format a value into the provided span of characters.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -222,20 +227,20 @@ Class TabularConverter&lt;T&gt;  <a class="header-action link-secondary" title="
     <dd><p>The value to format.</p>
 </dd>
     <dt><code>destination</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.span-1">Span</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
-    <dd><p>The buffer to write the value to.</p>
+    <dd><p>The span in which to write the value formatted as a span of characters.</p>
 </dd>
     <dt><code>provider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
-    <dd><p>An object that supplies culture-specific formatting information.</p>
+    <dd><p>An optional object that supplies culture-specific formatting information for <code class="paramref">destination</code>.</p>
 </dd>
     <dt><code>charsWritten</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd><p>When this method returns, contains an integer that is the number of characters that were written in <code class="paramref">destination</code>. This parameter is treated as uninitialized.</p>
+    <dd><p>When this method returns, contains the number of characters that were written in <code class="paramref">destination</code>.</p>
 </dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
-    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if <code class="paramref">value</code> was successfully formatted; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
+    <dd><p><a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">true</a> if the formatting was successful; otherwise, <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a>.</p>
 </dd>
   </dl>
 
@@ -246,7 +251,7 @@ Class TabularConverter&lt;T&gt;  <a class="header-action link-secondary" title="
 
 
   <h4 class="section" id="Addax_Formats_Tabular_TabularConverter_1_TryFormat__0_System_Span_System_Char__System_IFormatProvider_System_Int32___remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
+  <div class="markdown level1 remarks"><p>The method should return <a href="https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/bool">false</a> only if there is not enough space in the destination buffer. Any other failures should throw an exception. The default implementation throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a>.</p>
 </div>
 
 
@@ -256,10 +261,10 @@ Class TabularConverter&lt;T&gt;  <a class="header-action link-secondary" title="
 
   <h3 id="Addax_Formats_Tabular_TabularConverter_1_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider__0__" data-uid="Addax.Formats.Tabular.TabularConverter`1.TryParse(System.ReadOnlySpan{System.Char},System.IFormatProvider,`0@)">
   TryParse(ReadOnlySpan&lt;char&gt;, IFormatProvider?, out T?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/alexanderkozlenko/addax/blob/5691e9520686dcbab13ef5294c892ac882c7b14e/src/Addax.Formats.Tabular/TabularConverter%601.cs"><i class="bi bi-code-slash"></i></a>
+  
   </h3>
 
-  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to parse the character sequence into a value.</p>
+  <div class="markdown level1 summary"><p>When overridden in a derived class, tries to parse a span of characters into a value.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -270,13 +275,13 @@ Class TabularConverter&lt;T&gt;  <a class="header-action link-secondary" title="
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>source</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.readonlyspan-1">ReadOnlySpan</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.char">char</a>&gt;</dt>
-    <dd><p>The buffer to read a value from.</p>
+    <dd><p>The span of characters to parse.</p>
 </dd>
     <dt><code>provider</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iformatprovider">IFormatProvider</a></dt>
-    <dd><p>An object that supplies culture-specific formatting information.</p>
+    <dd><p>An object that provides culture-specific formatting information about <code class="paramref">source</code>.</p>
 </dd>
     <dt><code>value</code> <span class="xref">T</span></dt>
-    <dd><p>When this method returns, contains a value that is the result of successfully parsing <code class="paramref">source</code>, or an undefined value on failure. This parameter is treated as uninitialized.</p>
+    <dd><p>When this method returns, contains the result of successfully parsing <code class="paramref">source</code>, or an undefined value on failure.</p>
 </dd>
   </dl>
 
@@ -294,7 +299,7 @@ Class TabularConverter&lt;T&gt;  <a class="header-action link-secondary" title="
 
 
   <h4 class="section" id="Addax_Formats_Tabular_TabularConverter_1_TryParse_System_ReadOnlySpan_System_Char__System_IFormatProvider__0___remarks">Remarks</h4>
-  <div class="markdown level1 remarks"><p>Throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a> exception by default.</p>
+  <div class="markdown level1 remarks"><p>The default implementation throws a <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.notsupportedexception">NotSupportedException</a>.</p>
 </div>
 
 
