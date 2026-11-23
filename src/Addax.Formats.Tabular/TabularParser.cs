@@ -1,435 +1,646 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
+using System.Buffers;
 using System.Diagnostics;
+using System.Numerics;
 using System.Runtime.InteropServices;
-using Addax.Formats.Tabular.Buffers;
-using Addax.Formats.Tabular.Collections;
+using System.Runtime.Intrinsics;
 using Addax.Formats.Tabular.Primitives;
 
 namespace Addax.Formats.Tabular;
 
 internal sealed class TabularParser
 {
-    private readonly string _tokenT;
-    private readonly char _tokenD;
-    private readonly char _tokenQ;
-    private readonly char _tokenE;
-    private readonly char? _tokenA;
+    private const int s_blockLength = 32;
 
-    private readonly TabularSearchValues _searchValues;
+    private readonly char _lineTerminatorStart;
+    private readonly char _lineTerminatorEnd;
+    private readonly int _lineTerminatorLength;
+    private readonly char _delimiter;
+    private readonly char _quoteChar;
+    private readonly char _escapeChar;
+    private readonly char? _commentPrefix;
+
+    private readonly SearchValues<char> _valueStopChars;
+    private readonly SearchValues<char> _quotedValueStopChars;
 
     public TabularParser(TabularDialect dialect)
     {
-        Debug.Assert(dialect is not null);
+        _lineTerminatorStart = dialect.LineTerminator[0];
+        _lineTerminatorEnd = dialect.LineTerminator[^1];
+        _lineTerminatorLength = dialect.LineTerminator.Length;
+        _delimiter = dialect.Delimiter;
+        _quoteChar = dialect.QuoteChar;
+        _escapeChar = dialect.EscapeChar;
+        _commentPrefix = dialect.CommentPrefix;
 
-        _tokenT = dialect.LineTerminator;
-        _tokenD = dialect.Delimiter;
-        _tokenQ = dialect.QuoteSymbol;
-        _tokenE = dialect.EscapeSymbol;
-        _tokenA = dialect.AnnotationPrefix;
-
-        _searchValues = dialect.SearchValues;
+        _valueStopChars = dialect.SearchValues.ValueStopChars;
+        _quotedValueStopChars = dialect.SearchValues.EscapableChars;
     }
 
-    public bool TryParse(ReadOnlySpan<char> source, TabularParsingMode mode, ref TabularParserState state, PooledQueue<TabularFieldInfo> fields, ref int consumed)
+    public OperationStatus Parse(ReadOnlySpan<char> source, bool isEndOfStream, ref TabularParserState state, Span<int> fieldEnds, out int fieldCount)
     {
-        Debug.Assert(fields is not null);
-        Debug.Assert(consumed >= 0);
+        Debug.Assert(fieldEnds.Length >= s_blockLength);
 
-        var length = source.Length;
+        var current = state;
+        var count = 0;
+        var scanEnd = 0;
+        var status = OperationStatus.Done;
 
-        while (!source.IsEmpty)
+        while (true)
         {
-            switch (state.CurrentArea)
+            var position = current.Position;
+
+            if (position == source.Length)
             {
-                case TabularParsingArea.None:
+                if (!isEndOfStream)
+                {
+                    status = OperationStatus.NeedMoreData;
+
+                    break;
+                }
+
+                if (current.Area == TabularParsingArea.EndOfStream)
+                {
+                    break;
+                }
+
+                if (count == fieldEnds.Length)
+                {
+                    status = OperationStatus.DestinationTooSmall;
+
+                    break;
+                }
+
+                if (current.Area is TabularParsingArea.QuotedValue or TabularParsingArea.QuotedValueEscape or TabularParsingArea.QuotedValueLineTerminator)
+                {
+                    status = OperationStatus.NeedMoreData;
+
+                    break;
+                }
+
+                fieldEnds[count++] = current.Area is TabularParsingArea.Comment or TabularParsingArea.CommentLineTerminator ? ~position : position;
+                current.Area = TabularParsingArea.EndOfStream;
+
+                break;
+            }
+
+            if (count == fieldEnds.Length)
+            {
+                status = OperationStatus.DestinationTooSmall;
+
+                break;
+            }
+
+            if ((current.Area is TabularParsingArea.StartOfRecord or TabularParsingArea.StartOfField) &&
+                (position >= scanEnd) &&
+                (position < source.Length - s_blockLength) &&
+                Vector128.IsHardwareAccelerated)
+            {
+                if (ScanFields(source, ref current, fieldEnds, ref count, out scanEnd) == OperationStatus.DestinationTooSmall)
+                {
+                    status = OperationStatus.DestinationTooSmall;
+
+                    break;
+                }
+
+                continue;
+            }
+
+            switch (current.Area)
+            {
+                case TabularParsingArea.StartOfRecord:
+                case TabularParsingArea.StartOfField:
                     {
-                        var symbol = source[0];
+                        var symbol = source[position];
 
-                        state.CharsParsed++;
-                        source = source.Slice(1);
-
-                        if (symbol == _tokenD)
+                        if (symbol == _quoteChar)
                         {
-                            StoreField(fields, ref state, TabularSeparator.Delimiter);
-
-                            mode &= ~TabularParsingMode.StartOfRecord;
+                            current.Area = TabularParsingArea.QuotedValue;
+                            current.Position = position + 1;
                         }
-                        else if (symbol == _tokenT[0])
+                        else if ((current.Area == TabularParsingArea.StartOfRecord) && (symbol == _commentPrefix))
                         {
-                            if (_tokenT.Length == 1)
-                            {
-                                StoreField(fields, ref state, TabularSeparator.LineTerminator);
-
-                                mode |= TabularParsingMode.StartOfRecord;
-
-                                continue;
-                            }
-
-                            state.CurrentArea = TabularParsingArea.LineTerminator;
-                        }
-                        else if (symbol == _tokenQ)
-                        {
-                            state.CurrentArea = TabularParsingArea.QuotedValue;
-                            state.FoundQuoting = true;
+                            current.Area = TabularParsingArea.Comment;
+                            current.Position = position + 1;
                         }
                         else
                         {
-                            if (((mode & TabularParsingMode.StartOfRecord) != 0) && _tokenA.HasValue && (symbol == _tokenA.Value))
-                            {
-                                state.CurrentArea = TabularParsingArea.Annotation;
-                                state.FoundAnnotation = true;
-                            }
-                            else
-                            {
-                                state.CurrentArea = TabularParsingArea.Value;
-                            }
+                            current.Area = TabularParsingArea.Value;
                         }
                     }
                     break;
                 case TabularParsingArea.Value:
                     {
-                        var index = source.IndexOfAny(_searchValues.ValuesT0DQ);
+                        var offset = source.Slice(position).IndexOfAny(_valueStopChars);
 
-                        if (index < 0)
+                        if (offset < 0)
                         {
-                            state.CharsParsed += source.Length;
-                            source = default;
+                            current.Position = source.Length;
 
-                            continue;
+                            break;
                         }
 
-                        var symbol = source[index];
+                        position += offset;
 
-                        state.CharsParsed += index + 1;
-                        source = source.Slice(index + 1);
+                        var symbol = source[position];
 
-                        if (symbol == _tokenD)
+                        if (symbol == _delimiter)
                         {
-                            StoreField(fields, ref state, TabularSeparator.Delimiter);
-
-                            mode &= ~TabularParsingMode.StartOfRecord;
+                            fieldEnds[count++] = position;
+                            current.Area = TabularParsingArea.StartOfField;
+                            current.Position = position + 1;
                         }
-                        else if (symbol == _tokenT[0])
+                        else if (symbol == _lineTerminatorStart)
                         {
-                            if (_tokenT.Length == 1)
+                            if (_lineTerminatorLength == 1)
                             {
-                                StoreField(fields, ref state, TabularSeparator.LineTerminator);
-
-                                mode |= TabularParsingMode.StartOfRecord;
-
-                                continue;
+                                fieldEnds[count++] = position;
+                                current.Area = TabularParsingArea.StartOfRecord;
+                            }
+                            else
+                            {
+                                current.Area = TabularParsingArea.ValueLineTerminator;
                             }
 
-                            state.CurrentArea = TabularParsingArea.LineTerminator;
+                            current.Position = position + 1;
                         }
                         else
                         {
-                            consumed += length - source.Length;
+                            current.Position = position;
+                            state = current;
+                            fieldCount = count;
 
-                            return false;
+                            return OperationStatus.InvalidData;
+                        }
+                    }
+                    break;
+                case TabularParsingArea.ValueLineTerminator:
+                    {
+                        if (source[position] == _lineTerminatorEnd)
+                        {
+                            fieldEnds[count++] = position - 1;
+                            current.Area = TabularParsingArea.StartOfRecord;
+                            current.Position = position + 1;
+                        }
+                        else
+                        {
+                            current.Area = TabularParsingArea.Value;
                         }
                     }
                     break;
                 case TabularParsingArea.QuotedValue:
                     {
-                        if (_tokenE != _tokenQ)
+                        var offset = source.Slice(position).IndexOfAny(_quotedValueStopChars);
+
+                        if (offset < 0)
                         {
-                            var index = source.IndexOfAny(_searchValues.ValuesQE);
+                            current.Position = source.Length;
 
-                            if (index < 0)
-                            {
-                                state.CharsParsed += source.Length;
-                                source = default;
-
-                                continue;
-                            }
-
-                            var symbol = source[index];
-
-                            state.CharsParsed += index + 1;
-                            source = source.Slice(index + 1);
-
-                            if (symbol == _tokenE)
-                            {
-                                state.CurrentArea = TabularParsingArea.EscapedSymbol;
-                                state.CharsEscaped++;
-                            }
-                            else
-                            {
-                                state.CurrentArea = TabularParsingArea.QuotedValueTail;
-                            }
+                            break;
                         }
-                        else
+
+                        position += offset;
+                        current.Area = source[position] == _quoteChar ? TabularParsingArea.QuotedValueTail : TabularParsingArea.QuotedValueEscape;
+                        current.Position = position + 1;
+                    }
+                    break;
+                case TabularParsingArea.QuotedValueEscape:
+                    {
+                        var symbol = source[position];
+
+                        if ((symbol != _quoteChar) && (symbol != _escapeChar))
                         {
-                            var index = source.IndexOfAny(_searchValues.ValuesQ);
+                            state = current;
+                            fieldCount = count;
 
-                            if (index < 0)
-                            {
-                                state.CharsParsed += source.Length;
-                                source = default;
-
-                                continue;
-                            }
-
-                            state.CharsParsed += index + 1;
-                            source = source.Slice(index + 1);
-                            state.CurrentArea = TabularParsingArea.QuotedValueTail;
+                            return OperationStatus.InvalidData;
                         }
+
+                        current.Area = TabularParsingArea.QuotedValue;
+                        current.Position = position + 1;
                     }
                     break;
                 case TabularParsingArea.QuotedValueTail:
                     {
-                        var symbol = source[0];
+                        var symbol = source[position];
 
-                        state.CharsParsed++;
-                        source = source.Slice(1);
-
-                        if ((_tokenE == _tokenQ) && (symbol == _tokenQ))
+                        if ((symbol == _quoteChar) && (_escapeChar == _quoteChar))
                         {
-                            state.CurrentArea = TabularParsingArea.QuotedValue;
-                            state.CharsEscaped++;
-
-                            continue;
+                            current.Area = TabularParsingArea.QuotedValue;
+                            current.Position = position + 1;
                         }
-
-                        if (symbol == _tokenD)
+                        else if (symbol == _delimiter)
                         {
-                            StoreField(fields, ref state, TabularSeparator.Delimiter);
-
-                            mode &= ~TabularParsingMode.StartOfRecord;
+                            fieldEnds[count++] = position;
+                            current.Area = TabularParsingArea.StartOfField;
+                            current.Position = position + 1;
                         }
-                        else if (symbol == _tokenT[0])
+                        else if (symbol == _lineTerminatorStart)
                         {
-                            if (_tokenT.Length == 1)
+                            if (_lineTerminatorLength == 1)
                             {
-                                StoreField(fields, ref state, TabularSeparator.LineTerminator);
-
-                                mode |= TabularParsingMode.StartOfRecord;
-
-                                continue;
-                            }
-
-                            state.CurrentArea = TabularParsingArea.LineTerminator;
-                        }
-                        else
-                        {
-                            consumed += length - source.Length;
-
-                            return false;
-                        }
-                    }
-                    break;
-                case TabularParsingArea.EscapedSymbol:
-                    {
-                        var symbol = source[0];
-
-                        state.CharsParsed++;
-                        source = source.Slice(1);
-
-                        if ((symbol == _tokenQ) || (symbol == _tokenE))
-                        {
-                            state.CurrentArea = TabularParsingArea.QuotedValue;
-                        }
-                        else
-                        {
-                            consumed += length - source.Length;
-
-                            return false;
-                        }
-                    }
-                    break;
-                case TabularParsingArea.LineTerminator:
-                    {
-                        var symbol = source[0];
-
-                        state.CharsParsed++;
-                        source = source.Slice(1);
-
-                        if (symbol == _tokenT[1])
-                        {
-                            StoreField(fields, ref state, TabularSeparator.LineTerminator);
-
-                            mode |= TabularParsingMode.StartOfRecord;
-                        }
-                        else if (state.FoundAnnotation)
-                        {
-                            state.CurrentArea = symbol == _tokenT[0] ?
-                                TabularParsingArea.LineTerminator :
-                                TabularParsingArea.Annotation;
-                        }
-                        else if (!state.FoundQuoting)
-                        {
-                            if (symbol == _tokenD)
-                            {
-                                StoreField(fields, ref state, TabularSeparator.Delimiter);
-
-                                mode &= ~TabularParsingMode.StartOfRecord;
-                            }
-                            else if (symbol == _tokenT[0])
-                            {
-                                state.CurrentArea = TabularParsingArea.LineTerminator;
-                            }
-                            else if (symbol == _tokenQ)
-                            {
-                                consumed += length - source.Length;
-
-                                return false;
+                                fieldEnds[count++] = position;
+                                current.Area = TabularParsingArea.StartOfRecord;
                             }
                             else
                             {
-                                state.CurrentArea = TabularParsingArea.Value;
+                                current.Area = TabularParsingArea.QuotedValueLineTerminator;
                             }
+
+                            current.Position = position + 1;
                         }
                         else
                         {
-                            consumed += length - source.Length;
+                            state = current;
+                            fieldCount = count;
 
-                            return false;
+                            return OperationStatus.InvalidData;
                         }
                     }
                     break;
-                case TabularParsingArea.Annotation:
+                case TabularParsingArea.QuotedValueLineTerminator:
                     {
-                        var index = source.IndexOfAny(_searchValues.ValuesT0);
-
-                        if (index < 0)
+                        if (source[position] != _lineTerminatorEnd)
                         {
-                            state.CharsParsed += source.Length;
-                            source = default;
+                            state = current;
+                            fieldCount = count;
 
-                            continue;
+                            return OperationStatus.InvalidData;
                         }
 
-                        state.CharsParsed += index + 1;
-                        source = source.Slice(index + 1);
+                        fieldEnds[count++] = position - 1;
+                        current.Area = TabularParsingArea.StartOfRecord;
+                        current.Position = position + 1;
+                    }
+                    break;
+                case TabularParsingArea.Comment:
+                    {
+                        var offset = source.Slice(position).IndexOf(_lineTerminatorStart);
 
-                        if (_tokenT.Length == 1)
+                        if (offset < 0)
                         {
-                            StoreField(fields, ref state, TabularSeparator.LineTerminator);
+                            current.Position = source.Length;
 
-                            mode |= TabularParsingMode.StartOfRecord;
-
-                            continue;
+                            break;
                         }
 
-                        state.CurrentArea = TabularParsingArea.LineTerminator;
+                        position += offset;
+
+                        if (_lineTerminatorLength == 1)
+                        {
+                            fieldEnds[count++] = ~position;
+                            current.Area = TabularParsingArea.StartOfRecord;
+                        }
+                        else
+                        {
+                            current.Area = TabularParsingArea.CommentLineTerminator;
+                        }
+
+                        current.Position = position + 1;
+                    }
+                    break;
+                case TabularParsingArea.CommentLineTerminator:
+                    {
+                        if (source[position] == _lineTerminatorEnd)
+                        {
+                            fieldEnds[count++] = ~(position - 1);
+                            current.Area = TabularParsingArea.StartOfRecord;
+                            current.Position = position + 1;
+                        }
+                        else
+                        {
+                            current.Area = TabularParsingArea.Comment;
+                        }
                     }
                     break;
             }
         }
 
-        consumed += length;
+        state = current;
+        fieldCount = count;
 
-        if ((mode & TabularParsingMode.EndOfStream) != 0)
-        {
-            if (state.FoundQuoting)
-            {
-                if ((state.CurrentArea == TabularParsingArea.QuotedValue) ||
-                    (state.CurrentArea == TabularParsingArea.EscapedSymbol) ||
-                    (state.CurrentArea == TabularParsingArea.LineTerminator))
-                {
-                    return false;
-                }
-            }
-
-            StoreField(fields, ref state, TabularSeparator.None);
-        }
-
-        return true;
+        return status;
     }
 
-    public void ReadField(ReadOnlyMemory<char> source, ref readonly TabularFieldInfo fieldInfo, ref ArrayBuffer<char> field)
+    public int DecodeField(Span<char> source, int fieldStart, int fieldEnd, out int valueStart)
     {
-        if (!fieldInfo.IsAnnotation)
+        if (fieldEnd < 0)
         {
-            var offset = fieldInfo.HasQuoting ? 1 : 0;
-            var length = fieldInfo.CharsUsed - (2 * offset);
+            valueStart = fieldStart + 1;
 
-            switch (fieldInfo.Separator)
+            return ~fieldEnd - fieldStart - 1;
+        }
+
+        if ((fieldEnd == fieldStart) || (source[fieldStart] != _quoteChar))
+        {
+            valueStart = fieldStart;
+
+            return fieldEnd - fieldStart;
+        }
+
+        valueStart = fieldStart + 1;
+
+        var value = source.Slice(valueStart, fieldEnd - fieldStart - 2);
+        var escapeIndex = value.IndexOf(_escapeChar);
+
+        if (escapeIndex < 0)
+        {
+            return value.Length;
+        }
+
+        return UnescapeValue(value, escapeIndex);
+    }
+
+    private int UnescapeValue(Span<char> value, int escapeIndex)
+    {
+        var length = escapeIndex;
+        var index = escapeIndex;
+
+        while (true)
+        {
+            value[length++] = value[index + 1];
+            index += 2;
+            escapeIndex = value.Slice(index).IndexOf(_escapeChar);
+
+            if (escapeIndex < 0)
             {
-                case TabularSeparator.Delimiter:
-                    {
-                        length--;
-                    }
-                    break;
-                case TabularSeparator.LineTerminator:
-                    {
-                        length -= _tokenT.Length;
-                    }
-                    break;
+                value.Slice(index).CopyTo(value.Slice(length));
+
+                return length + value.Length - index;
             }
 
-            if (length > 0)
+            value.Slice(index, escapeIndex).CopyTo(value.Slice(length));
+            length += escapeIndex;
+            index += escapeIndex;
+        }
+    }
+
+    private OperationStatus ScanFields(ReadOnlySpan<char> source, ref TabularParserState state, Span<int> fieldEnds, ref int fieldCount, out int scanEnd)
+    {
+        var fieldStart = state.Position;
+        var isStartOfRecord = state.Area == TabularParsingArea.StartOfRecord;
+
+        if (isStartOfRecord && (source[fieldStart] == _commentPrefix))
+        {
+            scanEnd = fieldStart + 1;
+
+            return OperationStatus.Done;
+        }
+
+        var chars = MemoryMarshal.Cast<char, ushort>(source);
+        var runCount = fieldCount;
+        var index = fieldStart;
+        var insideMask = 0u;
+        var closingMask = 0u;
+        var previousStops = 0u;
+        var status = OperationStatus.Done;
+
+        scanEnd = source.Length;
+
+        while (index < source.Length - s_blockLength)
+        {
+            if (fieldCount > fieldEnds.Length - s_blockLength)
             {
-                source = source.Slice(offset, length);
+                status = OperationStatus.DestinationTooSmall;
 
-                if (fieldInfo.CharsEscaped == 0)
+                break;
+            }
+
+            var stops = GetStopMask(chars, index, out var hasSpecialChars);
+
+            if (hasSpecialChars || ((insideMask | closingMask) != 0))
+            {
+                var quotes = GetCharMask(chars, index, _quoteChar);
+                var delimiters = GetCharMask(chars, index, _delimiter);
+                var lineTerminators = stops & ~delimiters;
+                var inside = quotes;
+
+                inside ^= inside << 1;
+                inside ^= inside << 2;
+                inside ^= inside << 4;
+                inside ^= inside << 8;
+                inside ^= inside << 16;
+                inside ^= insideMask;
+
+                var openings = quotes & inside;
+                var closings = quotes & ~inside;
+
+                delimiters &= ~inside;
+                lineTerminators &= ~inside;
+                stops = delimiters | lineTerminators;
+
+                var fieldStarts = (delimiters << 1) | (lineTerminators << _lineTerminatorLength);
+                var recordStarts = lineTerminators << _lineTerminatorLength;
+
+                if (index == state.Position)
                 {
-                    MemoryMarshal.TryGetArray(source, out var segment);
-
-                    field = new(segment);
-
-                    return;
+                    fieldStarts |= 1;
+                }
+                else if (_lineTerminatorLength == 1)
+                {
+                    if ((previousStops >> 31) != 0)
+                    {
+                        fieldStarts |= 1;
+                        recordStarts |= source[index - 1] != _delimiter ? 1u : 0u;
+                    }
                 }
                 else
                 {
-                    field = new(length - fieldInfo.CharsEscaped);
+                    if ((previousStops >> 31) != 0)
+                    {
+                        if (source[index - 1] == _delimiter)
+                        {
+                            fieldStarts |= 1;
+                        }
+                        else
+                        {
+                            fieldStarts |= 2;
+                            recordStarts |= 2;
+                        }
+                    }
 
-                    UnescapeField(source.Span, field.AsSpan(), _tokenE);
+                    if ((((previousStops >> 30) & 1) != 0) && (source[index - 2] != _delimiter))
+                    {
+                        fieldStarts |= 1;
+                        recordStarts |= 1;
+                    }
                 }
+
+                var afterClosings = (closings << 1) | closingMask;
+                var invalid = afterClosings & ~stops;
+
+                if (_escapeChar == _quoteChar)
+                {
+                    invalid &= ~openings;
+                    fieldStarts |= afterClosings;
+                }
+                else
+                {
+                    invalid |= GetCharMask(chars, index, _escapeChar) & inside;
+                }
+
+                invalid |= openings & ~fieldStarts;
+
+                if (_commentPrefix.HasValue)
+                {
+                    invalid |= GetCharMask(chars, index, _commentPrefix.Value) & recordStarts;
+                }
+
+                if (invalid != 0)
+                {
+                    scanEnd = index + s_blockLength;
+
+                    break;
+                }
+
+                insideMask = (uint)((int)inside >> 31);
+                closingMask = closings >> 31;
+            }
+
+            var target = fieldEnds.Slice(fieldCount);
+            var stopCount = BitOperations.PopCount(stops);
+
+            previousStops = stops;
+
+            target[0] = index + BitOperations.TrailingZeroCount(stops);
+            stops &= stops - 1;
+            target[1] = index + BitOperations.TrailingZeroCount(stops);
+            stops &= stops - 1;
+            target[2] = index + BitOperations.TrailingZeroCount(stops);
+            stops &= stops - 1;
+            target[3] = index + BitOperations.TrailingZeroCount(stops);
+            stops &= stops - 1;
+
+            for (var i = 4; i < stopCount; i += 4)
+            {
+                target[i + 0] = index + BitOperations.TrailingZeroCount(stops);
+                stops &= stops - 1;
+                target[i + 1] = index + BitOperations.TrailingZeroCount(stops);
+                stops &= stops - 1;
+                target[i + 2] = index + BitOperations.TrailingZeroCount(stops);
+                stops &= stops - 1;
+                target[i + 3] = index + BitOperations.TrailingZeroCount(stops);
+                stops &= stops - 1;
+            }
+
+            fieldCount += stopCount;
+            index += s_blockLength;
+        }
+
+        if (fieldCount != runCount)
+        {
+            var fieldEnd = fieldEnds[fieldCount - 1];
+
+            isStartOfRecord = source[fieldEnd] != _delimiter;
+            fieldStart = fieldEnd + (isStartOfRecord ? _lineTerminatorLength : 1);
+        }
+
+        state.Position = fieldStart;
+        state.Area = isStartOfRecord ? TabularParsingArea.StartOfRecord : TabularParsingArea.StartOfField;
+
+        return status;
+    }
+
+    private uint GetStopMask(ReadOnlySpan<ushort> chars, int index, out bool hasSpecialChars)
+    {
+        var mask = 0u;
+
+        if (Vector256.IsHardwareAccelerated)
+        {
+            var delimiters = Vector256.Create((ushort)_delimiter);
+            var lineTerminatorStarts = Vector256.Create((ushort)_lineTerminatorStart);
+            var lineTerminatorEnds = Vector256.Create((ushort)_lineTerminatorEnd);
+            var quoteChars = Vector256.Create((ushort)_quoteChar);
+            var specialChars = Vector256<ushort>.Zero;
+
+            for (var offset = 0; offset < s_blockLength; offset += Vector256<ushort>.Count)
+            {
+                var block = Vector256.Create(chars.Slice(index + offset, Vector256<ushort>.Count));
+                var lineTerminators = Vector256.Equals(block, lineTerminatorStarts);
+
+                if (_lineTerminatorLength != 1)
+                {
+                    lineTerminators &= Vector256.Equals(Vector256.Create(chars.Slice(index + offset + 1, Vector256<ushort>.Count)), lineTerminatorEnds);
+                }
+
+                mask |= (Vector256.Equals(block, delimiters) | lineTerminators).ExtractMostSignificantBits() << offset;
+                specialChars |= Vector256.Equals(block, quoteChars);
+
+                if (_escapeChar != _quoteChar)
+                {
+                    specialChars |= Vector256.Equals(block, Vector256.Create((ushort)_escapeChar));
+                }
+
+                if (_commentPrefix.HasValue)
+                {
+                    specialChars |= Vector256.Equals(block, Vector256.Create((ushort)_commentPrefix.Value));
+                }
+            }
+
+            hasSpecialChars = specialChars != Vector256<ushort>.Zero;
+        }
+        else
+        {
+            var delimiters = Vector128.Create((ushort)_delimiter);
+            var lineTerminatorStarts = Vector128.Create((ushort)_lineTerminatorStart);
+            var lineTerminatorEnds = Vector128.Create((ushort)_lineTerminatorEnd);
+            var quoteChars = Vector128.Create((ushort)_quoteChar);
+            var specialChars = Vector128<ushort>.Zero;
+
+            for (var offset = 0; offset < s_blockLength; offset += Vector128<ushort>.Count)
+            {
+                var block = Vector128.Create(chars.Slice(index + offset, Vector128<ushort>.Count));
+                var lineTerminators = Vector128.Equals(block, lineTerminatorStarts);
+
+                if (_lineTerminatorLength != 1)
+                {
+                    lineTerminators &= Vector128.Equals(Vector128.Create(chars.Slice(index + offset + 1, Vector128<ushort>.Count)), lineTerminatorEnds);
+                }
+
+                mask |= (Vector128.Equals(block, delimiters) | lineTerminators).ExtractMostSignificantBits() << offset;
+                specialChars |= Vector128.Equals(block, quoteChars);
+
+                if (_escapeChar != _quoteChar)
+                {
+                    specialChars |= Vector128.Equals(block, Vector128.Create((ushort)_escapeChar));
+                }
+
+                if (_commentPrefix.HasValue)
+                {
+                    specialChars |= Vector128.Equals(block, Vector128.Create((ushort)_commentPrefix.Value));
+                }
+            }
+
+            hasSpecialChars = specialChars != Vector128<ushort>.Zero;
+        }
+
+        return mask;
+    }
+
+    private static uint GetCharMask(ReadOnlySpan<ushort> chars, int index, char value)
+    {
+        var mask = 0u;
+
+        if (Vector256.IsHardwareAccelerated)
+        {
+            var values = Vector256.Create((ushort)value);
+
+            for (var offset = 0; offset < s_blockLength; offset += Vector256<ushort>.Count)
+            {
+                mask |= Vector256.Equals(Vector256.Create(chars.Slice(index + offset, Vector256<ushort>.Count)), values).ExtractMostSignificantBits() << offset;
             }
         }
         else
         {
-            var length = fieldInfo.CharsUsed - 1;
+            var values = Vector128.Create((ushort)value);
 
-            switch (fieldInfo.Separator)
+            for (var offset = 0; offset < s_blockLength; offset += Vector128<ushort>.Count)
             {
-                case TabularSeparator.LineTerminator:
-                    {
-                        length -= _tokenT.Length;
-                    }
-                    break;
-            }
-
-            if (length > 0)
-            {
-                field = new(length);
-                source = source.Slice(1, length);
-                source.Span.CopyTo(field.AsSpan());
+                mask |= Vector128.Equals(Vector128.Create(chars.Slice(index + offset, Vector128<ushort>.Count)), values).ExtractMostSignificantBits() << offset;
             }
         }
-    }
 
-    private static void UnescapeField(ReadOnlySpan<char> source, Span<char> target, char token)
-    {
-        var escape = false;
-        var j = 0;
-
-        for (var i = 0; i < source.Length; i++)
-        {
-            var value = source[i];
-
-            escape = (value == token) && !escape;
-
-            if (!escape)
-            {
-                target[j++] = value;
-            }
-        }
-    }
-
-    private static void StoreField(PooledQueue<TabularFieldInfo> fields, ref TabularParserState state, TabularSeparator separator)
-    {
-        var fieldInfo = new TabularFieldInfo(
-            state.CharsParsed,
-            state.CharsEscaped,
-            separator,
-            state.FoundQuoting,
-            state.FoundAnnotation);
-
-        fields.Enqueue(fieldInfo);
-        state = default;
+        return mask;
     }
 }

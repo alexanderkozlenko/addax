@@ -11,31 +11,40 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
         public readonly int FieldOrder;
         public readonly string FieldNameLiteral;
         public readonly string MemberIdentifier;
+        public readonly string MemberNameLiteral;
         public readonly string ValueTypeName;
+        public readonly string ValueTypeKey;
+        public readonly string ValueTypeCode;
         public readonly string ConverterTypeName;
-        public readonly bool SupportsWriting;
-        public readonly bool SupportsReading;
-        public readonly bool IsNullableT;
+        public readonly TabularFieldAccess FieldAccess;
+        public readonly TabularTypeModifier ValueTypeModifier;
 
         public TabularFieldMapping(
             int fieldOrder,
             string memberIdentifier,
-            bool supportsReading,
-            bool supportsWriting,
-            bool isNullableT,
+            string memberNameLiteral,
+            TabularFieldAccess fieldAccess,
+            TabularTypeModifier valueTypeModifier,
             string valueTypeName,
+            string valueTypeKey,
+            string valueTypeCode,
             string converterTypeName,
             string fieldNameLiteral)
         {
             Debug.Assert(memberIdentifier != null);
+            Debug.Assert(memberNameLiteral != null);
             Debug.Assert(valueTypeName != null);
+            Debug.Assert(valueTypeKey != null);
+            Debug.Assert((valueTypeCode == null) || (converterTypeName == null));
 
             FieldOrder = fieldOrder;
             MemberIdentifier = memberIdentifier;
-            SupportsReading = supportsReading;
-            SupportsWriting = supportsWriting;
-            IsNullableT = isNullableT;
+            MemberNameLiteral = memberNameLiteral;
+            FieldAccess = fieldAccess;
+            ValueTypeModifier = valueTypeModifier;
             ValueTypeName = valueTypeName;
+            ValueTypeKey = valueTypeKey;
+            ValueTypeCode = valueTypeCode;
             ConverterTypeName = converterTypeName;
             FieldNameLiteral = fieldNameLiteral;
         }
@@ -46,11 +55,13 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                 (FieldOrder == other.FieldOrder) &&
                 (FieldNameLiteral == other.FieldNameLiteral) &&
                 (MemberIdentifier == other.MemberIdentifier) &&
+                (MemberNameLiteral == other.MemberNameLiteral) &&
                 (ValueTypeName == other.ValueTypeName) &&
+                (ValueTypeKey == other.ValueTypeKey) &&
+                (ValueTypeCode == other.ValueTypeCode) &&
                 (ConverterTypeName == other.ConverterTypeName) &&
-                (SupportsWriting == other.SupportsWriting) &&
-                (SupportsReading == other.SupportsReading) &&
-                (IsNullableT == other.IsNullableT);
+                (FieldAccess == other.FieldAccess) &&
+                (ValueTypeModifier == other.ValueTypeModifier);
         }
 
         public override bool Equals(object obj)
@@ -65,13 +76,25 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             builder.Add(FieldOrder);
             builder.Add(FieldNameLiteral);
             builder.Add(MemberIdentifier);
+            builder.Add(MemberNameLiteral);
             builder.Add(ValueTypeName);
+            builder.Add(ValueTypeKey);
+            builder.Add(ValueTypeCode);
             builder.Add(ConverterTypeName);
-            builder.Add(SupportsWriting);
-            builder.Add(SupportsReading);
-            builder.Add(IsNullableT);
+            builder.Add(FieldAccess);
+            builder.Add(ValueTypeModifier);
 
             return builder.ToHashCode();
+        }
+
+        public static bool operator ==(TabularFieldMapping left, TabularFieldMapping right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(TabularFieldMapping left, TabularFieldMapping right)
+        {
+            return !left.Equals(right);
         }
     }
 }

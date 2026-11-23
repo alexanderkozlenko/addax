@@ -5,11 +5,10 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="DateOnly" /> value from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="DateOnly" /> value to or from a character sequence.</summary>
+/// <remarks>When parsing with the default format, an optional time zone offset is accepted and ignored.</remarks>
 public class TabularDateOnlyConverter : TabularConverter<DateOnly>
 {
-    internal static readonly TabularDateOnlyConverter Instance = new();
-
     private readonly string? _format;
 
     /// <summary>Initializes a new instance of the <see cref="TabularDateOnlyConverter" /> class.</summary>
@@ -19,7 +18,7 @@ public class TabularDateOnlyConverter : TabularConverter<DateOnly>
 
     /// <summary>Initializes a new instance of the <see cref="TabularDateOnlyConverter" /> class with the specified format.</summary>
     /// <param name="format">A standard or custom date format string.</param>
-    protected TabularDateOnlyConverter([StringSyntax(StringSyntaxAttribute.DateOnlyFormat)] string? format)
+    public TabularDateOnlyConverter([StringSyntax(StringSyntaxAttribute.DateOnlyFormat)] string? format)
     {
         _format = format;
     }
@@ -33,8 +32,22 @@ public class TabularDateOnlyConverter : TabularConverter<DateOnly>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out DateOnly value)
     {
-        const DateTimeStyles styles = DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite;
+        const DateTimeStyles styles = DateTimeStyles.None;
 
-        return DateOnly.TryParseExact(source, _format ?? "yyyy'-'MM'-'dd", provider, styles, out value);
+        if (_format is null)
+        {
+            if (DateTimeOffset.TryParseExact(source, "yyyy'-'MM'-'ddK", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var result))
+            {
+                value = DateOnly.FromDateTime(result.DateTime);
+
+                return true;
+            }
+
+            value = default;
+
+            return false;
+        }
+
+        return DateOnly.TryParseExact(source, _format, provider, styles, out value);
     }
 }

@@ -4,9 +4,28 @@ using Addax.Formats.Tabular;
 namespace MyNamespace;
 
 [TabularRecord]
-public class NonConstantOrderRecord
+public class PointerArrayMemberRecord
 {
-    [TabularFieldOrder(int.Parse("0"))]
+    [TabularFieldOrder(0)]
+    public int*[] MyValue0;
+}
+
+[TabularRecord]
+public class PointerMemberRecord
+{
+    [TabularFieldOrder(0)]
+    public int* MyValue0;
+}
+
+public sealed class GenericConverter<T> : TabularConverter<int>
+{
+}
+
+[TabularRecord]
+public class PointerTypeArgumentRecord
+{
+    [TabularFieldOrder(0)]
+    [TabularConverter<GenericConverter<int*[]>>]
     public int MyValue0
     {
         get;

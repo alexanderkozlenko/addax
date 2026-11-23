@@ -1,7 +1,6 @@
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text;
-using System.Text.Json;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -12,7 +11,7 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp.UnitTests;
 
 public sealed partial class TabularHandlerGeneratorTests
 {
-    private static readonly TabularDialect s_dialect = new("\n", ',', '"', '"', '#');
+    private static readonly TabularDialect s_dialect = new("$", '^', '\'', '\'', '!');
     private static readonly CSharpCompilation s_compilation = CreateCompilation();
     private static readonly ConcurrentDictionary<string, Lazy<Task<AssetResult>>> s_assetResults = new(StringComparer.Ordinal);
 
@@ -33,32 +32,32 @@ public sealed partial class TabularHandlerGeneratorTests
         return generatorDriver.GetRunResult().Results.Single().TrackedOutputSteps[stepName].Single().Outputs.Single().Reason;
     }
 
-    private static Func<string, string> CreateRoundTripMethod(Assembly assembly, string recordTypeName)
+    private static Func<string, TabularOptions?, string> CreateRoundTripMethod(Assembly assembly, string recordTypeName)
     {
         var recordType = assembly.GetType(recordTypeName, throwOnError: true)!;
 
         return typeof(TabularHandlerGeneratorTests)
             .GetMethod(nameof(RoundTrip), BindingFlags.NonPublic | BindingFlags.Static)!
             .MakeGenericMethod(recordType)
-            .CreateDelegate<Func<string, string>>();
+            .CreateDelegate<Func<string, TabularOptions?, string>>();
     }
 
-    private static Func<string, Task<string>> CreateRoundTripAsyncMethod(Assembly assembly, string recordTypeName)
+    private static Func<string, TabularOptions?, Task<string>> CreateRoundTripAsyncMethod(Assembly assembly, string recordTypeName)
     {
         var recordType = assembly.GetType(recordTypeName, throwOnError: true)!;
 
         return typeof(TabularHandlerGeneratorTests)
             .GetMethod(nameof(RoundTripAsync), BindingFlags.NonPublic | BindingFlags.Static)!
             .MakeGenericMethod(recordType)
-            .CreateDelegate<Func<string, Task<string>>>();
+            .CreateDelegate<Func<string, TabularOptions?, Task<string>>>();
     }
 
-    private static string RoundTrip<T>(string content)
+    private static string RoundTrip<T>(string content, TabularOptions? options)
         where T : notnull
     {
         var records = new List<T>();
 
-        using (var reader = new TabularReader<T>(new MemoryStream(Encoding.UTF8.GetBytes(content)), s_dialect))
+        using (var reader = new TabularReader<T>(new MemoryStream(Encoding.UTF8.GetBytes(content)), s_dialect, options))
         {
             while (reader.TryReadRecord())
             {
@@ -68,7 +67,7 @@ public sealed partial class TabularHandlerGeneratorTests
 
         using var stream = new MemoryStream();
 
-        using (var writer = new TabularWriter<T>(stream, s_dialect))
+        using (var writer = new TabularWriter<T>(stream, s_dialect, options))
         {
             foreach (var record in records)
             {
@@ -79,12 +78,12 @@ public sealed partial class TabularHandlerGeneratorTests
         return Encoding.UTF8.GetString(stream.ToArray());
     }
 
-    private static async Task<string> RoundTripAsync<T>(string content)
+    private static async Task<string> RoundTripAsync<T>(string content, TabularOptions? options)
         where T : notnull
     {
         var records = new List<T>();
 
-        await using (var reader = new TabularReader<T>(new MemoryStream(Encoding.UTF8.GetBytes(content)), s_dialect))
+        await using (var reader = new TabularReader<T>(new MemoryStream(Encoding.UTF8.GetBytes(content)), s_dialect, options))
         {
             while (await reader.TryReadRecordAsync())
             {
@@ -94,7 +93,7 @@ public sealed partial class TabularHandlerGeneratorTests
 
         using var stream = new MemoryStream();
 
-        await using (var writer = new TabularWriter<T>(stream, s_dialect))
+        await using (var writer = new TabularWriter<T>(stream, s_dialect, options))
         {
             foreach (var record in records)
             {
@@ -143,7 +142,7 @@ public sealed partial class TabularHandlerGeneratorTests
             .DescendantNodes()
             .OfType<BaseTypeDeclarationSyntax>()
             .Select(x => semanticModel.GetDeclaredSymbol(x)!)
-            .Where(static x => x.GetAttributes().Any(static x => x.AttributeClass?.ToDisplayString() == "Addax.Formats.Tabular.TabularRecordAttribute"))
+            .Where(static x => x.GetAttributes().Any(static y => y.AttributeClass?.ToDisplayString() == "Addax.Formats.Tabular.TabularRecordAttribute"))
             .ToArray();
 
         using var assemblyStream = new MemoryStream();
@@ -199,20 +198,6 @@ public sealed partial class TabularHandlerGeneratorTests
         return CSharpSyntaxTree.ParseText(SourceText.From(assetText, Encoding.UTF8), path: assetPath);
     }
 
-    private static async Task<(string Content, string? ExpectedContent)> GetRoundTripAsync(string roundTripName)
-    {
-        var assetPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, "Assets", "RoundTrips.json");
-
-        using var assetDocument = JsonDocument.Parse(await File.ReadAllTextAsync(assetPath));
-
-        var roundTrip = assetDocument.RootElement.GetProperty(roundTripName);
-
-        var content = string.Join("\n", roundTrip.GetProperty("content").EnumerateArray().Select(static x => x.GetString()));
-        var expectedContent = roundTrip.TryGetProperty("expected", out var expected) ? string.Join("\n", expected.EnumerateArray().Select(static x => x.GetString())) : null;
-
-        return (content, expectedContent);
-    }
-
     private static CSharpCompilation CreateCompilation()
     {
         var runtimeLocation = Path.GetDirectoryName(typeof(object).Assembly.Location)!;
@@ -221,12 +206,14 @@ public sealed partial class TabularHandlerGeneratorTests
             "MyAssembly",
             [],
             [
+                MetadataReference.CreateFromFile(GetLibraryPath("System.Linq")),
                 MetadataReference.CreateFromFile(GetLibraryPath("System.Linq.Expressions")),
                 MetadataReference.CreateFromFile(GetLibraryPath("System.Memory")),
                 MetadataReference.CreateFromFile(GetLibraryPath("System.Private.CoreLib")),
                 MetadataReference.CreateFromFile(GetLibraryPath("System.Private.Uri")),
                 MetadataReference.CreateFromFile(GetLibraryPath("System.Runtime")),
                 MetadataReference.CreateFromFile(GetLibraryPath("System.Runtime.Numerics")),
+                MetadataReference.CreateFromFile(GetLibraryPath("Microsoft.CSharp")),
                 MetadataReference.CreateFromFile(typeof(TabularContentException).Assembly.Location),
             ],
             new(

@@ -2,11 +2,9 @@
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="char" /> value from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="char" /> value to or from a character sequence.</summary>
 public class TabularCharConverter : TabularConverter<char>
 {
-    internal static readonly TabularCharConverter Instance = new();
-
     /// <summary>Initializes a new instance of the <see cref="TabularCharConverter" /> class.</summary>
     public TabularCharConverter()
     {

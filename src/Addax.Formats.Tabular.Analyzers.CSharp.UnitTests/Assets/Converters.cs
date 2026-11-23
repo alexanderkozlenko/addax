@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Addax.Formats.Tabular;
 using Addax.Formats.Tabular.Converters;
@@ -26,7 +25,7 @@ public struct NullableValueConvertersRecord
     public int? MyValue0;
 
     [TabularFieldOrder(1)]
-    [TabularConverter(typeof(TabularGuidConverter))]
+    [TabularConverter<TabularGuidConverter>]
     public Guid? MyValue1
     {
         get;
@@ -127,92 +126,6 @@ public class DefaultAndOptionalConstructorsRecord
     }
 }
 
-public sealed class OptionalConstructorConverter : TabularConverter<int>
-{
-    private OptionalConstructorConverter()
-    {
-    }
-
-    public OptionalConstructorConverter(int myOption = 0)
-    {
-    }
-}
-
-[TabularRecord]
-public class OptionalConstructorRecord
-{
-    [TabularFieldOrder(0)]
-    [TabularConverter<OptionalConstructorConverter>]
-    public int MyValue0
-    {
-        get;
-        set;
-    }
-}
-
-public sealed class AmbiguousConstructorsConverter : TabularConverter<int>
-{
-    public AmbiguousConstructorsConverter(int myOption1 = 0)
-    {
-    }
-
-    public AmbiguousConstructorsConverter(string? myOption2 = null)
-    {
-    }
-}
-
-[TabularRecord]
-public class AmbiguousConstructorsRecord
-{
-    [TabularFieldOrder(0)]
-    [TabularConverter<AmbiguousConstructorsConverter>]
-    public int MyValue0
-    {
-        get;
-        set;
-    }
-}
-
-public sealed class InaccessibleConstructorConverter : TabularConverter<int>
-{
-    private InaccessibleConstructorConverter()
-    {
-    }
-}
-
-[TabularRecord]
-public class InaccessibleConstructorRecord
-{
-    [TabularFieldOrder(0)]
-    [TabularConverter<InaccessibleConstructorConverter>]
-    public int MyValue0
-    {
-        get;
-        set;
-    }
-}
-
-public sealed class RequiredMembersConverter : TabularConverter<int>
-{
-    public required int MyOption
-    {
-        get;
-        init;
-    }
-}
-
-[TabularRecord]
-public class RequiredMembersRecord
-{
-    [TabularFieldOrder(0)]
-    [TabularConverter<RequiredMembersConverter>]
-    public int MyValue0
-    {
-        get;
-        set;
-    }
-}
-
 public sealed class SetsRequiredMembersConverter : TabularConverter<int>
 {
     [SetsRequiredMembers]
@@ -233,22 +146,6 @@ public class SetsRequiredMembersRecord
 {
     [TabularFieldOrder(0)]
     [TabularConverter<SetsRequiredMembersConverter>]
-    public int MyValue0
-    {
-        get;
-        set;
-    }
-}
-
-public abstract class AbstractConverter : TabularConverter<int>
-{
-}
-
-[TabularRecord]
-public class AbstractConverterRecord
-{
-    [TabularFieldOrder(0)]
-    [TabularConverter<AbstractConverter>]
     public int MyValue0
     {
         get;
@@ -282,18 +179,6 @@ file sealed class FileLocalTypeArgument
 }
 
 [TabularRecord]
-public class DynamicTypeArgumentRecord
-{
-    [TabularFieldOrder(0)]
-    [TabularConverter(typeof(GenericConverter<List<dynamic>>))]
-    public int MyValue0
-    {
-        get;
-        set;
-    }
-}
-
-[TabularRecord]
 public class RefStructTypeArgumentRecord
 {
     [TabularFieldOrder(0)]
@@ -318,54 +203,6 @@ public class FileLocalTypeArgumentRecord
 }
 
 [TabularRecord]
-public class NotConverterRecord
-{
-    [TabularFieldOrder(0)]
-    [TabularConverter(typeof(string))]
-    public int MyValue0
-    {
-        get;
-        set;
-    }
-}
-
-[TabularRecord]
-public class ArrayConverterRecord
-{
-    [TabularFieldOrder(0)]
-    [TabularConverter(typeof(TabularInt32Converter[]))]
-    public int MyValue0
-    {
-        get;
-        set;
-    }
-}
-
-[TabularRecord]
-public class NullConverterRecord
-{
-    [TabularFieldOrder(0)]
-    [TabularConverter(null!)]
-    public int MyValue0
-    {
-        get;
-        set;
-    }
-}
-
-[TabularRecord]
-public class OpenGenericConverterRecord
-{
-    [TabularFieldOrder(0)]
-    [TabularConverter(typeof(GenericConverter<>))]
-    public int MyValue0
-    {
-        get;
-        set;
-    }
-}
-
-[TabularRecord]
 public class PrivateConverterRecord
 {
     [TabularFieldOrder(0)]
@@ -378,17 +215,5 @@ public class PrivateConverterRecord
 
     private sealed class PrivateConverter : TabularConverter<int>
     {
-    }
-}
-
-[TabularRecord]
-public class PointerTypeArgumentRecord
-{
-    [TabularFieldOrder(0)]
-    [TabularConverter(typeof(GenericConverter<int*[]>))]
-    public int MyValue0
-    {
-        get;
-        set;
     }
 }

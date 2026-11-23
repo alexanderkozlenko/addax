@@ -4,11 +4,9 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="float" /> value from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="float" /> value to or from a character sequence.</summary>
 public class TabularSingleConverter : TabularConverter<float>
 {
-    internal static readonly TabularSingleConverter Instance = new();
-
     /// <summary>Initializes a new instance of the <see cref="TabularSingleConverter" /> class.</summary>
     public TabularSingleConverter()
     {
@@ -23,8 +21,8 @@ public class TabularSingleConverter : TabularConverter<float>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out float value)
     {
-        const NumberStyles styles = NumberStyles.AllowThousands | NumberStyles.Float;
+        const NumberStyles styles = NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent;
 
-        return float.TryParse(source, styles, provider, out value) || TabularNumber<float>.TryParseAsPartsPer(source, styles, provider, out value);
+        return float.TryParse(source, styles, provider, out value);
     }
 }

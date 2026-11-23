@@ -11,21 +11,21 @@ public record PositionalRecord(
     [property: TabularFieldOrder(1)] string? MyValue1);
 
 [TabularRecord]
-public record PositionalRecordWithReversedOrders(
+public record PositionalWithReversedOrdersRecord(
     [property: TabularFieldOrder(1)] int MyValue1,
     [property: TabularFieldOrder(0)] string? MyValue0);
 
 [TabularRecord]
-public sealed record PositionalRecordWithConverterAndKeywords(
+public sealed record PositionalWithConverterAndKeywordsRecord(
     [property: TabularFieldOrder(0)][property: TabularConverter<TabularInt32Converter>] int? @class,
     [property: TabularFieldOrder(1)] Guid @event);
 
 [TabularRecord]
-public readonly record struct ReadOnlyRecordStruct(
+public readonly record struct ReadOnlyPositionalStructRecord(
     [property: TabularFieldOrder(0)] int MyValue0);
 
 [TabularRecord]
-public record struct RecordStructWithExtraGetOnlyMember(
+public record struct PositionalStructWithExtraGetOnlyMemberRecord(
     [property: TabularFieldOrder(0)] int MyValue0)
 {
     public int MyValue1
@@ -35,22 +35,22 @@ public record struct RecordStructWithExtraGetOnlyMember(
 }
 
 [TabularRecord]
-public record PositionalRecordWithCaseDistinctParameters(
+public record PositionalWithCaseDistinctParametersRecord(
     [property: TabularFieldOrder(0)] int MyValue0,
     [property: TabularFieldOrder(1)] int myValue0);
 
 [TabularRecord]
-public record PositionalRecordWithExtraConstructor(
+public record PositionalWithExtraConstructorRecord(
     [property: TabularFieldOrder(0)] int MyValue0)
 {
-    public PositionalRecordWithExtraConstructor(int myValue0, int myValue1)
+    public PositionalWithExtraConstructorRecord(int myValue0, int myValue1)
         : this(myValue0 + myValue1)
     {
     }
 }
 
 [TabularRecord]
-public record PositionalRecordWithExtraSettableMember(
+public record PositionalWithExtraSettableMemberRecord(
     [property: TabularFieldOrder(0)] string MyValue0)
 {
     [TabularFieldOrder(1)]
@@ -62,24 +62,24 @@ public record PositionalRecordWithExtraSettableMember(
 }
 
 [TabularRecord]
-public record PositionalRecordWithUnmappedParameter(
+public record PositionalWithUnmappedParameterRecord(
     [property: TabularFieldOrder(0)] int MyValue0,
     int MyValue1);
 
 [TabularRecord]
-public record PositionalRecordWithOptionalParameter(
+public record PositionalWithOptionalParameterRecord(
     [property: TabularFieldOrder(0)] int MyValue0 = 5);
 
 [TabularRecord]
-public record PositionalRecordWithInParameter(
+public record PositionalWithInParameterRecord(
     [property: TabularFieldOrder(0)] in int MyValue0);
 
 [TabularRecord]
-public record PositionalRecordWithParamsParameter(
+public record PositionalWithParamsParameterRecord(
     [property: TabularFieldOrder(0)][property: TabularConverter<TabularBase16ArrayConverter>] params byte[] MyValue0);
 
 [TabularRecord]
-public record struct RecordStructWithExtraSettableMember(
+public record struct PositionalStructWithExtraSettableMemberRecord(
     [property: TabularFieldOrder(0)] int MyValue0)
 {
     [TabularFieldOrder(1)]
@@ -91,7 +91,7 @@ public record struct RecordStructWithExtraSettableMember(
 }
 
 [TabularRecord]
-public readonly struct ReadOnlyStructWithPrimaryConstructor(int myValue0)
+public readonly struct ReadOnlyStructWithPrimaryConstructorRecord(int myValue0)
 {
     [TabularFieldOrder(0)]
     public int MyValue0
@@ -101,7 +101,7 @@ public readonly struct ReadOnlyStructWithPrimaryConstructor(int myValue0)
 }
 
 [TabularRecord]
-public class ClassWithPrimaryConstructor(int myValue0, long? myValue1)
+public class ClassWithPrimaryConstructorRecord(int myValue0, long? myValue1)
 {
     [TabularFieldOrder(0)]
     public int MyValue0
@@ -117,13 +117,13 @@ public class ClassWithPrimaryConstructor(int myValue0, long? myValue1)
 }
 
 [TabularRecord]
-public class ClassWithSeveralConstructors
+public class ClassWithSeveralConstructorsRecord
 {
-    public ClassWithSeveralConstructors()
+    public ClassWithSeveralConstructorsRecord()
     {
     }
 
-    public ClassWithSeveralConstructors(int myValue0)
+    public ClassWithSeveralConstructorsRecord(int myValue0)
     {
         MyValue0 = myValue0;
     }
@@ -137,9 +137,9 @@ public class ClassWithSeveralConstructors
 }
 
 [TabularRecord]
-public class ClassWithOptionalConstructor
+public class ClassWithOptionalConstructorRecord
 {
-    public ClassWithOptionalConstructor(int myValue1 = 0)
+    public ClassWithOptionalConstructorRecord(int myValue1 = 0)
     {
     }
 
@@ -152,13 +152,13 @@ public class ClassWithOptionalConstructor
 }
 
 [TabularRecord]
-public class ClassWithTwoOptionalConstructors
+public class ClassWithTwoOptionalConstructorsRecord
 {
-    public ClassWithTwoOptionalConstructors(int myValue1 = 0)
+    public ClassWithTwoOptionalConstructorsRecord(int myValue1 = 0)
     {
     }
 
-    public ClassWithTwoOptionalConstructors(string? myValue1 = null)
+    public ClassWithTwoOptionalConstructorsRecord(string? myValue1 = null)
     {
     }
 
@@ -171,9 +171,9 @@ public class ClassWithTwoOptionalConstructors
 }
 
 [TabularRecord]
-public class ClassWithPrivateConstructor
+public class ClassWithPrivateConstructorRecord
 {
-    private ClassWithPrivateConstructor()
+    private ClassWithPrivateConstructorRecord()
     {
     }
 
@@ -186,7 +186,7 @@ public class ClassWithPrivateConstructor
 }
 
 [TabularRecord]
-public abstract class AbstractClass
+public abstract class AbstractClassRecord
 {
     [TabularFieldOrder(0)]
     public int MyValue0
@@ -197,9 +197,9 @@ public abstract class AbstractClass
 }
 
 [TabularRecord]
-public readonly struct ReadOnlyStructWithConstructor
+public readonly struct ReadOnlyStructWithConstructorRecord
 {
-    public ReadOnlyStructWithConstructor(int myValue0)
+    public ReadOnlyStructWithConstructorRecord(int myValue0)
     {
         MyValue0 = myValue0;
     }
@@ -212,29 +212,9 @@ public readonly struct ReadOnlyStructWithConstructor
 }
 
 [TabularRecord]
-public struct StructWithParameterizedConstructor
+public struct StructWithParameterizedConstructorRecord
 {
-    public StructWithParameterizedConstructor(int myValue0)
-    {
-        MyValue0 = myValue0;
-    }
-
-    [TabularFieldOrder(0)]
-    public int MyValue0
-    {
-        get;
-        set;
-    }
-}
-
-[TabularRecord]
-public struct StructWithParameterlessAndParameterizedConstructors
-{
-    public StructWithParameterlessAndParameterizedConstructors()
-    {
-    }
-
-    public StructWithParameterlessAndParameterizedConstructors(int myValue0)
+    public StructWithParameterizedConstructorRecord(int myValue0)
     {
         MyValue0 = myValue0;
     }
@@ -248,9 +228,29 @@ public struct StructWithParameterlessAndParameterizedConstructors
 }
 
 [TabularRecord]
-public class ClassWithVarargConstructor
+public struct StructWithParameterlessAndParameterizedConstructorsRecord
 {
-    public ClassWithVarargConstructor(__arglist)
+    public StructWithParameterlessAndParameterizedConstructorsRecord()
+    {
+    }
+
+    public StructWithParameterlessAndParameterizedConstructorsRecord(int myValue0)
+    {
+        MyValue0 = myValue0;
+    }
+
+    [TabularFieldOrder(0)]
+    public int MyValue0
+    {
+        get;
+        set;
+    }
+}
+
+[TabularRecord]
+public class ClassWithVarargConstructorRecord
+{
+    public ClassWithVarargConstructorRecord(__arglist)
     {
     }
 
@@ -263,9 +263,9 @@ public class ClassWithVarargConstructor
 }
 
 [TabularRecord]
-public struct StructWithVarargConstructor
+public struct StructWithVarargConstructorRecord
 {
-    public StructWithVarargConstructor(__arglist)
+    public StructWithVarargConstructorRecord(__arglist)
     {
     }
 
@@ -274,13 +274,13 @@ public struct StructWithVarargConstructor
 }
 
 [TabularRecord]
-public class ClassWithParameterlessAndVarargConstructors
+public class ClassWithParameterlessAndVarargConstructorsRecord
 {
-    public ClassWithParameterlessAndVarargConstructors()
+    public ClassWithParameterlessAndVarargConstructorsRecord()
     {
     }
 
-    public ClassWithParameterlessAndVarargConstructors(__arglist)
+    public ClassWithParameterlessAndVarargConstructorsRecord(__arglist)
     {
     }
 
@@ -293,7 +293,7 @@ public class ClassWithParameterlessAndVarargConstructors
 }
 
 [TabularRecord]
-public class RequiredMappedMember
+public class RequiredMappedMemberRecord
 {
     [TabularFieldOrder(0)]
     public required int MyValue0
@@ -304,7 +304,7 @@ public class RequiredMappedMember
 }
 
 [TabularRecord]
-public class RequiredUnmappedMember
+public class RequiredUnmappedMemberRecord
 {
     [TabularFieldOrder(0)]
     public int MyValue0
@@ -321,10 +321,10 @@ public class RequiredUnmappedMember
 }
 
 [TabularRecord]
-public class RequiredUnmappedMemberWithSetsRequiredMembers
+public class RequiredUnmappedMemberWithSetsRequiredMembersRecord
 {
     [SetsRequiredMembers]
-    public RequiredUnmappedMemberWithSetsRequiredMembers()
+    public RequiredUnmappedMemberWithSetsRequiredMembersRecord()
     {
         MyValue1 = string.Empty;
     }
@@ -353,7 +353,7 @@ public class RequiredUnmappedMemberBase
 }
 
 [TabularRecord]
-public class RequiredUnmappedMemberInBase : RequiredUnmappedMemberBase
+public class RequiredUnmappedMemberInBaseRecord : RequiredUnmappedMemberBase
 {
     [TabularFieldOrder(0)]
     public int MyValue0
@@ -374,7 +374,7 @@ public class RequiredMappedMemberBase
 }
 
 [TabularRecord]
-public class RequiredMappedMemberInBase : RequiredMappedMemberBase
+public class RequiredMappedMemberInBaseRecord : RequiredMappedMemberBase
 {
     [TabularFieldOrder(1)]
     public int MyValue1
@@ -385,7 +385,7 @@ public class RequiredMappedMemberInBase : RequiredMappedMemberBase
 }
 
 [TabularRecord]
-public record PositionalRecordWithRequiredMember(
+public record PositionalWithRequiredMemberRecord(
     [property: TabularFieldOrder(0)] int MyValue0)
 {
     public required int MyValue1
@@ -396,7 +396,7 @@ public record PositionalRecordWithRequiredMember(
 }
 
 [TabularRecord]
-public class ClassPrimaryConstructorWithRequiredMember(int myValue0)
+public class ClassPrimaryConstructorWithRequiredMemberRecord(int myValue0)
 {
     [TabularFieldOrder(0)]
     public required int MyValue0

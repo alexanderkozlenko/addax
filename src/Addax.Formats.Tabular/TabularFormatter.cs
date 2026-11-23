@@ -2,84 +2,84 @@
 
 using System.Buffers;
 using System.Diagnostics;
+using Addax.Formats.Tabular.Buffers;
 using Addax.Formats.Tabular.Primitives;
 
 namespace Addax.Formats.Tabular;
 
 internal sealed class TabularFormatter
 {
-    private readonly string _tokenT;
-    private readonly char _tokenD;
-    private readonly char _tokenQ;
-    private readonly char _tokenE;
-    private readonly char? _tokenA;
-
-    private readonly TabularSearchValues _searchValues;
+    private readonly string _lineTerminator;
+    private readonly char _lineTerminatorStart;
+    private readonly char _lineTerminatorEnd;
+    private readonly char _delimiter;
+    private readonly char _quoteChar;
+    private readonly char _escapeChar;
+    private readonly char? _commentPrefix;
+    private readonly SearchValues<char> _charsRequiringQuotes;
+    private readonly SearchValues<char> _escapableChars;
 
     public TabularFormatter(TabularDialect dialect)
     {
-        Debug.Assert(dialect is not null);
-
-        _tokenT = dialect.LineTerminator;
-        _tokenD = dialect.Delimiter;
-        _tokenQ = dialect.QuoteSymbol;
-        _tokenE = dialect.EscapeSymbol;
-        _tokenA = dialect.AnnotationPrefix;
-
-        _searchValues = dialect.SearchValues;
+        _lineTerminator = dialect.LineTerminator;
+        _lineTerminatorStart = dialect.LineTerminator[0];
+        _lineTerminatorEnd = dialect.LineTerminator[^1];
+        _delimiter = dialect.Delimiter;
+        _quoteChar = dialect.QuoteChar;
+        _escapeChar = dialect.EscapeChar;
+        _commentPrefix = dialect.CommentPrefix;
+        _charsRequiringQuotes = dialect.SearchValues.CharsRequiringQuotes;
+        _escapableChars = dialect.SearchValues.EscapableChars;
     }
 
-    public void WriteDelimiter(IBufferWriter<char> writer)
+    public void WriteLineTerminator(BufferWriter<char> writer)
     {
-        Debug.Assert(writer is not null);
+        var target = writer.GetSpan(_lineTerminator.Length);
 
-        var target = writer.GetSpan(1);
+        target[0] = _lineTerminatorStart;
 
-        target[0] = _tokenD;
-        writer.Advance(1);
+        if (_lineTerminator.Length > 1)
+        {
+            target[1] = _lineTerminatorEnd;
+        }
+
+        writer.Advance(_lineTerminator.Length);
     }
 
-    public void WriteLineTerminator(IBufferWriter<char> writer)
+    public void WriteValue(ReadOnlySpan<char> source, BufferWriter<char> writer, TabularTextInfo textInfo, bool isDelimited)
     {
-        Debug.Assert(writer is not null);
+        var charsRequired = textInfo.CharsRequired + (isDelimited ? 1 : 0);
 
-        var tokenT = _tokenT.AsSpan();
-        var target = writer.GetSpan(_tokenT.Length);
-
-        tokenT.CopyTo(target);
-        writer.Advance(tokenT.Length);
-    }
-
-    public void WriteValue(ReadOnlySpan<char> source, IBufferWriter<char> writer, TabularTextInfo textInfo)
-    {
-        Debug.Assert(writer is not null);
-
-        if (source.IsEmpty)
+        if (charsRequired == 0)
         {
             return;
         }
 
-        var target = writer.GetSpan(textInfo.CharsRequired);
+        var target = writer.GetSpan(charsRequired);
 
-        if (!textInfo.HasUnsafeChars)
+        if (isDelimited)
+        {
+            target[0] = _delimiter;
+            target = target.Slice(1);
+        }
+
+        if (!textInfo.HasQuoting)
         {
             source.CopyTo(target);
         }
         else
         {
-            var search = _tokenQ != _tokenE ? _searchValues.ValuesQE : _searchValues.ValuesQ;
-
-            target[0] = _tokenQ;
+            target[0] = _quoteChar;
             target = target.Slice(1);
 
             while (!source.IsEmpty)
             {
-                var index = source.IndexOfAny(search);
+                var index = source.IndexOfAny(_escapableChars);
 
                 if (index >= 0)
                 {
                     source.Slice(0, index).CopyTo(target);
-                    target[index + 0] = _tokenE;
+                    target[index + 0] = _escapeChar;
                     target[index + 1] = source[index];
                     target = target.Slice(index + 2);
                     source = source.Slice(index + 1);
@@ -92,84 +92,63 @@ internal sealed class TabularFormatter
                 }
             }
 
-            target[0] = _tokenQ;
+            target[0] = _quoteChar;
         }
 
-        writer.Advance(textInfo.CharsRequired);
+        writer.Advance(charsRequired);
     }
 
-    public void WriteAnnotation(ReadOnlySpan<char> source, IBufferWriter<char> writer)
+    public void WriteComment(ReadOnlySpan<char> source, BufferWriter<char> writer)
     {
-        Debug.Assert(writer is not null);
-        Debug.Assert(_tokenA.HasValue);
+        Debug.Assert(_commentPrefix.HasValue);
 
         var targetSize = source.Length + 1;
         var target = writer.GetSpan(targetSize);
 
-        target[0] = _tokenA.Value;
+        target[0] = _commentPrefix.Value;
         source.CopyTo(target.Slice(1));
         writer.Advance(targetSize);
     }
 
     public TabularTextInfo GetTextInfo(ReadOnlySpan<char> source)
     {
+        if (source.IsEmpty)
+        {
+            return default;
+        }
+
         var charsRequired = source.Length;
 
-        var hasUnsafeChars =
-            (source.IndexOfAny(_searchValues.ValuesT0T1DQ) >= 0) ||
-            (_tokenA.HasValue && !source.IsEmpty && (source[0] == _tokenA.Value));
+        var hasQuoting =
+            (source.IndexOfAny(_charsRequiringQuotes) >= 0) ||
+            (_commentPrefix.HasValue && (source[0] == _commentPrefix.Value));
 
-        if (hasUnsafeChars)
+        if (hasQuoting)
         {
-            charsRequired += GetEscapeCount(source) + 2;
+            charsRequired += source.CountAny(_escapableChars) + 2;
         }
 
-        return new(charsRequired, hasUnsafeChars);
+        return new(charsRequired, hasQuoting);
     }
 
-    public bool CanWriteAnnotation(ReadOnlySpan<char> source)
+    public bool CanWriteComment(ReadOnlySpan<char> source)
     {
-        return _tokenT.Length == 1 ?
-            (source.IndexOfAny(_searchValues.ValuesT0) < 0) :
-            (source.IndexOf(_tokenT) < 0);
-    }
-
-    private int GetEscapeCount(ReadOnlySpan<char> source)
-    {
-        var result = 0;
-        var search = _tokenQ != _tokenE ? _searchValues.ValuesQE : _searchValues.ValuesQ;
-
-        while (!source.IsEmpty)
-        {
-            var index = source.IndexOfAny(search);
-
-            if (index >= 0)
-            {
-                result++;
-                source = source.Slice(index + 1);
-            }
-            else
-            {
-                source = default;
-            }
-        }
-
-        return result;
+        return source.IndexOf(_lineTerminator.AsSpan()) < 0;
     }
 
     public int LineTerminatorLength
     {
         get
         {
-            return _tokenT.Length;
+            return _lineTerminator.Length;
         }
     }
 
-    public bool SupportsAnnotations
+    public bool SupportsComments
     {
         get
         {
-            return _tokenA.HasValue;
+            return _commentPrefix.HasValue;
         }
     }
 }

@@ -5,11 +5,9 @@ using System.Numerics;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="Decimal64" /> value from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="Decimal64" /> value to or from a character sequence.</summary>
 public class TabularDecimal64Converter : TabularConverter<Decimal64>
 {
-    internal static readonly TabularDecimal64Converter Instance = new();
-
     /// <summary>Initializes a new instance of the <see cref="TabularDecimal64Converter" /> class.</summary>
     public TabularDecimal64Converter()
     {
@@ -24,8 +22,8 @@ public class TabularDecimal64Converter : TabularConverter<Decimal64>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out Decimal64 value)
     {
-        const NumberStyles styles = NumberStyles.AllowThousands | NumberStyles.Float;
+        const NumberStyles styles = NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent;
 
-        return Decimal64.TryParse(source, styles, provider, out value) || TabularNumber<Decimal64>.TryParseAsPartsPer(source, styles, provider, out value);
+        return Decimal64.TryParse(source, styles, provider, out value);
     }
 }

@@ -1,4 +1,4 @@
-// (c) Oleksandr Kozlenko. Licensed under the MIT license.
+﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
 using System;
 using System.Collections.Generic;
@@ -16,93 +16,108 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
     {
         private const LanguageVersion s_minimumLanguageVersion = LanguageVersion.CSharp15;
 
-        private static readonly HashSet<string> s_supportedTypeNames = new HashSet<string>(StringComparer.Ordinal)
-        {
-            "global::System.DateOnly",
-            "global::System.DateTimeOffset",
-            "global::System.Guid",
-            "global::System.Half",
-            "global::System.Int128",
-            "global::System.TimeOnly",
-            "global::System.TimeSpan",
-            "global::System.UInt128",
-            "global::System.Uri",
-            "global::System.Numerics.BFloat16",
-            "global::System.Numerics.BigInteger",
-            "global::System.Numerics.Decimal32",
-            "global::System.Numerics.Decimal64",
-            "global::System.Numerics.Decimal128",
-            "global::System.Text.Rune",
-        };
+        private static readonly SymbolDisplayFormat s_displayFormat = SymbolDisplayFormat.FullyQualifiedFormat
+            .WithMiscellaneousOptions(SymbolDisplayFormat.FullyQualifiedFormat.MiscellaneousOptions & ~SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
+
+        private static readonly SymbolDisplayFormat s_typeDisplayNameFormat = SymbolDisplayFormat.FullyQualifiedFormat
+            .WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)
+            .WithMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.None);
+
+        private static readonly SymbolDisplayFormat s_valueTypeKeyFormat = s_displayFormat
+            .AddMiscellaneousOptions(SymbolDisplayMiscellaneousOptions.ExpandValueTuple);
 
         private readonly CSharpCompilation _compilation;
-        private readonly IAssemblySymbol _featureAssembly;
+        private readonly INamedTypeSymbol _converterBaseType;
+        private readonly INamedTypeSymbol _converterAttributeType;
+        private readonly INamedTypeSymbol _fieldOrderAttributeType;
+        private readonly INamedTypeSymbol _fieldNameAttributeType;
 
-        public TabularHandlerParser(CSharpCompilation compilation, IAssemblySymbol featureAssembly)
+        private TabularHandlerParser(
+            CSharpCompilation compilation,
+            INamedTypeSymbol converterBaseType,
+            INamedTypeSymbol converterAttributeType,
+            INamedTypeSymbol fieldOrderAttributeType,
+            INamedTypeSymbol fieldNameAttributeType)
         {
-            Debug.Assert(compilation != null);
-            Debug.Assert(featureAssembly != null);
-
             _compilation = compilation;
-            _featureAssembly = featureAssembly;
+            _converterBaseType = converterBaseType;
+            _converterAttributeType = converterAttributeType;
+            _fieldOrderAttributeType = fieldOrderAttributeType;
+            _fieldNameAttributeType = fieldNameAttributeType;
         }
 
-        public (TabularRecordMapping? RecordMapping, ImmutableArray<Diagnostic> Diagnostics) GetRecordMapping(INamedTypeSymbol recordType, CancellationToken cancellationToken)
+        public static TabularHandlerParser Create(Compilation compilation, CancellationToken cancellationToken)
+        {
+            foreach (var reference in compilation.References)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if ((compilation.GetAssemblyOrModuleSymbol(reference) is IAssemblySymbol assembly) && (assembly.Name == "Addax.Formats.Tabular"))
+                {
+                    var converterBaseType = assembly.GetTypeByMetadataName("Addax.Formats.Tabular.TabularConverter`1");
+                    var converterAttributeType = assembly.GetTypeByMetadataName("Addax.Formats.Tabular.TabularConverterAttribute`1");
+                    var fieldOrderAttributeType = assembly.GetTypeByMetadataName("Addax.Formats.Tabular.TabularFieldOrderAttribute");
+                    var fieldNameAttributeType = assembly.GetTypeByMetadataName("Addax.Formats.Tabular.TabularFieldNameAttribute");
+
+                    if ((converterBaseType == null) ||
+                        (converterAttributeType == null) ||
+                        (fieldOrderAttributeType == null) ||
+                        (fieldNameAttributeType == null))
+                    {
+                        return null;
+                    }
+
+                    return new TabularHandlerParser(
+                        (CSharpCompilation)compilation,
+                        converterBaseType,
+                        converterAttributeType,
+                        fieldOrderAttributeType,
+                        fieldNameAttributeType);
+                }
+            }
+
+            return null;
+        }
+
+        public TabularRecordParseResult GetRecordMapping(INamedTypeSymbol recordType, EquatableArray<TabularConverterMapping> converterMappings, CancellationToken cancellationToken)
         {
             Debug.Assert(recordType != null);
 
-            var diagnostics = ImmutableArray.CreateBuilder<Diagnostic>();
-            var recordMapping = GetRecordMapping(recordType, diagnostics, cancellationToken);
+            var diagnosticsBuilder = ImmutableArray.CreateBuilder<Diagnostic>();
+            var recordMapping = GetRecordMapping(recordType, converterMappings, diagnosticsBuilder, cancellationToken);
 
-            return (recordMapping, diagnostics.ToImmutable());
+            return new TabularRecordParseResult(recordMapping, diagnosticsBuilder.ToImmutable());
         }
 
-        private TabularRecordMapping? GetRecordMapping(INamedTypeSymbol recordType, ImmutableArray<Diagnostic>.Builder diagnostics, CancellationToken cancellationToken)
+        private TabularRecordMapping? GetRecordMapping(INamedTypeSymbol recordType, EquatableArray<TabularConverterMapping> converterMappings, ImmutableArray<Diagnostic>.Builder diagnosticsBuilder, CancellationToken cancellationToken)
         {
-            var converterBaseType = _featureAssembly.GetTypeByMetadataName("Addax.Formats.Tabular.TabularConverter`1");
-            var converterAttributeType1 = _featureAssembly.GetTypeByMetadataName("Addax.Formats.Tabular.TabularConverterAttribute`1");
-            var converterAttributeType2 = _featureAssembly.GetTypeByMetadataName("Addax.Formats.Tabular.TabularConverterAttribute");
-            var fieldOrderAttributeType = _featureAssembly.GetTypeByMetadataName("Addax.Formats.Tabular.TabularFieldOrderAttribute");
-            var fieldNameAttributeType = _featureAssembly.GetTypeByMetadataName("Addax.Formats.Tabular.TabularFieldNameAttribute");
-
-            if ((converterBaseType == null) ||
-                (converterBaseType.Arity != 1) ||
-                (converterAttributeType1 == null) ||
-                (converterAttributeType2 == null) ||
-                (fieldOrderAttributeType == null) ||
-                (fieldNameAttributeType == null))
-            {
-                return null;
-            }
-
             cancellationToken.ThrowIfCancellationRequested();
 
             if (_compilation.LanguageVersion < s_minimumLanguageVersion)
             {
-                diagnostics.Add(Diagnostic.Create(s_diagnostic0000, Location.None, _compilation.LanguageVersion.ToDisplayString()));
+                diagnosticsBuilder.Add(Diagnostic.Create(s_diagnostic0000, Location.None, _compilation.LanguageVersion.ToDisplayString()));
 
                 return null;
             }
 
-            if (recordType.IsStatic || recordType.IsRefLikeType || !TypeIsUsableInGeneratedCode(recordType, out _))
+            if (!RecordTypeIsUsable(recordType, out var recordTypeIssue))
             {
-                diagnostics.Add(Diagnostic.Create(s_diagnostic0001, recordType.Locations.FirstOrDefault(), recordType.ToDisplayString(), GetRecordTypeIssue(recordType)));
+                diagnosticsBuilder.Add(Diagnostic.Create(s_diagnostic0001, recordType.Locations.FirstOrDefault(), recordType.ToDisplayString(), recordTypeIssue));
 
                 return null;
             }
 
             var recordTypeHasErrors = false;
-            var recordMembers = GetSuitableMembers(recordType);
-            var fieldMappingsBuilder = ImmutableDictionary.CreateBuilder<int, TabularFieldMapping>();
-            var fieldMembers = new Dictionary<int, ISymbol>();
-            var converterConstructors = new Dictionary<int, IMethodSymbol>();
+            var recordMembers = GetFieldsAndProperties(recordType);
+            var memberMappings = new SortedDictionary<int, TabularMemberMapping>();
+            var settableMembers = new Dictionary<int, ISymbol>();
             var overriddenMembers = new HashSet<ISymbol>(SymbolEqualityComparer.Default);
 
             foreach (var recordMember in recordMembers)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (!TryGetAttribute(recordMember, fieldOrderAttributeType, out var fieldOrderAttribute))
+                if (!TryGetAttribute(recordMember, _fieldOrderAttributeType, out var fieldOrderAttribute))
                 {
                     continue;
                 }
@@ -123,61 +138,89 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                     }
                 }
 
-                if (!TypeMemberIsUsable(recordType, recordMember, out var recordMemberIssue))
-                {
-                    diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0002, recordType, recordMember, recordMemberIssue));
-                    recordTypeHasErrors = true;
-
-                    continue;
-                }
-
                 var valueTypeInfo = GetValueTypeInfo(recordMember);
 
-                if (valueTypeInfo.Type.IsStatic || valueTypeInfo.Type.IsRefLikeType)
+                if (!TypeMemberIsUsable(recordType, recordMember, valueTypeInfo.Type, out var recordMemberIssue))
                 {
-                    var valueTypeIssue = valueTypeInfo.Type.IsRefLikeType ?
-                        $"the member type '{valueTypeInfo.Type.ToDisplayString()}' is a ref struct" :
-                        $"the member type '{valueTypeInfo.Type.ToDisplayString()}' is a static class";
-
-                    diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0002, recordType, recordMember, valueTypeIssue));
+                    diagnosticsBuilder.Add(CreateMemberDiagnostic(s_diagnostic0002, recordType, recordMember, recordMemberIssue));
                     recordTypeHasErrors = true;
 
                     continue;
                 }
 
-                var converterAttribute = default(AttributeData);
-                var converterTypeName = default(string);
-                var converterConstructor = default(IMethodSymbol);
+                var converterAttributeCount = 0;
+                var converterAttributeIsInvalid = false;
 
-                if (!TryGetAttribute(recordMember, converterAttributeType1, out converterAttribute) &&
-                    !TryGetAttribute(recordMember, converterAttributeType2, out converterAttribute))
+                foreach (var memberAttribute in recordMember.GetAttributes())
                 {
-                    if (!valueTypeInfo.IsSupported)
+                    if (SymbolEqualityComparer.Default.Equals(memberAttribute.AttributeClass?.ConstructedFrom, _converterAttributeType))
                     {
-                        var valueTypeIssue = $"the type '{valueTypeInfo.Type.ToDisplayString()}' has no built-in support";
+                        converterAttributeCount++;
 
-                        diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0003, recordType, recordMember, valueTypeIssue));
+                        if (!TryGetSupportedConverter(memberAttribute, null, out _, out _, out _, out var converterAttributeIssue) && (converterAttributeIssue == null))
+                        {
+                            converterAttributeIsInvalid = true;
+                        }
+                    }
+                }
+
+                if (converterAttributeIsInvalid)
+                {
+                    recordTypeHasErrors = true;
+
+                    continue;
+                }
+
+                if (converterAttributeCount > 1)
+                {
+                    diagnosticsBuilder.Add(CreateMemberDiagnostic(s_diagnostic0003, recordType, recordMember, "the member has more than one converter"));
+                    recordTypeHasErrors = true;
+
+                    continue;
+                }
+
+                var valueTypeKey = GetValueTypeKey(valueTypeInfo.Type);
+                var converterMapping = default(TabularConverterMapping?);
+
+                if (TryGetAttribute(recordMember, _converterAttributeType, out var converterAttribute))
+                {
+                    if (!TryGetSupportedConverter(converterAttribute, valueTypeInfo.Type, out var converterType, out _, out var converterConstructor, out var converterIssue))
+                    {
+                        if (converterIssue != null)
+                        {
+                            diagnosticsBuilder.Add(CreateMemberDiagnostic(s_diagnostic0004, recordType, recordMember, converterIssue));
+                        }
+
                         recordTypeHasErrors = true;
 
                         continue;
                     }
+
+                    var converterDiagnosticIdentifiers = new HashSet<string>(StringComparer.Ordinal);
+
+                    AddExperimentalDiagnosticIdentifiers(converterType, converterDiagnosticIdentifiers);
+                    AddExperimentalDiagnosticIdentifiers(converterConstructor, converterDiagnosticIdentifiers);
+
+                    converterMapping = new TabularConverterMapping(
+                        valueTypeKey,
+                        converterType.ToDisplayString(s_displayFormat),
+                        new EquatableArray<string>(converterDiagnosticIdentifiers.ToImmutableArray().Sort(StringComparer.Ordinal)));
                 }
                 else
                 {
-                    if (!TryGetSupportedConverter(converterAttribute, converterBaseType, valueTypeInfo.Type, out var converterType, out converterConstructor, out var converterIssue))
+                    foreach (var assemblyConverterMapping in converterMappings)
                     {
-                        diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0004, recordType, recordMember, converterIssue));
-                        recordTypeHasErrors = true;
+                        if (assemblyConverterMapping.ValueTypeKey == valueTypeKey)
+                        {
+                            converterMapping = assemblyConverterMapping;
 
-                        continue;
+                            break;
+                        }
                     }
-
-                    converterTypeName = converterType.ToDisplayString(s_displayFormat);
                 }
 
                 if (!TryGetConstructorArgument<int>(fieldOrderAttribute, out var fieldOrder))
                 {
-                    diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0005, recordType, recordMember, "the field order is not a constant"));
                     recordTypeHasErrors = true;
 
                     continue;
@@ -185,15 +228,15 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
                 if (fieldOrder < 0)
                 {
-                    diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0005, recordType, recordMember, $"the field order {fieldOrder} is negative"));
+                    diagnosticsBuilder.Add(CreateMemberDiagnostic(s_diagnostic0003, recordType, recordMember, $"the field order {fieldOrder} is negative"));
                     recordTypeHasErrors = true;
 
                     continue;
                 }
 
-                if (fieldMembers.TryGetValue(fieldOrder, out var fieldOrderOwner))
+                if (memberMappings.TryGetValue(fieldOrder, out var fieldOrderOwner))
                 {
-                    diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0005, recordType, recordMember, $"the field order {fieldOrder} is already used by '{fieldOrderOwner.ToDisplayString()}'"));
+                    diagnosticsBuilder.Add(CreateMemberDiagnostic(s_diagnostic0003, recordType, recordMember, $"the field order {fieldOrder} is already used by '{fieldOrderOwner.Member.ToDisplayString()}'"));
                     recordTypeHasErrors = true;
 
                     continue;
@@ -201,11 +244,17 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
 
                 var fieldNameLiteral = default(string);
 
-                if (TryGetAttribute(recordMember, fieldNameAttributeType, out var fieldNameAttribute))
+                if (TryGetAttribute(recordMember, _fieldNameAttributeType, out var fieldNameAttribute))
                 {
                     if (!TryGetConstructorArgument<string>(fieldNameAttribute, out var fieldName))
                     {
-                        diagnostics.Add(CreateMemberDiagnostic(s_diagnostic0005, recordType, recordMember, "the field name is null or not a constant"));
+                        if ((fieldNameAttribute.ConstructorArguments.Length == 1) &&
+                            (fieldNameAttribute.ConstructorArguments[0].Kind == TypedConstantKind.Primitive) &&
+                            (fieldNameAttribute.ConstructorArguments[0].IsNull))
+                        {
+                            diagnosticsBuilder.Add(CreateMemberDiagnostic(s_diagnostic0003, recordType, recordMember, "the field name is null"));
+                        }
+
                         recordTypeHasErrors = true;
 
                         continue;
@@ -214,31 +263,38 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                     fieldNameLiteral = SyntaxFactory.Literal(fieldName).Text;
                 }
 
-                var recordMemberSupportsReading = TypeMemberSupportsReading(recordMember);
-                var recordMemberSupportsWriting = TypeMemberSupportsWriting(recordMember);
+                var fieldAccess = TabularFieldAccess.None;
 
-                if (!recordMemberSupportsReading && !recordMemberSupportsWriting)
+                if (TypeMemberIsSettable(recordMember))
+                {
+                    fieldAccess |= TabularFieldAccess.Read;
+                    settableMembers.Add(fieldOrder, recordMember);
+                }
+
+                if (TypeMemberIsGettable(recordMember))
+                {
+                    fieldAccess |= TabularFieldAccess.Write;
+                }
+
+                if (fieldAccess == TabularFieldAccess.None)
                 {
                     continue;
                 }
 
-                var fieldMapping = new TabularFieldMapping(
-                    fieldOrder,
-                    "@" + recordMember.Name,
-                    recordMemberSupportsReading,
-                    recordMemberSupportsWriting,
-                    valueTypeInfo.IsNullableT,
+                var valueTypeCode = (!converterMapping.HasValue && valueTypeInfo.IsSupported) ? valueTypeInfo.Type.Name : null;
+
+                var memberMapping = new TabularMemberMapping(
+                    recordMember,
+                    fieldAccess,
+                    valueTypeInfo.Type,
+                    valueTypeInfo.Modifier,
                     valueTypeInfo.Name,
-                    converterTypeName,
+                    valueTypeKey,
+                    valueTypeCode,
+                    converterMapping,
                     fieldNameLiteral);
 
-                fieldMappingsBuilder[fieldOrder] = fieldMapping;
-                fieldMembers[fieldOrder] = recordMember;
-
-                if (converterConstructor != null)
-                {
-                    converterConstructors[fieldOrder] = converterConstructor;
-                }
+                memberMappings.Add(fieldOrder, memberMapping);
             }
 
             if (recordTypeHasErrors)
@@ -246,59 +302,247 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                 return null;
             }
 
-            if (!TryApplyConstruction(recordType, fieldMappingsBuilder, fieldMembers, out var recordConstructor, out var constructorArguments))
+            var recordIsConstructible = TryGetRecordConstructor(recordType, settableMembers, out var recordConstructor, out var constructorArguments);
+            var recordTypeName = recordType.ToDisplayString(s_displayFormat);
+            var recordTypeDisplayName = recordType.ToDisplayString(s_typeDisplayNameFormat);
+            var fieldMappingsBuilder = ImmutableArray.CreateBuilder<TabularFieldMapping>(memberMappings.Count);
+            var diagnosticIdentifiers = new HashSet<string>(StringComparer.Ordinal);
+            var recordAccess = TabularRecordAccess.None;
+            var writtenFieldCount = 0;
+            var lastWrittenFieldOrder = -1;
+
+            AddExperimentalDiagnosticIdentifiers(recordType, diagnosticIdentifiers);
+            AddExperimentalDiagnosticIdentifiers(recordConstructor, diagnosticIdentifiers);
+
+            foreach (var kvp in memberMappings)
             {
-                DisableFieldWriting(fieldMappingsBuilder);
-            }
+                var memberMapping = kvp.Value;
+                var fieldAccess = recordIsConstructible ? memberMapping.FieldAccess : (memberMapping.FieldAccess & ~TabularFieldAccess.Read);
 
-            var experimentalDiagnosticIds = new HashSet<string>(StringComparer.Ordinal);
-
-            AddExperimentalDiagnosticIds(recordType, experimentalDiagnosticIds);
-            AddExperimentalDiagnosticIds(recordConstructor, experimentalDiagnosticIds);
-
-            foreach (var kvp in fieldMappingsBuilder)
-            {
-                var fieldOrder = kvp.Key;
-                var fieldMember = fieldMembers[fieldOrder];
-
-                AddExperimentalDiagnosticIds((fieldMember is IFieldSymbol field) ? field.Type : ((IPropertySymbol)fieldMember).Type, experimentalDiagnosticIds);
-
-                if (fieldMember is IPropertySymbol fieldProperty)
+                if (fieldAccess == TabularFieldAccess.None)
                 {
-                    while (fieldProperty.OverriddenProperty != null)
+                    continue;
+                }
+
+                AddExperimentalDiagnosticIdentifiers(memberMapping.ValueType, diagnosticIdentifiers);
+
+                if (memberMapping.Member is IPropertySymbol memberProperty)
+                {
+                    while (memberProperty.OverriddenProperty != null)
                     {
-                        fieldProperty = fieldProperty.OverriddenProperty;
+                        memberProperty = memberProperty.OverriddenProperty;
                     }
 
-                    AddExperimentalDiagnosticIds(fieldProperty, experimentalDiagnosticIds);
+                    AddExperimentalDiagnosticIdentifiers(memberProperty, diagnosticIdentifiers);
 
-                    if (kvp.Value.SupportsReading)
+                    if ((fieldAccess & TabularFieldAccess.Write) != 0)
                     {
-                        AddExperimentalDiagnosticIds(fieldProperty.GetMethod, experimentalDiagnosticIds);
+                        AddExperimentalDiagnosticIdentifiers(memberProperty.GetMethod, diagnosticIdentifiers);
                     }
 
-                    if (kvp.Value.SupportsWriting)
+                    if ((fieldAccess & TabularFieldAccess.Read) != 0)
                     {
-                        AddExperimentalDiagnosticIds(fieldProperty.SetMethod, experimentalDiagnosticIds);
+                        AddExperimentalDiagnosticIdentifiers(memberProperty.SetMethod, diagnosticIdentifiers);
                     }
                 }
                 else
                 {
-                    AddExperimentalDiagnosticIds(fieldMember, experimentalDiagnosticIds);
+                    AddExperimentalDiagnosticIdentifiers(memberMapping.Member, diagnosticIdentifiers);
                 }
 
-                if (converterConstructors.TryGetValue(fieldOrder, out var fieldConverterConstructor))
+                if (memberMapping.ConverterMapping.HasValue)
                 {
-                    AddExperimentalDiagnosticIds(fieldConverterConstructor.ContainingType, experimentalDiagnosticIds);
-                    AddExperimentalDiagnosticIds(fieldConverterConstructor, experimentalDiagnosticIds);
+                    foreach (var converterDiagnosticIdentifier in memberMapping.ConverterMapping.Value.DiagnosticIdentifiers)
+                    {
+                        diagnosticIdentifiers.Add(converterDiagnosticIdentifier);
+                    }
+                }
+
+                if ((fieldAccess & TabularFieldAccess.Read) != 0)
+                {
+                    recordAccess |= TabularRecordAccess.Read;
+                }
+
+                if ((fieldAccess & TabularFieldAccess.Write) != 0)
+                {
+                    writtenFieldCount++;
+                    lastWrittenFieldOrder = kvp.Key;
+                }
+
+                var memberIdentifier = $"@{memberMapping.Member.Name}";
+                var memberNameLiteral = SyntaxFactory.Literal($"{recordTypeDisplayName}.{memberMapping.Member.Name}").Text;
+                var converterTypeName = memberMapping.ConverterMapping?.ConverterTypeName;
+
+                var fieldMapping = new TabularFieldMapping(
+                    kvp.Key,
+                    memberIdentifier,
+                    memberNameLiteral,
+                    fieldAccess,
+                    memberMapping.ValueTypeModifier,
+                    memberMapping.ValueTypeName,
+                    memberMapping.ValueTypeKey,
+                    memberMapping.ValueTypeCode,
+                    converterTypeName,
+                    memberMapping.FieldNameLiteral);
+
+                fieldMappingsBuilder.Add(fieldMapping);
+            }
+
+            if ((writtenFieldCount != 0) && (lastWrittenFieldOrder == writtenFieldCount - 1))
+            {
+                recordAccess |= TabularRecordAccess.Write;
+            }
+
+            return new TabularRecordMapping(
+                recordTypeName,
+                new EquatableArray<TabularFieldMapping>(fieldMappingsBuilder.ToImmutable()),
+                new EquatableArray<int>(constructorArguments),
+                new EquatableArray<string>(diagnosticIdentifiers.ToImmutableArray().Sort(StringComparer.Ordinal)),
+                recordAccess);
+        }
+
+        private bool RecordTypeIsUsable(INamedTypeSymbol recordType, out string issue)
+        {
+            if (recordType.IsStatic)
+            {
+                issue = "the type is a static class";
+
+                return false;
+            }
+
+            if (recordType.IsRefLikeType)
+            {
+                issue = "the type is a ref struct";
+
+                return false;
+            }
+
+            var currentType = recordType;
+
+            while (currentType != null)
+            {
+                if (currentType.IsFileLocal)
+                {
+                    issue = SymbolEqualityComparer.Default.Equals(currentType, recordType) ? "the type is file-local" : $"the containing type '{currentType.ToDisplayString()}' is file-local";
+
+                    return false;
+                }
+
+                currentType = currentType.ContainingType;
+            }
+
+            currentType = recordType;
+
+            while (currentType != null)
+            {
+                if (!currentType.TypeParameters.IsDefaultOrEmpty)
+                {
+                    issue = SymbolEqualityComparer.Default.Equals(currentType, recordType) ? "the type is generic" : $"the containing type '{currentType.ToDisplayString()}' is generic";
+
+                    return false;
+                }
+
+                currentType = currentType.ContainingType;
+            }
+
+            if (!_compilation.IsSymbolAccessibleWithin(recordType, _compilation.Assembly))
+            {
+                var inaccessibleType = GetOutermostInaccessibleType(recordType);
+
+                issue = SymbolEqualityComparer.Default.Equals(inaccessibleType, recordType) ? "the type is not accessible within the assembly" : $"the containing type '{inaccessibleType.ToDisplayString()}' is not accessible within the assembly";
+
+                return false;
+            }
+
+            issue = null;
+
+            return true;
+        }
+
+        private Diagnostic CreateMemberDiagnostic(DiagnosticDescriptor descriptor, INamedTypeSymbol recordType, ISymbol recordMember, string issue)
+        {
+            var location = recordMember.Locations.FirstOrDefault(x => x.IsInSource && _compilation.ContainsSyntaxTree(x.SourceTree)) ?? recordType.Locations.FirstOrDefault();
+
+            return Diagnostic.Create(descriptor, location, recordMember.ToDisplayString(), issue);
+        }
+
+        private static bool TryGetAttribute(ISymbol member, INamedTypeSymbol attributeType, out AttributeData attribute)
+        {
+            var memberAttributes = member.GetAttributes();
+
+            foreach (var memberAttribute in memberAttributes)
+            {
+                var memberAttributeType = attributeType.IsGenericType ?
+                    memberAttribute.AttributeClass?.ConstructedFrom :
+                    memberAttribute.AttributeClass;
+
+                if (SymbolEqualityComparer.Default.Equals(memberAttributeType, attributeType))
+                {
+                    attribute = memberAttribute;
+
+                    return true;
                 }
             }
 
-            var recordTypeName = recordType.ToDisplayString(s_displayFormat);
-            var fieldMappings = fieldMappingsBuilder.Values.OrderBy(x => x.FieldOrder).ToImmutableArray();
-            var experimentalDiagnosticIdsSorted = experimentalDiagnosticIds.OrderBy(x => x, StringComparer.Ordinal).ToImmutableArray();
+            attribute = null;
 
-            return new TabularRecordMapping(recordTypeName, new EquatableArray<TabularFieldMapping>(fieldMappings), new EquatableArray<int>(constructorArguments), new EquatableArray<string>(experimentalDiagnosticIdsSorted));
+            return false;
+        }
+
+        private static bool TryGetConstructorArgument<T>(AttributeData attribute, out T value)
+        {
+            if ((attribute.ConstructorArguments.Length == 1) &&
+                (attribute.ConstructorArguments[0].Kind == TypedConstantKind.Primitive) &&
+                (attribute.ConstructorArguments[0].Value is T argumentValue))
+            {
+                value = argumentValue;
+
+                return true;
+            }
+
+            value = default;
+
+            return false;
+        }
+
+        private static bool TypeRequiredMembersAreSet(INamedTypeSymbol type, ISet<string> setMemberNames)
+        {
+            while (type != null)
+            {
+                foreach (var member in type.GetMembers())
+                {
+                    var memberIsRequired =
+                        ((member is IFieldSymbol field) && field.IsRequired) ||
+                        ((member is IPropertySymbol property) && property.IsRequired);
+
+                    if (memberIsRequired && !setMemberNames.Contains(member.Name))
+                    {
+                        return false;
+                    }
+                }
+
+                type = type.BaseType;
+            }
+
+            return true;
+        }
+
+        private INamedTypeSymbol GetOutermostInaccessibleType(INamedTypeSymbol type)
+        {
+            var inaccessibleType = type;
+            var currentType = type.ContainingType;
+
+            while (currentType != null)
+            {
+                if (!_compilation.IsSymbolAccessibleWithin(currentType, _compilation.Assembly))
+                {
+                    inaccessibleType = currentType;
+                }
+
+                currentType = currentType.ContainingType;
+            }
+
+            return inaccessibleType;
         }
     }
 }

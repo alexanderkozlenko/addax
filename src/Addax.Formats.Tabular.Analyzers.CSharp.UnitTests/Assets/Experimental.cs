@@ -12,9 +12,12 @@
 #pragma warning disable EXP0012
 #pragma warning disable EXP0013
 #pragma warning disable EXP0014
+#pragma warning disable EXP0015
 
 using System.Diagnostics.CodeAnalysis;
 using Addax.Formats.Tabular;
+
+[assembly: TabularConverter<MyNamespace.ExperimentalAssemblyConverter>]
 
 namespace MyNamespace;
 
@@ -127,8 +130,24 @@ public class ExperimentalConvertersRecord
     }
 
     [TabularFieldOrder(1)]
-    [TabularConverter(typeof(ExperimentalConverterConstructor))]
+    [TabularConverter<ExperimentalConverterConstructor>]
     public int MyValue1
+    {
+        get;
+        set;
+    }
+}
+
+[Experimental("EXP0015")]
+public sealed class ExperimentalAssemblyConverter : TabularConverter<long>
+{
+}
+
+[TabularRecord]
+public class ExperimentalAssemblyConverterRecord
+{
+    [TabularFieldOrder(0)]
+    public long MyValue0
     {
         get;
         set;

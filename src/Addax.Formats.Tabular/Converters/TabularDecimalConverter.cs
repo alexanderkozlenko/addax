@@ -4,11 +4,9 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="decimal" /> value from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="decimal" /> value to or from a character sequence.</summary>
 public class TabularDecimalConverter : TabularConverter<decimal>
 {
-    internal static readonly TabularDecimalConverter Instance = new();
-
     /// <summary>Initializes a new instance of the <see cref="TabularDecimalConverter" /> class.</summary>
     public TabularDecimalConverter()
     {
@@ -23,8 +21,8 @@ public class TabularDecimalConverter : TabularConverter<decimal>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out decimal value)
     {
-        const NumberStyles styles = NumberStyles.Integer | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands;
+        const NumberStyles styles = NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint;
 
-        return decimal.TryParse(source, styles, provider, out value) || TabularNumber<decimal>.TryParseAsPartsPer(source, styles, provider, out value);
+        return decimal.TryParse(source, styles, provider, out value);
     }
 }

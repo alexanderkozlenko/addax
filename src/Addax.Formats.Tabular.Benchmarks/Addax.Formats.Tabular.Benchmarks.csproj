@@ -5,15 +5,21 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-    <ServerGarbageCollection>true</ServerGarbageCollection>
     <UseCurrentRuntimeIdentifier>true</UseCurrentRuntimeIdentifier>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <NoWarn>$(NoWarn);CA1720;CA1822;</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <AssemblyMetadata Include="ArtifactsPath" Value="$(ArtifactsPath)" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Addax.Formats.Tabular\Addax.Formats.Tabular.csproj" />
+    <ProjectReference Include="..\Addax.Formats.Tabular.Analyzers.CSharp\Addax.Formats.Tabular.Analyzers.CSharp.csproj">
+      <OutputItemType>Analyzer</OutputItemType>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
 </Project>

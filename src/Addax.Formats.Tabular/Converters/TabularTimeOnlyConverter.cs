@@ -5,11 +5,10 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="TimeOnly" /> value from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="TimeOnly" /> value to or from a character sequence.</summary>
+/// <remarks>When parsing with the default format, an optional time zone offset is accepted and ignored.</remarks>
 public class TabularTimeOnlyConverter : TabularConverter<TimeOnly>
 {
-    internal static readonly TabularTimeOnlyConverter Instance = new();
-
     private readonly string? _format;
 
     /// <summary>Initializes a new instance of the <see cref="TabularTimeOnlyConverter" /> class.</summary>
@@ -19,7 +18,7 @@ public class TabularTimeOnlyConverter : TabularConverter<TimeOnly>
 
     /// <summary>Initializes a new instance of the <see cref="TabularTimeOnlyConverter" /> class with the specified format.</summary>
     /// <param name="format">A standard or custom time format string.</param>
-    protected TabularTimeOnlyConverter([StringSyntax(StringSyntaxAttribute.TimeOnlyFormat)] string? format)
+    public TabularTimeOnlyConverter([StringSyntax(StringSyntaxAttribute.TimeOnlyFormat)] string? format)
     {
         _format = format;
     }
@@ -33,8 +32,22 @@ public class TabularTimeOnlyConverter : TabularConverter<TimeOnly>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out TimeOnly value)
     {
-        const DateTimeStyles styles = DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite;
+        const DateTimeStyles styles = DateTimeStyles.None;
 
-        return TimeOnly.TryParseExact(source, _format ?? "HH':'mm':'ss.FFFFFFF", provider, styles, out value);
+        if (_format is null)
+        {
+            if (DateTimeOffset.TryParseExact(source, "HH':'mm':'ss.FFFFFFFK", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var result))
+            {
+                value = TimeOnly.FromTimeSpan(result.TimeOfDay);
+
+                return true;
+            }
+
+            value = default;
+
+            return false;
+        }
+
+        return TimeOnly.TryParseExact(source, _format, provider, styles, out value);
     }
 }

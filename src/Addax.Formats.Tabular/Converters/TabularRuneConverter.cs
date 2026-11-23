@@ -4,11 +4,9 @@ using System.Text;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="Rune" /> value from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="Rune" /> value to or from a character sequence.</summary>
 public class TabularRuneConverter : TabularConverter<Rune>
 {
-    internal static readonly TabularRuneConverter Instance = new();
-
     /// <summary>Initializes a new instance of the <see cref="TabularRuneConverter" /> class.</summary>
     public TabularRuneConverter()
     {

@@ -1,80 +1,59 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
-using System.Buffers;
 using System.Diagnostics;
 using System.Text;
 using Addax.Formats.Tabular.Buffers;
 
 namespace Addax.Formats.Tabular.IO;
 
-internal sealed class BufferedTextWriter : IDisposable, IAsyncDisposable
+internal sealed class BufferedTextWriter : IDisposable
 {
     private readonly Stream _stream;
     private readonly Encoding _encoding;
     private readonly Encoder _encoder;
     private readonly BufferWriter<char> _charBufferWriter;
     private readonly int _byteBufferSize;
+    private readonly int _maxBytesPerChar;
     private readonly int _flushThreshold;
-    private readonly bool _leaveOpen;
     private readonly bool _isStartOfStream;
 
     private long _bytesEncoded;
     private bool _isPreambleCommitted;
 
-    public BufferedTextWriter(Stream stream, Encoding encoding, int bufferSize, bool leaveOpen)
+    public BufferedTextWriter(Stream stream, Encoding encoding, int bufferSize)
     {
-        Debug.Assert(stream is not null);
-        Debug.Assert(encoding is not null);
         Debug.Assert(bufferSize > 0);
-        Debug.Assert(bufferSize <= Array.MaxLength);
 
         _stream = stream;
         _encoding = encoding;
-        _leaveOpen = leaveOpen;
-
+        _isStartOfStream = !stream.CanSeek || (stream.Position == 0);
         _encoder = encoding.GetEncoder();
         _byteBufferSize = bufferSize;
-        _charBufferWriter = new(encoding.GetMaxCharCount(Math.Min(bufferSize, 0x00100000)));
+        _maxBytesPerChar = encoding.GetMaxByteCount(1);
         _flushThreshold = encoding.GetMaxCharCount(Math.Min(bufferSize, 0x00100000));
-        _isStartOfStream = !stream.CanSeek || (stream.Position == 0);
-        _isPreambleCommitted = _isStartOfStream && encoding.Preamble.IsEmpty;
+        _charBufferWriter = new(_flushThreshold);
+        _isPreambleCommitted = !_isStartOfStream || encoding.Preamble.IsEmpty;
     }
 
     public void Dispose()
     {
-        Flush();
-
         _charBufferWriter.Dispose();
-
-        if (!_leaveOpen)
-        {
-            _stream.Dispose();
-        }
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        var flushTask = FlushAsync(CancellationToken.None);
-
-        if (!flushTask.IsCompletedSuccessfully)
-        {
-            await flushTask.ConfigureAwait(false);
-        }
-
-        _charBufferWriter.Dispose();
-
-        if (!_leaveOpen)
-        {
-            var disposeTask = _stream.DisposeAsync();
-
-            if (!disposeTask.IsCompletedSuccessfully)
-            {
-                await disposeTask.ConfigureAwait(false);
-            }
-        }
     }
 
     public void Flush()
+    {
+        FlushBuffer();
+
+        _stream.Flush();
+    }
+
+    public async ValueTask FlushAsync(CancellationToken cancellationToken)
+    {
+        await FlushBufferAsync(cancellationToken).ConfigureAwait(false);
+        await _stream.FlushAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    public void FlushBuffer()
     {
         if ((_charBufferWriter.WrittenCount == 0) && _isPreambleCommitted)
         {
@@ -85,6 +64,7 @@ internal sealed class BufferedTextWriter : IDisposable, IAsyncDisposable
         {
             _stream.Write(_encoding.Preamble);
             _isPreambleCommitted = true;
+            _bytesEncoded += _encoding.Preamble.Length;
         }
 
         var charBuffer = _charBufferWriter.WrittenMemory.Span;
@@ -93,7 +73,7 @@ internal sealed class BufferedTextWriter : IDisposable, IAsyncDisposable
         while (!charBuffer.IsEmpty || !completed)
         {
             var charBufferSlice = charBuffer.Slice(0, Math.Min(charBuffer.Length, 0x00100000));
-            var byteBufferSize = Math.Min(_byteBufferSize, _encoding.GetMaxByteCount(charBufferSlice.Length));
+            var byteBufferSize = Math.Max(Math.Min(_byteBufferSize, _encoding.GetMaxByteCount(charBufferSlice.Length)), _maxBytesPerChar);
             var flush = charBufferSlice.Length == charBuffer.Length;
 
             using var byteBuffer = new ArrayBuffer<byte>(byteBufferSize);
@@ -103,15 +83,14 @@ internal sealed class BufferedTextWriter : IDisposable, IAsyncDisposable
             var byteBufferUsed = byteBuffer.AsSpan(bytesUsed);
 
             _stream.Write(byteBufferUsed);
-            _charBufferWriter.Truncate(charsUsed);
-            charBuffer = charBuffer.Slice(charsUsed);
+            _charBufferWriter.Consume(charsUsed);
             _bytesEncoded += bytesUsed;
-        }
 
-        _stream.Flush();
+            charBuffer = charBuffer.Slice(charsUsed);
+        }
     }
 
-    public ValueTask FlushAsync(CancellationToken cancellationToken)
+    public ValueTask FlushBufferAsync(CancellationToken cancellationToken)
     {
         if ((_charBufferWriter.WrittenCount == 0) && _isPreambleCommitted)
         {
@@ -132,6 +111,7 @@ internal sealed class BufferedTextWriter : IDisposable, IAsyncDisposable
                 }
 
                 _isPreambleCommitted = true;
+                _bytesEncoded += _encoding.Preamble.Length;
             }
 
             var charBuffer = _charBufferWriter.WrittenMemory;
@@ -140,7 +120,7 @@ internal sealed class BufferedTextWriter : IDisposable, IAsyncDisposable
             while (!charBuffer.IsEmpty || !isCompleted)
             {
                 var charBufferSlice = charBuffer.Slice(0, Math.Min(charBuffer.Length, 0x00100000));
-                var byteBufferSize = Math.Min(_byteBufferSize, _encoding.GetMaxByteCount(charBufferSlice.Length));
+                var byteBufferSize = Math.Max(Math.Min(_byteBufferSize, _encoding.GetMaxByteCount(charBufferSlice.Length)), _maxBytesPerChar);
                 var flushSlice = charBufferSlice.Length == charBuffer.Length;
 
                 using var byteBuffer = new ArrayBuffer<byte>(byteBufferSize);
@@ -151,39 +131,15 @@ internal sealed class BufferedTextWriter : IDisposable, IAsyncDisposable
 
                 await _stream.WriteAsync(byteBufferUsed, cancellationToken).ConfigureAwait(false);
 
-                _charBufferWriter.Truncate(charsUsed);
-                charBuffer = charBuffer.Slice(charsUsed);
+                _charBufferWriter.Consume(charsUsed);
                 _bytesEncoded += bytesUsed;
+
+                charBuffer = charBuffer.Slice(charsUsed);
             }
-
-            await _stream.FlushAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 
-    private static int GetByteCount(ReadOnlySpan<char> charBuffer, Encoding encoding)
-    {
-        var byteCount = 0;
-
-        while (!charBuffer.IsEmpty)
-        {
-            var charBufferSlice = charBuffer.Slice(0, Math.Min(charBuffer.Length, 0x00100000));
-
-            byteCount += encoding.GetByteCount(charBufferSlice);
-            charBuffer = charBuffer.Slice(charBufferSlice.Length);
-        }
-
-        return byteCount;
-    }
-
-    public int FlushThreshold
-    {
-        get
-        {
-            return _flushThreshold;
-        }
-    }
-
-    public IBufferWriter<char> BufferWriter
+    public BufferWriter<char> BufferWriter
     {
         get
         {
@@ -191,19 +147,19 @@ internal sealed class BufferedTextWriter : IDisposable, IAsyncDisposable
         }
     }
 
-    public int WrittenBufferSize
+    public long BytesCommitted
     {
         get
         {
-            return _charBufferWriter.WrittenCount;
+            return _bytesEncoded;
         }
     }
 
-    public int FreeBufferSize
+    public int RemainingCount
     {
         get
         {
-            return _charBufferWriter.FreeCapacity;
+            return _charBufferWriter.RemainingCount;
         }
     }
 
@@ -215,11 +171,11 @@ internal sealed class BufferedTextWriter : IDisposable, IAsyncDisposable
         }
     }
 
-    public long BytesCommitted
+    public bool IsFull
     {
         get
         {
-            return _bytesEncoded + GetByteCount(_charBufferWriter.WrittenSpan, _encoding);
+            return _charBufferWriter.WrittenCount >= _flushThreshold;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts binary data encoded with "base16" ("hex") encoding from or to a character sequence.</summary>
+/// <summary>Converts binary data encoded with "base16" encoding to or from a character sequence.</summary>
 public class TabularBase16ArrayConverter : TabularConverter<byte[]>
 {
     internal static readonly TabularBase16ArrayConverter Instance = new();
@@ -17,12 +17,12 @@ public class TabularBase16ArrayConverter : TabularConverter<byte[]>
     /// <inheritdoc />
     public override bool TryFormat(byte[]? value, Span<char> destination, IFormatProvider? provider, out int charsWritten)
     {
-        return TabularBinary.TryFormatBase16(value, destination, out charsWritten);
+        return Convert.TryToHexStringLower(value, destination, out charsWritten);
     }
 
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, [NotNullWhen(true)] out byte[]? value)
     {
-        return TabularBinary.TryParseBase16(source, out value);
+        return TabularConvert.TryParseBase16(source, out value);
     }
 }

@@ -1,8 +1,8 @@
 - name: Overview
   href: ../index.md
-- name: Features
-  href: features.md
-- name: Extensibility
-  href: extensibility.md
-- name: Benchmarks
-  href: benchmarks.md
+- name: Fundamentals
+  href: fundamentals.md
+- name: High-level API
+  href: high-level-api.md
+- name: Low-level API
+  href: low-level-api.md

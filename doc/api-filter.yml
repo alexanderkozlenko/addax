@@ -6,6 +6,9 @@ apiRules:
     uidRegex: ^System\.Exception
     type: member
 - exclude:
+    uidRegex: ^System\.Enum
+    type: member
+- exclude:
     uidRegex: ^System\.Object
     type: member
 - exclude:

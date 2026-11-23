@@ -4,11 +4,9 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="byte" /> value from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="byte" /> value to or from a character sequence.</summary>
 public class TabularByteConverter : TabularConverter<byte>
 {
-    internal static readonly TabularByteConverter Instance = new();
-
     /// <summary>Initializes a new instance of the <see cref="TabularByteConverter" /> class.</summary>
     public TabularByteConverter()
     {
@@ -23,8 +21,8 @@ public class TabularByteConverter : TabularConverter<byte>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out byte value)
     {
-        const NumberStyles styles = NumberStyles.Integer;
+        const NumberStyles styles = NumberStyles.AllowLeadingSign;
 
-        return byte.TryParse(source, styles, provider, out value) || TabularNumber<byte>.TryParseAsPartsPer(source, styles, provider, out value);
+        return byte.TryParse(source, styles, provider, out value);
     }
 }

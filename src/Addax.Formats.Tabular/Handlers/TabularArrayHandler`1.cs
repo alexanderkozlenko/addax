@@ -1,92 +1,101 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Addax.Formats.Tabular.Buffers;
 
 namespace Addax.Formats.Tabular.Handlers;
 
-/// <summary>Reads an array of <typeparamref name="T" /> from or writes an array of <typeparamref name="T" /> to a tabular record. This class cannot be inherited.</summary>
-/// <typeparam name="T">The type of field value handled by the record handler.</typeparam>
-public sealed class TabularArrayHandler<T> : TabularHandler<T?[]>
+internal sealed class TabularArrayHandler<T> : TabularHandler<T?[]>
 {
-    private readonly TabularConverter<T> _converter;
-
-    /// <summary>Initializes a new instance of the <see cref="TabularArrayHandler{T}" /> class with the specified converter.</summary>
-    /// <param name="converter">The converter to parse and format values with.</param>
-    /// <exception cref="ArgumentNullException"><paramref name="converter" /> is <see langword="null" />.</exception>
-    public TabularArrayHandler(TabularConverter<T> converter)
+    public TabularArrayHandler()
     {
-        ArgumentNullException.ThrowIfNull(converter);
-
-        _converter = converter;
     }
 
-    /// <inheritdoc />
-    /// <exception cref="ArgumentNullException"><paramref name="reader" /> is <see langword="null" />.</exception>
-    public override TabularRecord<T?[]> Read(TabularReader reader)
+    public override T?[] Read(TabularReader reader)
     {
-        ArgumentNullException.ThrowIfNull(reader);
-
         using var builder = new ArrayBuilder<T?>(32);
+
+        var converter = reader.ResolveConverter<T>();
+        var recordIndex = reader.RecordsRead;
+        var fieldIndex = 0;
 
         while (reader.TryReadField())
         {
-            if (reader.CurrentFieldType != TabularFieldType.Value)
+            if (!typeof(T).IsValueType && reader.CurrentField.IsEmpty)
             {
-                return default;
+                builder.Add(default);
+            }
+            else
+            {
+                if (!reader.TryGet(converter, out var field))
+                {
+                    ThrowFieldConversionException(recordIndex, fieldIndex);
+                }
+
+                builder.Add(field);
             }
 
-            reader.TryGet(_converter, out var field);
-            builder.Add(field);
+            fieldIndex++;
         }
 
-        return new(builder.Build());
+        return builder.Build();
     }
 
-    /// <inheritdoc />
-    /// <exception cref="ArgumentNullException"><paramref name="reader" /> is <see langword="null" />.</exception>
-    public override async ValueTask<TabularRecord<T?[]>> ReadAsync(TabularReader reader, CancellationToken cancellationToken)
+    public override async ValueTask<T?[]> ReadAsync(TabularReader reader, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(reader);
-
         using var builder = new ArrayBuilder<T?>(32);
+
+        var converter = reader.ResolveConverter<T>();
+        var recordIndex = reader.RecordsRead;
+        var fieldIndex = 0;
 
         while (await reader.TryReadFieldAsync(cancellationToken).ConfigureAwait(false))
         {
-            if (reader.CurrentFieldType != TabularFieldType.Value)
+            if (!typeof(T).IsValueType && reader.CurrentField.IsEmpty)
             {
-                return default;
+                builder.Add(default);
+            }
+            else
+            {
+                if (!reader.TryGet(converter, out var field))
+                {
+                    ThrowFieldConversionException(recordIndex, fieldIndex);
+                }
+
+                builder.Add(field);
             }
 
-            reader.TryGet(_converter, out var field);
-            builder.Add(field);
+            fieldIndex++;
         }
 
-        return new(builder.Build());
+        return builder.Build();
     }
 
-    /// <inheritdoc />
-    /// <exception cref="ArgumentNullException"><paramref name="writer" /> or <paramref name="record" /> is <see langword="null" />.</exception>
     public override void Write(TabularWriter writer, T?[] record)
     {
-        ArgumentNullException.ThrowIfNull(writer);
-        ArgumentNullException.ThrowIfNull(record);
+        var converter = writer.ResolveConverter<T>();
 
         for (var i = 0; i < record.Length; i++)
         {
-            writer.Write(record[i], _converter);
+            writer.Write(record[i], converter);
         }
     }
 
-    /// <inheritdoc />
-    /// <exception cref="ArgumentNullException"><paramref name="writer" /> or <paramref name="record" /> is <see langword="null" />.</exception>
     public override async ValueTask WriteAsync(TabularWriter writer, T?[] record, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(writer);
-        ArgumentNullException.ThrowIfNull(record);
+        var converter = writer.ResolveConverter<T>();
 
         for (var i = 0; i < record.Length; i++)
         {
-            await writer.WriteAsync(record[i], _converter, cancellationToken).ConfigureAwait(false);
+            await writer.WriteAsync(record[i], converter, cancellationToken).ConfigureAwait(false);
         }
+    }
+
+    [DoesNotReturn]
+    [StackTraceHidden]
+    private static void ThrowFieldConversionException(long recordIndex, int fieldIndex)
+    {
+        throw new TabularException($"The field {fieldIndex} of the record {recordIndex} cannot be converted to '{typeof(T)}'.");
     }
 }

@@ -4,11 +4,9 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="Half" /> value from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="Half" /> value to or from a character sequence.</summary>
 public class TabularHalfConverter : TabularConverter<Half>
 {
-    internal static readonly TabularHalfConverter Instance = new();
-
     /// <summary>Initializes a new instance of the <see cref="TabularHalfConverter" /> class.</summary>
     public TabularHalfConverter()
     {
@@ -23,8 +21,8 @@ public class TabularHalfConverter : TabularConverter<Half>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out Half value)
     {
-        const NumberStyles styles = NumberStyles.AllowThousands | NumberStyles.Float;
+        const NumberStyles styles = NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent;
 
-        return Half.TryParse(source, styles, provider, out value) || TabularNumber<Half>.TryParseAsPartsPer(source, styles, provider, out value);
+        return Half.TryParse(source, styles, provider, out value);
     }
 }

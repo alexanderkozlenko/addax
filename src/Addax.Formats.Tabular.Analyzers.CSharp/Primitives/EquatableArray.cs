@@ -1,12 +1,13 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace Addax.Formats.Tabular.Analyzers.CSharp.Primitives
 {
-    internal readonly struct EquatableArray<T> : IEquatable<EquatableArray<T>>
+    internal readonly struct EquatableArray<T> : IEquatable<EquatableArray<T>>, IEnumerable<T>
         where T : IEquatable<T>
     {
         private readonly ImmutableArray<T> _items;
@@ -56,9 +57,29 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp.Primitives
             return builder.ToHashCode();
         }
 
+        public static bool operator ==(EquatableArray<T> left, EquatableArray<T> right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(EquatableArray<T> left, EquatableArray<T> right)
+        {
+            return !left.Equals(right);
+        }
+
         public ImmutableArray<T>.Enumerator GetEnumerator()
         {
             return _items.GetEnumerator();
+        }
+
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        {
+            return ((IEnumerable<T>)_items).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable)_items).GetEnumerator();
         }
 
         public T this[int index]

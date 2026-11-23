@@ -4,11 +4,9 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="short" /> value from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="short" /> value to or from a character sequence.</summary>
 public class TabularInt16Converter : TabularConverter<short>
 {
-    internal static readonly TabularInt16Converter Instance = new();
-
     /// <summary>Initializes a new instance of the <see cref="TabularInt16Converter" /> class.</summary>
     public TabularInt16Converter()
     {
@@ -23,8 +21,8 @@ public class TabularInt16Converter : TabularConverter<short>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out short value)
     {
-        const NumberStyles styles = NumberStyles.Integer | NumberStyles.AllowThousands;
+        const NumberStyles styles = NumberStyles.AllowLeadingSign;
 
-        return short.TryParse(source, styles, provider, out value) || TabularNumber<short>.TryParseAsPartsPer(source, styles, provider, out value);
+        return short.TryParse(source, styles, provider, out value);
     }
 }

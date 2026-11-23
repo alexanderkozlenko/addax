@@ -4,12 +4,10 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="sbyte" /> value from or to a character sequence.</summary>
+/// <summary>Converts an <see cref="sbyte" /> value to or from a character sequence.</summary>
 [CLSCompliant(false)]
 public class TabularSByteConverter : TabularConverter<sbyte>
 {
-    internal static readonly TabularSByteConverter Instance = new();
-
     /// <summary>Initializes a new instance of the <see cref="TabularSByteConverter" /> class.</summary>
     public TabularSByteConverter()
     {
@@ -24,8 +22,8 @@ public class TabularSByteConverter : TabularConverter<sbyte>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out sbyte value)
     {
-        const NumberStyles styles = NumberStyles.Integer;
+        const NumberStyles styles = NumberStyles.AllowLeadingSign;
 
-        return sbyte.TryParse(source, styles, provider, out value) || TabularNumber<sbyte>.TryParseAsPartsPer(source, styles, provider, out value);
+        return sbyte.TryParse(source, styles, provider, out value);
     }
 }

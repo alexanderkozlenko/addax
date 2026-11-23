@@ -5,11 +5,10 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="DateTime" /> value from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="DateTime" /> value to or from a character sequence.</summary>
+/// <remarks>When parsing, a value with a time zone offset is converted to Coordinated Universal Time (UTC) and has the <see cref="DateTimeKind.Utc" /> kind; a value without an offset has the <see cref="DateTimeKind.Unspecified" /> kind.</remarks>
 public class TabularDateTimeConverter : TabularConverter<DateTime>
 {
-    internal static readonly TabularDateTimeConverter Instance = new();
-
     private readonly string? _format;
 
     /// <summary>Initializes a new instance of the <see cref="TabularDateTimeConverter" /> class.</summary>
@@ -19,7 +18,7 @@ public class TabularDateTimeConverter : TabularConverter<DateTime>
 
     /// <summary>Initializes a new instance of the <see cref="TabularDateTimeConverter" /> class with the specified format.</summary>
     /// <param name="format">A standard or custom date and time format string.</param>
-    protected TabularDateTimeConverter([StringSyntax(StringSyntaxAttribute.DateTimeFormat)] string? format)
+    public TabularDateTimeConverter([StringSyntax(StringSyntaxAttribute.DateTimeFormat)] string? format)
     {
         _format = format;
     }
@@ -33,8 +32,13 @@ public class TabularDateTimeConverter : TabularConverter<DateTime>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out DateTime value)
     {
-        const DateTimeStyles styles = DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite | DateTimeStyles.AdjustToUniversal;
+        const DateTimeStyles styles = DateTimeStyles.AdjustToUniversal;
 
-        return DateTime.TryParseExact(source, _format ?? "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK", provider, styles, out value);
+        if (_format is null)
+        {
+            return DateTime.TryParseExact(source, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK", CultureInfo.InvariantCulture, styles, out value);
+        }
+
+        return DateTime.TryParseExact(source, _format, provider, styles, out value);
     }
 }

@@ -1,6 +1,7 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
-using System.Diagnostics;
+using System.Buffers;
+using System.Runtime.CompilerServices;
 
 namespace Addax.Formats.Tabular.Buffers;
 
@@ -11,15 +12,17 @@ internal struct ArrayBuilder<T> : IDisposable
 
     public ArrayBuilder(int capacity)
     {
-        Debug.Assert(capacity >= 0);
-        Debug.Assert(capacity <= Array.MaxLength);
-
-        _array = BufferSource<T>.ArrayPool.Rent(capacity);
+        _array = ArrayPool<T>.Shared.Rent(capacity);
     }
 
     public readonly void Dispose()
     {
-        BufferSource<T>.ArrayPool.Return(_array);
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<T>())
+        {
+            _array.AsSpan(0, _length).Clear();
+        }
+
+        ArrayPool<T>.Shared.Return(_array);
     }
 
     public void Add(T item)
@@ -44,10 +47,16 @@ internal struct ArrayBuilder<T> : IDisposable
     private void Resize()
     {
         var arrayLength = (int)Math.Max(Math.Min(2 * (uint)_array.Length, (uint)Array.MaxLength), (uint)_array.Length + 1);
-        var array = BufferSource<T>.ArrayPool.Rent(arrayLength);
+        var array = ArrayPool<T>.Shared.Rent(arrayLength);
 
         Array.Copy(_array, array, _length);
-        BufferSource<T>.ArrayPool.Return(_array);
+
+        if (RuntimeHelpers.IsReferenceOrContainsReferences<T>())
+        {
+            _array.AsSpan(0, _length).Clear();
+        }
+
+        ArrayPool<T>.Shared.Return(_array);
 
         _array = array;
     }

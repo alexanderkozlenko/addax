@@ -1,4 +1,5 @@
 using Addax.Formats.Tabular;
+using Addax.Formats.Tabular.Converters;
 
 namespace MyNamespace;
 
@@ -82,8 +83,8 @@ public struct LeadingGapRecord
 [TabularRecord]
 public class HeaderRecord
 {
+    [TabularFieldName("a^'b'")]
     [TabularFieldOrder(0)]
-    [TabularFieldName("a,\"b\"")]
     public int MyValue0
     {
         get;
@@ -95,6 +96,26 @@ public class HeaderRecord
     {
         get;
         set;
+    }
+}
+
+[TabularRecord]
+public class HeaderWithReadOnlyFieldRecord
+{
+    [TabularFieldOrder(0)]
+    public int MyValue0
+    {
+        get;
+        set;
+    }
+
+    [TabularFieldName("my-value")]
+    [TabularFieldOrder(2)]
+    public int MyValue2
+    {
+        set
+        {
+        }
     }
 }
 
@@ -121,4 +142,13 @@ public struct NullNameRecord
     [TabularFieldName(null!)]
     [TabularFieldOrder(0)]
     public string? MyValue0;
+}
+
+[TabularRecord]
+public struct MultipleConvertersRecord
+{
+    [TabularFieldOrder(0)]
+    [TabularConverter<TabularInt32Converter>]
+    [TabularConverter<TabularInt32Converter>]
+    public int MyValue0;
 }

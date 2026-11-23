@@ -4,12 +4,10 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="ulong" /> value from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="ulong" /> value to or from a character sequence.</summary>
 [CLSCompliant(false)]
 public class TabularUInt64Converter : TabularConverter<ulong>
 {
-    internal static readonly TabularUInt64Converter Instance = new();
-
     /// <summary>Initializes a new instance of the <see cref="TabularUInt64Converter" /> class.</summary>
     public TabularUInt64Converter()
     {
@@ -24,8 +22,8 @@ public class TabularUInt64Converter : TabularConverter<ulong>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out ulong value)
     {
-        const NumberStyles styles = NumberStyles.Integer | NumberStyles.AllowThousands;
+        const NumberStyles styles = NumberStyles.AllowLeadingSign;
 
-        return ulong.TryParse(source, styles, provider, out value) || TabularNumber<ulong>.TryParseAsPartsPer(source, styles, provider, out value);
+        return ulong.TryParse(source, styles, provider, out value);
     }
 }

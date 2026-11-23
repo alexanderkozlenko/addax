@@ -345,8 +345,8 @@ public abstract class AbstractBase
 [TabularRecord]
 public class OverrideOfAbstractRecord : AbstractBase
 {
-    [TabularFieldOrder(0)]
     [TabularFieldName("my-value")]
+    [TabularFieldOrder(0)]
     public override int MyValue0
     {
         get;

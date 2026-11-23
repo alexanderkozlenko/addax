@@ -11,25 +11,33 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
         public readonly string TypeName;
         public readonly EquatableArray<TabularFieldMapping> FieldMappings;
         public readonly EquatableArray<int> ConstructorArguments;
-        public readonly EquatableArray<string> ExperimentalDiagnosticIds;
+        public readonly EquatableArray<string> DiagnosticIdentifiers;
+        public readonly TabularRecordAccess RecordAccess;
 
-        public TabularRecordMapping(string typeName, EquatableArray<TabularFieldMapping> fieldMappings, EquatableArray<int> constructorArguments, EquatableArray<string> experimentalDiagnosticIds)
+        public TabularRecordMapping(
+            string typeName,
+            EquatableArray<TabularFieldMapping> fieldMappings,
+            EquatableArray<int> constructorArguments,
+            EquatableArray<string> diagnosticIdentifiers,
+            TabularRecordAccess recordAccess)
         {
             Debug.Assert(typeName != null);
 
             TypeName = typeName;
             FieldMappings = fieldMappings;
             ConstructorArguments = constructorArguments;
-            ExperimentalDiagnosticIds = experimentalDiagnosticIds;
+            DiagnosticIdentifiers = diagnosticIdentifiers;
+            RecordAccess = recordAccess;
         }
 
         public bool Equals(TabularRecordMapping other)
         {
             return
                 (TypeName == other.TypeName) &&
-                FieldMappings.Equals(other.FieldMappings) &&
-                ConstructorArguments.Equals(other.ConstructorArguments) &&
-                ExperimentalDiagnosticIds.Equals(other.ExperimentalDiagnosticIds);
+                (FieldMappings == other.FieldMappings) &&
+                (ConstructorArguments == other.ConstructorArguments) &&
+                (DiagnosticIdentifiers == other.DiagnosticIdentifiers) &&
+                (RecordAccess == other.RecordAccess);
         }
 
         public override bool Equals(object obj)
@@ -44,9 +52,20 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             builder.Add(TypeName);
             builder.Add(FieldMappings);
             builder.Add(ConstructorArguments);
-            builder.Add(ExperimentalDiagnosticIds);
+            builder.Add(DiagnosticIdentifiers);
+            builder.Add(RecordAccess);
 
             return builder.ToHashCode();
+        }
+
+        public static bool operator ==(TabularRecordMapping left, TabularRecordMapping right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(TabularRecordMapping left, TabularRecordMapping right)
+        {
+            return !left.Equals(right);
         }
     }
 }

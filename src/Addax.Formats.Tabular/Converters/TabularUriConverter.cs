@@ -4,11 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="Uri" /> instance from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="Uri" /> instance to or from a character sequence.</summary>
 public class TabularUriConverter : TabularConverter<Uri>
 {
-    internal static readonly TabularUriConverter Instance = new();
-
     private readonly TabularStringFactory _stringFactory;
 
     /// <summary>Initializes a new instance of the <see cref="TabularUriConverter" /> class.</summary>
@@ -19,7 +17,7 @@ public class TabularUriConverter : TabularConverter<Uri>
 
     /// <summary>Initializes a new instance of the <see cref="TabularUriConverter" /> class with the specified string factory.</summary>
     /// <param name="stringFactory">The factory that creates <see cref="string" /> instances from character sequences.</param>
-    protected TabularUriConverter(TabularStringFactory? stringFactory)
+    public TabularUriConverter(TabularStringFactory? stringFactory)
     {
         _stringFactory = stringFactory ?? TabularStringFactory.Default;
     }
@@ -34,7 +32,18 @@ public class TabularUriConverter : TabularConverter<Uri>
             return true;
         }
 
-        return value.TryFormat(destination, out charsWritten);
+        var text = value.IsAbsoluteUri ? value.AbsoluteUri : value.OriginalString;
+
+        if (text.TryCopyTo(destination))
+        {
+            charsWritten = text.Length;
+
+            return true;
+        }
+
+        charsWritten = 0;
+
+        return false;
     }
 
     /// <inheritdoc />

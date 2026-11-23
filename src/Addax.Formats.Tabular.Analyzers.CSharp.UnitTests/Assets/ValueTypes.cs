@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Numerics;
 using System.Text;
 using Addax.Formats.Tabular;
@@ -6,7 +6,7 @@ using Addax.Formats.Tabular;
 namespace MyNamespace;
 
 [TabularRecord]
-public struct SupportedTypesRecord
+public struct TextTypesRecord
 {
     [TabularFieldOrder(0)]
     public string? MyValue0;
@@ -15,92 +15,11 @@ public struct SupportedTypesRecord
     public char MyValue1;
 
     [TabularFieldOrder(2)]
-    public bool MyValue2;
-
-    [TabularFieldOrder(3)]
-    public sbyte MyValue3;
-
-    [TabularFieldOrder(4)]
-    public byte MyValue4;
-
-    [TabularFieldOrder(5)]
-    public short MyValue5;
-
-    [TabularFieldOrder(6)]
-    public ushort MyValue6;
-
-    [TabularFieldOrder(7)]
-    public int MyValue7;
-
-    [TabularFieldOrder(8)]
-    public uint MyValue8;
-
-    [TabularFieldOrder(9)]
-    public long MyValue9;
-
-    [TabularFieldOrder(10)]
-    public ulong MyValue10;
-
-    [TabularFieldOrder(11)]
-    public Int128 MyValue11;
-
-    [TabularFieldOrder(12)]
-    public UInt128 MyValue12;
-
-    [TabularFieldOrder(13)]
-    public BigInteger MyValue13;
-
-    [TabularFieldOrder(14)]
-    public Half MyValue14;
-
-    [TabularFieldOrder(15)]
-    public float MyValue15;
-
-    [TabularFieldOrder(16)]
-    public double MyValue16;
-
-    [TabularFieldOrder(17)]
-    public decimal MyValue17;
-
-    [TabularFieldOrder(18)]
-    public TimeSpan MyValue18;
-
-    [TabularFieldOrder(19)]
-    public TimeOnly MyValue19;
-
-    [TabularFieldOrder(20)]
-    public DateOnly MyValue20;
-
-    [TabularFieldOrder(21)]
-    public DateTime MyValue21;
-
-    [TabularFieldOrder(22)]
-    public DateTimeOffset MyValue22;
-
-    [TabularFieldOrder(23)]
-    public Guid MyValue23;
-
-    [TabularFieldOrder(24)]
-    public Uri? MyValue24;
-
-    [TabularFieldOrder(25)]
-    public Rune MyValue25;
-
-    [TabularFieldOrder(26)]
-    public BFloat16 MyValue26;
-
-    [TabularFieldOrder(27)]
-    public Decimal32 MyValue27;
-
-    [TabularFieldOrder(28)]
-    public Decimal64 MyValue28;
-
-    [TabularFieldOrder(29)]
-    public Decimal128 MyValue29;
+    public Rune MyValue2;
 }
 
 [TabularRecord]
-public struct SupportedNullableTypesRecord
+public struct NullableTextTypesRecord
 {
     [TabularFieldOrder(0)]
     public string? MyValue0;
@@ -109,105 +28,220 @@ public struct SupportedNullableTypesRecord
     public char? MyValue1;
 
     [TabularFieldOrder(2)]
-    public bool? MyValue2;
+    public Rune? MyValue2;
+}
+
+[TabularRecord]
+public struct IntegerTypesRecord
+{
+    [TabularFieldOrder(0)]
+    public sbyte MyValue0;
+
+    [TabularFieldOrder(1)]
+    public byte MyValue1;
+
+    [TabularFieldOrder(2)]
+    public short MyValue2;
 
     [TabularFieldOrder(3)]
-    public sbyte? MyValue3;
+    public ushort MyValue3;
 
     [TabularFieldOrder(4)]
-    public byte? MyValue4;
+    public int MyValue4;
 
     [TabularFieldOrder(5)]
-    public short? MyValue5;
+    public uint MyValue5;
 
     [TabularFieldOrder(6)]
-    public ushort? MyValue6;
+    public long MyValue6;
 
     [TabularFieldOrder(7)]
-    public int? MyValue7;
+    public ulong MyValue7;
 
     [TabularFieldOrder(8)]
-    public uint? MyValue8;
+    public Int128 MyValue8;
 
     [TabularFieldOrder(9)]
-    public long? MyValue9;
+    public UInt128 MyValue9;
 
     [TabularFieldOrder(10)]
-    public ulong? MyValue10;
-
-    [TabularFieldOrder(11)]
-    public Int128? MyValue11;
-
-    [TabularFieldOrder(12)]
-    public UInt128? MyValue12;
-
-    [TabularFieldOrder(13)]
-    public BigInteger? MyValue13;
-
-    [TabularFieldOrder(14)]
-    public Half? MyValue14;
-
-    [TabularFieldOrder(15)]
-    public float? MyValue15;
-
-    [TabularFieldOrder(16)]
-    public double? MyValue16;
-
-    [TabularFieldOrder(17)]
-    public decimal? MyValue17;
-
-    [TabularFieldOrder(18)]
-    public TimeSpan? MyValue18;
-
-    [TabularFieldOrder(19)]
-    public TimeOnly? MyValue19;
-
-    [TabularFieldOrder(20)]
-    public DateOnly? MyValue20;
-
-    [TabularFieldOrder(21)]
-    public DateTime? MyValue21;
-
-    [TabularFieldOrder(22)]
-    public DateTimeOffset? MyValue22;
-
-    [TabularFieldOrder(23)]
-    public Guid? MyValue23;
-
-    [TabularFieldOrder(24)]
-    public Uri? MyValue24;
-
-    [TabularFieldOrder(25)]
-    public Rune? MyValue25;
-
-    [TabularFieldOrder(26)]
-    public BFloat16? MyValue26;
-
-    [TabularFieldOrder(27)]
-    public Decimal32? MyValue27;
-
-    [TabularFieldOrder(28)]
-    public Decimal64? MyValue28;
-
-    [TabularFieldOrder(29)]
-    public Decimal128? MyValue29;
+    public BigInteger MyValue10;
 }
 
 [TabularRecord]
-public struct UnsupportedTypeRecord
+public struct NullableIntegerTypesRecord
 {
     [TabularFieldOrder(0)]
-    public object? MyValue0;
-}
+    public sbyte? MyValue0;
 
-public enum MyEnum
-{
-    MyValue,
+    [TabularFieldOrder(1)]
+    public byte? MyValue1;
+
+    [TabularFieldOrder(2)]
+    public short? MyValue2;
+
+    [TabularFieldOrder(3)]
+    public ushort? MyValue3;
+
+    [TabularFieldOrder(4)]
+    public int? MyValue4;
+
+    [TabularFieldOrder(5)]
+    public uint? MyValue5;
+
+    [TabularFieldOrder(6)]
+    public long? MyValue6;
+
+    [TabularFieldOrder(7)]
+    public ulong? MyValue7;
+
+    [TabularFieldOrder(8)]
+    public Int128? MyValue8;
+
+    [TabularFieldOrder(9)]
+    public UInt128? MyValue9;
+
+    [TabularFieldOrder(10)]
+    public BigInteger? MyValue10;
 }
 
 [TabularRecord]
-public struct UnsupportedNullableTypeRecord
+public struct BinaryFloatingPointTypesRecord
 {
     [TabularFieldOrder(0)]
-    public MyEnum? MyValue0;
+    public Half MyValue0;
+
+    [TabularFieldOrder(1)]
+    public BFloat16 MyValue1;
+
+    [TabularFieldOrder(2)]
+    public float MyValue2;
+
+    [TabularFieldOrder(3)]
+    public double MyValue3;
+}
+
+[TabularRecord]
+public struct NullableBinaryFloatingPointTypesRecord
+{
+    [TabularFieldOrder(0)]
+    public Half? MyValue0;
+
+    [TabularFieldOrder(1)]
+    public BFloat16? MyValue1;
+
+    [TabularFieldOrder(2)]
+    public float? MyValue2;
+
+    [TabularFieldOrder(3)]
+    public double? MyValue3;
+}
+
+[TabularRecord]
+public struct DecimalTypesRecord
+{
+    [TabularFieldOrder(0)]
+    public decimal MyValue0;
+
+    [TabularFieldOrder(1)]
+    public Decimal32 MyValue1;
+
+    [TabularFieldOrder(2)]
+    public Decimal64 MyValue2;
+
+    [TabularFieldOrder(3)]
+    public Decimal128 MyValue3;
+}
+
+[TabularRecord]
+public struct NullableDecimalTypesRecord
+{
+    [TabularFieldOrder(0)]
+    public decimal? MyValue0;
+
+    [TabularFieldOrder(1)]
+    public Decimal32? MyValue1;
+
+    [TabularFieldOrder(2)]
+    public Decimal64? MyValue2;
+
+    [TabularFieldOrder(3)]
+    public Decimal128? MyValue3;
+}
+
+[TabularRecord]
+public struct TimeTypesRecord
+{
+    [TabularFieldOrder(0)]
+    public TimeSpan MyValue0;
+
+    [TabularFieldOrder(1)]
+    public TimeOnly MyValue1;
+
+    [TabularFieldOrder(2)]
+    public DateOnly MyValue2;
+
+    [TabularFieldOrder(3)]
+    public DateTime MyValue3;
+
+    [TabularFieldOrder(4)]
+    public DateTimeOffset MyValue4;
+}
+
+[TabularRecord]
+public struct NullableTimeTypesRecord
+{
+    [TabularFieldOrder(0)]
+    public TimeSpan? MyValue0;
+
+    [TabularFieldOrder(1)]
+    public TimeOnly? MyValue1;
+
+    [TabularFieldOrder(2)]
+    public DateOnly? MyValue2;
+
+    [TabularFieldOrder(3)]
+    public DateTime? MyValue3;
+
+    [TabularFieldOrder(4)]
+    public DateTimeOffset? MyValue4;
+}
+
+[TabularRecord]
+public struct OtherTypesRecord
+{
+    [TabularFieldOrder(0)]
+    public bool MyValue0;
+
+    [TabularFieldOrder(1)]
+    public Guid MyValue1;
+
+    [TabularFieldOrder(2)]
+    public Uri? MyValue2;
+}
+
+[TabularRecord]
+public struct NullableOtherTypesRecord
+{
+    [TabularFieldOrder(0)]
+    public bool? MyValue0;
+
+    [TabularFieldOrder(1)]
+    public Guid? MyValue1;
+
+    [TabularFieldOrder(2)]
+    public Uri? MyValue2;
+}
+
+[TabularRecord]
+public struct RegisteredTypesRecord
+{
+    [TabularFieldOrder(0)]
+    public Memory<byte> MyValue0;
+
+    [TabularFieldOrder(1)]
+    public byte[]? MyValue1;
+
+    [TabularFieldOrder(2)]
+    public ReadOnlyMemory<byte>? MyValue2;
 }

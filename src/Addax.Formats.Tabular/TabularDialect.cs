@@ -7,15 +7,16 @@ using Addax.Formats.Tabular.Primitives;
 namespace Addax.Formats.Tabular;
 
 /// <summary>Specifies how to read and write tabular data. This class cannot be inherited.</summary>
+/// <remarks>All public members of the type are thread-safe and may be used concurrently from multiple threads.</remarks>
 public sealed class TabularDialect
 {
     internal readonly TabularSearchValues SearchValues;
 
-    private TabularDialect(string lineTerminator, char delimiter, char quoteSymbol, char escapeSymbol, char? annotationPrefix)
+    private TabularDialect(string lineTerminator, char delimiter, char quoteChar, char escapeChar, char? commentPrefix)
     {
         ArgumentNullException.ThrowIfNull(lineTerminator);
 
-        if (!TabularFormatInfo.IsSupportedLineTerminator(lineTerminator))
+        if ((lineTerminator.Length is not (1 or 2)) || ((lineTerminator.Length == 2) && (lineTerminator[0] == lineTerminator[1])))
         {
             ThrowTokenException(nameof(lineTerminator));
         }
@@ -25,36 +26,36 @@ public sealed class TabularDialect
             ThrowTokenException(nameof(delimiter));
         }
 
-        if (lineTerminator.Contains(quoteSymbol, StringComparison.Ordinal) || (quoteSymbol == delimiter))
+        if (lineTerminator.Contains(quoteChar, StringComparison.Ordinal) || (quoteChar == delimiter))
         {
-            ThrowTokenException(nameof(quoteSymbol));
+            ThrowTokenException(nameof(quoteChar));
         }
 
-        if (lineTerminator.Contains(escapeSymbol, StringComparison.Ordinal) || (escapeSymbol == delimiter))
+        if (lineTerminator.Contains(escapeChar, StringComparison.Ordinal) || (escapeChar == delimiter))
         {
-            ThrowTokenException(nameof(escapeSymbol));
+            ThrowTokenException(nameof(escapeChar));
         }
 
-        if (annotationPrefix.HasValue)
+        if (commentPrefix.HasValue)
         {
-            var annotationPrefixValue = annotationPrefix.Value;
+            var commentPrefixValue = commentPrefix.Value;
 
-            if (lineTerminator.Contains(annotationPrefixValue, StringComparison.Ordinal) ||
-                (annotationPrefixValue == delimiter) ||
-                (annotationPrefixValue == quoteSymbol) ||
-                (annotationPrefixValue == escapeSymbol))
+            if (lineTerminator.Contains(commentPrefixValue, StringComparison.Ordinal) ||
+                (commentPrefixValue == delimiter) ||
+                (commentPrefixValue == quoteChar) ||
+                (commentPrefixValue == escapeChar))
             {
-                ThrowTokenException(nameof(annotationPrefix));
+                ThrowTokenException(nameof(commentPrefix));
             }
         }
 
         LineTerminator = lineTerminator;
         Delimiter = delimiter;
-        QuoteSymbol = quoteSymbol;
-        EscapeSymbol = escapeSymbol;
-        AnnotationPrefix = annotationPrefix;
+        QuoteChar = quoteChar;
+        EscapeChar = escapeChar;
+        CommentPrefix = commentPrefix;
 
-        SearchValues = new(lineTerminator, delimiter, quoteSymbol, escapeSymbol);
+        SearchValues = new(lineTerminator, delimiter, quoteChar, escapeChar);
 
         [DoesNotReturn]
         [StackTraceHidden]
@@ -67,36 +68,36 @@ public sealed class TabularDialect
     /// <summary>Initializes a new instance of the <see cref="TabularDialect" /> class with the specified tokens.</summary>
     /// <param name="lineTerminator">The character sequence that is used to separate records. Must have one or two distinct characters.</param>
     /// <param name="delimiter">The character that is used to separate fields. Must differ from line terminator characters.</param>
-    /// <param name="quoteSymbol">The character that is used to surround an escaped field. Must differ from line terminator and delimiter characters.</param>
-    /// <param name="escapeSymbol">The character that is used to escape the quote symbol and itself within an escaped field. Must differ from line terminator and delimiter characters.</param>
-    /// <param name="annotationPrefix">The character that is used at the beginning of a record to indicate that the record is an annotation. Must differ from line terminator, delimiter, quote, and escape characters.</param>
+    /// <param name="quoteChar">The character that is used to surround an escaped field. Must differ from line terminator and delimiter characters.</param>
+    /// <param name="escapeChar">The character that is used to escape the quote character and itself within an escaped field. Must differ from line terminator and delimiter characters.</param>
+    /// <param name="commentPrefix">The character that is used at the beginning of a record to indicate that the record is a comment. Must differ from line terminator, delimiter, quote, and escape characters.</param>
     /// <exception cref="ArgumentException">A token value is not valid for this dialect.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="lineTerminator" /> is <see langword="null" />.</exception>
-    public TabularDialect(string lineTerminator, char delimiter, char quoteSymbol, char escapeSymbol, char annotationPrefix)
-        : this(lineTerminator, delimiter, quoteSymbol, escapeSymbol, (char?)annotationPrefix)
+    public TabularDialect(string lineTerminator, char delimiter, char quoteChar, char escapeChar, char commentPrefix)
+        : this(lineTerminator, delimiter, quoteChar, escapeChar, (char?)commentPrefix)
     {
     }
 
     /// <summary>Initializes a new instance of the <see cref="TabularDialect" /> class with the specified tokens.</summary>
     /// <param name="lineTerminator">The character sequence that is used to separate records. Must have one or two distinct characters.</param>
     /// <param name="delimiter">The character that is used to separate fields. Must differ from line terminator characters.</param>
-    /// <param name="quoteSymbol">The character that is used to surround an escaped field. Must differ from line terminator and delimiter characters.</param>
-    /// <param name="escapeSymbol">The character that is used to escape the quote symbol and itself within an escaped field. Must differ from line terminator and delimiter characters.</param>
+    /// <param name="quoteChar">The character that is used to surround an escaped field. Must differ from line terminator and delimiter characters.</param>
+    /// <param name="escapeChar">The character that is used to escape the quote character and itself within an escaped field. Must differ from line terminator and delimiter characters.</param>
     /// <exception cref="ArgumentException">A token value is not valid for this dialect.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="lineTerminator" /> is <see langword="null" />.</exception>
-    public TabularDialect(string lineTerminator, char delimiter, char quoteSymbol, char escapeSymbol)
-        : this(lineTerminator, delimiter, quoteSymbol, escapeSymbol, null)
+    public TabularDialect(string lineTerminator, char delimiter, char quoteChar, char escapeChar)
+        : this(lineTerminator, delimiter, quoteChar, escapeChar, null)
     {
     }
 
     /// <summary>Initializes a new instance of the <see cref="TabularDialect" /> class with the specified tokens.</summary>
     /// <param name="lineTerminator">The character sequence that is used to separate records. Must have one or two distinct characters.</param>
     /// <param name="delimiter">The character that is used to separate fields. Must differ from line terminator characters.</param>
-    /// <param name="quoteSymbol">The character that is used to surround an escaped field and escape itself within an escaped field. Must differ from line terminator and delimiter characters.</param>
+    /// <param name="quoteChar">The character that is used to surround an escaped field and escape itself within an escaped field. Must differ from line terminator and delimiter characters.</param>
     /// <exception cref="ArgumentException">A token value is not valid for this dialect.</exception>
     /// <exception cref="ArgumentNullException"><paramref name="lineTerminator" /> is <see langword="null" />.</exception>
-    public TabularDialect(string lineTerminator, char delimiter, char quoteSymbol)
-        : this(lineTerminator, delimiter, quoteSymbol, quoteSymbol, null)
+    public TabularDialect(string lineTerminator, char delimiter, char quoteChar)
+        : this(lineTerminator, delimiter, quoteChar, quoteChar, null)
     {
     }
 
@@ -116,21 +117,21 @@ public sealed class TabularDialect
 
     /// <summary>Gets the character that is used to surround an escaped field.</summary>
     /// <value>A UTF-16 code unit.</value>
-    public char QuoteSymbol
+    public char QuoteChar
     {
         get;
     }
 
-    /// <summary>Gets the character that is used to escape the quote symbol and itself within an escaped field.</summary>
-    /// <value>A UTF-16 code unit. Equals to <see cref="QuoteSymbol" />, if not set.</value>
-    public char EscapeSymbol
+    /// <summary>Gets the character that is used to escape the quote character and itself within an escaped field.</summary>
+    /// <value>A UTF-16 code unit. The same as <see cref="QuoteChar" /> if the dialect has no separate escape symbol.</value>
+    public char EscapeChar
     {
         get;
     }
 
-    /// <summary>Gets the character that is used at the beginning of a record to indicate that the record is an annotation.</summary>
-    /// <value>A UTF-16 code unit or <see langword="null" />, if not set.</value>
-    public char? AnnotationPrefix
+    /// <summary>Gets the character that is used at the beginning of a record to indicate that the record is a comment.</summary>
+    /// <value>A UTF-16 code unit, or <see langword="null" /> if the dialect has no comment prefix.</value>
+    public char? CommentPrefix
     {
         get;
     }

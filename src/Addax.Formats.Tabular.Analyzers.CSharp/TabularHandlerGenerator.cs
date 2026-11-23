@@ -13,16 +13,22 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
     [Generator(LanguageNames.CSharp)]
     public sealed class TabularHandlerGenerator : IIncrementalGenerator
     {
-        private static readonly TabularHandlerEmitter s_emitter = new TabularHandlerEmitter();
+        public TabularHandlerGenerator()
+        {
+        }
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
             var parser = context.CompilationProvider
-                .Select(CreateParser);
+                .Select(TabularHandlerParser.Create);
+
+            var converterParseResult = parser
+                .Select(ParseConverters);
 
             var parseResults = context.SyntaxProvider
                 .ForAttributeWithMetadataName("Addax.Formats.Tabular.TabularRecordAttribute", FilterSyntaxNode, TransformSyntaxContext)
                 .Combine(parser)
+                .Combine(converterParseResult)
                 .Select(ParseRecordType)
                 .Collect();
 
@@ -31,41 +37,34 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
                 .WithTrackingName("RecordMappings");
 
             var diagnostics = parseResults
+                .Combine(converterParseResult)
                 .Select(GetDiagnostics);
 
-            context.RegisterImplementationSourceOutput(recordMappings, GenerateSources);
+            context.RegisterImplementationSourceOutput(recordMappings, TabularHandlerEmitter.EmitRecordMappings);
             context.RegisterSourceOutput(diagnostics, ReportDiagnostics);
         }
 
-        private static TabularHandlerParser CreateParser(Compilation compilation, CancellationToken cancellationToken)
+        private static TabularConverterParseResult ParseConverters(TabularHandlerParser parser, CancellationToken cancellationToken)
         {
-            foreach (var reference in compilation.References)
+            if (parser == null)
             {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                if (compilation.GetAssemblyOrModuleSymbol(reference) is IAssemblySymbol assembly)
-                {
-                    if (assembly.Name == "Addax.Formats.Tabular")
-                    {
-                        return new TabularHandlerParser((CSharpCompilation)compilation, assembly);
-                    }
-                }
+                return new TabularConverterParseResult(new EquatableArray<TabularConverterMapping>(ImmutableArray<TabularConverterMapping>.Empty), ImmutableArray<Diagnostic>.Empty);
             }
 
-            return null;
+            return parser.GetConverterMappings(cancellationToken);
         }
 
-        private static (TabularRecordMapping? RecordMapping, ImmutableArray<Diagnostic> Diagnostics) ParseRecordType((INamedTypeSymbol RecordType, TabularHandlerParser Parser) parseArgs, CancellationToken cancellationToken)
+        private static TabularRecordParseResult ParseRecordType(((INamedTypeSymbol RecordType, TabularHandlerParser Parser) Record, TabularConverterParseResult ConverterParseResult) parseArgs, CancellationToken cancellationToken)
         {
-            if (parseArgs.Parser == null)
+            if (parseArgs.Record.Parser == null)
             {
-                return (null, ImmutableArray<Diagnostic>.Empty);
+                return new TabularRecordParseResult(null, ImmutableArray<Diagnostic>.Empty);
             }
 
-            return parseArgs.Parser.GetRecordMapping(parseArgs.RecordType, cancellationToken);
+            return parseArgs.Record.Parser.GetRecordMapping(parseArgs.Record.RecordType, parseArgs.ConverterParseResult.ConverterMappings, cancellationToken);
         }
 
-        private static EquatableArray<TabularRecordMapping> GetRecordMappings(ImmutableArray<(TabularRecordMapping? RecordMapping, ImmutableArray<Diagnostic> Diagnostics)> parseResults, CancellationToken cancellationToken)
+        private static EquatableArray<TabularRecordMapping> GetRecordMappings(ImmutableArray<TabularRecordParseResult> parseResults, CancellationToken cancellationToken)
         {
             var recordMappingsBuilder = ImmutableArray.CreateBuilder<TabularRecordMapping>(parseResults.Length);
 
@@ -80,12 +79,14 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             return new EquatableArray<TabularRecordMapping>(recordMappingsBuilder.ToImmutable());
         }
 
-        private static ImmutableArray<Diagnostic> GetDiagnostics(ImmutableArray<(TabularRecordMapping? RecordMapping, ImmutableArray<Diagnostic> Diagnostics)> parseResults, CancellationToken cancellationToken)
+        private static ImmutableArray<Diagnostic> GetDiagnostics((ImmutableArray<TabularRecordParseResult> RecordParseResults, TabularConverterParseResult ConverterParseResult) parseResults, CancellationToken cancellationToken)
         {
             var diagnosticsBuilder = ImmutableArray.CreateBuilder<Diagnostic>();
             var reportedDiagnostics = new HashSet<(string Id, Location Location, string Message)>();
 
-            foreach (var parseResult in parseResults)
+            diagnosticsBuilder.AddRange(parseResults.ConverterParseResult.Diagnostics);
+
+            foreach (var parseResult in parseResults.RecordParseResults)
             {
                 foreach (var diagnostic in parseResult.Diagnostics)
                 {
@@ -97,11 +98,6 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp
             }
 
             return diagnosticsBuilder.ToImmutable();
-        }
-
-        private static void GenerateSources(SourceProductionContext context, EquatableArray<TabularRecordMapping> recordMappings)
-        {
-            s_emitter.EmitRecordMappings(context, recordMappings);
         }
 
         private static void ReportDiagnostics(SourceProductionContext context, ImmutableArray<Diagnostic> diagnostics)

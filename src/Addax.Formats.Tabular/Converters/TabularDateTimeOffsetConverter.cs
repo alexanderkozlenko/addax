@@ -5,11 +5,10 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="DateTimeOffset" /> value from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="DateTimeOffset" /> value to or from a character sequence.</summary>
+/// <remarks>When parsing, a value without a time zone offset is interpreted as Coordinated Universal Time (UTC).</remarks>
 public class TabularDateTimeOffsetConverter : TabularConverter<DateTimeOffset>
 {
-    internal static readonly TabularDateTimeOffsetConverter Instance = new();
-
     private readonly string? _format;
 
     /// <summary>Initializes a new instance of the <see cref="TabularDateTimeOffsetConverter" /> class.</summary>
@@ -19,7 +18,7 @@ public class TabularDateTimeOffsetConverter : TabularConverter<DateTimeOffset>
 
     /// <summary>Initializes a new instance of the <see cref="TabularDateTimeOffsetConverter" /> class with the specified format.</summary>
     /// <param name="format">A standard or custom date and time format string.</param>
-    protected TabularDateTimeOffsetConverter([StringSyntax(StringSyntaxAttribute.DateTimeFormat)] string? format)
+    public TabularDateTimeOffsetConverter([StringSyntax(StringSyntaxAttribute.DateTimeFormat)] string? format)
     {
         _format = format;
     }
@@ -33,8 +32,13 @@ public class TabularDateTimeOffsetConverter : TabularConverter<DateTimeOffset>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out DateTimeOffset value)
     {
-        const DateTimeStyles styles = DateTimeStyles.AllowLeadingWhite | DateTimeStyles.AllowTrailingWhite | DateTimeStyles.AssumeUniversal;
+        const DateTimeStyles styles = DateTimeStyles.AssumeUniversal;
 
-        return DateTimeOffset.TryParseExact(source, _format ?? "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK", provider, styles, out value);
+        if (_format is null)
+        {
+            return DateTimeOffset.TryParseExact(source, "yyyy'-'MM'-'dd'T'HH':'mm':'ss.FFFFFFFK", CultureInfo.InvariantCulture, styles, out value);
+        }
+
+        return DateTimeOffset.TryParseExact(source, _format, provider, styles, out value);
     }
 }

@@ -1,3 +1,5 @@
+﻿using System.Globalization;
+using Addax.Formats.Tabular.Converters;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
@@ -8,62 +10,56 @@ namespace Addax.Formats.Tabular.Analyzers.CSharp.UnitTests;
 public sealed partial class TabularHandlerGeneratorTests
 {
     [TestMethod]
-    [DataRow("Construction", "MyNamespace.AbstractClass", "Write")]
-    [DataRow("Construction", "MyNamespace.ClassPrimaryConstructorWithRequiredMember", "Write")]
-    [DataRow("Construction", "MyNamespace.ClassWithOptionalConstructor", "Write")]
-    [DataRow("Construction", "MyNamespace.ClassWithParameterlessAndVarargConstructors", "Read, Write")]
-    [DataRow("Construction", "MyNamespace.ClassWithPrimaryConstructor", "Write")]
-    [DataRow("Construction", "MyNamespace.ClassWithPrivateConstructor", "Write")]
-    [DataRow("Construction", "MyNamespace.ClassWithSeveralConstructors", "Read, Write")]
-    [DataRow("Construction", "MyNamespace.ClassWithTwoOptionalConstructors", "Write")]
-    [DataRow("Construction", "MyNamespace.ClassWithVarargConstructor", "Write")]
+    [DataRow("AssemblyConverters", "MyNamespace.AssemblyConvertersRecord", "Read, Write")]
+    [DataRow("AssemblyConverters", "MyNamespace.BuiltInTypeAssemblyConverterRecord", "Read, Write")]
+    [DataRow("AssemblyConverters", "MyNamespace.DynamicAssemblyConvertersRecord", "Read, Write")]
+    [DataRow("AssemblyConverters", "MyNamespace.MemberConvertersRecord", "Read, Write")]
+    [DataRow("Construction", "MyNamespace.AbstractClassRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.ClassPrimaryConstructorWithRequiredMemberRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.ClassWithOptionalConstructorRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.ClassWithParameterlessAndVarargConstructorsRecord", "Read, Write")]
+    [DataRow("Construction", "MyNamespace.ClassWithPrimaryConstructorRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.ClassWithPrivateConstructorRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.ClassWithSeveralConstructorsRecord", "Read, Write")]
+    [DataRow("Construction", "MyNamespace.ClassWithTwoOptionalConstructorsRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.ClassWithVarargConstructorRecord", "Write")]
     [DataRow("Construction", "MyNamespace.PositionalRecord", "Read, Write")]
-    [DataRow("Construction", "MyNamespace.PositionalRecordWithCaseDistinctParameters", "Read, Write")]
-    [DataRow("Construction", "MyNamespace.PositionalRecordWithConverterAndKeywords", "Read, Write")]
-    [DataRow("Construction", "MyNamespace.PositionalRecordWithExtraConstructor", "Read, Write")]
-    [DataRow("Construction", "MyNamespace.PositionalRecordWithExtraSettableMember", "Write")]
-    [DataRow("Construction", "MyNamespace.PositionalRecordWithInParameter", "Write")]
-    [DataRow("Construction", "MyNamespace.PositionalRecordWithOptionalParameter", "Write")]
-    [DataRow("Construction", "MyNamespace.PositionalRecordWithParamsParameter", "Write")]
-    [DataRow("Construction", "MyNamespace.PositionalRecordWithRequiredMember", "Write")]
-    [DataRow("Construction", "MyNamespace.PositionalRecordWithReversedOrders", "Read, Write")]
-    [DataRow("Construction", "MyNamespace.PositionalRecordWithUnmappedParameter", "Write")]
-    [DataRow("Construction", "MyNamespace.ReadOnlyRecordStruct", "Read, Write")]
-    [DataRow("Construction", "MyNamespace.ReadOnlyStructWithConstructor", "Write")]
-    [DataRow("Construction", "MyNamespace.ReadOnlyStructWithPrimaryConstructor", "Write")]
-    [DataRow("Construction", "MyNamespace.RecordStructWithExtraGetOnlyMember", "Read, Write")]
-    [DataRow("Construction", "MyNamespace.RecordStructWithExtraSettableMember", "Write")]
-    [DataRow("Construction", "MyNamespace.RequiredMappedMember", "Read, Write")]
-    [DataRow("Construction", "MyNamespace.RequiredMappedMemberInBase", "Read, Write")]
-    [DataRow("Construction", "MyNamespace.RequiredUnmappedMember", "Write")]
-    [DataRow("Construction", "MyNamespace.RequiredUnmappedMemberInBase", "Write")]
-    [DataRow("Construction", "MyNamespace.RequiredUnmappedMemberWithSetsRequiredMembers", "Write")]
-    [DataRow("Construction", "MyNamespace.StructWithParameterizedConstructor", "Write")]
-    [DataRow("Construction", "MyNamespace.StructWithParameterlessAndParameterizedConstructors", "Read, Write")]
-    [DataRow("Construction", "MyNamespace.StructWithVarargConstructor", "Write")]
-    [DataRow("Converters", "MyNamespace.AbstractConverterRecord", "TAB0004 MyNamespace.AbstractConverterRecord.MyValue0: 'MyNamespace.AbstractConverter' is abstract")]
-    [DataRow("Converters", "MyNamespace.AmbiguousConstructorsRecord", "TAB0004 MyNamespace.AmbiguousConstructorsRecord.MyValue0: 'MyNamespace.AmbiguousConstructorsConverter' has neither an accessible parameterless constructor nor exactly one accessible constructor with only optional parameters")]
-    [DataRow("Converters", "MyNamespace.ArrayConverterRecord", "TAB0004 MyNamespace.ArrayConverterRecord.MyValue0: 'Addax.Formats.Tabular.Converters.TabularInt32Converter[]' does not derive from TabularConverter<T>")]
+    [DataRow("Construction", "MyNamespace.PositionalStructWithExtraGetOnlyMemberRecord", "Read, Write")]
+    [DataRow("Construction", "MyNamespace.PositionalStructWithExtraSettableMemberRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.PositionalWithCaseDistinctParametersRecord", "Read, Write")]
+    [DataRow("Construction", "MyNamespace.PositionalWithConverterAndKeywordsRecord", "Read, Write")]
+    [DataRow("Construction", "MyNamespace.PositionalWithExtraConstructorRecord", "Read, Write")]
+    [DataRow("Construction", "MyNamespace.PositionalWithExtraSettableMemberRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.PositionalWithInParameterRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.PositionalWithOptionalParameterRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.PositionalWithParamsParameterRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.PositionalWithRequiredMemberRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.PositionalWithReversedOrdersRecord", "Read, Write")]
+    [DataRow("Construction", "MyNamespace.PositionalWithUnmappedParameterRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.ReadOnlyPositionalStructRecord", "Read, Write")]
+    [DataRow("Construction", "MyNamespace.ReadOnlyStructWithConstructorRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.ReadOnlyStructWithPrimaryConstructorRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.RequiredMappedMemberInBaseRecord", "Read, Write")]
+    [DataRow("Construction", "MyNamespace.RequiredMappedMemberRecord", "Read, Write")]
+    [DataRow("Construction", "MyNamespace.RequiredUnmappedMemberInBaseRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.RequiredUnmappedMemberRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.RequiredUnmappedMemberWithSetsRequiredMembersRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.StructWithParameterizedConstructorRecord", "Write")]
+    [DataRow("Construction", "MyNamespace.StructWithParameterlessAndParameterizedConstructorsRecord", "Read, Write")]
+    [DataRow("Construction", "MyNamespace.StructWithVarargConstructorRecord", "Write")]
     [DataRow("Converters", "MyNamespace.BuiltInArrayConvertersRecord", "Read, Write")]
     [DataRow("Converters", "MyNamespace.CustomConverterRecord", "Read, Write")]
     [DataRow("Converters", "MyNamespace.DefaultAndOptionalConstructorsRecord", "Read, Write")]
-    [DataRow("Converters", "MyNamespace.DynamicTypeArgumentRecord", "Read, Write")]
     [DataRow("Converters", "MyNamespace.FileLocalConverterRecord", "TAB0004 MyNamespace.FileLocalConverterRecord.MyValue0: 'MyNamespace.FileLocalConverter' is file-local")]
     [DataRow("Converters", "MyNamespace.FileLocalTypeArgumentRecord", "TAB0004 MyNamespace.FileLocalTypeArgumentRecord.MyValue0: 'MyNamespace.FileLocalTypeArgument' is file-local")]
     [DataRow("Converters", "MyNamespace.IdentityConvertibleValueTypeRecord", "Read, Write")]
-    [DataRow("Converters", "MyNamespace.InaccessibleConstructorRecord", "TAB0004 MyNamespace.InaccessibleConstructorRecord.MyValue0: 'MyNamespace.InaccessibleConstructorConverter' has neither an accessible parameterless constructor nor exactly one accessible constructor with only optional parameters")]
-    [DataRow("Converters", "MyNamespace.NotConverterRecord", "TAB0004 MyNamespace.NotConverterRecord.MyValue0: 'string' does not derive from TabularConverter<T>")]
-    [DataRow("Converters", "MyNamespace.NullConverterRecord", "TAB0004 MyNamespace.NullConverterRecord.MyValue0: the converter type is not specified")]
     [DataRow("Converters", "MyNamespace.NullableValueConvertersRecord", "Read, Write")]
-    [DataRow("Converters", "MyNamespace.OpenGenericConverterRecord", "TAB0004 MyNamespace.OpenGenericConverterRecord.MyValue0: 'MyNamespace.GenericConverter<>' is an open generic type")]
-    [DataRow("Converters", "MyNamespace.OptionalConstructorRecord", "Read, Write")]
-    [DataRow("Converters", "MyNamespace.PointerTypeArgumentRecord", "TAB0004 MyNamespace.PointerTypeArgumentRecord.MyValue0: 'int*' is a pointer type")]
     [DataRow("Converters", "MyNamespace.PrivateConverterRecord", "TAB0004 MyNamespace.PrivateConverterRecord.MyValue0: 'MyNamespace.PrivateConverterRecord.PrivateConverter' is not accessible within the assembly")]
     [DataRow("Converters", "MyNamespace.RefStructTypeArgumentRecord", "Read, Write")]
-    [DataRow("Converters", "MyNamespace.RequiredMembersRecord", "TAB0004 MyNamespace.RequiredMembersRecord.MyValue0: 'MyNamespace.RequiredMembersConverter' has required members")]
     [DataRow("Converters", "MyNamespace.SetsRequiredMembersRecord", "TAB0004 MyNamespace.SetsRequiredMembersRecord.MyValue0: 'MyNamespace.SetsRequiredMembersConverter' has required members")]
     [DataRow("Converters", "MyNamespace.ValueTypeMismatchRecord", "TAB0004 MyNamespace.ValueTypeMismatchRecord.MyValue0: 'Addax.Formats.Tabular.Converters.TabularBooleanConverter' converts 'bool', but the member type is 'string?'")]
     [DataRow("Experimental", "MyNamespace.ExperimentalAccessorsRecord", "Read, Write")]
+    [DataRow("Experimental", "MyNamespace.ExperimentalAssemblyConverterRecord", "Read, Write")]
     [DataRow("Experimental", "MyNamespace.ExperimentalConstructorRecord", "Read, Write")]
     [DataRow("Experimental", "MyNamespace.ExperimentalConverterTypesRecord", "Read, Write")]
     [DataRow("Experimental", "MyNamespace.ExperimentalConvertersRecord", "Read, Write")]
@@ -73,11 +69,13 @@ public sealed partial class TabularHandlerGeneratorTests
     [DataRow("Experimental", "MyNamespace.ExperimentalPrimaryConstructorRecord", "Read, Write")]
     [DataRow("Experimental", "MyNamespace.ExperimentalRecord", "Read, Write")]
     [DataRow("Experimental", "MyNamespace.ExperimentalValueTypeRecord", "Read, Write")]
-    [DataRow("FieldMappings", "MyNamespace.DuplicateOrderRecord", "TAB0005 MyNamespace.DuplicateOrderRecord.MyValue1: the field order 0 is already used by 'MyNamespace.DuplicateOrderRecord.MyValue0'")]
+    [DataRow("FieldMappings", "MyNamespace.DuplicateOrderRecord", "TAB0003 MyNamespace.DuplicateOrderRecord.MyValue1: the field order 0 is already used by 'MyNamespace.DuplicateOrderRecord.MyValue0'")]
     [DataRow("FieldMappings", "MyNamespace.HeaderRecord", "Read, Write, Header")]
+    [DataRow("FieldMappings", "MyNamespace.HeaderWithReadOnlyFieldRecord", "Read, Write, Header")]
     [DataRow("FieldMappings", "MyNamespace.LeadingGapRecord", "Read")]
-    [DataRow("FieldMappings", "MyNamespace.NegativeOrderRecord", "TAB0005 MyNamespace.NegativeOrderRecord.MyValue0: the field order -1 is negative")]
-    [DataRow("FieldMappings", "MyNamespace.NullNameRecord", "TAB0005 MyNamespace.NullNameRecord.MyValue0: the field name is null or not a constant")]
+    [DataRow("FieldMappings", "MyNamespace.MultipleConvertersRecord", "TAB0003 MyNamespace.MultipleConvertersRecord.MyValue0: the member has more than one converter")]
+    [DataRow("FieldMappings", "MyNamespace.NegativeOrderRecord", "TAB0003 MyNamespace.NegativeOrderRecord.MyValue0: the field order -1 is negative")]
+    [DataRow("FieldMappings", "MyNamespace.NullNameRecord", "TAB0003 MyNamespace.NullNameRecord.MyValue0: the field name is null")]
     [DataRow("FieldMappings", "MyNamespace.PositionsRecord", "Read, Write")]
     [DataRow("FieldMappings", "MyNamespace.SkippedFieldsRecord", "Read, Write")]
     [DataRow("Members", "MyNamespace.ConstantMemberRecord", "TAB0002 MyNamespace.ConstantMemberRecord.MyValue0: the member is a constant")]
@@ -124,10 +122,19 @@ public sealed partial class TabularHandlerGeneratorTests
     [DataRow("Records", "MyOtherNamespace.ClassRecord", "Read, Write")]
     [DataRow("References", "MyNamespace.ExperimentalAssemblyRecord", "Read, Write")]
     [DataRow("References", "MyNamespace.HiddenReferencedMemberRecord", "TAB0002 MyLibrary.MyBase.MyValue0: the member is hidden by 'MyNamespace.HiddenReferencedMemberRecord.MyValue0'")]
-    [DataRow("ValueTypes", "MyNamespace.SupportedNullableTypesRecord", "Read, Write")]
-    [DataRow("ValueTypes", "MyNamespace.SupportedTypesRecord", "Read, Write")]
-    [DataRow("ValueTypes", "MyNamespace.UnsupportedNullableTypeRecord", "TAB0003 MyNamespace.UnsupportedNullableTypeRecord.MyValue0: the type 'MyNamespace.MyEnum' has no built-in support")]
-    [DataRow("ValueTypes", "MyNamespace.UnsupportedTypeRecord", "TAB0003 MyNamespace.UnsupportedTypeRecord.MyValue0: the type 'object?' has no built-in support")]
+    [DataRow("ValueTypes", "MyNamespace.BinaryFloatingPointTypesRecord", "Read, Write")]
+    [DataRow("ValueTypes", "MyNamespace.DecimalTypesRecord", "Read, Write")]
+    [DataRow("ValueTypes", "MyNamespace.IntegerTypesRecord", "Read, Write")]
+    [DataRow("ValueTypes", "MyNamespace.NullableBinaryFloatingPointTypesRecord", "Read, Write")]
+    [DataRow("ValueTypes", "MyNamespace.NullableDecimalTypesRecord", "Read, Write")]
+    [DataRow("ValueTypes", "MyNamespace.NullableIntegerTypesRecord", "Read, Write")]
+    [DataRow("ValueTypes", "MyNamespace.NullableOtherTypesRecord", "Read, Write")]
+    [DataRow("ValueTypes", "MyNamespace.NullableTextTypesRecord", "Read, Write")]
+    [DataRow("ValueTypes", "MyNamespace.NullableTimeTypesRecord", "Read, Write")]
+    [DataRow("ValueTypes", "MyNamespace.OtherTypesRecord", "Read, Write")]
+    [DataRow("ValueTypes", "MyNamespace.RegisteredTypesRecord", "Read, Write")]
+    [DataRow("ValueTypes", "MyNamespace.TextTypesRecord", "Read, Write")]
+    [DataRow("ValueTypes", "MyNamespace.TimeTypesRecord", "Read, Write")]
     public async Task GenerateHandler(string assetName, string recordTypeName, string expectedOutcome)
     {
         var assetResult = await GetAssetResultAsync(assetName);
@@ -137,7 +144,9 @@ public sealed partial class TabularHandlerGeneratorTests
     }
 
     [TestMethod]
-    [DataRow("MyNamespace.NonConstantOrderRecord", "TAB0005 MyNamespace.NonConstantOrderRecord.MyValue0: the field order is not a constant")]
+    [DataRow("MyNamespace.PointerArrayMemberRecord", "TAB0002 MyNamespace.PointerArrayMemberRecord.MyValue0: the member type 'int*[]' contains the pointer type 'int*'")]
+    [DataRow("MyNamespace.PointerMemberRecord", "TAB0002 MyNamespace.PointerMemberRecord.MyValue0: the member type 'int*' is a pointer type")]
+    [DataRow("MyNamespace.PointerTypeArgumentRecord", "TAB0004 MyNamespace.PointerTypeArgumentRecord.MyValue0: 'int*' is a pointer type")]
     [DataRow("MyNamespace.RefStructMemberWithConverterRecord", "TAB0002 MyNamespace.RefStructMemberWithConverterRecord.MyValue0: the member type 'System.Span<int>' is a ref struct")]
     public async Task GenerateHandlerWithInvalidSource(string recordTypeName, string expectedOutcome)
     {
@@ -148,50 +157,155 @@ public sealed partial class TabularHandlerGeneratorTests
     }
 
     [TestMethod]
-    [DataRow("Construction", "MyNamespace.PositionalRecordWithReversedOrders", "PositionalConstructor")]
-    [DataRow("Construction", "MyNamespace.RequiredMappedMember", "RequiredMember")]
-    [DataRow("Converters", "MyNamespace.BuiltInArrayConvertersRecord", "BuiltInConverters")]
-    [DataRow("Converters", "MyNamespace.CustomConverterRecord", "CustomConverter")]
-    [DataRow("FieldMappings", "MyNamespace.HeaderRecord", "Header")]
-    [DataRow("FieldMappings", "MyNamespace.PositionsRecord", "Positions")]
-    [DataRow("FieldMappings", "MyNamespace.SkippedFieldsRecord", "SkippedFields")]
-    [DataRow("Members", "MyNamespace.KeywordNamesRecord", "KeywordNames")]
-    [DataRow("Members", "MyNamespace.OverrideChainRecord", "OverrideChain")]
-    [DataRow("ValueTypes", "MyNamespace.SupportedNullableTypesRecord", "EmptyNullableValues")]
-    [DataRow("ValueTypes", "MyNamespace.SupportedNullableTypesRecord", "NullableValues")]
-    [DataRow("ValueTypes", "MyNamespace.SupportedTypesRecord", "Values")]
-    public async Task RunHandler(string assetName, string recordTypeName, string roundTripName)
+    public async Task GenerateHandlerWithInvalidAssemblyConverters()
     {
-        var assetResult = await GetAssetResultAsync(assetName);
+        var assetTree = await ParseAssetAsync("AssemblyConverters.Invalid");
 
-        Assert.IsEmpty(assetResult.CompilationDiagnostics);
-        Assert.IsNotNull(assetResult.Assembly);
+        var compilation = s_compilation
+            .AddSyntaxTrees(assetTree);
 
-        var (content, expectedContent) = await GetRoundTripAsync(roundTripName);
-        var roundTrip = CreateRoundTripMethod(assetResult.Assembly, recordTypeName);
-        var roundTripAsync = CreateRoundTripAsyncMethod(assetResult.Assembly, recordTypeName);
+        CSharpGeneratorDriver
+            .Create(new TabularHandlerGenerator())
+            .RunGeneratorsAndUpdateCompilation(compilation, out _, out var generatorDiagnostics);
 
-        Assert.AreEqual(expectedContent, roundTrip(content));
-        Assert.AreEqual(expectedContent, await roundTripAsync(content));
+        var assetText = assetTree.GetText();
+
+        Assert.HasCount(2, generatorDiagnostics);
+        Assert.AreEqual("TAB0005", generatorDiagnostics[0].Id);
+        Assert.AreEqual("TabularConverter<TabularBase64ArrayConverter>", assetText.ToString(generatorDiagnostics[0].Location.SourceSpan));
+        Assert.AreEqual("The type 'byte[]' has more than one assembly-level converter for tabular field mapping: 'Addax.Formats.Tabular.Converters.TabularBase16ArrayConverter' and 'Addax.Formats.Tabular.Converters.TabularBase64ArrayConverter'", generatorDiagnostics[0].GetMessage(CultureInfo.InvariantCulture));
+        Assert.AreEqual("TAB0004", generatorDiagnostics[1].Id);
+        Assert.AreEqual("TabularConverter<MyNamespace.NullableInt32Converter>", assetText.ToString(generatorDiagnostics[1].Location.SourceSpan));
+        Assert.AreEqual("The specified converter cannot be used for tabular field mapping in 'MyAssembly': 'MyNamespace.NullableInt32Converter' converts the nullable type 'int?'", generatorDiagnostics[1].GetMessage(CultureInfo.InvariantCulture));
     }
 
     [TestMethod]
-    [DataRow("Construction", "MyNamespace.ClassWithPrimaryConstructor", "ReadUnsupported")]
-    [DataRow("FieldMappings", "MyNamespace.LeadingGapRecord", "LeadingGap")]
-    [DataRow("Members", "MyNamespace.SetOnlyPropertyRecord", "WriteUnsupported")]
-    public async Task RunHandlerWithUnsupportedDirection(string assetName, string recordTypeName, string roundTripName)
+    [DataRow("AssemblyConverters", "MyNamespace.AssemblyConvertersRecord", "0a0b^0c0d$^", "0a0b^0c0d$^$")]
+    [DataRow("AssemblyConverters", "MyNamespace.BuiltInTypeAssemblyConverterRecord", "20200120^20210121$20220122^", "20200120^20210121$20220122^$")]
+    [DataRow("AssemblyConverters", "MyNamespace.DynamicAssemblyConvertersRecord", "a^b|c$d^e", "a^b|c$d^e$")]
+    [DataRow("AssemblyConverters", "MyNamespace.MemberConvertersRecord", "2020-01-20^AQI=", "2020-01-20^AQI=$")]
+    [DataRow("Construction", "MyNamespace.PositionalWithReversedOrdersRecord", "x^5", "x^5$")]
+    [DataRow("Construction", "MyNamespace.RequiredMappedMemberRecord", "5", "5$")]
+    [DataRow("Converters", "MyNamespace.BuiltInArrayConvertersRecord", "0a0b^AQI=", "0a0b^AQI=$")]
+    [DataRow("Converters", "MyNamespace.CustomConverterRecord", "XyZ^7$q^", "XYZ^7$Q^$")]
+    [DataRow("FieldMappings", "MyNamespace.HeaderRecord", "!note$h0^h1$1^2", "'a^''b'''^$1^2$")]
+    [DataRow("FieldMappings", "MyNamespace.HeaderRecord", "h0^h1$1^2", "'a^''b'''^$1^2$")]
+    [DataRow("FieldMappings", "MyNamespace.HeaderWithReadOnlyFieldRecord", "h0^h1^h2$1^x^2", "^^my-value$1$")]
+    [DataRow("FieldMappings", "MyNamespace.PositionsRecord", "1^x^2.5$!note$5^z^6.5", "1^x^2.5$5^z^6.5$")]
+    [DataRow("FieldMappings", "MyNamespace.SkippedFieldsRecord", "a^1^b^c^4", "-^1^-^-^4$")]
+    [DataRow("Members", "MyNamespace.KeywordNamesRecord", "1^a^2^3^4.5", "1^a^2^3^4.5$")]
+    [DataRow("Members", "MyNamespace.OverrideChainRecord", "5", "5$")]
+    [DataRow("ValueTypes", "MyNamespace.BinaryFloatingPointTypesRecord", "1.5^2.5^3.5^4.5", "1.5^2.5^3.5^4.5$")]
+    [DataRow("ValueTypes", "MyNamespace.DecimalTypesRecord", "1.5^2.5^3.5^4.5", "1.5^2.5^3.5^4.5$")]
+    [DataRow("ValueTypes", "MyNamespace.IntegerTypesRecord", "-1^2^-3^4^-5^6^-7^8^-9^10^-11", "-1^2^-3^4^-5^6^-7^8^-9^10^-11$")]
+    [DataRow("ValueTypes", "MyNamespace.NullableBinaryFloatingPointTypesRecord", "1.5^2.5^3.5^4.5", "1.5^2.5^3.5^4.5$")]
+    [DataRow("ValueTypes", "MyNamespace.NullableBinaryFloatingPointTypesRecord", "^^^", "^^^$")]
+    [DataRow("ValueTypes", "MyNamespace.NullableDecimalTypesRecord", "1.5^2.5^3.5^4.5", "1.5^2.5^3.5^4.5$")]
+    [DataRow("ValueTypes", "MyNamespace.NullableDecimalTypesRecord", "^^^", "^^^$")]
+    [DataRow("ValueTypes", "MyNamespace.NullableIntegerTypesRecord", "-1^2^-3^4^-5^6^-7^8^-9^10^-11", "-1^2^-3^4^-5^6^-7^8^-9^10^-11$")]
+    [DataRow("ValueTypes", "MyNamespace.NullableIntegerTypesRecord", "^^^^^^^^^^", "^^^^^^^^^^$")]
+    [DataRow("ValueTypes", "MyNamespace.NullableOtherTypesRecord", "^^", "^^$")]
+    [DataRow("ValueTypes", "MyNamespace.NullableOtherTypesRecord", "true^00000000-0000-0000-0000-000000000002^https://example.com/3", "true^00000000-0000-0000-0000-000000000002^https://example.com/3$")]
+    [DataRow("ValueTypes", "MyNamespace.NullableTextTypesRecord", "^^", "^^$")]
+    [DataRow("ValueTypes", "MyNamespace.NullableTextTypesRecord", "a^b^c", "a^b^c$")]
+    [DataRow("ValueTypes", "MyNamespace.NullableTimeTypesRecord", "P0DT1H0M0.0000000S^02:00:00.0000000^2020-01-03^2020-01-04T00:00:00.0000000Z^2020-01-05T00:00:00.0000000+00:00", "P0DT1H0M0.0000000S^02:00:00.0000000^2020-01-03^2020-01-04T00:00:00.0000000Z^2020-01-05T00:00:00.0000000+00:00$")]
+    [DataRow("ValueTypes", "MyNamespace.NullableTimeTypesRecord", "^^^^", "^^^^$")]
+    [DataRow("ValueTypes", "MyNamespace.OtherTypesRecord", "true^00000000-0000-0000-0000-000000000002^https://example.com/3", "true^00000000-0000-0000-0000-000000000002^https://example.com/3$")]
+    [DataRow("ValueTypes", "MyNamespace.TextTypesRecord", "a^b^c", "a^b^c$")]
+    [DataRow("ValueTypes", "MyNamespace.TimeTypesRecord", "P0DT1H0M0.0000000S^02:00:00.0000000^2020-01-03^2020-01-04T00:00:00.0000000Z^2020-01-05T00:00:00.0000000+00:00", "P0DT1H0M0.0000000S^02:00:00.0000000^2020-01-03^2020-01-04T00:00:00.0000000Z^2020-01-05T00:00:00.0000000+00:00$")]
+    public async Task RunHandler(string assetName, string recordTypeName, string content, string expectedContent)
     {
         var assetResult = await GetAssetResultAsync(assetName);
 
         Assert.IsEmpty(assetResult.CompilationDiagnostics);
         Assert.IsNotNull(assetResult.Assembly);
 
-        var (content, _) = await GetRoundTripAsync(roundTripName);
         var roundTrip = CreateRoundTripMethod(assetResult.Assembly, recordTypeName);
         var roundTripAsync = CreateRoundTripAsyncMethod(assetResult.Assembly, recordTypeName);
 
-        Assert.ThrowsExactly<NotSupportedException>(() => roundTrip(content));
-        await Assert.ThrowsExactlyAsync<NotSupportedException>(() => roundTripAsync(content));
+        Assert.AreEqual(expectedContent, roundTrip(content, null));
+        Assert.AreEqual(expectedContent, await roundTripAsync(content, null));
+    }
+
+    [TestMethod]
+    public async Task RunHandlerWithRegisteredConverters()
+    {
+        var assetResult = await GetAssetResultAsync("ValueTypes");
+
+        Assert.IsEmpty(assetResult.CompilationDiagnostics);
+        Assert.IsNotNull(assetResult.Assembly);
+
+        var content = "0a0b^0c0d^AQI=$0e0f^^";
+        var expectedContent = "0a0b^0c0d^AQI=$0e0f^^$";
+        var roundTrip = CreateRoundTripMethod(assetResult.Assembly, "MyNamespace.RegisteredTypesRecord");
+        var roundTripAsync = CreateRoundTripAsyncMethod(assetResult.Assembly, "MyNamespace.RegisteredTypesRecord");
+        var options = new TabularOptions();
+
+        options.Converters[typeof(Memory<byte>)] = new TabularBase16MemoryConverter();
+        options.Converters[typeof(byte[])] = new TabularBase16ArrayConverter();
+        options.Converters[typeof(ReadOnlyMemory<byte>)] = new TabularBase64ReadOnlyMemoryConverter();
+
+        Assert.AreEqual(expectedContent, roundTrip(content, options));
+        Assert.AreEqual(expectedContent, await roundTripAsync(content, options));
+    }
+
+    [TestMethod]
+    public async Task RunHandlerWithoutRegisteredConverters()
+    {
+        var assetResult = await GetAssetResultAsync("ValueTypes");
+
+        Assert.IsEmpty(assetResult.CompilationDiagnostics);
+        Assert.IsNotNull(assetResult.Assembly);
+
+        var content = "0a0b^0c0d^AQI=$0e0f^^";
+        var roundTrip = CreateRoundTripMethod(assetResult.Assembly, "MyNamespace.RegisteredTypesRecord");
+        var roundTripAsync = CreateRoundTripAsyncMethod(assetResult.Assembly, "MyNamespace.RegisteredTypesRecord");
+
+        Assert.ThrowsExactly<InvalidOperationException>(() => roundTrip(content, null));
+
+        await Assert.ThrowsExactlyAsync<InvalidOperationException>(() => roundTripAsync(content, null));
+    }
+
+    [TestMethod]
+    [DataRow("Converters", "MyNamespace.CustomConverterRecord", "q^x", "The field 1 of the record 0 cannot be converted to 'System.Int32' for the member 'MyNamespace.CustomConverterRecord.MyValue1'.")]
+    [DataRow("FieldMappings", "MyNamespace.PositionsRecord", "1^x^2.5$3^y", "The record 1 has no field 2 for the member 'MyNamespace.PositionsRecord.MyValue2'.")]
+    [DataRow("FieldMappings", "MyNamespace.PositionsRecord", "^w^2.5", "The field 0 of the record 0 cannot be converted to 'System.Int32' for the member 'MyNamespace.PositionsRecord.MyValue0'.")]
+    [DataRow("FieldMappings", "MyNamespace.PositionsRecord", "bad^w^2.5", "The field 0 of the record 0 cannot be converted to 'System.Int32' for the member 'MyNamespace.PositionsRecord.MyValue0'.")]
+    [DataRow("FieldMappings", "MyNamespace.SkippedFieldsRecord", "x^2", "The record 0 has no field 4 for the member 'MyNamespace.SkippedFieldsRecord.MyValue4'.")]
+    public async Task RunHandlerWithInvalidContent(string assetName, string recordTypeName, string content, string expectedMessage)
+    {
+        var assetResult = await GetAssetResultAsync(assetName);
+
+        Assert.IsEmpty(assetResult.CompilationDiagnostics);
+        Assert.IsNotNull(assetResult.Assembly);
+
+        var roundTrip = CreateRoundTripMethod(assetResult.Assembly, recordTypeName);
+        var roundTripAsync = CreateRoundTripAsyncMethod(assetResult.Assembly, recordTypeName);
+
+        var exception = Assert.ThrowsExactly<TabularException>(() => roundTrip(content, null));
+        var exceptionAsync = await Assert.ThrowsExactlyAsync<TabularException>(() => roundTripAsync(content, null));
+
+        Assert.AreEqual(expectedMessage, exception.Message);
+        Assert.AreEqual(expectedMessage, exceptionAsync.Message);
+    }
+
+    [TestMethod]
+    [DataRow("Construction", "MyNamespace.ClassWithPrimaryConstructorRecord", "5^6")]
+    [DataRow("FieldMappings", "MyNamespace.LeadingGapRecord", "a^b")]
+    [DataRow("Members", "MyNamespace.SetOnlyPropertyRecord", "5")]
+    public async Task RunHandlerWithUnsupportedDirection(string assetName, string recordTypeName, string content)
+    {
+        var assetResult = await GetAssetResultAsync(assetName);
+
+        Assert.IsEmpty(assetResult.CompilationDiagnostics);
+        Assert.IsNotNull(assetResult.Assembly);
+
+        var roundTrip = CreateRoundTripMethod(assetResult.Assembly, recordTypeName);
+        var roundTripAsync = CreateRoundTripAsyncMethod(assetResult.Assembly, recordTypeName);
+
+        Assert.ThrowsExactly<NotSupportedException>(() => roundTrip(content, null));
+
+        await Assert.ThrowsExactlyAsync<NotSupportedException>(() => roundTripAsync(content, null));
     }
 
     [TestMethod]
@@ -236,13 +350,46 @@ public sealed partial class TabularHandlerGeneratorTests
         var generatorDriver = CreateTrackingGeneratorDriver()
             .RunGenerators(compilation);
 
-        compilation = compilation.ReplaceSyntaxTree(otherTree, otherTree.WithChangedText(SourceText.From(otherTree.ToString().Replace("MyOtherType", "MyChangedType", StringComparison.Ordinal))));
+        var otherText = otherTree.ToString().Replace("MyOtherType", "MyChangedType", StringComparison.Ordinal);
+
+        compilation = compilation.ReplaceSyntaxTree(otherTree, otherTree.WithChangedText(SourceText.From(otherText)));
         generatorDriver = generatorDriver.RunGenerators(compilation);
 
         Assert.AreNotEqual(IncrementalStepRunReason.Modified, GetTrackedStepReason(generatorDriver, "RecordMappings"));
         Assert.AreEqual(IncrementalStepRunReason.Cached, GetTrackedOutputStepReason(generatorDriver, WellKnownGeneratorOutputs.ImplementationSourceOutput));
 
-        compilation = compilation.ReplaceSyntaxTree(recordTree, recordTree.WithChangedText(SourceText.From(recordTree.ToString().Replace("\"my-value\"", "\"my-other-value\"", StringComparison.Ordinal))));
+        var recordText = recordTree.ToString().Replace("\"my-value\"", "\"my-other-value\"", StringComparison.Ordinal);
+
+        compilation = compilation.ReplaceSyntaxTree(recordTree, recordTree.WithChangedText(SourceText.From(recordText)));
+        generatorDriver = generatorDriver.RunGenerators(compilation);
+
+        Assert.AreEqual(IncrementalStepRunReason.Modified, GetTrackedStepReason(generatorDriver, "RecordMappings"));
+        Assert.AreEqual(IncrementalStepRunReason.Modified, GetTrackedOutputStepReason(generatorDriver, WellKnownGeneratorOutputs.ImplementationSourceOutput));
+    }
+
+    [TestMethod]
+    public async Task RunIncrementalConverters()
+    {
+        var converterTree = await ParseAssetAsync("Pipeline.Converter");
+        var otherTree = await ParseAssetAsync("Pipeline.Other");
+
+        var compilation = s_compilation
+            .AddSyntaxTrees(await ParseAssetAsync("Pipeline.Record"), converterTree, otherTree);
+
+        var generatorDriver = CreateTrackingGeneratorDriver()
+            .RunGenerators(compilation);
+
+        var otherText = otherTree.ToString().Replace("MyOtherType", "MyChangedType", StringComparison.Ordinal);
+
+        compilation = compilation.ReplaceSyntaxTree(otherTree, otherTree.WithChangedText(SourceText.From(otherText)));
+        generatorDriver = generatorDriver.RunGenerators(compilation);
+
+        Assert.AreNotEqual(IncrementalStepRunReason.Modified, GetTrackedStepReason(generatorDriver, "RecordMappings"));
+        Assert.AreEqual(IncrementalStepRunReason.Cached, GetTrackedOutputStepReason(generatorDriver, WellKnownGeneratorOutputs.ImplementationSourceOutput));
+
+        var converterText = converterTree.ToString().Replace("TabularConverter<MyNamespace.MyConverter>", "TabularConverter<MyNamespace.MyOtherConverter>", StringComparison.Ordinal);
+
+        compilation = compilation.ReplaceSyntaxTree(converterTree, converterTree.WithChangedText(SourceText.From(converterText)));
         generatorDriver = generatorDriver.RunGenerators(compilation);
 
         Assert.AreEqual(IncrementalStepRunReason.Modified, GetTrackedStepReason(generatorDriver, "RecordMappings"));
@@ -260,7 +407,9 @@ public sealed partial class TabularHandlerGeneratorTests
         var generatorDriver = CreateTrackingGeneratorDriver()
             .RunGenerators(compilation);
 
-        compilation = compilation.ReplaceSyntaxTree(otherTree, otherTree.WithChangedText(SourceText.From(otherTree.ToString().Replace("MyOtherType", "MyChangedType", StringComparison.Ordinal))));
+        var otherText = otherTree.ToString().Replace("MyOtherType", "MyChangedType", StringComparison.Ordinal);
+
+        compilation = compilation.ReplaceSyntaxTree(otherTree, otherTree.WithChangedText(SourceText.From(otherText)));
         generatorDriver = generatorDriver.RunGenerators(compilation);
 
         var generatorDiagnostics = generatorDriver.GetRunResult().Diagnostics;

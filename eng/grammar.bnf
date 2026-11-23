@@ -11,19 +11,23 @@ terminator_char_2 = char - terminator_char_1;
 delimiter         = char - (terminator_char_1 | terminator_char_2);
 quote_symbol      = char - (terminator_char_1 | terminator_char_2 | delimiter);
 escape_symbol     = char - (terminator_char_1 | terminator_char_2 | delimiter);
-annotation_prefix = char - (terminator_char_1 | terminator_char_2 | delimiter
+comment_prefix    = char - (terminator_char_1 | terminator_char_2 | delimiter
                           | quote_symbol | escape_symbol);
 
 line_terminator   = terminator_char_1, [terminator_char_2];
 
-(* A record that begins with annotation_prefix is an annotation_record, which
+(* A record that begins with comment_prefix is a comment_record, which
    resolves the ambiguity with a value_record whose first field begins with
-   that character. A dialect need not fix an annotation_prefix, in which case
-   the first alternative does not apply. *)
+   that character. A dialect need not fix a comment_prefix, in which case the
+   first alternative does not apply. *)
 
-stream            = record, {line_terminator, record};
-record            = annotation_record | value_record;
-annotation_record = annotation_prefix, line;
+(* A line_terminator at the end of a stream ends the last record, which
+   resolves the ambiguity with an empty value_record. An empty stream has no
+   records. *)
+
+stream            = [record, {line_terminator, record}, [line_terminator]];
+record            = comment_record | value_record;
+comment_record    = comment_prefix, line;
 value_record      = field, {delimiter, field};
 
 field             = unescaped_field | escaped_field;

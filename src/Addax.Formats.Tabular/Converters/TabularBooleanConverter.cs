@@ -2,11 +2,9 @@
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="bool" /> value from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="bool" /> value to or from a character sequence.</summary>
 public class TabularBooleanConverter : TabularConverter<bool>
 {
-    internal static readonly TabularBooleanConverter Instance = new();
-
     /// <summary>Initializes a new instance of the <see cref="TabularBooleanConverter" /> class.</summary>
     public TabularBooleanConverter()
     {
@@ -15,12 +13,16 @@ public class TabularBooleanConverter : TabularConverter<bool>
     /// <inheritdoc />
     public override bool TryFormat(bool value, Span<char> destination, IFormatProvider? provider, out int charsWritten)
     {
-        if (value.TryFormat(destination, out charsWritten))
+        var literal = value ? "true" : "false";
+
+        if (literal.TryCopyTo(destination))
         {
-            destination[0] = char.ToLowerInvariant(destination[0]);
+            charsWritten = literal.Length;
 
             return true;
         }
+
+        charsWritten = 0;
 
         return false;
     }
@@ -28,30 +30,18 @@ public class TabularBooleanConverter : TabularConverter<bool>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out bool value)
     {
-        return bool.TryParse(source, out value) || TryParseAsNumber(source, out value);
-    }
-
-    private static bool TryParseAsNumber(ReadOnlySpan<char> source, out bool value)
-    {
-        source = source.Trim();
-
-        if (source.Length == 1)
+        if (source is "true" or "1")
         {
-            var symbol = source[0];
+            value = true;
 
-            if (symbol == '1')
-            {
-                value = true;
+            return true;
+        }
 
-                return true;
-            }
+        if (source is "false" or "0")
+        {
+            value = false;
 
-            if (symbol == '0')
-            {
-                value = false;
-
-                return true;
-            }
+            return true;
         }
 
         value = default;

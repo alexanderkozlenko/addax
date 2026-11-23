@@ -4,11 +4,15 @@ namespace Addax.Formats.Tabular.Primitives;
 
 internal enum TabularParsingArea
 {
-    None,
+    StartOfRecord,
+    StartOfField,
     Value,
+    ValueLineTerminator,
     QuotedValue,
+    QuotedValueEscape,
     QuotedValueTail,
-    EscapedSymbol,
-    LineTerminator,
-    Annotation,
+    QuotedValueLineTerminator,
+    Comment,
+    CommentLineTerminator,
+    EndOfStream,
 }

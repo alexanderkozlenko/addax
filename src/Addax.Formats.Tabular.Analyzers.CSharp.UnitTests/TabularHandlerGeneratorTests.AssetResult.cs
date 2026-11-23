@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -84,9 +84,9 @@ public sealed partial class TabularHandlerGeneratorTests
                 capabilities.Add("Header");
             }
 
-            var outcome = (capabilities.Count != 0) ? string.Join(", ", capabilities) : "None";
+            var outcome = capabilities.Count != 0 ? string.Join(", ", capabilities) : "None";
 
-            return (diagnostics.Length != 0) ? string.Join("; ", diagnostics.Select(FormatDiagnostic).Prepend(outcome)) : outcome;
+            return diagnostics.Length != 0 ? string.Join("; ", diagnostics.Select(FormatDiagnostic).Prepend(outcome)) : outcome;
         }
 
         private static string FormatDiagnostic(Diagnostic diagnostic)

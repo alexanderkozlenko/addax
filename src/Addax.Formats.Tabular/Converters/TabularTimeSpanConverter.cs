@@ -1,44 +1,23 @@
 ﻿// (c) Oleksandr Kozlenko. Licensed under the MIT license.
 
 using System.Globalization;
-using Addax.Formats.Tabular.Buffers;
+using System.Text.RegularExpressions;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="TimeSpan" /> value from or to a character sequence.</summary>
-public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
+/// <summary>Converts a <see cref="TimeSpan" /> value to or from a character sequence.</summary>
+public partial class TabularTimeSpanConverter : TabularConverter<TimeSpan>
 {
-    internal static readonly TabularTimeSpanConverter Instance = new();
-
-    private static readonly string[] s_formats =
+    private static readonly long[] s_ticksPerDigit =
     [
-        "'P'd'DT'h'H'm'M's'.'FFFFFFF'S'",
-
-        "'PT's'S'",
-        "'PT'm'M's'S'",
-        "'PT'h'H'm'M's'S'",
-        "'P'd'DT'h'H'm'M's'S'",
-
-        "'PT's'.'FFFFFFF'S'",
-        "'PT'm'M's'.'FFFFFFF'S'",
-        "'PT'h'H'm'M's'.'FFFFFFF'S'",
-
-        "'PT'm'M'",
-        "'PT'h'H'",
-        "'PT'h'H'm'M'",
-        "'PT'h'H's'S'",
-        "'P'd'D'",
-        "'P'd'DT'h'H'",
-        "'P'd'DT'h'H'm'M'",
-        "'P'd'DT'h'H's'S'",
-        "'P'd'DT'm'M'",
-        "'P'd'DT'm'M's'S'",
-        "'P'd'DT's'S'",
-
-        "'PT'h'H's'.'FFFFFFF'S'",
-        "'P'd'DT'h'H's'.'FFFFFFF'S'",
-        "'P'd'DT'm'M's'.'FFFFFFF'S'",
-        "'P'd'DT's'.'FFFFFFF'S'",
+        00000000,
+        01000000,
+        00100000,
+        00010000,
+        00001000,
+        00000100,
+        00000010,
+        00000001,
     ];
 
     /// <summary>Initializes a new instance of the <see cref="TabularTimeSpanConverter" /> class.</summary>
@@ -49,96 +28,86 @@ public class TabularTimeSpanConverter : TabularConverter<TimeSpan>
     /// <inheritdoc />
     public override bool TryFormat(TimeSpan value, Span<char> destination, IFormatProvider? provider, out int charsWritten)
     {
-        charsWritten = 0;
+        var sign = value < TimeSpan.Zero ? "-" : "";
 
-        var writer = new SpanWriter<char>(destination, ref charsWritten);
+        var days = Math.Abs(value.Days);
+        var hours = Math.Abs(value.Hours);
+        var minutes = Math.Abs(value.Minutes);
+        var seconds = Math.Abs(value.Seconds) + (Math.Abs(value.Milliseconds) * 1e-3) + (Math.Abs(value.Microseconds) * 1e-6) + (Math.Abs(value.Nanoseconds) * 1e-9);
 
-        if (value < TimeSpan.Zero)
-        {
-            var formatInfo = NumberFormatInfo.GetInstance(provider);
-
-            if (!formatInfo.NegativeSign.TryCopyTo(writer.AvailableSpan))
-            {
-                return false;
-            }
-
-            charsWritten += formatInfo.NegativeSign.Length;
-            value = value.Duration();
-        }
-
-        if (!writer.TryWrite('P'))
-        {
-            return false;
-        }
-
-        if (!value.Days.TryFormat(writer.AvailableSpan, out var charsWrittenD, "d", provider))
-        {
-            return false;
-        }
-
-        charsWritten += charsWrittenD;
-
-        if (!writer.TryWrite('D') ||
-            !writer.TryWrite('T'))
-        {
-            return false;
-        }
-
-        if (!value.Hours.TryFormat(writer.AvailableSpan, out var charsWrittenH, "d", provider))
-        {
-            return false;
-        }
-
-        charsWritten += charsWrittenH;
-
-        if (!writer.TryWrite('H'))
-        {
-            return false;
-        }
-
-        if (!value.Minutes.TryFormat(writer.AvailableSpan, out var charsWrittenM, "d", provider))
-        {
-            return false;
-        }
-
-        charsWritten += charsWrittenM;
-
-        if (!writer.TryWrite('M'))
-        {
-            return false;
-        }
-
-        var seconds = value.Seconds + (value.Milliseconds * 1e-3) + (value.Microseconds * 1e-6) + (value.Nanoseconds * 1e-9);
-
-        if (!seconds.TryFormat(writer.AvailableSpan, out var charsWrittenS, "f7", provider))
-        {
-            return false;
-        }
-
-        charsWritten += charsWrittenS;
-
-        if (!writer.TryWrite('S'))
-        {
-            return false;
-        }
-
-        return true;
+        return destination.TryWrite(CultureInfo.InvariantCulture, $"{sign}P{days:d}DT{hours:d}H{minutes:d}M{seconds:f7}S", out charsWritten);
     }
 
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out TimeSpan value)
     {
-        source = source.Trim();
-
-        var styles = TimeSpanStyles.None;
-        var formatInfo = NumberFormatInfo.GetInstance(provider);
-
-        if (source.StartsWith(formatInfo.NegativeSign))
+        if (!DurationRegex.IsMatch(source))
         {
-            source = source.Slice(formatInfo.NegativeSign.Length);
-            styles = TimeSpanStyles.AssumeNegative;
+            value = default;
+
+            return false;
         }
 
-        return TimeSpan.TryParseExact(source, s_formats, provider, styles, out value);
+        var ticks = Int128.Zero;
+
+        foreach (var match in ComponentRegex.EnumerateMatches(source))
+        {
+            var component = source.Slice(match.Index, match.Length - 1);
+
+            var ticksPerUnit = source[match.Index + match.Length - 1] switch
+            {
+                'D' => TimeSpan.TicksPerDay,
+                'H' => TimeSpan.TicksPerHour,
+                'M' => TimeSpan.TicksPerMinute,
+                _ => TimeSpan.TicksPerSecond,
+            };
+
+            var pointIndex = component.IndexOf('.');
+
+            if (pointIndex >= 0)
+            {
+                var fraction = component.Slice(pointIndex + 1);
+
+                ticks += long.Parse(fraction, NumberStyles.None, CultureInfo.InvariantCulture) * s_ticksPerDigit[fraction.Length];
+                component = component.Slice(0, pointIndex);
+            }
+
+            if (!ulong.TryParse(component, NumberStyles.None, CultureInfo.InvariantCulture, out var count))
+            {
+                value = default;
+
+                return false;
+            }
+
+            ticks += (Int128)count * ticksPerUnit;
+        }
+
+        if (source[0] == '-')
+        {
+            ticks = -ticks;
+        }
+
+        if ((ticks < long.MinValue) || (ticks > long.MaxValue))
+        {
+            value = default;
+
+            return false;
+        }
+
+        value = new((long)ticks);
+
+        return true;
+    }
+
+    [GeneratedRegex(@"\A-?P(?=[0-9]|T[0-9])(?:[0-9]+D)?(?:T(?=[0-9])(?:[0-9]+H)?(?:[0-9]+M)?(?:[0-9]+(?:\.[0-9]{1,7})?S)?)?\z", RegexOptions.CultureInvariant)]
+    private static partial Regex DurationRegex
+    {
+        get;
+    }
+
+    [GeneratedRegex(@"[0-9]+(?:\.[0-9]+)?[DHMS]", RegexOptions.CultureInvariant)]
+    private static partial Regex ComponentRegex
+    {
+        get;
     }
 }

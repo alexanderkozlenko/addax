@@ -4,12 +4,10 @@ using System.Globalization;
 
 namespace Addax.Formats.Tabular.Converters;
 
-/// <summary>Converts a <see cref="UInt128" /> value from or to a character sequence.</summary>
+/// <summary>Converts a <see cref="UInt128" /> value to or from a character sequence.</summary>
 [CLSCompliant(false)]
 public class TabularUInt128Converter : TabularConverter<UInt128>
 {
-    internal static readonly TabularUInt128Converter Instance = new();
-
     /// <summary>Initializes a new instance of the <see cref="TabularUInt128Converter" /> class.</summary>
     public TabularUInt128Converter()
     {
@@ -24,8 +22,8 @@ public class TabularUInt128Converter : TabularConverter<UInt128>
     /// <inheritdoc />
     public override bool TryParse(ReadOnlySpan<char> source, IFormatProvider? provider, out UInt128 value)
     {
-        const NumberStyles styles = NumberStyles.Integer | NumberStyles.AllowThousands;
+        const NumberStyles styles = NumberStyles.AllowLeadingSign;
 
-        return UInt128.TryParse(source, styles, provider, out value) || TabularNumber<UInt128>.TryParseAsPartsPer(source, styles, provider, out value);
+        return UInt128.TryParse(source, styles, provider, out value);
     }
 }

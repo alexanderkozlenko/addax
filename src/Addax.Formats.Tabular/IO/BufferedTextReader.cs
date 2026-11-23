@@ -6,193 +6,125 @@ using Addax.Formats.Tabular.Buffers;
 
 namespace Addax.Formats.Tabular.IO;
 
-internal sealed class BufferedTextReader : IDisposable, IAsyncDisposable
+internal sealed class BufferedTextReader : IDisposable
 {
     private readonly Stream _stream;
     private readonly Encoding _encoding;
     private readonly Decoder _decoder;
     private readonly BufferWriter<char> _charBufferWriter;
     private readonly int _byteBufferSize;
-    private readonly bool _leaveOpen;
+    private readonly int _maxCharsPerByte;
     private readonly bool _isStartOfStream;
 
     private long _bytesDecoded;
     private bool _isPreambleConsumed;
     private bool _isEndOfStream;
 
-    public BufferedTextReader(Stream stream, Encoding encoding, int bufferSize, bool leaveOpen)
+    public BufferedTextReader(Stream stream, Encoding encoding, int bufferSize)
     {
-        Debug.Assert(stream is not null);
-        Debug.Assert(encoding is not null);
         Debug.Assert(bufferSize > 0);
-        Debug.Assert(bufferSize <= Array.MaxLength);
 
         _stream = stream;
         _encoding = encoding;
-        _leaveOpen = leaveOpen;
-
-        _decoder = encoding.GetDecoder();
-        _byteBufferSize = bufferSize;
-        _charBufferWriter = new(encoding.GetMaxCharCount(Math.Min(bufferSize, 0x00100000)));
         _isStartOfStream = !stream.CanSeek || (stream.Position == 0);
-        _isPreambleConsumed = _isStartOfStream && encoding.Preamble.IsEmpty;
+        _decoder = encoding.GetDecoder();
+        _byteBufferSize = Math.Min(bufferSize, encoding.GetMaxByteCount(0x00100000));
+        _maxCharsPerByte = encoding.GetMaxCharCount(1);
+        _charBufferWriter = new(encoding.GetMaxCharCount(Math.Min(bufferSize, 0x00100000)));
+        _isPreambleConsumed = !_isStartOfStream || encoding.Preamble.IsEmpty;
     }
 
     public void Dispose()
     {
         _charBufferWriter.Dispose();
-
-        if (!_leaveOpen)
-        {
-            _stream.Dispose();
-        }
-    }
-
-    public ValueTask DisposeAsync()
-    {
-        _charBufferWriter.Dispose();
-
-        if (!_leaveOpen)
-        {
-            return _stream.DisposeAsync();
-        }
-
-        return ValueTask.CompletedTask;
     }
 
     public bool TryRead()
     {
-        if (!_charBufferWriter.HasCapacity)
+        var byteBufferSize = Math.Min(_isPreambleConsumed ? _byteBufferSize : Math.Max(_byteBufferSize, _encoding.Preamble.Length), _charBufferWriter.RemainingCount / _maxCharsPerByte);
+
+        if (byteBufferSize == 0)
         {
             return false;
-        }
-
-        var byteBufferSize = Math.Min(_byteBufferSize, _encoding.GetMaxByteCount(Math.Min(_charBufferWriter.FreeCapacity, 0x00100000)));
-
-        if (!_isPreambleConsumed)
-        {
-            byteBufferSize = Math.Max(byteBufferSize, _encoding.Preamble.Length);
         }
 
         using var byteBuffer = new ArrayBuffer<byte>(byteBufferSize);
 
         var byteBufferUsedSize = _stream.ReadAtLeast(byteBuffer.AsSpan(), byteBufferSize, false);
-        var byteBufferUsed = byteBuffer.AsSpan(byteBufferUsedSize);
 
-        _isEndOfStream = byteBufferUsedSize < byteBufferSize;
-
-        if (!_isPreambleConsumed)
-        {
-            if (byteBufferUsed.StartsWith(_encoding.Preamble))
-            {
-                byteBufferUsed = byteBufferUsed.Slice(_encoding.Preamble.Length);
-            }
-
-            _isPreambleConsumed = true;
-        }
-
-        Decode(byteBufferUsed, _charBufferWriter, _decoder, _isEndOfStream, ref _bytesDecoded);
+        Decode(byteBuffer.AsSpan(byteBufferUsedSize), byteBufferUsedSize < byteBufferSize);
 
         return true;
     }
 
     public async ValueTask<bool> TryReadAsync(CancellationToken cancellationToken)
     {
-        if (!_charBufferWriter.HasCapacity)
+        var byteBufferSize = Math.Min(_isPreambleConsumed ? _byteBufferSize : Math.Max(_byteBufferSize, _encoding.Preamble.Length), _charBufferWriter.RemainingCount / _maxCharsPerByte);
+
+        if (byteBufferSize == 0)
         {
             return false;
-        }
-
-        var byteBufferSize = Math.Min(_byteBufferSize, _encoding.GetMaxByteCount(Math.Min(_charBufferWriter.FreeCapacity, 0x00100000)));
-
-        if (!_isPreambleConsumed)
-        {
-            byteBufferSize = Math.Max(byteBufferSize, _encoding.Preamble.Length);
         }
 
         using var byteBuffer = new ArrayBuffer<byte>(byteBufferSize);
 
         var byteBufferUsedSize = await _stream.ReadAtLeastAsync(byteBuffer.AsMemory(), byteBufferSize, false, cancellationToken).ConfigureAwait(false);
-        var byteBufferUsed = byteBuffer.AsMemory(byteBufferUsedSize);
 
-        _isEndOfStream = byteBufferUsedSize < byteBufferSize;
-
-        if (!_isPreambleConsumed)
-        {
-            if (byteBufferUsed.Span.StartsWith(_encoding.Preamble))
-            {
-                byteBufferUsed = byteBufferUsed.Slice(_encoding.Preamble.Length);
-            }
-
-            _isPreambleConsumed = true;
-        }
-
-        Decode(byteBufferUsed.Span, _charBufferWriter, _decoder, _isEndOfStream, ref _bytesDecoded);
+        Decode(byteBuffer.AsSpan(byteBufferUsedSize), byteBufferUsedSize < byteBufferSize);
 
         return true;
     }
 
     public void Advance(int consumed)
     {
-        Debug.Assert(consumed >= 0);
-        Debug.Assert(consumed <= _charBufferWriter.WrittenCount);
-
-        _charBufferWriter.Truncate(consumed);
+        _charBufferWriter.Consume(consumed);
     }
 
-    private static void Decode(ReadOnlySpan<byte> byteBuffer, BufferWriter<char> charBufferWriter, Decoder decoder, bool flush, ref long decodedBytes)
+    private void Decode(ReadOnlySpan<byte> byteBuffer, bool isEndOfStream)
     {
-        var isCompleted = true;
+        _isEndOfStream = isEndOfStream;
+
+        if (!_isPreambleConsumed)
+        {
+            if (byteBuffer.StartsWith(_encoding.Preamble))
+            {
+                byteBuffer = byteBuffer.Slice(_encoding.Preamble.Length);
+
+                _bytesDecoded += _encoding.Preamble.Length;
+            }
+
+            _isPreambleConsumed = true;
+        }
+
+        var isCompleted = !isEndOfStream;
 
         while (!byteBuffer.IsEmpty || !isCompleted)
         {
             var byteBufferSlice = byteBuffer.Slice(0, Math.Min(byteBuffer.Length, 0x00100000));
-            var charBuffer = charBufferWriter.GetSpan();
-            var flushSlice = flush && byteBufferSlice.Length == byteBuffer.Length;
+            var charBuffer = _charBufferWriter.GetSpan(_encoding.GetMaxCharCount(byteBuffer.Length));
+            var flushSlice = isEndOfStream && (byteBufferSlice.Length == byteBuffer.Length);
 
-            decoder.Convert(byteBufferSlice, charBuffer, flushSlice, out var bytesUsed, out var charsUsed, out isCompleted);
-            charBufferWriter.Advance(charsUsed);
+            _decoder.Convert(byteBufferSlice, charBuffer, flushSlice, out var bytesUsed, out var charsUsed, out isCompleted);
+            _charBufferWriter.Advance(charsUsed);
+            _bytesDecoded += bytesUsed;
+
             byteBuffer = byteBuffer.Slice(bytesUsed);
-            decodedBytes += bytesUsed;
         }
     }
 
-    private static int GetByteCount(ReadOnlySpan<char> charBuffer, Encoding encoding)
-    {
-        var byteCount = 0;
-
-        while (!charBuffer.IsEmpty)
-        {
-            var charBufferSlice = charBuffer.Slice(0, Math.Min(charBuffer.Length, 0x00100000));
-
-            byteCount += encoding.GetByteCount(charBufferSlice);
-            charBuffer = charBuffer.Slice(charBufferSlice.Length);
-        }
-
-        return byteCount;
-    }
-
-    public ReadOnlySpan<char> BufferSpan
+    public ArraySegment<char> BufferSegment
     {
         get
         {
-            return _charBufferWriter.WrittenSpan;
+            return _charBufferWriter.WrittenSegment;
         }
     }
 
-    public ReadOnlyMemory<char> BufferMemory
+    public long BytesConsumed
     {
         get
         {
-            return _charBufferWriter.WrittenMemory;
-        }
-    }
-
-    public bool IsEndOfStream
-    {
-        get
-        {
-            return _isEndOfStream;
+            return _bytesDecoded;
         }
     }
 
@@ -204,11 +136,11 @@ internal sealed class BufferedTextReader : IDisposable, IAsyncDisposable
         }
     }
 
-    public long BytesConsumed
+    public bool IsEndOfStream
     {
         get
         {
-            return _bytesDecoded - GetByteCount(_charBufferWriter.WrittenSpan, _encoding);
+            return _isEndOfStream;
         }
     }
 }
